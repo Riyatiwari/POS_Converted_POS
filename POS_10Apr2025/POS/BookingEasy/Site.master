@@ -1,0 +1,464 @@
+﻿<%@ Master Language="VB" CodeFile="Site.master.vb" Inherits="BookingEasy_Site" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <link href='<%# ResolveUrl("~/css/Button.ss.css") %>' rel="stylesheet" type="text/css" />
+    <link href='<%# ResolveUrl("~/css/DropDownList.ss.css") %>' rel="stylesheet" type="text/css" />
+    <link href='<%# ResolveUrl("~/css/Input.ss.css") %>' rel="stylesheet" type="text/css" />
+    <link href='<%# ResolveUrl("~/css/Grid.ss.css") %>' rel="stylesheet" type="text/css" />
+    <link href='<%# ResolveUrl("~/css/CustomStyle.css") %>' rel="stylesheet" type="text/css" />
+    <link href='<%# ResolveUrl("~/css/TabStrip.ss.css") %>' rel="stylesheet" type="text/css" />
+    <link href='<%# ResolveUrl("~/Theme/assets/bootstrap/css/bootstrap.min.css") %>'
+        rel="stylesheet" type="text/css" />
+    <link href='<%# ResolveUrl("~/Theme/assets/font-awesome/css/font-awesome.min.css") %>'
+        rel="stylesheet" type="text/css" />
+    <link href='<%# ResolveUrl("~/Theme/css/flaty.css") %>' rel="stylesheet" type="text/css" />
+    <link href='<%# ResolveUrl("~/Theme/css/flaty-responsive.css") %>' rel="stylesheet"
+        type="text/css" />
+    <link href='<%# ResolveUrl("~/css/Grid.ss.css") %>' rel="stylesheet" type="text/css" />
+     <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style type="text/css">
+        .style1
+        {
+            font-size: 9px;
+        }
+        .dropdown-submenu
+        {
+            position: relative;
+        }
+        
+        .dropdown-submenu > .dropdown-menu
+        {
+            top: 0;
+            left: 100%;
+            margin-left: -1px;
+            margin-top: -6px;
+            -webkit-border-radius: 0 6px 6px 6px;
+            -moz-border-radius: 0 6px 6px;
+            border-radius: 0 6px 6px 6px;
+        }
+        
+        .dropdown-submenu:hover > .dropdown-menu
+        {
+            display: block;
+        }
+        
+        .dropdown-submenu > a:after
+        {
+            display: block;
+            content: " ";
+            float: right;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 5px 0 5px 5px;
+            border-left-color: #ccc;
+            margin-top: 5px;
+            margin-right: -10px;
+        }
+        
+        .dropdown-submenu:hover > a:after
+        {
+            border-left-color: #fff;
+        }
+        
+        .dropdown-submenu.pull-left
+        {
+            float: left;
+        }
+        
+        .dropdown-submenu.pull-left > .dropdown-menu
+        {
+            left: -95%;
+            margin-left: 10px;
+            -webkit-border-radius: 6px 0 6px 6px;
+            -moz-border-radius: 6px 0 6px 6px;
+            border-radius: 6px 0 6px 6px;
+        }
+    </style>
+</head>
+<%--<body onload="afterPostBack();">--%>
+<body>
+    <form id="form1" runat="server">
+    <asp:ScriptManager ID="sm1" runat="server">
+    </asp:ScriptManager>
+    <!-- BEGIN Theme Setting -->
+    <div id="theme-setting" style="display: none;">
+        <a href="#"><i class="fa fa-gears fa fa-2x"></i></a>
+        <ul>
+            <li><span>Skin</span>
+                <ul class="colors" data-target="body" data-prefix="skin-">
+                    <li class="active"><a class="blue" href="#"></a></li>
+                    <li><a class="red" href="#"></a></li>
+                    <li><a class="green" href="#"></a></li>
+                    <li><a class="orange" href="#"></a></li>
+                    <li><a class="yellow" href="#"></a></li>
+                    <li><a class="pink" href="#"></a></li>
+                    <li><a class="magenta" href="#"></a></li>
+                    <li><a class="gray" href="#"></a></li>
+                    <li><a class="black" href="#"></a></li>
+                </ul>
+            </li>
+            <li><span>Navbar</span>
+                <ul class="colors" data-target="#navbar" data-prefix="navbar-">
+                    <li class="active"><a class="blue" href="#"></a></li>
+                    <li><a class="red" href="#"></a></li>
+                    <li><a class="green" href="#"></a></li>
+                    <li><a class="orange" href="#"></a></li>
+                    <li><a class="yellow" href="#"></a></li>
+                    <li><a class="pink" href="#"></a></li>
+                    <li><a class="magenta" href="#"></a></li>
+                    <li><a class="gray" href="#"></a></li>
+                    <li><a class="black" href="#"></a></li>
+                </ul>
+            </li>
+            <li><span>Sidebar</span>
+                <ul class="colors" data-target="#main-container" data-prefix="sidebar-">
+                    <li class="active"><a class="blue" href="#"></a></li>
+                    <li><a class="red" href="#"></a></li>
+                    <li><a class="green" href="#"></a></li>
+                    <li><a class="orange" href="#"></a></li>
+                    <li><a class="yellow" href="#"></a></li>
+                    <li><a class="pink" href="#"></a></li>
+                    <li><a class="magenta" href="#"></a></li>
+                    <li><a class="gray" href="#"></a></li>
+                    <li><a class="black" href="#"></a></li>
+                </ul>
+            </li>
+            <li><span></span><a data-target="navbar" href="#"><i class="fa fa-square-o"></i>Fixed
+                Navbar</a> <a class="hidden-inline-xs" data-target="sidebar" href="#"><i class="fa fa-square-o">
+                </i>Fixed Sidebar</a> </li>
+        </ul>
+    </div>
+    <!-- END Theme Setting -->
+    <!-- BEGIN Navbar -->
+    <div id="navbar" class="navbar" runat="server">
+        <%--<button type="button" class="navbar-toggle navbar-btn collapsed" data-toggle="collapse"
+            data-target="#sidebar">
+            <span class="fa fa-bars"></span>
+        </button>--%>
+        <a class="navbar-brand" href="" runat="server" id="aNavbarHome"><small><i class="fa fa-desktop"></i>Booking
+            Easy <span class="style1">&nbsp;&nbsp;Version 0.2.2</span></small> </a>
+        <!-- BEGIN Navbar Buttons -->
+        <ul class="nav flaty-nav pull-right">
+            <!-- BEGIN Button Tasks -->
+            <li class="hidden-xs" style="display: none !important;"><a data-toggle="dropdown"
+                class="dropdown-toggle" href="#"><i class="fa fa-tasks"></i><span class="badge badge-warning">
+                    4</span> </a>
+                <!-- BEGIN Tasks Dropdown -->
+                <ul class="dropdown-navbar dropdown-menu">
+                    <li class="nav-header"><i class="fa fa-check"></i>4 Tasks to complete </li>
+                    <li><a href="#">
+                        <div class="clearfix">
+                            <span class="pull-left">Software Update</span> <span class="pull-right">75%</span>
+                        </div>
+                        <div class="progress progress-mini">
+                            <div style="width: 75%" class="progress-bar progress-bar-warning">
+                            </div>
+                        </div>
+                    </a></li>
+                    <li><a href="#">
+                        <div class="clearfix">
+                            <span class="pull-left">Transfer To New Server</span> <span class="pull-right">45%</span>
+                        </div>
+                        <div class="progress progress-mini">
+                            <div style="width: 45%" class="progress-bar progress-bar-danger">
+                            </div>
+                        </div>
+                    </a></li>
+                    <li><a href="#">
+                        <div class="clearfix">
+                            <span class="pull-left">Bug Fixes</span> <span class="pull-right">20%</span>
+                        </div>
+                        <div class="progress progress-mini">
+                            <div style="width: 20%" class="progress-bar">
+                            </div>
+                        </div>
+                    </a></li>
+                    <li><a href="#">
+                        <div class="clearfix">
+                            <span class="pull-left">Writing Documentation</span> <span class="pull-right">85%</span>
+                        </div>
+                        <div class="progress progress-mini progress-striped active">
+                            <div style="width: 85%" class="progress-bar progress-bar-success">
+                            </div>
+                        </div>
+                    </a></li>
+                    <li class="more"><a href="#">See tasks with details</a> </li>
+                </ul>
+                <!-- END Tasks Dropdown -->
+            </li>
+            <!-- END Button Tasks -->
+            <!-- BEGIN Button Notifications -->
+            <li class="hidden-xs" style="display: none !important;"><a data-toggle="dropdown"
+                class="dropdown-toggle" href="#"><i class="fa fa-bell"></i><span class="badge badge-important">
+                    5</span> </a>
+                <!-- BEGIN Notifications Dropdown -->
+                <ul class="dropdown-navbar dropdown-menu">
+                    <li class="nav-header"><i class="fa fa-warning"></i>5 Notifications </li>
+                    <li class="notify"><a href="#"><i class="fa fa-comment orange"></i>
+                        <p>
+                            New Comments</p>
+                        <span class="badge badge-warning">4</span> </a></li>
+                    <li class="notify"><a href="#"><i class="fa fa-twitter blue"></i>
+                        <p>
+                            New Twitter followers</p>
+                        <span class="badge badge-info">7</span> </a></li>
+                    <li class="notify"><a href="#">
+                        <img src="img/demo/avatar/avatar2.jpg" alt="Alex" />
+                        <p>
+                            David would like to become moderator.</p>
+                    </a></li>
+                    <li class="notify"><a href="#"><i class="fa fa-bug pink"></i>
+                        <p>
+                            New bug in program!</p>
+                    </a></li>
+                    <li class="notify"><a href="#"><i class="fa fa-shopping-cart green"></i>
+                        <p>
+                            You have some new orders</p>
+                        <span class="badge badge-success">+10</span> </a></li>
+                    <li class="more"><a href="#">See all notifications</a> </li>
+                </ul>
+                <!-- END Notifications Dropdown -->
+            </li>
+            <!-- END Button Notifications -->
+            <!-- BEGIN Button Messages -->
+            <li class="hidden-xs" style="display: none !important;"><a data-toggle="dropdown"
+                class="dropdown-toggle" href="#"><i class="fa fa-envelope"></i><span class="badge badge-success">
+                    3</span> </a>
+                <!-- BEGIN Messages Dropdown -->
+                <ul class="dropdown-navbar dropdown-menu">
+                    <li class="nav-header"><i class="fa fa-comments"></i>3 Messages </li>
+                    <li class="msg"><a href="#">
+                        <img src="../Theme/img/demo/avatar/avatar3.jpg" alt="Sarah's Avatar" />
+                        <div>
+                            <span class="msg-title">Sarah</span> <span class="msg-time"><i class="fa fa-clock-o">
+                            </i><span>a moment ago</span> </span>
+                        </div>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                            incididunt ut labore et dolore magna aliqua.</p>
+                    </a></li>
+                    <li class="msg"><a href="#">
+                        <img src="../Theme/img/demo/avatar/avatar4.jpg" alt="Emma's Avatar" />
+                        <div>
+                            <span class="msg-title">Emma</span> <span class="msg-time"><i class="fa fa-clock-o">
+                            </i><span>2 Days ago</span> </span>
+                        </div>
+                        <p>
+                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris ...</p>
+                    </a></li>
+                    <li class="msg"><a href="#">
+                        <img src="../Theme/img/demo/avatar/avatar5.jpg" alt="John's Avatar" />
+                        <div>
+                            <span class="msg-title">John</span> <span class="msg-time"><i class="fa fa-clock-o">
+                            </i><span>8:24 PM</span> </span>
+                        </div>
+                        <p>
+                            Duis aute irure dolor in reprehenderit in ...</p>
+                    </a></li>
+                    <li class="more"><a href="#">See all messages</a> </li>
+                </ul>
+                <!-- END Notifications Dropdown -->
+            </li>
+            <!-- END Button Messages -->
+            <!-- BEGIN Dashboard Menu -->
+            <%--<li class="user-profile" runat="server" id="liDashboardMenu" visible="false">
+                <li id="liDashboard" runat="server"><a href="Dashboard.aspx" class="dropdown-toggle">
+                    <i class="fa fa-list"></i><span>Dashboard</span> </a></li>
+                    <li id="liCustomeField" runat="server"><a href="DynamicFieldMaster.aspx" class="dropdown-toggle">
+                    <i class="fa fa-list"></i><span>Custom Field</span> </a></li>
+                    <li id="liPaymentGateway" runat="server"><a href="PaymentGateway.aspx" class="dropdown-toggle"> 
+                    <i class="fa fa-list"></i><span>Payment Gateway</span> </a></li>
+                    <li id="liPaymentTransaction" runat="server"><a href="PaymentTransaction.aspx" class="dropdown-toggle">
+                    <i class="fa fa-list"></i><span>Deposit Detail</span> </a></li>
+                    <li id="liLiveTable" runat="server"><a href="Booking_table_manage.aspx" class="dropdown-toggle">
+                    <i class="fa fa-list"></i><span>Table View</span> </a></li>
+            </li>--%>
+            <!-- END Dashboard Menu -->
+            <!-- BEGIN Button User -->
+            <%--<li class="user-profile" runat="server" id="liUserInfo" visible="false"><a data-toggle="dropdown"
+                href="#" class="user-menu dropdown-toggle">
+                <img class="nav-user-photo" src="../Theme/img/demo/avatar/avatar1.jpg" alt="Penny's Photo" />
+                <span class="hhh" id="Span1">
+                    <%=Sessions.UserName %></span><i class="fa fa-caret-down"></i></a>
+                <!-- BEGIN User Dropdown -->
+                <ul class="dropdown-menu dropdown-navbar" id="user_menu">
+                    <li class="nav-header"><i class="fa fa-clock-o"></i>Logined From 20:45 </li>
+                    <li><a href="#"><i class="fa fa-cog"></i>Account Settings </a></li>
+                    <li><a href="#"><i class="fa fa-user"></i>Edit Profile </a></li>
+                    <li><a href="#"><i class="fa fa-question"></i>Help </a></li>
+                    <li class="divider visible-xs"></li>
+                    <li class="visible-xs"><a href="#"><i class="fa fa-tasks"></i>Tasks <span class="badge badge-warning">4</span> </a></li>
+                    <li class="visible-xs"><a href="#"><i class="fa fa-bell"></i>Notifications <span class="badge badge-important">8</span> </a></li>
+                    <li class="visible-xs"><a href="#"><i class="fa fa-envelope"></i>Messages <span class="badge badge-success">5</span> </a></li>
+                    <li class="divider"></li>
+                    <li><a href="NewSettings.aspx"><i class="fa fa-off"></i>New Settings</a></li>
+                    <li><a href="../Logout.aspx"><i class="fa fa-off"></i>Logout </a></li>
+                </ul>
+                <!-- BEGIN User Dropdown -->
+            </li>--%>
+            <li class="user-profile" runat="server" id="liUserInfo" visible="false"><a data-toggle="dropdown"
+                href="#" class="user-menu dropdown-toggle">
+                <img class="nav-user-photo" src="../Theme/img/demo/avatar/avatar1.jpg" alt="Penny's Photo" />
+                <span class="hhh" id="user_info">
+                    <%=Sessions.UserName %></span><i class="fa fa-caret-down"></i></a>
+                <!-- BEGIN User Dropdown -->
+                <ul class="dropdown-menu dropdown-navbar" id="user_menu">
+                    <li><a href="/Dashboard.aspx" runat="server" id="a1"><i class="fa fa-home"></i>POS Home </a></li>
+                    <li><a href="Dashboard.aspx" runat="server" id="aMenuHome"><i class="fa fa-home"></i>Home </a></li>
+                    <li class="dropdown-submenu pull-left"><a tabindex="-1"
+                        href="#"><i class="fa fa-cog"></i>New Settings &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="General_Setup.aspx"><i class="fa fa-cog"></i>General Setup</a></li>
+                            <li><a href="TableManagement.aspx"><i class="fa fa-cog"></i>Table Management</a></li>
+                            <li><a href="LocationScheduleDetails.aspx"><i class="fa fa-cog"></i>Location & Schedule
+                                Details </a></li>
+                            <li><a href="SMS_Settings.aspx"><i class="fa fa-cog"></i>SMS Settings</a></li>
+                        </ul>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="DynamicFieldMaster.aspx"><i class="fa fa-list"></i>Custom Field</a></li>
+                    <li><a href="PaymentTransaction.aspx"><i class="fa fa-money"></i>Deposit Detail </a></li>
+                    <li><a href="PaymentGateway.aspx"><i class="fa fa-credit-card"></i>Payment Gateway</a></li>
+                    <li><a href="Booking_table_manage.aspx"><i class="fa fa-table"></i>Table View </a></li>
+                    <li><a href="BookingDetails.aspx"><i class="fa fa-building-o"></i>Booking Details</a></li>
+                    <%--<li><a href="NewSettings.aspx"><i class="fa fa-cog"></i>New Settings</a></li>--%>
+                    <li class="divider"></li>
+                    <li style="margin: 9px 0px;"><a href="../Signin.aspx"><i class="fa fa-sign-out"></i>
+                        Logout </a></li>
+                </ul>
+                <!-- BEGIN User Dropdown -->
+            </li>
+            <!-- END Button User -->
+        </ul>
+        <!-- END Navbar Buttons -->
+    </div>
+    <!-- END Navbar -->
+    <!-- BEGIN Container -->
+    <div class="container" id="main-container">
+        <!-- BEGIN Sidebar -->
+        <div>
+            <!-- BEGIN Navlist -->
+            <ul class="nav nav-list" id="liLeftMenu" runat="server" visible="false">
+                <li id="liSetting" runat="server" visible="false"><a href="NewSettings.aspx" class="dropdown-toggle">
+                    <i class="fa fa-list"></i><span>Settings</span> </a></li>
+                <li id="liRoom" runat="server" visible="false"><a href="#" class="dropdown-toggle"><i
+                    class="fa fa-edit"></i><span>Room Reservation</span> <b class="arrow fa fa-angle-right">
+                    </b></a>
+                    <!-- BEGIN Submenu -->
+                    <ul class="submenu">
+                        <li id="liRoomRes" runat="server"><a href="Default.aspx">Reservations</a></li>
+                        <li id="liRoomSearch" runat="server"><a href="SearchBooking.aspx">Search Booking</a></li>
+                    </ul>
+                    <!-- END Submenu -->
+                </li>
+                <li id="liTable" runat="server" visible="false"><a href="#" class="dropdown-toggle">
+                    <i class="fa fa-edit"></i><span>Table Reservation</span> <b class="arrow fa fa-angle-right">
+                    </b></a>
+                    <!-- BEGIN Submenu -->
+                    <ul class="submenu">
+                        <li id="liTableRes" runat="server"><a href="Tablebookings.aspx">Reservations</a></li>
+                    </ul>
+                    <!-- END Submenu -->
+                </li>
+            </ul>
+            <!-- END Navlist -->
+            <!-- BEGIN Sidebar Collapse Button -->
+            <%--<div id="sidebar-collapse" class="visible-lg">
+                <i class="fa fa-angle-double-left"></i>
+            </div>--%>
+            <!-- END Sidebar Collapse Button -->
+        </div>
+        <!-- END Sidebar -->
+        <!-- BEGIN Content -->
+        <div id="main-content">
+             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+            <asp:HiddenField ID="hdnMainli" runat="server" />
+            <asp:HiddenField ID="hdnChildli" runat="server" />
+        </div>
+        <!-- END Content -->
+    </div>
+    <!-- END Container -->
+    <!--basic scripts-->
+    <script src='<%= ResolveUrl("~/Theme/js/jquery.min.js") %>' type="text/javascript"></script>
+    <%--<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>--%>
+    <script type="text/javascript">        window.jQuery || document.write('<script src="assets/jquery/jquery-2.0.3.min.js"><\/script>')</script>
+    <script src='<%= ResolveUrl("~/Theme/assets/bootstrap/js/bootstrap.min.js") %>' type="text/javascript"></script>
+    <script src='<%= ResolveUrl("~/Theme/assets/jquery-slimscroll/jquery.slimscroll.min.js") %>'
+        type="text/javascript"></script>
+    <script src='<%= ResolveUrl("~/Theme/assets/jquery-cookie/jquery.cookie.js") %>'
+        type="text/javascript"></script>
+    <!--page specific plugin scripts-->
+    <script src='<%= ResolveUrl("~/Theme/assets/flot/jquery.flot.js") %>' type="text/javascript"></script>
+    <script src='<%= ResolveUrl("~/Theme/assets/flot/jquery.flot.resize.js") %>' type="text/javascript"></script>
+    <script src='<%= ResolveUrl("~/Theme/assets/flot/jquery.flot.pie.js") %>' type="text/javascript"></script>
+    <script src='<%= ResolveUrl("~/Theme/assets/flot/jquery.flot.stack.js") %>' type="text/javascript"></script>
+    <script src='<%= ResolveUrl("~/Theme/assets/flot/jquery.flot.crosshair.js") %>' type="text/javascript"></script>
+    <script src='<%= ResolveUrl("~/Theme/assets/flot/jquery.flot.tooltip.min.js") %>'
+        type="text/javascript"></script>
+    <script src='<%= ResolveUrl("~/Theme/assets/sparkline/jquery.sparkline.min.js") %>'
+        type="text/javascript"></script>
+    <script src='<%= ResolveUrl("~/Theme/assets/bootstrap-wizard/jquery.bootstrap.wizard.js") %>'></script>
+    <script src='<%= ResolveUrl("~/Theme/assets/jquery-validation/dist/jquery.validate.min.js") %>'
+        type="text/javascript"></script>
+    <script src='<%= ResolveUrl("~/Theme/assets/jquery-validation/dist/additional-methods.min.js") %>'
+        type="text/javascript"></script>
+    <!--flaty scripts-->
+    <script src='<%= ResolveUrl("~/Theme/js/flaty.js") %>' type="text/javascript"></script>
+    <script src='<%= ResolveUrl("~/Theme/js/flaty-demo-codes.js") %>' type="text/javascript"></script>
+    <%--ColourBox--%>
+    <link href="../css/ColourBox/colorbox.css" rel="stylesheet" type="text/css" />
+    <script src="../css/ColourBox/jquery.colorbox.js" type="text/javascript"></script>
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(LoadJs);
+            LoadJs();
+        });
+    </script>
+    <script type="text/javascript">
+
+        function LoadJs() {
+            $(".check-in").colorbox({ iframe: true, width: "350", height: "400", onClosed: function () { top.location.href = top.location.href; } });
+            $(".check-out").colorbox({ iframe: true, width: "600", height: "300", onClosed: function () { top.location.href = top.location.href; } });
+            $(".edit-customer").colorbox({ iframe: true, width: "1000", height: "550", onClosed: function () { __doPostBack('ctl00$ContentPlaceHolder1$lnkReloadUser', ''); } });
+            $(".edit-booking").colorbox({ iframe: true, width: "1000", height: "700", onClosed: function () { } });
+            $(".edit-bookingRoom").colorbox({ iframe: true, width: "350", height: "550", onClosed: function () { } });
+            $(".edit-bookingAlloatedTables").colorbox({ iframe: true, width: "750", height: "650", onClosed: function () { } });
+            $(".schedule-date").colorbox({ iframe: true, width: "1200", height: "600", onClosed: function () { } });
+        }
+
+        //        $(".liMain").click(function () {
+        //            setAllliDeactive();
+        //            $(this).addClass('active');
+        //            $("#" + "<%= hdnMainli.ClientID %>").val(this.id);
+        //        });
+
+        //        function setAllliDeactive() {
+        //            $(".liMain").removeClass('active');
+        //        }
+
+        //        $(".liChild").click(function () {
+        //            setAllChildliDeactive();
+        //            $(this).addClass('active');
+        //            $("#" + "<%= hdnChildli.ClientID %>").val(this.id);
+        //        });
+
+        //        function setAllChildliDeactive() {
+        //            $(".liChild").removeClass('active');
+        //        }
+
+
+        //        function afterPostBack() {
+        //            setAllliDeactive();
+        //            $("#" + $("#" + "<%= hdnMainli.ClientID %>").val()).addClass('active');
+        //        }
+    </script>
+    </form>
+</body>
+</html>

@@ -1,0 +1,415 @@
+﻿@page
+@model Converted_POS.Pages.DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+
+}
+@section link {
+
+    <div class="page-header pull-left">
+        <div class="page-title">Dashboard</div>
+    </div>
+}
+
+@{
+    var chartDataScript = ViewData["ChartDataScript"] as string;
+    var pieChartData = ViewData["PieChartData"] as string;
+    var BarChartData = ViewData["ChartData"] as string;
+
+
+    var ChartData = ViewBag.SalesLineChartData != null
+        ? Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(ViewBag.SalesLineChartData)
+        : null;
+
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <link href="~/js/vendor2/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/menunew/style.css" rel="stylesheet" />
+    <link href="https://kendo.cdn.telerik.com/2022.1.301/styles/kendo.common.min.css" rel="stylesheet" />
+    @*<script src="https://kendo.cdn.telerik.com/2022.1.301/js/kendo.all.min.js"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @*<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/chart.js">*@
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+
+
+
+    @*<script src="~/js/dashboard.js"></script>*@
+
+
+    <style>
+        .chart-legend ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .chart-legend li {
+            margin-right: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .chart-legend span {
+            display: inline-block;
+            width: 200px;
+            height: 8px;
+            margin-right: 10px;
+        }
+
+        #line-chart,
+        #sales-line-chart {
+            height: 250px !important;
+            width: 100%;
+        }
+
+        .page-content {
+            padding: 5px 20px 50px 20px
+        }
+
+        #venueForm, #venueDropdown {
+            display: none;
+        }
+
+        .dropdown-select {
+            /* appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;*/
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 5px 30px 5px 10px; /* Added extra padding for the icon */
+            border-radius: 4px;
+            cursor: pointer;
+            width: auto;
+            position: relative; /* Added relative position for the ::after pseudo-element */
+        }
+
+            .dropdown-select:focus {
+                outline: none;
+                border-color: #007bff;
+            }
+
+            .dropdown-select::after {
+                content: "\25BC"; /* Unicode character for down arrow */
+                font-size: 12px;
+                color: #555;
+                position: absolute;
+                top: calc(50% - 6px); /* Vertically center the icon */
+                right: 10px;
+                pointer-events: none; /* Ensures that the icon does not interfere with the select box */
+            }
+    </style>
+</head>
+
+<body>
+    <div class="col-md-6">
+        <div class="clearfix"></div>
+        <br />
+
+        <div class="col-md-6">
+            <form id="durationForm" method="post">
+                <label for="radDuration">Duration:</label> &nbsp;
+                <select id="radDuration" name="duration" class="d-md-flex dropdown-select" onchange="onDurationChange()">
+                    <option value="Today" selected="@(ViewData["SelectedDuration"] != null && ViewData["SelectedDuration"].ToString() == "Today")">Today</option>
+                    <option value="This Week" selected="@(ViewData["SelectedDuration"] != null && ViewData["SelectedDuration"].ToString() == "This Week")">This Week</option>
+                    <option value="This Month" selected="@(ViewData["SelectedDuration"] != null && ViewData["SelectedDuration"].ToString() == "This Month")">This Month</option>
+                    <option value="This Year" selected="@(ViewData["SelectedDuration"] != null && ViewData["SelectedDuration"].ToString() == "This Year")">This Year</option>
+                </select>
+
+
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form id="venueForm" method="post">
+                Venue: &nbsp;
+                <select id="venueDropdown" name="selectedVenueId">
+                    <option disabled selected title="Select">Select</option>
+                    @foreach (var item in Model.Venues ?? Enumerable.Empty<SelectListItem>())
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                </select>
+                <input type="hidden" id="selectedVenueId" value="@Model.Venues.FirstOrDefault()?.Value" />
+            </form>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <br />
+    <div class="col-md-6" style="">
+        <div class="col-md-12" style="border-width: 1px;border-style: solid ;">
+            <h3 style="text-align: center; font: 16px Arial, Helvetica, sans-serif; color:black;">Till Summary Report</h3>
+            <div class="col-md-12" style="height: 300px; display: flex; justify-content: center; align-items: center;">
+                <canvas id="pieChart1"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="col-md-12" style="border-width: 1px; border-style: solid">
+            <h3 style="text-align: center; font: 16px Arial,Helvetica,sans-serif; color:black;">Total Sales By Department(Day)</h3>
+            <div class="col-md-12" style="height: 300px; display: flex; justify-content: center; align-items: center;">
+                <canvas id="line-chart" width="400" height="350px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <br />
+
+    <div class="col-md-6" style="">
+        <div class="col-md-12" style="border-width: 1px;border-style: solid ;">
+            <h3 style="text-align: center; font: 16px Arial, Helvetica, sans-serif; color:black;">Total Sales By Department</h3>
+            <div class="col-md-12" style="height: 300px; display: flex; justify-content: center; align-items: center;">
+                <canvas id="pie-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="col-md-12" style="border-width: 1px; border-style: solid; height: 350px;">
+            <div class="sales-summary">
+                <h3 style="text-align: center; font: 16px Arial, Helvetica, sans-serif; color:black;">Top 10 Selling Item - Sales Summary</h3>
+                <canvas id="sales-line-chart" height="277.5px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+
+            $("#venueDropdown").change(function () {
+                var selectedVenueId = $(this).val();
+                $("#selectedVenueId").val(selectedVenueId);
+                $("#venueForm").submit();
+            });
+        });
+    </script>
+    <script>
+        function onDurationChange() {
+            var selectedValue = document.getElementById("radDuration").value;
+
+            window.location.href = window.location.pathname + "?selectedDuration=" + encodeURIComponent(selectedValue);
+        }
+    </script>
+
+    <script>
+        // Set SelectedVenueId to the value of the first venue
+        var firstVenueId = document.querySelector("#venueDropdown option:not([disabled])").value;
+        var SelectedVenueId = firstVenueId;
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Bind the change event handler to the dropdown element
+            $("#venueDropdown").change(function () {
+                // Retrieve the selected value
+                var selectedVenueId = $(this).val();
+                // Set the value to the hidden input field
+                $("#selectedVenueId").val(selectedVenueId);
+            });
+        });
+    </script>
+    <script>
+        document.getElementById("submitBtn").addEventListener("click", function () {
+            var selectedValue = document.getElementById("radDuration").value;
+
+            fetch('/DashboardModel/radDurationradDuration?selectedValue=' + selectedValue, {
+                method: 'GET'
+            })
+                .then(response => {
+
+                })
+            //.catch(error => {
+            //   // console.error('Error:', error);
+            //});
+        });
+    </script>
+
+    @if (ViewData["ChartData"] != null)
+    {
+        <script>
+    $(document).ready(function () {
+        var ctxPieChart = document.getElementById("pieChart1").getContext("2d");
+        var pieChartData = @Html.Raw(ViewData["ChartData"]);
+
+        var backgroundColor = 'rgba(54, 162, 235, 0.8)';
+
+        // Modify dataset to set same backgroundColor for all bars
+        pieChartData.datasets.forEach(function(dataset) {
+            dataset.backgroundColor = backgroundColor;
+        });
+
+        var pieChart1 = new Chart(ctxPieChart, {
+            type: "bar",
+            data: pieChartData,
+
+            options: {
+                responsive: true,
+                legend: {
+                    display: false
+                }
+            }
+        });
+    });
+        </script>
+    }
+    else
+    {
+
+    }
+
+
+
+
+
+    <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    var chartData1 = @Html.Raw(Json.Serialize(ViewData["GetDepartmentChartData"]));
+
+    var groupedData = {};
+
+    chartData1.forEach(function (data) {
+
+        if (!groupedData[data.DepartmentName]) {
+            groupedData[data.DepartmentName] = {
+                'Sunday': 0,
+                'Monday': 0,
+                'Tuesday': 0,
+                'Wednesday': 0,
+                'Thursday': 0,
+                'Friday': 0,
+                'Saturday': 0
+            };
+        }
+
+        groupedData[data.DepartmentName][data.DayOfWeek] = data.ChartValue;
+    });
+
+    var departmentNames = Object.keys(groupedData);
+
+    var datasets = departmentNames.map(function (departmentName) {
+        return {
+            label: departmentName,
+            data: Object.values(groupedData[departmentName])
+        };
+    });
+
+
+    var ctx = document.getElementById('line-chart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Value'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Day'
+                    }
+                }
+            }
+        }
+    });
+});
+
+    </script>
+
+
+
+
+
+    @if (ViewData["PieChartData"] != null)
+    {
+        <script>
+        $(document).ready(function () {
+            var ctxPieChart = document.getElementById("pie-chart").getContext("2d");
+            var pieChartData = @Html.Raw(ViewData["PieChartData"]);
+
+            var pieChart = new Chart(ctxPieChart, {
+                type: "pie",
+                data: pieChartData,
+                options: {
+                    responsive: true
+                }
+            });
+        });
+        </script>
+    }
+    else
+    {
+
+    }
+
+    <script>
+    $(document).ready(function () {
+    var ctx = document.getElementById("sales-line-chart").getContext("2d");
+
+    var labels = @Json.Serialize(ChartData?.labels ?? null);
+    var datasets = @Json.Serialize(ChartData?.datasets ?? null);
+
+    var chart = new Chart(ctx, {
+    type: "bar",
+    data: {
+    labels: labels,
+    datasets: datasets
+    },
+    options: {
+    responsive: true,
+    scales: {
+    x: {
+    title: {
+    display: true,
+    text: "Items",
+    }
+    },
+    y: {
+    title: {
+    display: true,
+    text: "Sales Quantity",
+    }
+    }
+    },
+    plugins: {
+    legend: {
+    display: true,
+    labels: {
+    usePointStyle: true,
+    pointStyle: "line",
+    }
+    }
+    }
+    }
+    });
+    });
+    </script>
+
+
+
+
+</body>
+
+</html>
+
+
+

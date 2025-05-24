@@ -1,0 +1,85 @@
+﻿/*body
+{
+}
+
+.lblPageHeader
+{
+    font-weight: bold;
+    font-size: large;
+    color : #0000CC;
+}
+
+.divPageHeader
+{
+    width:100%;
+    text-align:center;    
+}
+
+.divHeader
+{
+    width:100%;
+    text-align:center;    
+    
+}
+
+.divContent
+{
+    width:100%;
+}
+
+.successmessage
+{
+    color:Green;    
+}*/
+
+input[id$="dateInput"]
+{
+    font-family: inherit !important;
+    color: #888 !important;
+    font-size: 14px !important;
+}
+.rfv
+{
+}
+
+
+.col-md-3, .col-lg-9
+{
+    padding: 0px;
+}
+.form-control
+{
+    display: inline;
+}
+.custom
+{
+    float: left;
+    width: 270px;
+}
+
+#custom_progress
+{
+    left: 47%;
+    padding: 3px;
+    position: fixed;
+    top: 40%;
+    width: 95px;
+    text-align:center;
+    z-index: 999;
+}
+#custom_progress #overlay_load
+{
+    background-color: #000;
+    height: 100%;
+    left: 0;
+    opacity: 0.5;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+}
+#custom_progress #loading
+{
+    z-index: 999999;
+}
+    

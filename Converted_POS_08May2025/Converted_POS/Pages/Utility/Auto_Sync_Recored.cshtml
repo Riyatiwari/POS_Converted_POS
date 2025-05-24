@@ -1,0 +1,671 @@
+﻿@page
+@model Converted_POS.Pages.Utility.Auto_Sync_RecoredModel
+@{
+    ViewData["Title"] = "Auto_Sync_Recored";
+}
+@using Microsoft.AspNetCore.Http;
+@section link {
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Utility/Auto_Sync_Recored">Auto Sync Record</a></li>
+        </ol>
+    </div>
+
+    <link href="~/js/vendor2/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/fonts/nunito.css" rel="stylesheet" />
+    <script src="~/js/vendors/googleapis/jquery.min.js"></script>
+    <script src="~/js/demo/datatables-demo.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#Lsummary thead tr').clone(true).appendTo('#Lsummary thead');
+            Grid();
+        });
+
+        function Grid() {
+            $("#Lsummary tr").not(':first').hover(
+                function () {
+                    $(this).css("background", "#efefef").css("cursor", "Pointer").css("font-weight", "bold").css("box-shadow", "0 4px 2px -3px rgba(0, 0, 0, 0.5) inset").css("-webkit-box-shadow", "0 4px 2px -3px rgba(0, 0, 0, 0.5) inset");
+                },
+                function () {
+                    $(this).css("background", "").css("cursor", "").css("font-weight", "").css("box-shadow", "").css("-webkit-box-shadow", "");
+                }
+            );
+
+            var groupCol = 0;
+
+            var table = $('#Lsummary').DataTable({
+
+                orderCellsTop: true,
+                dom: 'Bfrtip',
+                "buttons": [
+                    'excel'
+                ],
+                "stripeClasses": ['odd-row', 'even-row'],
+                "destroy": true,
+                "columnDefs": [
+                    //{
+                    //    "searchable": false, "targets": 1,
+                    //    "visible": false
+                    //    , "targets": +groupCol,
+                    //"render": function (data, type, full, meta) {
+                    //    return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+                    //}
+                    { "visible": true, "targets": +groupCol },
+                    {
+                        'targets': [1], /* column index */
+                        'orderable': false,
+                    },
+                ],
+                "order": [[groupCol, 'asc']],
+                "displayLength": 50,
+                "drawCallback": function (settings) {
+
+                    var api = this.api();
+                    var rows = api.rows({ page: 'current' }).nodes();
+                    var last = null;
+
+                    api.column(groupCol, { page: 'current' }).data().each(function (group, i) {
+
+                        if (last !== group) {
+                            $(rows).eq(i).before(
+                                //'<tr class="group"><td colspan="8"> Location Group : ' + group + '</td> </tr>'
+                            );
+                            last = group;
+                        }
+                    });
+                }
+            });
+
+            var table1 = $('#Lsummary').DataTable();
+            $('#Lsummary thead tr:eq(1) th').each(function (i) {
+                var title = $(this).text();
+                if (i == 3) {
+                    $(this).html('<input type="text" style="width:98%;visibility: hidden;" placeholder="" />');
+                }
+                else {
+
+                    $(this).html('<input type="text" style="width:98%" placeholder="Search" />');
+                }
+
+                $('input', this).on('keyup', function () {
+
+                    if (table1.column(i).search() !== this.value) {
+                        table1
+
+                            .column($(this).parent().index() + ':visible')
+                            .search(this.value)
+                            .draw()
+                            ;
+
+                    }
+                    else {
+                        table1
+                            .column($(this).parent().index() + ':visible')
+                            .search('')
+                            .draw()
+                            ;
+
+                    }
+                });
+            });
+        }
+    </script>
+
+    <script language="javascript" type="text/javascript">
+
+        $(document).ready(function () {
+            var moveLeft = 10;
+            var moveDown = 10;
+
+            $('td.trigger').hover(function (e) {
+                $('div#pop-up').show();
+            }, function () {
+                $('div#pop-up').hide();
+            });
+
+            $('td.trigger').mousemove(function (e) {
+                $("div#pop-up").css('top', e.pageY + moveDown).css('left', e.pageX + moveLeft);
+            });
+
+        });
+    </script>
+    <script>
+function loadLocations() {
+    var venueId = $('#Venue').val(); // Get the selected venue ID
+
+    // If a valid venue ID is selected, make an AJAX call
+    if (venueId) {
+        $.ajax({
+            url: '@Url.Page("/AutoSyncRecored", "OnGetLoadLocations")', // AJAX URL (you may need to update the path)
+            type: 'GET',
+            data: { venueId: venueId },
+            success: function (data) {
+                var locationDropdown = $('#Location');
+                locationDropdown.empty(); // Clear existing options
+                locationDropdown.append('<option value="">Select Location</option>'); // Default option
+
+                // Populate the dropdown with locations from the response
+                $.each(data, function (index, location) {
+                    locationDropdown.append('<option value="' + location.value + '">' + location.text + '</option>');
+                });
+            },
+            error: function () {
+                alert('Error loading locations.');
+            }
+        });
+    }
+}
+    </script>
+    <script>
+        function redirectToLocation() {
+            var selectedVenueId = $('#venueDropdown').val();  // Get selected venue ID
+
+            if (selectedVenueId) {
+                // Make an AJAX call to fetch locations based on the selected venue ID
+                $.ajax({
+                    url: '/AutoSyncRecored/GetLocation',  // Adjust the URL path as needed
+                    type: 'GET',
+                    data: { venueId: selectedVenueId },  // Send the selected venueId to the server
+                    success: function (data) {
+                        // Clear the Location dropdown
+                        $('#locationDropdown').empty();
+
+                        // Add a default "Select Location" option
+                        $('#locationDropdown').append('<option value="">Select Location</option>');
+
+                        // Populate the Location dropdown with new options
+                        $.each(data, function (index, item) {
+                            $('#locationDropdown').append('<option value="' + item.value + '">' + item.text + '</option>');
+                        });
+
+                        // Optionally show the Location dropdown if it was hidden before
+                        $('#locationDropdown').show();
+                    },
+                    error: function (error) {
+                        console.log('Error fetching locations: ' + error);
+                    }
+                });
+            } else {
+                // Hide the Location dropdown if no venue is selected
+                $('#locationDropdown').hide();
+            }
+        }</script>
+    <script>
+    function loadLocations() {
+        var selectedVenueId = $('#venueDropdown').val();
+
+        // If a venue is selected, reload the page with the selected venue_id as a query parameter
+        if (selectedVenueId) {
+            // Reload the page with the venue_id query parameter
+            window.location.href = '@Url.Page("/Utility/Auto_Sync_Recored")?venue_id=' + selectedVenueId;
+        }
+    }
+    </script>
+    <script>
+        function loadMachines() {
+    var selectedLocationId = $('#Location').val(); // Get the selected location ID
+
+    // If a location is selected, reload the page with the location_id in the URL
+    if (selectedLocationId) {
+        window.location.href = '@Url.Page("/Utility/Auto_Sync_Recored")?venue_id=' + $('#venueDropdown').val() + '&location_id=' + selectedLocationId;
+    }
+}
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // When the "Select All" checkbox is clicked
+            $('#chkAll').on('change', function () {
+                // Get the checked state of the "Select All" checkbox
+                var isChecked = $(this).prop('checked');
+
+                // Check/uncheck all checkboxes with the class "chkPages"
+                $('.chkPages').each(function () {
+                    $(this).prop('checked', isChecked);
+                });
+            });
+
+            // Optional: If any individual checkbox is unchecked, uncheck the "Select All" checkbox
+            $('.chkPages').on('change', function () {
+                var allChecked = $('.chkPages').length === $('.chkPages:checked').length;
+                $('#chkAll').prop('checked', allChecked);
+            });
+        });</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Attach an onchange event handler using jQuery
+            $('.machine-checkbox').change(function () {
+                var checkbox = $(this); // The current checkbox
+                if (checkbox.is(':checked')) {
+                    console.log("Checkbox with value " + checkbox.val() + " was checked");
+                } else {
+                    console.log("Checkbox with value " + checkbox.val() + " was unchecked");
+                }
+
+                // Gather selected machine IDs
+                var selectedMachineIds = [];
+                $('.machine-checkbox:checked').each(function () {
+                    selectedMachineIds.push($(this).val());
+                });
+                console.log("Selected machine IDs: ", selectedMachineIds);
+
+                // Optionally, send data to the server or perform other actions
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Attach an onchange event handler using jQuery for machine checkboxes
+            $('.machine-checkbox').change(function () {
+                var checkbox = $(this); // The current checkbox
+                if (checkbox.is(':checked')) {
+                    console.log("Checkbox with value " + checkbox.val() + " was checked");
+                } else {
+                    console.log("Checkbox with value " + checkbox.val() + " was unchecked");
+                }
+
+                // Gather selected machine IDs (machine_id)
+                var selectedMachineIds = [];
+                $('.machine-checkbox:checked').each(function () {
+                    selectedMachineIds.push($(this).val());
+                });
+
+                console.log("Selected machine IDs: ", selectedMachineIds);
+
+                // Optionally, you can send data to the server using AJAX
+                var selectedLocationId = $('#Location').val();  // Capture the selected location ID
+
+                // Send selectedMachineIds and selectedLocationId to the server
+                $.ajax({
+                    url: '/AutoSyncRecoredController/OnPost',  // Ensure this matches your controller and action
+                    type: 'POST',
+                    data: {
+                        selectedMachineIds: selectedMachineIds,
+                        selectedLocationId: selectedLocationId
+                    },
+                    success: function (response) {
+                        // Handle success
+                        console.log('Machines saved successfully');
+                    },
+                    error: function (error) {
+                        // Handle error
+                        console.log('Error occurred:', error);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        function updateUrl() {
+            // Get the selected machine IDs (those that are checked)
+            var selectedMachineIds = [];
+
+            // Loop through all checked checkboxes and get their values (machine_id)
+            $('.machine-checkbox:checked').each(function () {
+                selectedMachineIds.push($(this).val());
+            });
+
+            // If any machine is selected, update the hidden input with the selected machine_ids
+            if (selectedMachineIds.length > 0) {
+                // Set the value of the hidden input to the selected machine IDs
+                $('#selectedMachineIds').val(selectedMachineIds.join(','));
+            } else {
+                // Clear the value if no machine is selected
+                $('#selectedMachineIds').val('');
+            }
+        }
+    </script>
+    <script>
+        // JavaScript function to handle form submission when Save is clicked
+        document.getElementById("btnSave").addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent form submission to handle manually
+
+            // Get selected machine values
+            var selectedMachines = [];
+            document.querySelectorAll(".machine-checkbox:checked").forEach(function (checkbox) {
+                selectedMachines.push(checkbox.value);
+            });
+
+            // If there are selected machines, submit the form
+            if (selectedMachines.length > 0) {
+                // Create a hidden input element to hold the selected machines' values
+                var input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "SelectedMachines"; // Name the hidden input to match your model property
+                input.value = selectedMachines.join(","); // Join all selected values into a single comma-separated string
+
+                // Append the hidden input to the form
+                document.querySelector("form").appendChild(input);
+
+                // Now submit the form manually
+                document.querySelector("form").submit();
+            } else {
+                alert("Please select at least one machine.");
+            }
+        });
+    </script>
+    <script>
+    $(document).ready(function () {
+            // When the button is clicked to collect selected page IDs and names
+            $("#btnGetSelectedPages").click(function () {
+                // Initialize an array to hold the selected pages
+                var selectedPages = [];
+
+                // Loop through each checkbox
+                $(".chkPages:checked").each(function () {
+                    // Get the ID of the checkbox (this will be like "chkPages_1", "chkPages_2", etc.)
+                    var pageId = $(this).val();
+
+                    // Get the hidden field for the Page_ID and Page_Name
+                    var pageName = $("#hd_PageName_" + pageId).val();
+
+                    // Store the selected Page_ID and Page_Name in the array
+                    selectedPages.push({
+                        Page_ID: pageId,
+                        Page_Name: pageName
+                    });
+                });
+
+                // Output the selected pages to console (you can send it to the server if needed)
+                console.log(selectedPages);
+
+                // Optionally, you can send this data to the server using an AJAX call
+                // Example:
+                /*
+                $.ajax({
+                    url: '/YourController/YourAction',
+                    method: 'POST',
+                    data: { selectedPages: selectedPages },
+                    success: function(response) {
+                        // Handle the response from the server
+                    }
+                });
+                */
+            });
+        });</script>
+    <script>
+    $(document).ready(function () {
+            // When the form is submitted, collect the selected pages
+            $("#btnGetSelectedPages").click(function () {
+                var selectedPages = [];
+
+                // Loop through each checked checkbox
+                $(".chkPages:checked").each(function () {
+                    var pageId = $(this).val();  // Get the Page_ID from the checkbox value
+                    var pageName = $("#hd_PageName_" + pageId).val();  // Get the corresponding Page_name from hidden input
+
+                    // Store the selected Page_ID and Page_Name in the array
+                    selectedPages.push({
+                        Page_ID: pageId,
+                        Page_Name: pageName
+                    });
+                });
+
+                // Send the selected pages to the server via AJAX
+                $.ajax({
+                    url: '/AutoSyncRecoredController/Save',  // Replace with your actual controller and action
+                    type: 'POST',
+                    data: {
+                        venue_id: $("#venueId").val(),
+                        location_id: $("#locationId").val(),
+                        till_id: $("#tillId").val(),
+                        selectedPages: JSON.stringify(selectedPages)  // Send selected pages as a JSON string
+                    },
+                    success: function (response) {
+                        // Handle the server response if needed
+                        console.log('Data saved successfully');
+                    },
+                    error: function () {
+                        console.log('Error saving data');
+                    }
+                });
+            });
+        });</script>
+    <script>
+        // Collect selected page IDs and names, and serialize them to JSON
+        document.querySelector('form').addEventListener('submit', function () {
+            let selectedPages = [];
+            document.querySelectorAll('.chkPages:checked').forEach(function (checkbox) {
+                let pageId = checkbox.value;
+                let pageName = document.getElementById('hd_PageName_' + pageId).value;
+                selectedPages.push({ Page_ID: pageId, Page_name: pageName });
+            });
+
+            // Serialize the selected pages as a JSON string
+            document.getElementById('selectedPages').value = JSON.stringify(selectedPages);
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // When the form is submitted, collect the selected pages
+            $("#btnGetSelectedPages").click(function () {
+                var selectedPages = [];
+
+                // Loop through each checked checkbox
+                $(".chkPages:checked").each(function () {
+                    var pageId = $(this).val();  // Get the Page_ID from the checkbox value
+                    var pageName = $("#hd_PageName_" + pageId).val();  // Get the corresponding Page_name from hidden input
+
+                    // Store the selected Page_ID and Page_Name in the array
+                    selectedPages.push({
+                        Page_ID: pageId,
+                        Page_Name: pageName
+                    });
+                });
+
+                // Send the selected pages to the server via AJAX
+                $.ajax({
+                    url: '/AutoSyncRecoredController/Save',  // Replace with your actual controller and action
+                    type: 'POST',
+                    data: {
+                        venue_id: $("#venueId").val(),
+                        location_id: $("#locationId").val(),
+                        till_id: $("#tillId").val(),
+                        selectedPages: JSON.stringify(selectedPages)  // Send selected pages as a JSON string
+                    },
+                    success: function (response) {
+                        // Handle the server response if needed
+                        console.log('Data saved successfully');
+                    },
+                    error: function () {
+                        console.log('Error saving data');
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            // Attach an onchange event handler using jQuery for page checkboxes
+            $('.chkPages').change(function () {
+                var checkbox = $(this); // The current checkbox
+                if (checkbox.is(':checked')) {
+                    console.log("Checkbox with value " + checkbox.val() + " was checked");
+                } else {
+                    console.log("Checkbox with value " + checkbox.val() + " was unchecked");
+                }
+
+                // Gather selected pages (Page_ID and Page_Name)
+                var selectedPages = [];
+                $('.chkPages:checked').each(function () {
+                    var pageId = $(this).val();  // Get the Page_ID from the checkbox value
+                    var pageName = $("#hd_PageName_" + pageId).val();  // Get the corresponding Page_name from hidden input
+
+                    // Store the selected Page_ID and Page_Name in the array
+                    selectedPages.push({
+                        Page_ID: pageId,
+                        Page_Name: pageName
+                    });
+                });
+
+                console.log("Selected pages: ", selectedPages);
+
+                // Update the hidden input with the selected pages
+                $('#selectedPages').val(JSON.stringify(selectedPages));
+
+                // Optionally, you can send data to the server using AJAX
+                var selectedLocationId = $('#Location').val();  // Capture the selected location ID
+
+                // Send selectedPages and selectedLocationId to the server
+                $.ajax({
+                    url: '/AutoSyncRecoredController/OnPost',  // Ensure this matches your controller and action
+                    type: 'POST',
+                    data: {
+                        selectedPages: JSON.stringify(selectedPages),  // Send the pages as a JSON string
+                        selectedLocationId: selectedLocationId
+                    },
+                    success: function (response) {
+                        // Handle success
+                        console.log('Pages saved successfully');
+                    },
+                    error: function (error) {
+                        // Handle error
+                        console.log('Error occurred:', error);
+                    }
+                });
+            });
+        });
+    </script>
+}
+<form id="machineForm" method="post" action="@Url.Page("/YourPageHandler")">
+    <div class="col-lg-12">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Auto Sync Record</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="row">
+                        <!-- New QR Button -->
+
+                    </div>
+                    <br />
+                    @*<a href="@Url.Action("SyncHistory", "AutoSyncRecored")" class="btn btn-primary">
+                            <i class="fa fa-list"></i>&nbsp;Sync History
+                        </a>*@
+                    <a asp-page="/Utility/Auto_Sync_History" class="btn btn-primary"> <i class="fa fa-list"></i>&nbsp;Sync History</a>
+                    <div class="row" id="divPGroup" runat="server">
+                        <div class="col-lg-12">
+
+                            <div class="col-md-4" style="margin-top: 20px; padding-left:0px;">
+                                <label for="venueDropdown">Venue</label>
+
+                                <select id="venueDropdown" class="form-control" name="venue_id" onchange="loadLocations()">
+                                    <option value="">Select Venue</option>
+                                    @if (Model.DTVenue != null)
+                                    {
+                                        var selectedVenueId = Request.Query["venue_id"];
+                                        @foreach (var item in Model.DTVenue)
+                                        {
+                                            var selectedAttribute = item.Value == selectedVenueId ? "selected" : "";
+
+                                            var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                            @Html.Raw(optionHtml)
+                                            @*<option value="@item.Value">@item.Text</option>*@
+                                        }
+                                    }
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-4" style="margin-top: 20px;">
+                                <label for="Location">Location</label>
+                                <select id="Location" class="form-control" onchange="loadMachines()">
+                                    <option value="">Select Location</option>
+                                    @if (Model.DTLocation != null)
+                                    {
+                                        var selectedLocationId = Request.Query["location_id"];
+                                        @foreach (var location in Model.DTLocation)
+                                        {
+                                            var selectedLocation = location.Value == selectedLocationId ? "selected" : "";
+                                            var optionHtml = $"<option value=\"{location.Value}\" {selectedLocation}>{location.Text}</option>";
+
+                                            @Html.Raw(optionHtml)
+                                            //<option value="@location.Value">@location.Text</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12" style="padding-left:0px;">
+                                <label>
+                                    <input type="checkbox" id="chkAll" name="chkAll" /> Select All
+                                </label>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div id="pagesContainer">
+                                @*@foreach (var page in Model.Pages)
+                                    {
+                                    <div class="pageItem">
+                                        <label>
+                                            <input type="checkbox" class="chkPages" data-page-id="@page.Id" name="chkPages" value="@page.Id" /> @page.Name
+                                        </label>
+                                    </div>
+                                    }*@
+                            </div>
+                            <div class="col-md-12" style="padding-left:20px;">
+                                <div class="row">
+                                    @if (Model.PageList != null)
+                                    {
+                                        @foreach (var item in Model.PageList)
+                                        {
+                                            <div class="col-md-3">
+                                                <!-- Adjust the column size based on your design needs -->
+                                                <div class="checkbox">
+                                                    <input type="checkbox" id="chkPages_@item.Page_ID" value="@item.Page_ID" class="chkPages" />
+                                                    <label for="chkPages_@item.Page_ID">@item.Page_name</label>
+                                                </div>
+                                                <input type="hidden" id="hdPage_ID_@item.Page_ID" value="@item.Page_ID" />
+                                                <input type="hidden" id="hd_PageName_@item.Page_ID" value="@item.Page_name" />
+                                            </div>}
+                                    }
+                                </div>
+                            </div>
+                            <input type="hidden" id="selectedPages" name="selectedPages" />
+                            <div class="col-lg-8 text-center">
+                                <label style="font-size: 14px; font-weight: bold;">Till</label>
+                            </div>
+
+                            <div class="col-lg-8" style="height: 250px; border: 1px solid black;">
+                                <div>
+                                    @if (Model.MachineList != null)
+                                    {
+                                        @foreach (var machine in Model.MachineList)
+                                        {
+
+                                            <label>
+                                                <input type="checkbox" value="@machine.Value" class="machine-checkbox" onchange="updateUrl()" /> @machine.Text
+                                            </label>
+                                        } }
+                                    @*@foreach (var item in Model.TillList) // Replace 'TillList' with your actual model property
+                                        {
+                                            <div>
+                                                <input type="hidden" value="@item.MachineId" id="hd_machineID_@item.MachineId" />
+                                                <input type="checkbox" id="chk_till_@item.MachineId" />
+                                                <label for="chk_till_@item.MachineId">@item.Name</label>
+                                            </div>}*@
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="selectedMachineIds" id="selectedMachineIds" value="" />
+                        </div>
+                        <div class="text-right pal">
+                            <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                            <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                            <input type="submit" value="Cancel" class="btn btn-primary" formnovalidate asp-page-handler="Cancel" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>

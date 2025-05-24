@@ -1,0 +1,28 @@
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.Net.Security
+Imports System.Net.Sockets
+Imports System.Security.Cryptography.X509Certificates
+Imports System.Text
+
+Namespace MoonAPNS
+    Friend Class Program
+        Private Shared Sub Main(args As String())
+            ' var payload1 = new NotificationPayload("Device token","Message","Sound");
+            Dim payload1 = New NotificationPayload("Device Token", "Message", "default")
+            payload1.AddCustom("RegionID", "IDQ10150")
+
+            Dim p = New List(Of NotificationPayload)() From { _
+             payload1 _
+            }
+
+            Dim push = New PushNotification(False, "p12 file location", "password")
+            Dim rejected = push.SendToApple(p)
+            For Each item In rejected
+                Console.WriteLine(item)
+            Next
+            Console.ReadLine()
+        End Sub
+
+    End Class
+End Namespace

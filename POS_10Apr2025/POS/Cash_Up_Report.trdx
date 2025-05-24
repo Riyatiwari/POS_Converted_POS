@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="sqlDataSource1" Width="31.7947993526316cm" Name="Csh_Up_Report" ShowSnapGrid="True" SnapToGrid="False" SnapToSnapLines="False" xmlns="http://schemas.telerik.com/reporting/2012/4.2">
+  <Style>
+    <BorderStyle Top="Solid" Bottom="Solid" Left="Solid" Right="Solid" />
+    <BorderColor Top="Black" Bottom="Black" Left="Black" Right="Black" />
+    <BorderWidth Top="1pt" Bottom="1pt" Left="1pt" Right="1pt" />
+  </Style>
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ConnectionString="POS" SelectCommand="dbo.P_R_Cash_Up" SelectCommandType="StoredProcedure" Name="sqlDataSource1" ParameterValues="{&quot;@cmp_id&quot;:&quot;1&quot;,&quot;@date1&quot;:&quot;2016-08-15&quot;,&quot;@date2&quot;:&quot;2016-08-15&quot;}">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Decimal" Name="@cmp_id">
+          <Value>
+            <String>= Parameters.cmpid.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="DateTime" Name="@date1">
+          <Value>
+            <String>= Parameters.date1.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="DateTime" Name="@date2">
+          <Value>
+            <String>= Parameters.date2.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="1.36187520848463cm" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="31.7947990564302cm" Height="0.70000022649765cm" Left="0.00000000000000022cm" Top="0.634999982337157cm" Value="Cash Summary" Name="ReportNameTextBox">
+          <Style TextAlign="Center">
+            <Font Name="Segoe UI" Size="14pt" Bold="True" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.599999798138942cm" Name="detailSection1" />
+    <PageFooterSection Height="1.31208335246808cm" Name="pageFooterSection1">
+      <Style LineWidth="0pt" LineColor="White" />
+      <Items>
+        <TextBox Width="31.6625049273389cm" Height="0.600000202655792cm" Left="0.0793749977921447cm" Top="0.264582518529583cm" Value="Page: {PageNumber}  " Name="ReportPageNumberTextBox">
+          <Style TextAlign="Center">
+            <Font Name="Segoe UI" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageFooterSection>
+    <ReportHeaderSection Height="2.51781669010553cm" Name="reportHeaderSection1">
+      <Items>
+        <Table DataSourceName="sqlDataSource1" Width="31.0329576154997cm" Height="1.78137493133545cm" Left="0.420625153603649cm" Top="0.364999714871256cm" Name="table1" StyleName="Corporate.TableNormal">
+          <Body>
+            <Cells>
+              <TableCell RowIndex="0" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.30923586959795cm" Height="0.499999661734222cm" Left="4.74427541097005in" Top="0.345455964406331in" Value="= Fields.for_date" Name="textBox38" StyleName="Corporate.TableBody">
+                    <Style VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.63963610545567cm" Height="0.499999661734222cm" Left="4.74427541097005in" Top="0.345455964406331in" Value="= Fields.sales" Name="textBox16" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.83540485104196cm" Height="0.499999661734222cm" Left="4.74427541097005in" Top="0.345455964406331in" Value="= Fields.Cash" Name="textBox17" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.36188828205807cm" Height="0.499999661734222cm" Left="4.74427541097005in" Top="0.345455964406331in" Value="= Fields.card" Name="textBox18" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.797994613089523in" Height="0.499999661734222cm" Left="4.74427541097005in" Top="0.345455964406331in" Value="= Fields.[on Account]" Name="textBox21" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="5" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.49351052709341cm" Height="0.499999661734222cm" Left="4.74427541097005in" Top="0.345455964406331in" Value="= Fields.[Table Balance]" Name="textBox37" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="6" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.01941083839014cm" Height="0.499999661734222cm" Left="4.74427541097005in" Top="0.345455964406331in" Value="= Fields.[Cash Expense]" Name="textBox22" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="7" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.777269777285433in" Height="0.499999661734222cm" Left="4.85885810852051in" Top="0.345455964406331in" Value="= Fields.[Actual Cash]" Name="textBox23" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="9" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.66327180174327in" Height="0.499999661734222cm" Left="4.90052032470703in" Top="0.345455964406331in" Value="= Fields.[Cash Descrepancy]" Name="textBox6" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="11" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.787635790831293in" Height="0.499999661734222cm" Left="4.9161434173584in" Top="0.345456123352051in" Value="= Fields.[Total Descrepancy]" Name="textBox19" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="12" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.994908089487974in" Height="0.499999661734222cm" Left="4.33080037434896in" Top="0.232554117838542in" Value="= Fields.Banking" Name="textBox26" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="13" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.538908085742119in" Height="0.499999661734222cm" Left="5.41614278157552in" Top="0.345456123352051in" Value="= Fields.float" Name="textBox41" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="14" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.683997911952763in" Height="0.499999661734222cm" Left="5.41614278157552in" Top="0.345456123352051in" Value="= Fields.[Cash on Premise]" Name="textBox35" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="8" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.994910456240865in" Height="0.499999661734222cm" Left="0in" Top="0in" Value="= Fields.[Actual credit Card]" Name="textBox28" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="10" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.994910365211907in" Height="0.499999661734222cm" Left="0in" Top="0in" Value="= Fields.[Card Descrepancy]" Name="textBox42" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+            </Cells>
+            <Columns>
+              <Column Width="2.30923586959795cm" />
+              <Column Width="1.63963633666922cm" />
+              <Column Width="1.83540496664873cm" />
+              <Column Width="2.36188828205807cm" />
+              <Column Width="0.797994613089523in" />
+              <Column Width="2.49351052709341cm" />
+              <Column Width="2.01941083839014cm" />
+              <Column Width="0.777269777285433in" />
+              <Column Width="0.994910456240865in" />
+              <Column Width="0.66327180174327in" />
+              <Column Width="0.994910456240865in" />
+              <Column Width="0.787635790831293in" />
+              <Column Width="0.994908089487974in" />
+              <Column Width="0.538908085742119in" />
+              <Column Width="0.683997957467242in" />
+            </Columns>
+            <Rows>
+              <Row Height="0.499999661734222cm" />
+            </Rows>
+          </Body>
+          <Corner />
+          <RowGroups>
+            <TableGroup Name="detail">
+              <Groupings>
+                <Grouping />
+              </Groupings>
+            </TableGroup>
+          </RowGroups>
+          <ColumnGroups>
+            <TableGroup Name="product_Name">
+              <ReportItem>
+                <Panel Width="14.6859927908846cm" Height="0.702000274480724cm" Left="0cm" Top="0cm" Name="panel1">
+                  <Style>
+                    <BorderStyle Top="Solid" Bottom="Solid" Left="Solid" Right="Solid" />
+                    <BorderColor Top="Black" Bottom="Black" Left="Black" Right="Black" />
+                    <BorderWidth Default="0pt" Top="0pt" Bottom="0pt" Left="0pt" Right="0pt" />
+                  </Style>
+                  <Items>
+                    <TextBox Width="0.9998419880867in" Height="0.19999997317791in" Left="2.91989517211914in" Top="0.0104166669771075in" Value="= Fields.from_dt" Format="{0:d}" Name="textBox11">
+                      <Style TextAlign="Left" VerticalAlign="Bottom" />
+                    </TextBox>
+                    <TextBox Width="0.686059832572937in" Height="0.19999997317791in" Left="4.01981687545776in" Top="0.0104166669771075in" Value="To date :" Name="textBox10">
+                      <Style TextAlign="Right" VerticalAlign="Bottom">
+                        <Font Bold="True" />
+                      </Style>
+                    </TextBox>
+                    <TextBox Width="0.895833313465118in" Height="0.200000002980232in" Left="2.02398300170898in" Top="0in" Value="From date :" Name="textBox9">
+                      <Style TextAlign="Right" VerticalAlign="Bottom">
+                        <Font Bold="True" />
+                      </Style>
+                    </TextBox>
+                    <TextBox Width="0.956249952316284in" Height="0.200000002980232in" Left="4.7198166847229in" Top="0.0104166669771075in" Value="= Fields.to_dt" Format="{0:d}" Name="textBox8">
+                      <Style TextAlign="Left" VerticalAlign="Bottom" />
+                    </TextBox>
+                  </Items>
+                </Panel>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group6">
+                  <ReportItem>
+                    <TextBox Width="2.30923586959795cm" Height="0.579374995120503cm" Left="0in" Top="0in" Value="For Date" Name="textBox24" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group" />
+                  </ChildGroups>
+                </TableGroup>
+                <TableGroup Name="group7">
+                  <ReportItem>
+                    <TextBox Width="1.63963610545567cm" Height="0.579374995120503cm" Left="0in" Top="0in" Value="Sales" Name="textBox1" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group1" />
+                  </ChildGroups>
+                </TableGroup>
+                <TableGroup Name="group8">
+                  <ReportItem>
+                    <TextBox Width="1.83540485104196cm" Height="0.579374995120503cm" Left="0in" Top="0in" Value="Cash" Name="textBox3" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group2" />
+                  </ChildGroups>
+                </TableGroup>
+                <TableGroup Name="group9">
+                  <ReportItem>
+                    <TextBox Width="2.36188828205807cm" Height="0.579374995120503cm" Left="0cm" Top="0cm" Value="Credit card " Name="textBox12" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group3" />
+                  </ChildGroups>
+                </TableGroup>
+                <TableGroup Name="group30">
+                  <ReportItem>
+                    <TextBox Width="0.797994613089523in" Height="0.579374995120503cm" Left="0in" Top="0in" Value="On Account " Name="textBox36" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group31" />
+                  </ChildGroups>
+                </TableGroup>
+                <TableGroup Name="group10">
+                  <ReportItem>
+                    <TextBox Width="2.49351052709341cm" Height="0.579374995120503cm" Left="0cm" Top="0cm" Value="Table Balance" Name="textBox13" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group4" />
+                  </ChildGroups>
+                </TableGroup>
+                <TableGroup Name="group11">
+                  <ReportItem>
+                    <TextBox Width="2.01941083839014cm" Height="0.579374995120503cm" Left="0cm" Top="0cm" Value="Cash Expenses" Name="textBox14" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group5" />
+                  </ChildGroups>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup Name="group12">
+              <ReportItem>
+                <TextBox Width="0.777269777285433in" Height="0.702000274480724cm" Left="0in" Top="0in" Name="textBox2" StyleName="" />
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group13">
+                  <ReportItem>
+                    <TextBox Width="0.777269777285433in" Height="0.579374995120503cm" Left="0in" Top="0in" Value="Actual Cash" Name="textBox5" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group14" />
+                  </ChildGroups>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup Name="group21">
+              <ReportItem>
+                <TextBox Width="0.994910456240865in" Height="0.702000274480724cm" Left="0in" Top="0in" Name="textBox4" StyleName="" />
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group22">
+                  <ReportItem>
+                    <TextBox Width="0.994910456240865in" Height="0.579374995120503cm" Left="0in" Top="0in" Value="Actual Card" Name="textBox27" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group23" />
+                  </ChildGroups>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup Name="group15">
+              <ReportItem>
+                <TextBox Width="0.66327180174327in" Height="0.702000274480724cm" Left="0in" Top="0in" Name="textBox7" StyleName="" />
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group16">
+                  <ReportItem>
+                    <TextBox Width="0.66327180174327in" Height="0.579374995120503cm" Left="0in" Top="0in" Value="Cash Discrepancy " Name="textBox15" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group17" />
+                  </ChildGroups>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup Name="group35">
+              <ReportItem>
+                <TextBox Width="0.994910365211907in" Height="0.702000274480724cm" Left="0in" Top="0in" Name="textBox29" StyleName="" />
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group36">
+                  <ReportItem>
+                    <TextBox Width="0.994910365211907in" Height="0.579374995120503cm" Left="0in" Top="0in" Value="Card Discrepa&#xD;&#xA;ncy " Name="textBox32" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group37" />
+                  </ChildGroups>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup Name="group18">
+              <ReportItem>
+                <TextBox Width="0.787635790831293in" Height="0.702000274480724cm" Left="0in" Top="0in" Name="textBox20" StyleName="" />
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group19">
+                  <ReportItem>
+                    <TextBox Width="0.787635790831293in" Height="0.579374995120503cm" Left="0in" Top="0in" Value="Total Discrepancy" Name="textBox25" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group20" />
+                  </ChildGroups>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup Name="group32">
+              <ReportItem>
+                <TextBox Width="0.994908089487974in" Height="0.702000274480724cm" Left="0in" Top="0in" Name="textBox39" StyleName="" />
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group33">
+                  <ReportItem>
+                    <TextBox Width="0.994908089487974in" Height="0.579374995120503cm" Left="0in" Top="0in" Value="Banking" Name="textBox40" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group34" />
+                  </ChildGroups>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup Name="group27">
+              <ReportItem>
+                <TextBox Width="0.538908085742119in" Height="0.702000274480724cm" Left="0in" Top="0in" Name="textBox33" StyleName="" />
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group28">
+                  <ReportItem>
+                    <TextBox Width="0.538908085742119in" Height="0.579374995120503cm" Left="0in" Top="0in" Value="Float" Name="textBox34" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group29" />
+                  </ChildGroups>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup Name="group24">
+              <ReportItem>
+                <TextBox Width="0.683997911952763in" Height="0.702000274480724cm" Left="0in" Top="0in" Name="textBox30" StyleName="" />
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group25">
+                  <ReportItem>
+                    <TextBox Width="0.683997911952763in" Height="0.579374995120503cm" Left="0in" Top="0in" Value="Cash on Premise" Name="textBox31" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="group26" />
+                  </ChildGroups>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+          </ColumnGroups>
+        </Table>
+      </Items>
+    </ReportHeaderSection>
+  </Items>
+  <PageSettings PaperKind="A4" Landscape="False">
+    <Margins>
+      <MarginsU Left="2px" Right="2px" Top="2px" Bottom="2px" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style Color="Black">
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <StyleSelector Type="Table" StyleName="Corporate.TableNormal" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style>
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Corporate.TableBody" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style BackgroundColor="28, 58, 112" Color="White" VerticalAlign="Middle">
+        <Font Name="Tahoma" Size="10pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Corporate.TableHeader" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="cmpid" Type="Float" Text="cmpid" />
+    <ReportParameter Name="date1" Type="DateTime" />
+    <ReportParameter Name="date2" Type="DateTime" />
+  </ReportParameters>
+</Report>

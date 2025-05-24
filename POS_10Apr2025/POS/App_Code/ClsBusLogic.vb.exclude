@@ -1,0 +1,2161 @@
+Imports System
+Imports System.Data
+Imports System.Data.SqlClient
+Imports Microsoft.VisualBasic
+Imports System.Collections
+Imports System.Globalization
+
+Imports System.Web.Services
+Imports System.IO
+Imports Telerik.Web.UI
+
+#Region "Common Class"
+Public Class clsGeneral
+
+    Public oClsDataccess As New ClsDataccess
+
+    Public Enum emStatus
+        Active = 1
+        Deactive = 0
+    End Enum
+    Public Enum emTranstype
+        Insert = 0
+        Update = 1
+        Delete = 2
+        Modify = 3
+        Edit = 4
+        None = -1
+    End Enum
+    Dim _Status As emStatus
+    Dim _Transtype As emTranstype
+    Dim _UserAttributes As emUserAttributes
+    Public Property Status() As emStatus
+        Get
+            Return _Status
+        End Get
+        Set(ByVal value As emStatus)
+            _Status = value
+        End Set
+    End Property
+    Public Property Transtype() As emTranstype
+        Get
+            Return _Transtype
+        End Get
+        Set(ByVal value As emTranstype)
+            _Transtype = value
+        End Set
+    End Property
+    Public Enum emUserAttributes
+        None
+        MartialStatus
+        ChildrenId
+        ChildrenIdLiving
+        EduQualification
+        Occupation
+        WeightId
+        Income
+        HeightId
+        HairColor
+        EyeColor
+        BodyBuild
+        SmokingId
+        DrinkingId
+        Pet
+        ReligionId
+        EmplymentStatus
+        Language
+        Relationship
+        Gender
+    End Enum
+
+    Public Function HoursToSec(ByVal Hrs As String) As String
+        Try
+            Dim sec As String = ""
+            Dim dt As DataTable
+            dt = oClsDataccess.Getdatatable("SELECT dbo.Hours_sec('" + Hrs + "') as sec")
+            If dt.Rows.Count > 0 Then
+                sec = dt.Rows(0)("sec")
+            Else
+                sec = "0"
+            End If
+            Return sec
+        Catch ex As Exception
+            LogHelper.Error("ClsBusLogic:clsGeneral:HoursToSec:" + ex.Message)
+        End Try
+        Return ""
+    End Function
+    Public Function SecToHours(ByVal sec As String) As String
+        Try
+            Dim hrs As String = ""
+            Dim dt As DataTable
+            dt = oClsDataccess.Getdatatable("SELECT dbo.Sec_Hours(" + sec + ") as hrs")
+            If dt.Rows.Count > 0 Then
+                hrs = dt.Rows(0)("hrs")
+            Else
+                hrs = "00:00"
+            End If
+            Return hrs
+        Catch ex As Exception
+            LogHelper.Error("ClsBusLogic:clsGeneral:SecToHours:" + ex.Message)
+        End Try
+        Return ""
+    End Function
+
+    Public Function GetPageAccess(ByVal pageName As String, ByVal RoleID As Integer) As DataTable
+        Dim dtAccess As New DataTable
+        Try
+            If HttpContext.Current.Session("emp_id") = "0" Then
+                dtAccess = oClsDataccess.Getdatatable("SELECT 1 as is_view, 1 as is_add, 1 as is_edit,1 as is_delete")
+            Else
+                'dtAccess = oClsDataccess.Getdatatable("SELECT is_view,is_add,is_edit,is_delete FROM d_role r inner join M_Form  f on r.form_id = f.form_id where r.role_id = " + RoleID.ToString + " and form_name = '" + pageName + "'")
+                dtAccess = oClsDataccess.Getdatatable("SELECT is_view,is_add,is_edit,is_delete FROM d_role r inner join M_Form  f on r.form_id = f.form_id where r.role_id = " + RoleID.ToString + " and Alias = '" + pageName + "'")
+            End If
+
+            Return dtAccess
+        Catch ex As Exception
+
+        End Try
+        Return dtAccess
+    End Function
+
+
+    Public Function GetWEmail(ByVal Branch_id As String, ByVal Emp_id As Integer, ByVal ModuleName As String, ByVal DesigLevel As Integer, ByVal ARFlag As Integer, ByVal ApplicantID As Integer, ByVal ESSFlag As String) As DataSet
+        Try
+            Dim ObjParam As New ColSqlparram
+            ObjParam.Add("@Cmp_id", Val(HttpContext.Current.Session("cmp_id")), SqlDbType.Int)
+            ObjParam.Add("@Branch_id", Branch_id, SqlDbType.Int)
+            ObjParam.Add("@Emp_id", Emp_id, SqlDbType.Int)
+            ObjParam.Add("@Module", ModuleName, SqlDbType.NVarChar)
+            ObjParam.Add("@DesigLevel", DesigLevel, SqlDbType.Int)
+            ObjParam.Add("@ARFlag", ARFlag, SqlDbType.TinyInt)
+            ObjParam.Add("@ApplicantID", ApplicantID, SqlDbType.Int)
+            ObjParam.Add("@ESSFlag", ESSFlag, SqlDbType.NVarChar)
+
+            Dim dsEmp As DataSet = oClsDataccess.GetdatasetSp("Get_Work_Email", ObjParam, "V_M_Employee")
+            If dsEmp.Tables.Count > 0 Then
+                Return dsEmp
+            End If
+        Catch ex As Exception
+
+        End Try
+
+    End Function
+
+End Class
+#End Region
+
+Public Class clsUtility
+    Dim oClsDataccess As ClsDataccess = New ClsDataccess()
+
+    Public Function GetFirstDayOfMonth(iMonth As Integer, iYear As Integer) As DateTime
+        Dim dtFrom As New DateTime(iYear, iMonth, 1)
+        dtFrom = dtFrom.AddDays(-(dtFrom.Day - 1))
+        Return dtFrom
+    End Function
+
+    Public Function GetLastDayOfMonth(iMonth As Integer, iYear As Integer) As DateTime
+        Dim dtTo As New DateTime(iYear, iMonth, 1)
+        dtTo = dtTo.AddMonths(1)
+        dtTo = dtTo.AddDays(-(dtTo.Day))
+        Return dtTo
+    End Function
+End Class
+
+
+#Region "Fill Drop Down"
+
+Public Class clsCommonDLL
+    Dim oClsDataccess As ClsDataccess = New ClsDataccess()
+
+#Region "Drop Down"
+
+    Public Sub bindQuestionDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_QuestionBank", oclsParm)
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "question", "que_id")
+            ddl.ClearSelection()
+            'ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            'ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindApprSubcatDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal apprcat As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@apprcat_id", Val(apprcat), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Appraisal_Que_SubCategory", oclsParm)
+            'Dim strwhere As String
+            'If apprcat <> "" Or apprcat <> "0" Then
+            '    strwhere = " select * from M_Appraisal_Que_SubCategory where  apprcat_id = '" & apprcat & "' order by appr_subcat_name"
+            'Else
+            '    strwhere = " select * from M_Appraisal_Que_SubCategory  order by appr_subcat_name"
+            'End If
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "appr_subcat_name", "appr_subcat_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindApprscNameDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Appraisal_Que_Category", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select * from M_Appraisal_Que_Category order by apprcat_name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "apprcat_name", "apprcat_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindAppraisal(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_N_Appraisal", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select Appraisal_id,Appraisal_Name from M_N_Appraisal where cmp_id = " & cmp_id.ToString() & " ORDER BY Appraisal_Name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Appraisal_Name", "Appraisal_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindApprSubcNameDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Appraisal_Que_SubCategory", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select * from M_Appraisal_Que_SubCategory order by appr_subcat_name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "appr_subcat_name", "appr_subcat_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindApprSubcNameDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal Category_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@apprcat_id", Val(Category_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Appraisal_Que_SubCategory", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select * from M_Appraisal_Que_SubCategory where apprcat_id = " + Category_id.ToString() + " order by appr_subcat_name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "appr_subcat_name", "appr_subcat_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindHRDocumentDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_HR_document", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select document_id,Name from m_hr_document where cmp_id = " & cmp_id.ToString & " order by name "
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Name", "document_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindCountryDdl(ByVal ddl As RadComboBox)
+        Try
+            Dim oclsParm As New ColSqlparram
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Countries", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select country_ID,CountryName from M_Countries order by countryname"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "CountryName", "Country_Id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindBranchDdlbrand(ByVal ddl As RadComboBox, ByVal brand_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@emp_id", Val(HttpContext.Current.Session("emp_id")), SqlDbType.Int)
+            oclsParm.Add("@brand_id", Val(brand_id), SqlDbType.Int)
+            oclsParm.Add("@branch_right", HttpContext.Current.Session("branch_right").ToString())
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_Branch_by_brand", oclsParm)
+            'Dim strwhere As String
+            'If HttpContext.Current.Session("emp_id") <> "0" Then
+            '    strwhere = "select Branch_Id, branch_Name  from M_branch where brand_id = " & brand_id.ToString & " and branch_id in (" + HttpContext.Current.Session("branch_right").ToString.Replace("#", ",") + ")  order by branch_name"
+            'Else
+            '    strwhere = "select Branch_Id, branch_Name  from M_branch where brand_id = " & brand_id.ToString & "order by branch_name"
+            'End If
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "branch_Name", "Branch_Id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindBranchDdlbrandMulti(ByVal ddl As RadComboBox, ByVal brand_id As Integer)
+        Try
+            Dim oclsparm As New ColSqlparram
+            oclsparm.Add("@emp_id", Val(HttpContext.Current.Session("emp_id")), SqlDbType.Int)
+            oclsparm.Add("@brand_id", Val(brand_id), SqlDbType.Int)
+            oclsparm.Add("@branch_right", HttpContext.Current.Session("branch_right").ToString())
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("get_branch_by_brand", oclsparm)
+            'Dim strwhere As String
+            'If HttpContext.Current.Session("emp_id") <> "0" Then
+            '    strwhere = "select Branch_Id, branch_Name  from M_branch where brand_id = " & brand_id.ToString & " and branch_id in (" + HttpContext.Current.Session("branch_right").ToString.Replace("#", ",") + ")  order by branch_name"
+            'Else
+            '    strwhere = "select Branch_Id, branch_Name  from M_branch where brand_id = " & brand_id.ToString & "order by branch_name"
+            'End If
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "branch_Name", "Branch_Id")
+            ddl.ClearSelection()
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindBranchDdlSingle(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(HttpContext.Current.Session("emp_id")), SqlDbType.Int)
+            oclsParm.Add("@branch_right", HttpContext.Current.Session("branch_right").ToString())
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_Branch_by_brand", oclsParm)
+            'Dim strwhere As String
+            'If HttpContext.Current.Session("emp_id") <> "0" Then
+            '    strwhere = "select Branch_Id, branch_Name  from M_branch where cmp_id = " & cmp_id.ToString & " and branch_id in (" + HttpContext.Current.Session("branch_right").ToString.Replace("#", ",") + ")  order by branch_name"
+            'Else
+            '    strwhere = "select Branch_Id, branch_Name  from M_branch where cmp_id = " & cmp_id.ToString & "order by branch_name"
+            'End If
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "branch_Name", "Branch_Id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindBranchDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(HttpContext.Current.Session("emp_id")), SqlDbType.Int)
+            oclsParm.Add("@roleId", Val(HttpContext.Current.Session("roleId")), SqlDbType.Int)
+            oclsParm.Add("@branch_right", HttpContext.Current.Session("branch_right").ToString())
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_Branch_by_Role", oclsParm)
+            '            Dim strwhere As String
+            '            Dim dtWF As DataTable
+            '            dtWF = oClsDataccess.Getdatatable("select Tran_id, cmp_id, Type, Fisrt_Approval_type, Second_Approval_type, Email from S_Work_Flow_ModuleWise where cmp_id =  " & HttpContext.Current.Session("cmp_id") & "  and type = 'Payroll'")
+            '            Dim dtPowerRole As DataTable
+            '            dtPowerRole = oClsDataccess.Getdatatable("Select * from M_Role where Cmp_id=" & cmp_id.ToString & " and Role_Id=" & HttpContext.Current.Session("roleId") & "")
+            '            If dtPowerRole.Rows.Count > 0 Then
+            '                If dtPowerRole.Rows(0)("isPowerUser").ToString() = "1" Then
+            '                    strwhere = "select Branch_Id, branch_Name  from M_branch where cmp_id = " & cmp_id.ToString & " order by branch_name"
+            '                    GoTo LastLine
+            '                End If
+            '            End If
+
+            '            If HttpContext.Current.Session("emp_id") <> "0" Then
+            '                If dtWF.Rows.Count > 0 Then
+            '                    If dtWF.Rows(0)("Second_Approval_type") = HttpContext.Current.Session("desig_type_id") Then
+            '                        strwhere = "select Branch_Id, branch_Name  from M_branch where cmp_id = " & cmp_id.ToString & " and upper(branch_name) <> upper('Area Manager') and upper(branch_name) <> upper('Head Office') and  branch_id in (" + HttpContext.Current.Session("branch_right").ToString.Replace("#", ",") + ")  order by branch_name"
+            '                    Else
+            '                    strwhere = "select Branch_Id, branch_Name  from M_branch where cmp_id = " & cmp_id.ToString & " and branch_id in (" + IIf(HttpContext.Current.Session("branch_right").ToString = "", 0, HttpContext.Current.Session("branch_right").ToString.Replace("#", ",")) + ")  order by branch_name"
+            '                Else
+            '                    strwhere = "select Branch_Id, branch_Name  from M_branch where cmp_id = " & cmp_id.ToString & " and branch_id in (" + HttpContext.Current.Session("branch_right").ToString.Replace("#", ",") + ")  order by branch_name"
+            '                    End If
+            '                End If
+            '            Else
+            '                strwhere = "select Branch_Id, branch_Name  from M_branch where cmp_id = " & cmp_id.ToString & " order by branch_name"
+            '            End If
+
+            '            Using Goto Function 
+            'LastLine:
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "branch_Name", "Branch_Id")
+            ddl.ClearSelection()
+            'ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            'ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindBranchDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal DesignationFlag As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(HttpContext.Current.Session("emp_id")), SqlDbType.Int)
+            oclsParm.Add("@roleId", Val(HttpContext.Current.Session("roleId")), SqlDbType.Int)
+            oclsParm.Add("@branch_right", HttpContext.Current.Session("branch_right").ToString())
+            oclsParm.Add("@DesignationFlag", Val(DesignationFlag), SqlDbType.Int)
+
+            oclsParm.Add("@designation_id", Val(HttpContext.Current.Session("designation_id").ToString()), SqlDbType.Int)
+
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_Branch_by_DesignationFlag", oclsParm)
+            '            Dim strwhere As String = ""
+
+            '            Dim dtAccessLevel As DataTable
+            '            dtAccessLevel = oClsDataccess.Getdatatable("select * from S_Access_Level where cmp_id =  " & HttpContext.Current.Session("cmp_id"))
+
+            '            Dim dtPowerRole As DataTable
+            '            dtPowerRole = oClsDataccess.Getdatatable("Select * from M_Role where Cmp_id=" & cmp_id.ToString & " and Role_Id=" & HttpContext.Current.Session("roleId") & "")
+            '            If dtPowerRole.Rows.Count > 0 Then
+            '                If dtPowerRole.Rows(0)("isPowerUser").ToString() = "1" Then
+            '                    strwhere = ""
+            '                    strwhere = "select Branch_Id, branch_Name  from M_branch where cmp_id = " & cmp_id.ToString & " order by branch_name"
+            '                    GoTo LastLine
+            '                End If
+            '            End If
+
+            '            If HttpContext.Current.Session("emp_id") <> "0" Then
+            '                If dtAccessLevel.Rows.Count > 0 Then
+            '                    If DesignationFlag <> 0 Then
+            '                        Dim stArr As String() = dtAccessLevel.Rows(0)("For_Designation").ToString.Split("#")
+            '                        For i As Integer = 0 To stArr.Length - 1
+            '                            If stArr(i).ToString() = HttpContext.Current.Session("designation_id") Then
+            '                                strwhere = ""
+            '                                strwhere = "select Branch_Id, branch_Name  from M_branch where cmp_id = " & cmp_id.ToString & " and Branch_Id not in (select items from dbo.split('" & dtAccessLevel.Rows(0)("To_Branch").ToString() & "','#')) and  branch_id in (" + HttpContext.Current.Session("branch_right").ToString.Replace("#", ",") + ")  order by branch_name"
+            '                                GoTo LastLine
+            '                            Else
+            '                                strwhere = ""
+            '                                strwhere = "select Branch_Id, branch_Name  from M_branch where cmp_id = " & cmp_id.ToString & " and branch_id in (" + HttpContext.Current.Session("branch_right").ToString.Replace("#", ",") + ")  order by branch_name"
+            '                            End If
+            '                        Next
+            '                    Else
+            '                        strwhere = ""
+            '                        strwhere = "select Branch_Id, branch_Name  from M_branch where cmp_id = " & cmp_id.ToString & " and branch_id in (" + HttpContext.Current.Session("branch_right").ToString.Replace("#", ",") + ")  order by branch_name"
+            '                    End If
+
+
+            '                Else
+            '                    strwhere = ""
+            '                    strwhere = "select Branch_Id, branch_Name  from M_branch where cmp_id = " & cmp_id.ToString & " and branch_id in (" + HttpContext.Current.Session("branch_right").ToString.Replace("#", ",") + ")  order by branch_name"
+            '                End If
+            '            Else
+            '                strwhere = ""
+            '                strwhere = "select Branch_Id, branch_Name  from M_branch where cmp_id = " & cmp_id.ToString & " order by branch_name"
+            '            End If
+
+            '            'Using Goto Function
+            'LastLine:
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "branch_Name", "Branch_Id")
+            ddl.ClearSelection()
+            'ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            'ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindCurrencyDdl(ByVal ddl As RadComboBox)
+        Try
+            Dim oclsParm As New ColSqlparram
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Currency", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select Tran_id, Currency_Name  from M_Currency order by Currency_Name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Currency_Name", "Tran_id")
+            ddl.ClearSelection()
+            'ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            'ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindBranchDdlEmployee(ByVal ddl As RadComboBox, ByVal emp_id As String)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@Cmp_ID", Val(HttpContext.Current.Session("cmp_id")), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(emp_id), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_Branch_By_Emp", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select branch_id,branch_name from m_branch where branch_id in (select items from dbo.split((select distinct branch_id from m_increment i inner join m_employee e on e.increment_id = i.incrment_id where e.emp_id = " + emp_id + "),'#')) order by branch_name"
+
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "branch_Name", "Branch_Id")
+            ddl.ClearSelection()
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindDesignationDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal SelectFlag As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@Cmp_ID", Val(cmp_id), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Desgination", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select Desig_Id, desig_name  from M_Desgination where cmp_id = " & cmp_id.ToString & "order by desig_name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "desig_name", "desig_id")
+            ddl.ClearSelection()
+            If SelectFlag = 0 Then
+                ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+                ddl.SelectedIndex = -1
+            End If
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindDesignationTypeDdl(ByVal ddl As RadComboBox)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@Is_Active", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Designation_Type", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "SELECT Tran_Id, Name FROM M_Designation_Type where is_Active = 1 order by Name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "name", "Tran_Id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindDepartmentDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Department", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select dept_Id, dept_name  from M_Department where cmp_id = " & cmp_id.ToString & "order by dept_name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "dept_name", "dept_id")
+            ddl.ClearSelection()
+
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindDepartmentDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal SelectFlag As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Department", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select dept_Id, dept_name  from M_Department where cmp_id = " & cmp_id.ToString & "order by dept_name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "dept_name", "dept_id")
+            ddl.ClearSelection()
+            If SelectFlag = 0 Then
+                ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+                ddl.SelectedIndex = -1
+            End If
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindGradeDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Grade", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select Grade_Id, name  from M_Grade where cmp_id = " & cmp_id.ToString & "order by name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "name", "Grade_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindBrandDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Brand", oclsParm)
+            'Dim strwhere As String
+            'strwhere = " select brand_id,brand_name from m_brand where cmp_id =  " & cmp_id.ToString & "order by brand_name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "brand_name", "brand_id")
+            ddl.ClearSelection()
+            'ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            'ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindHolidayDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal year As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@year", Val(year), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Holiday", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select Holiday_id,Holiday_Name from M_Holiday where (Year(From_date) =" & year.ToString & " OR (Yearly_repeat = 1 and Year(From_date) <= " & year.ToString & ")) and Cmp_id = " & cmp_id.ToString & " Order by dateadd(year, (" & year.ToString & " - year(From_date)), From_date)"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Holiday_Name", "Holiday_id")
+            ddl.ClearSelection()
+            'ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            'ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindDesignationDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Desgination", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select Desig_Id, desig_name  from M_Desgination where cmp_id = " & cmp_id.ToString & "order by desig_name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "desig_name", "desig_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindPayDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Pay_Description", oclsParm)
+            'Dim strwhere As String
+            'strwhere = " select payDesc_id, Pay_name from M_Pay_Description where cmp_id =  " & cmp_id.ToString & "order by sorting_no"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Pay_name", "payDesc_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindCityDdl(ByVal ddl As RadComboBox, ByVal state As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@state_id", Val(state), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Cities", oclsParm)
+            'Dim strwhere As String
+            'If state > 0 Then
+            '    strwhere = " select City_id,Cityname from M_Cities where state_id =  " & state.ToString & "order by Cityname"
+            'Else
+            '    strwhere = " select City_id,Cityname from M_Cities order by Cityname"
+            'End If
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Cityname", "City_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindBankDdl(ByVal ddl As RadComboBox)
+        Try
+
+            Dim oclsParm As New ColSqlparram
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_bank", oclsParm)
+
+            'Dim strwhere As String
+            'strwhere = " select bank_id,bank_name from M_bank order by bank_name"
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "bank_name", "bank_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindStateDdl(ByVal ddl As RadComboBox, ByVal country As String)
+        Try
+
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@Country_ID", Val(country), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_States", oclsParm)
+
+            'Dim strwhere As String
+            'If country <> "" Or country <> "0" Then
+            '    strwhere = " select state_id,statename from M_States where  Country_ID = '" & country & "' order by statename"
+            'Else
+            '    strwhere = " select state_id,statename from M_States  order by statename"
+            'End If
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "statename", "state_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindEmpDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(HttpContext.Current.Session("emp_id")), SqlDbType.Int)
+            oclsParm.Add("@branch_right", HttpContext.Current.Session("branch_right").ToString())
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_V_Employee_Basic", oclsParm)
+            'Dim strwhere As String
+            'If HttpContext.Current.Session("emp_id") <> "0" Then
+            '    strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & " and is_left = 0  and emp_id in (select * from dbo.Get_Emp_From_Role_Team('" + HttpContext.Current.Session("branch_right").ToString + "'," + HttpContext.Current.Session("emp_id").ToString + ")) order by Alpha_Code"
+            'Else
+            '    strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & " and is_left = 0  order by Alpha_Code"
+            'End If
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Emp_Full_name", "Emp_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindEmpDdlForSiteManager(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(HttpContext.Current.Session("emp_id")), SqlDbType.Int)
+            oclsParm.Add("@branch_right", HttpContext.Current.Session("branch_right").ToString())
+            oclsParm.Add("@SiteManager", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_V_Employee_Basic", oclsParm)
+            'Dim strwhere As String
+            'If HttpContext.Current.Session("emp_id") <> "0" Then
+            '    strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & " and is_left = 0  and emp_id in (select * from dbo.Get_Emp_From_Role('" + HttpContext.Current.Session("branch_right").ToString + "')) and emp_id in (select emp_id from M_Increment where Desg_id in (select desig_id from M_Desgination WHERE designation_type_id = 3 and cmp_id = " & cmp_id.ToString & ")) order by Alpha_Code"
+            'Else
+            '    strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & " and is_left = 0 and emp_id in (select emp_id from M_Increment where Desg_id in (select desig_id from M_Desgination WHERE designation_type_id = 3 and cmp_id = " & cmp_id.ToString & ")) order by Alpha_Code"
+            'End If
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Emp_Full_name", "Emp_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindPayrollAdvisorDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_PayrollAdvisor", oclsParm)
+            'Dim strwhere As String
+            'strwhere = " select e.Emp_id,(e.Alpha_code + '-' + e.Emp_Full_name) as emp_name from M_Increment i inner join (	select desig_id from M_Desgination where designation_type_id = (select Tran_Id from m_designation_type where name = 'Payroll Advisor')) as tbl on i.Desg_id = tbl.desig_id inner join M_Employee e on e.Emp_id = i.Emp_id where i.Cmp_Id = " + cmp_id.ToString() + "order by Alpha_Code"
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Emp_name", "Emp_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindEmpDdlWithOutSelf(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal login_emp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(login_emp_id), SqlDbType.Int)
+            oclsParm.Add("@branch_right", HttpContext.Current.Session("branch_right").ToString)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_EmpDdlWithOutSelf", oclsParm)
+            'Dim strwhere As String
+            'strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & " and is_left = 0 and emp_id <> " & login_emp_id.ToString & "  and emp_id in (select * from dbo.Get_Emp_From_Role_team('" + HttpContext.Current.Session("branch_right").ToString + "'," + login_emp_id.ToString() + "))  order by Alpha_Code"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Emp_Full_name", "Emp_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindEmpDdlWithOutSelfForSiteManager(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal login_emp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(login_emp_id), SqlDbType.Int)
+            oclsParm.Add("@branch_right", HttpContext.Current.Session("branch_right").ToString)
+            oclsParm.Add("@SiteManager", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_EmpDdlWithOutSelf", oclsParm)
+            'Dim strwhere As String
+            'strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & " and is_left = 0 and emp_id <> " & login_emp_id.ToString & "  and emp_id in (select * from dbo.Get_Emp_From_Role('" + HttpContext.Current.Session("branch_right").ToString + "')) and emp_id in (select emp_id from M_Increment where Desg_id in (select desig_id from M_Desgination WHERE designation_type_id = 3 and cmp_id = " & cmp_id.ToString & ")) order by Alpha_Code"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Emp_Full_name", "Emp_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindClientDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@dll", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Client", oclsParm)
+            'Dim strwhere As String
+            'strwhere = " select Client_id,Client_name from M_Client where cmp_id = " + cmp_id.ToString + " order by Client_name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Client_name", "Client_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindProjectDdl(ByVal ddl As RadComboBox, ByVal ClientId As String, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@client_id", Val(ClientId), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_PROJECT", oclsParm)
+            'Dim strwhere As String
+            'strwhere = " select Project_id,Project_name from M_Project where  cmp_id = " + cmp_id.ToString + " and client_id = " + ClientId + " order by Project_name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Project_name", "Project_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindExpenseTypeDdl(ByVal ddl As RadComboBox)
+        Try
+            Dim oclsParm As New ColSqlparram
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_ExpenseType", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "SELECT Tran_id, Type FROM M_ExpenseType"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Type", "Tran_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindCurrencyDdl(ByVal ddl As RadComboBox, ByVal val As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Currency", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "SELECT Tran_id,Currency_Name from M_Currency"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Currency_Name", "Tran_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindPaymentDdl(ByVal ddl As RadComboBox)
+        Try
+            Dim oclsParm As New ColSqlparram
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Payment_Method", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "SELECT Tran_id,Payment_Name from M_Payment_Method"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Payment_Name", "Tran_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindEmpDdlMultiBranch(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal branch_id As String)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@branch_id", branch_id.ToString())
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_EmpDdlMultiBranch", oclsParm)
+            'Dim strwhere As String
+            'If branch_id <> 0 Then
+            '    strwhere = " select  e.Emp_id,  (Alpha_code + ' - ' + First_Name + ' ' + Last_Name) AS Emp_full_Name from m_employee e inner join  m_increment i on e.increment_id = i.incrment_id where e.emp_id in (select * from dbo.Get_Emp_From_Role('" + branch_id.ToString + "'))  and e.cmp_id =   " & cmp_id.ToString & " and is_left = 0 order by Alpha_Code"
+            'Else
+            '    strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & "  and is_left = 0 order by Alpha_Code"
+            'End If
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Emp_Full_name", "Emp_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindEmpDdlBranch(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal branch_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(HttpContext.Current.Session("emp_id")), SqlDbType.Int)
+            oclsParm.Add("@branch_id", Val(branch_id), SqlDbType.Int)
+            oclsParm.Add("@branch_right", HttpContext.Current.Session("branch_right").ToString())
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_EmpDdlBranch", oclsParm)
+            'Dim strwhere As String
+            'If HttpContext.Current.Session("emp_id") <> "0" Then
+            '    If branch_id <> 0 Then
+            '        strwhere = " select  e.Emp_id,  (Alpha_code + ' - ' + First_Name + ' ' + Last_Name) AS Emp_full_Name from m_employee e inner join  m_increment i on e.increment_id = i.incrment_id where " + branch_id.ToString + " in (select items from dbo.split(branch_id,'#') ) and e.cmp_id =   " & cmp_id.ToString & " and is_left = 0 and e.emp_id <> " + HttpContext.Current.Session("emp_id").ToString() + " order by Alpha_Code"
+            '    Else
+            '        strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & "  and is_left = 0 and emp_id in (select * from dbo.Get_Emp_From_Role('" + HttpContext.Current.Session("branch_right") + "'))  and emp_id <> " + HttpContext.Current.Session("emp_id").ToString() + " order by Alpha_Code"
+            '    End If
+            'Else
+            '    If branch_id <> 0 Then
+            '        strwhere = " select  e.Emp_id,  (Alpha_code + ' - ' + First_Name + ' ' + Last_Name) AS Emp_full_Name from m_employee e inner join  m_increment i on e.increment_id = i.incrment_id where " + branch_id.ToString + " in (select items from dbo.split(branch_id,'#') ) and e.cmp_id =   " & cmp_id.ToString & " and is_left = 0  order by Alpha_Code"
+            '    Else
+            '        strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & "  and is_left = 0 order by Alpha_Code"
+            '    End If
+            'End If
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Emp_Full_name", "Emp_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindEmpTrialDdlBranch(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal branch_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(HttpContext.Current.Session("emp_id")), SqlDbType.Int)
+            oclsParm.Add("@branch_id", Val(branch_id), SqlDbType.Int)
+            oclsParm.Add("@branch_right", HttpContext.Current.Session("branch_right").ToString())
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_EmpTrialDdlBranch", oclsParm)
+            'Dim strwhere As String
+            'If HttpContext.Current.Session("emp_id") <> "0" Then
+            '    If branch_id <> 0 Then
+            '        strwhere = " select  e.Emp_id,  (Alpha_code + ' - ' + First_Name + ' ' + Last_Name) AS Emp_full_Name from m_employee_trial e inner join  m_increment_trial i on e.increment_id = i.incrment_id where " + branch_id.ToString + " in (select items from dbo.split(branch_id,'#') ) and e.cmp_id =   " & cmp_id.ToString & " and is_left = 0 and e.emp_id <> " + HttpContext.Current.Session("emp_id").ToString() + " order by Alpha_Code"
+            '    Else
+            '        strwhere = " select Emp_id, Emp_Full_name from m_employee_trial e inner join  m_increment_trial i on e.increment_id = i.incrment_id where e.cmp_id =  " & cmp_id.ToString & "  and  i.Branch_id in (select items from dbo.Split(('" + HttpContext.Current.Session("branch_right") + "'),(''#''))) and i.emp_id <> " + HttpContext.Current.Session("emp_id").ToString() + " order by Alpha_Code"
+            '    End If
+            'Else
+            '    If branch_id <> 0 Then
+            '        strwhere = " select  e.Emp_id,  (Alpha_code + ' - ' + First_Name + ' ' + Last_Name) AS Emp_full_Name from m_employee_trial e inner join  m_increment_trial i on e.increment_id = i.incrment_id where " + branch_id.ToString + " in (select items from dbo.split(branch_id,'#') ) and e.cmp_id =   " & cmp_id.ToString & " and is_left = 0  order by Alpha_Code"
+            '    Else
+            '        strwhere = " select Emp_id, (Alpha_code + ' - ' + First_Name + ' ' + Last_Name) AS Emp_full_Name from m_employee_trial where cmp_id =  " & cmp_id.ToString & "  and is_left = 0 order by Alpha_Code"
+            '    End If
+            'End If
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Emp_Full_name", "Emp_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindEmpDdlDesignation(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal desig_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(HttpContext.Current.Session("emp_id")), SqlDbType.Int)
+            oclsParm.Add("@desig_id", Val(desig_id), SqlDbType.Int)
+            oclsParm.Add("@branch_right", HttpContext.Current.Session("branch_right").ToString())
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_EmpDdlDesignation", oclsParm)
+            'Dim strwhere As String
+            'If HttpContext.Current.Session("emp_id") <> "0" Then
+            '    If desig_id <> 0 Then
+            '        strwhere = " select  e.Emp_id,  (Alpha_code + ' - ' + First_Name + ' ' + Last_Name) AS Emp_full_Name from m_employee e inner join  m_increment i on e.increment_id = i.incrment_id where desg_id = " + desig_id.ToString + " and e.cmp_id =   " & cmp_id.ToString & " and is_left = 0 and e.emp_id <> " + HttpContext.Current.Session("emp_id").ToString + " order by Alpha_Code"
+            '    Else
+            '        strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & "  and is_left = 0 and emp_id in (select * from dbo.Get_Emp_From_Role('" + HttpContext.Current.Session("branch_right") + "'))  and emp_id <> " + HttpContext.Current.Session("emp_id").ToString + " order by Alpha_Code"
+            '    End If
+            'Else
+            '    If desig_id <> 0 Then
+            '        strwhere = " select  e.Emp_id,  (Alpha_code + ' - ' + First_Name + ' ' + Last_Name) AS Emp_full_Name from m_employee e inner join  m_increment i on e.increment_id = i.incrment_id where  desg_id = " + desig_id.ToString + " and e.cmp_id =   " & cmp_id.ToString & " and is_left = 0  order by Alpha_Code"
+            '    Else
+            '        strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & "  and is_left = 0 order by Alpha_Code"
+            '    End If
+            'End If
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Emp_Full_name", "Emp_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindEmpDdlDepartment(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal dept_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(HttpContext.Current.Session("emp_id")), SqlDbType.Int)
+            oclsParm.Add("@dept_id", Val(dept_id), SqlDbType.Int)
+            oclsParm.Add("@branch_right", HttpContext.Current.Session("branch_right").ToString())
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_EmpDdlDepartment", oclsParm)
+            'Dim strwhere As String
+            'If HttpContext.Current.Session("emp_id") <> "0" Then
+            '    If dept_id <> 0 Then
+            '        strwhere = " select  e.Emp_id,  (Alpha_code + ' - ' + First_Name + ' ' + Last_Name) AS Emp_full_Name from m_employee e inner join  m_increment i on e.Increment_id = i.Incrment_id where i.dept_id = " + dept_id.ToString + " and e.cmp_id =   " & cmp_id.ToString & " and is_left = 0 and e.emp_id <> " + HttpContext.Current.Session("emp_id").ToString() + " order by Alpha_Code"
+            '    Else
+            '        strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & "  and is_left = 0 and e.emp_id in (select * from dbo.Get_Emp_From_Role('" + HttpContext.Current.Session("branch_right") + "'))  and emp_id <> " + HttpContext.Current.Session("emp_id").ToString() + " order by Alpha_Code"
+            '    End If
+            'Else
+            '    If dept_id <> 0 Then
+            '        strwhere = " select  e.Emp_id,  (Alpha_code + ' - ' + First_Name + ' ' + Last_Name) AS Emp_full_Name from m_employee e inner join  m_increment i on e.Increment_id = i.Incrment_id where  i.dept_id = " + dept_id.ToString + " and e.cmp_id =   " & cmp_id.ToString & " and is_left = 0  order by Alpha_Code"
+            '    Else
+            '        strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & "  and is_left = 0 order by Alpha_Code"
+            '    End If
+            'End If
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Emp_Full_name", "Emp_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindEmpDdlSalaryOn(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal salary_on As String)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(HttpContext.Current.Session("emp_id")), SqlDbType.Int)
+            oclsParm.Add("@salary_on", salary_on.ToString())
+            oclsParm.Add("@branch_right", HttpContext.Current.Session("branch_right").ToString())
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_EmpDdlSalaryOn", oclsParm)
+            'Dim strwhere As String
+            'If HttpContext.Current.Session("emp_id") <> "0" Then
+            '    If salary_on <> "" Then
+            '        strwhere = " select a.Emp_id,(a.Alpha_code + ' - ' + a.First_Name + ' ' + a.Last_Name) AS Emp_full_Name from m_employee a inner join M_Increment b on a.Increment_id = b.Incrment_id where b.cmp_id =  " & cmp_id.ToString & "  and b.salary_on = '" + salary_on + "' order by Alpha_Code "
+            '    Else
+            '        strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & "  and is_left = 0 and e.emp_id in (select * from dbo.Get_Emp_From_Role('" + HttpContext.Current.Session("branch_right") + "'))  and emp_id <> " + HttpContext.Current.Session("emp_id") + " order by Alpha_Code"
+            '    End If
+            'Else
+            '    If salary_on <> "" Then
+            '        strwhere = " select a.Emp_id,(a.Alpha_code + ' - ' + a.First_Name + ' ' + a.Last_Name) AS Emp_full_Name from m_employee a inner join M_Increment b on a.Increment_id = b.Incrment_id where b.cmp_id =  " & cmp_id.ToString & "  and b.salary_on = '" + salary_on + "' and is_left = 0  order by Alpha_Code"
+            '    Else
+            '        strwhere = " select Emp_id, Emp_Full_name from V_Employee_Basic where cmp_id =  " & cmp_id.ToString & "  and is_left = 0 order by Alpha_Code"
+            '    End If
+            'End If
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Emp_Full_name", "Emp_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindRoleDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(HttpContext.Current.Session("emp_id")), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Role", oclsParm)
+            'Dim strwhere As String
+            'If Val(HttpContext.Current.Session("emp_id")) = 0 Then
+            '    strwhere = " select Role_id , Role_Name from m_role  where cmp_id = " & cmp_id.ToString & "order by Role_Name"
+            'Else
+            '    strwhere = " select Role_id , Role_Name from m_role  where isPowerUser=0 and cmp_id = " & cmp_id.ToString & "order by Role_Name"
+            'End If
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Role_Name", "Role_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindLeaveddl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Leave", oclsParm)
+            'Dim strwhere As String
+            'strwhere = " select leave_id , leave_Name from m_leave where cmp_id = " & cmp_id.ToString & "order by Leave_Name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Leave_Name", "Leave_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindLeaveEmpddl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal emp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(emp_id), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Leave", oclsParm)
+            'Dim strwhere As String
+            'strwhere = " select leave_id , leave_Name from m_leave where cmp_id = " & cmp_id.ToString & " and leave_code <> (case when (select isnull(salary_on,'Day') from m_employee ee inner join  m_increment i on ee.Increment_id = i.Incrment_Id where  ee.emp_id = " & emp_id.ToString & ") = 'Hour' then 'AL' else 'ALH' end ) order by Leave_Name "
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Leave_Name", "Leave_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindMailTemplateddl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Email_Template", oclsParm)
+            'Dim strwhere As String
+            'strwhere = " select template_id , template_name from M_Email_Template where cmp_id =  " & cmp_id.ToString & " and is_newsletter = 1 order by template_name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "template_name", "template_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindCmpGrp(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_CmpGrp", oclsParm)
+            'Dim strwhere As String
+            'strwhere = " SELECT distinct * from m_company where cmp_id = " & cmp_id.ToString & " or cmp_id in (select distinct case when items = '' then 0 else items end  from dbo.split( (select grp_compnay from m_company where cmp_id  = " & cmp_id.ToString & "),'#') )  order by cmp_name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "cmp_name", "cmp_id")
+            ddl.ClearSelection()
+            'ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+
+            ddl.ClearSelection()
+            If ddl.Items.Count > 0 Then
+
+
+                ddl.Items.FindItemByValue(cmp_id.ToString).Selected = True
+            End If
+            'ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindShiftDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer, ByVal branchId As String)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@branch_Id", branchId.ToString())
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_Shift_By_Branch", oclsParm)
+            'Dim strwhere As String
+            'If branchId = "" Then
+            '    strwhere = " SELECT Shift_id, (Start_time + ' - ' + End_time  + '(' + b.branch_code + ')') as Shift_Time  FROM M_Shift M  inner join m_branch b on b.branch_id = m.branch_id where (m.cmp_id = " & cmp_id.ToString & ") and m.is_active = 1 order by Start_time "
+            'Else
+            '    strwhere = " SELECT Shift_id, (Start_time + ' - ' + End_time  + '(' + b.branch_code + ')') as Shift_Time  FROM M_Shift M  inner join m_branch b on b.branch_id = m.branch_id where(m.cmp_id = " & cmp_id.ToString & ")  and m.is_active = 1 and m.branch_id in (" & branchId.ToString & ") order by Start_time"
+            'End If
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Shift_Time", "Shift_id")
+            ddl.ClearSelection()
+            'ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindTypeDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Type", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select type_id,Type_name from M_Type where cmp_id = " & cmp_id.ToString & "order by Type_name"
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Type_name", "type_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindCategoryDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Category", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select Category_id,Category_name from M_Category where cmp_id = " & cmp_id.ToString & "order by Category_name"
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Category_name", "Category_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindDocumentDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Document", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select Document_id,Name from M_document where cmp_id = " & cmp_id.ToString & "order by name"
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Name", "Document_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindPolicyCategoryDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Policy_Category", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select PolicyCategory_id,PolicyCategory_Name from M_Policy_Category where cmp_id = " & cmp_id.ToString & " order by PolicyCategory_Name"
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "PolicyCategory_Name", "PolicyCategory_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindPolicySubCategoryDdl(ByVal ddl As RadComboBox, ByVal PolicyCategory_id As Integer, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@PolicyCategory_id", Val(PolicyCategory_id), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Policy_SubCategory", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select PolicySubCategory_id,PolicySubCategory_Name from M_Policy_SubCategory where cmp_id = " & cmp_id.ToString & " AND PolicyCategory_id = " & PolicyCategory_id.ToString & "  order by PolicySubCategory_Name"
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "PolicySubCategory_Name", "PolicySubCategory_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindYear(ByVal ddl As RadComboBox)
+        Try
+            Dim itemsYear As RadComboBoxItem
+            For index = System.DateTime.Now.Year - 2 To System.DateTime.Now.Year
+                itemsYear = New RadComboBoxItem(index, index)
+                ddl.Items.Add(itemsYear)
+            Next
+            ddl.ClearSelection()
+            ddl.Items.FindItemByValue(System.DateTime.Now.Year).Selected = True
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindMonth(ByVal ddl As RadComboBox)
+        Try
+            Dim itemsYear As RadComboBoxItem
+            For index = 1 To 12
+                Dim dtDate As DateTime = New DateTime(2000, index, 1)
+                Dim sMonthFullName As String = dtDate.ToString("MMMM")
+
+                itemsYear = New RadComboBoxItem(sMonthFullName, index)
+                ddl.Items.Add(itemsYear)
+            Next
+            ddl.ClearSelection()
+            ddl.Items.FindItemByValue(System.DateTime.Now.Month).Selected = True
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindLeftReason(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            oclsParm.Add("@ddl", Val(1), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_L_Reason_Master", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select LReason_id,Reason from L_Reason_Master where cmp_id = " + cmp_id.ToString() + " order by Reason"
+
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Reason", "LReason_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindSkillDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Training_Skill_ddl", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select Skill_id, Skill_Name  from M_Training_Skill where cmp_id = " & cmp_id.ToString & "order by Skill_Name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Skill_Name", "Skill_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindTrainingProviderDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Training_Provider_ddl", oclsParm)
+            'Dim strwhere As String
+            'strwhere = "select Tprovider_id, Provider_Name  from M_Training_Provider where cmp_id = " & cmp_id.ToString & "order by Provider_Name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Provider_Name", "Tprovider_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub bindTrainingDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+            Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_M_Training_ddl", oclsParm)
+            'Dim strwhere As String
+            'strwhere = " select Training_id,Name from M_Training where cmp_id = " + cmp_id.ToString + " order by Name"
+            ddl.Items.Clear()
+            oClsDataccess.Bind_Ddl(ddl, strwhere, "Name", "Training_id")
+            ddl.ClearSelection()
+            ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+            ddl.SelectedIndex = -1
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    '----------------------------------------------------------- Salary Module Function START-----------------------------------------------------------
+
+    'Public Sub bindsalarySetting(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+    '    Try
+    '        Dim oclsParm As New ColSqlparram
+    '        oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+    '        Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_Salary_Settings_Master", oclsParm)
+    '        ddl.Items.Clear()
+    '        oClsDataccess.Bind_Ddl(ddl, strwhere, "Salary_Setting_Name", "Salary_Setting_Id")
+    '        ddl.ClearSelection()
+    '        ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+    '        ddl.SelectedIndex = -1
+
+    '    Catch ex As Exception
+    '        Throw ex
+    '    End Try
+    'End Sub
+
+    'Public Sub bindSalaryStructureDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+    '    Try
+    '        Dim oclsParm As New ColSqlparram
+    '        oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+    '        Dim ds As DataSet = oClsDataccess.GetdatasetSp("Get_Salary_Category", oclsParm, "SalaryCategory")
+    '        Dim strwhere As DataTable = ds.Tables(0)
+    '        ddl.Items.Clear()
+    '        oClsDataccess.Bind_Ddl(ddl, strwhere, "Category_Name", "Salary_Category_Id")
+    '        ddl.ClearSelection()
+    '        ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+    '        ddl.SelectedIndex = 0
+
+    '    Catch ex As Exception
+    '        Throw ex
+    '    End Try
+    'End Sub
+
+    'Public Sub bindAllowanceDdl(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+    '    Try
+    '        Dim oclsParm As New ColSqlparram
+    '        oclsParm.Add("@cmp_id", Val(cmp_id), SqlDbType.Int)
+    '        Dim strwhere As DataTable = oClsDataccess.GetdataTableSp("Get_Salary_M_Allowance", oclsParm)
+    '        ddl.Items.Clear()
+    '        oClsDataccess.Bind_Ddl(ddl, strwhere, "Short_Name", "Allowance_Id")
+    '        ddl.ClearSelection()
+    '        ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+    '        ddl.SelectedIndex = -1
+
+    '    Catch ex As Exception
+    '        Throw ex
+    '    End Try
+    'End Sub
+
+    'Public Sub bindCalculateOn(ByVal ddl As RadComboBox, ByVal cmp_id As Integer)
+    '    Try
+    '        Dim strwhere As String
+    '        strwhere = " select Calculate_On_Id,Name from Salary_Allowance_Calculate_On where cmp_Id=" & cmp_id.ToString & "order by Calculate_On_Id"
+    '        ddl.Items.Clear()
+    '        oClsDataccess.Bind_Ddl(ddl, strwhere, "Name", "Calculate_On_Id")
+    '        ddl.ClearSelection()
+    '        ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+    '        ddl.SelectedIndex = -1
+
+    '    Catch ex As Exception
+    '        Throw ex
+    '    End Try
+    'End Sub
+
+    '----------------------------------------------------------- Salary Module Function END-----------------------------------------------------------
+
+#End Region
+
+#Region "Data"
+
+    Public Function GetEmployee(ByVal CmpId As Integer, ByVal EmpId As Integer, ByVal BranchId As Integer, ByVal DesigId As Integer) As DataTable
+        Try
+            Dim oclsParm As New ColSqlparram
+
+            oclsParm.Add("@Cmp_id", CmpId, SqlDbType.Int)
+            oclsParm.Add("@Branch_id", BranchId, SqlDbType.Int)
+            oclsParm.Add("@Desig_id", DesigId, SqlDbType.Int)
+            oclsParm.Add("@Type", 0, SqlDbType.Int)
+            oclsParm.Add("@Emp_id", EmpId, SqlDbType.Int)
+            oclsParm.Add("@From_date", System.DateTime.Now, SqlDbType.DateTime)
+            Return oClsDataccess.GetdataTableSp("Get_Employee", oclsParm)
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Function
+
+    Public Sub GetEmployee(ByVal ddl As RadComboBox, ByVal CmpId As Integer, ByVal EmpId As String, ByVal BranchId As String, ByVal DesigId As Integer, ByVal Grd_id As Integer, ByVal dept_id As Integer, ByVal Salary_on As String)
+        Try
+
+            Dim oclsParm As New ColSqlparram
+
+            oclsParm.Add("@Cmp_id", CmpId, SqlDbType.Int)
+            oclsParm.Add("@Emp_id", 0, SqlDbType.NVarChar)
+            If Val(HttpContext.Current.Session("emp_id")) = 0 Then
+                oclsParm.Add("@Branch_id", IIf(BranchId = "", "", BranchId), SqlDbType.NVarChar)
+            Else
+                oclsParm.Add("@Branch_id", IIf(BranchId = "", HttpContext.Current.Session("branch_right").ToString, BranchId), SqlDbType.NVarChar)
+            End If
+            oclsParm.Add("@Desig_id", DesigId, SqlDbType.Int)
+            oclsParm.Add("@grd_id", Grd_id, SqlDbType.Int)
+            oclsParm.Add("@dept_id", dept_id, SqlDbType.Int)
+            oclsParm.Add("@salary_on", Salary_on, SqlDbType.NVarChar)
+            Dim Dt As New DataTable
+            Dt = oClsDataccess.GetdataTableSp("P_Get_Employee_Filter", oclsParm)
+            Try
+                ddl.ClearSelection()
+                ddl.Items.Clear()
+                ddl.DataSource = Dt
+                ddl.DataValueField = "Emp_id"
+                ddl.DataTextField = "emp_full_name"
+                ddl.DataBind()
+                ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+                ddl.SelectedIndex = 0
+            Catch ex As Exception
+                Throw ex
+            End Try
+
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub GetEmployeeTrial(ByVal ddl As RadComboBox, ByVal CmpId As Integer, ByVal EmpId As String, ByVal BranchId As String, ByVal DesigId As Integer, ByVal Grd_id As Integer, ByVal dept_id As Integer, ByVal Salary_on As String)
+        Try
+
+            Dim oclsParm As New ColSqlparram
+
+            oclsParm.Add("@Cmp_id", CmpId, SqlDbType.Int)
+            oclsParm.Add("@Emp_id", 0, SqlDbType.NVarChar)
+            If Val(HttpContext.Current.Session("emp_id")) = 0 Then
+                oclsParm.Add("@Branch_id", IIf(BranchId = "", "", BranchId), SqlDbType.NVarChar)
+            Else
+                oclsParm.Add("@Branch_id", IIf(BranchId = "", HttpContext.Current.Session("branch_right").ToString, BranchId), SqlDbType.NVarChar)
+            End If
+            oclsParm.Add("@Desig_id", DesigId, SqlDbType.Int)
+            oclsParm.Add("@grd_id", Grd_id, SqlDbType.Int)
+            oclsParm.Add("@dept_id", dept_id, SqlDbType.Int)
+            oclsParm.Add("@salary_on", Salary_on, SqlDbType.NVarChar)
+            Dim Dt As New DataTable
+            Dt = oClsDataccess.GetdataTableSp("P_Get_Employee_Trial_Filter", oclsParm)
+            Try
+                ddl.ClearSelection()
+                ddl.Items.Clear()
+                ddl.DataSource = Dt
+                ddl.DataValueField = "Emp_id"
+                ddl.DataTextField = "emp_full_name"
+                ddl.DataBind()
+                ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+                ddl.SelectedIndex = 0
+            Catch ex As Exception
+                Throw ex
+            End Try
+
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub GetEmployee(ByVal ddl As RadComboBox, ByVal CmpId As Integer, ByVal EmpId As String, ByVal BranchId As String, ByVal DesigId As Integer, ByVal Grd_id As Integer, ByVal dept_id As Integer, ByVal Salary_on As String, ByVal withoutself As Integer, ByVal EmpIdWithoutSelf As String)
+        Try
+
+            Dim oclsParm As New ColSqlparram
+
+            oclsParm.Add("@Cmp_id", CmpId, SqlDbType.Int)
+            oclsParm.Add("@Emp_id", 0, SqlDbType.NVarChar)
+            If Val(HttpContext.Current.Session("emp_id")) = 0 Then
+                oclsParm.Add("@Branch_id", IIf(BranchId = "", "", BranchId), SqlDbType.NVarChar)
+            Else
+                oclsParm.Add("@Branch_id", IIf(BranchId = "", HttpContext.Current.Session("branch_right").ToString, BranchId), SqlDbType.NVarChar)
+            End If
+            oclsParm.Add("@Desig_id", DesigId, SqlDbType.Int)
+            oclsParm.Add("@grd_id", Grd_id, SqlDbType.Int)
+            oclsParm.Add("@dept_id", dept_id, SqlDbType.Int)
+            oclsParm.Add("@salary_on", Salary_on, SqlDbType.NVarChar)
+            oclsParm.Add("@withoutself", withoutself, SqlDbType.Int)
+            oclsParm.Add("@EmpIdWithoutSelf", EmpIdWithoutSelf, SqlDbType.NVarChar)
+
+            Dim Dt As New DataTable
+            Dt = oClsDataccess.GetdataTableSp("P_Get_Employee_Filter", oclsParm)
+            Try
+                ddl.ClearSelection()
+                ddl.Items.Clear()
+                ddl.DataSource = Dt
+                ddl.DataValueField = "Emp_id"
+                ddl.DataTextField = "emp_full_name"
+                ddl.DataBind()
+                ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+                ddl.SelectedIndex = 0
+            Catch ex As Exception
+                Throw ex
+            End Try
+
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub GetEmployee(ByVal ddl As RadComboBox, ByVal CmpId As Integer, ByVal EmpId As String, ByVal BranchId As String, ByVal DesigId As Integer, ByVal Grd_id As Integer, ByVal dept_id As Integer, ByVal Salary_on As String, ByVal withoutself As Integer, ByVal EmpIdWithoutSelf As String, ByVal is_left As Integer)
+        Try
+
+            Dim oclsParm As New ColSqlparram
+
+            oclsParm.Add("@Cmp_id", CmpId, SqlDbType.Int)
+            oclsParm.Add("@Emp_id", 0, SqlDbType.NVarChar)
+            If Val(HttpContext.Current.Session("emp_id")) = 0 Then
+                oclsParm.Add("@Branch_id", IIf(BranchId = "", "", BranchId), SqlDbType.NVarChar)
+            Else
+                oclsParm.Add("@Branch_id", IIf(BranchId = "", HttpContext.Current.Session("branch_right").ToString, BranchId), SqlDbType.NVarChar)
+            End If
+            oclsParm.Add("@Desig_id", DesigId, SqlDbType.Int)
+            oclsParm.Add("@grd_id", Grd_id, SqlDbType.Int)
+            oclsParm.Add("@dept_id", dept_id, SqlDbType.Int)
+            oclsParm.Add("@salary_on", Salary_on, SqlDbType.NVarChar)
+            oclsParm.Add("@withoutself", withoutself, SqlDbType.Int)
+            oclsParm.Add("@EmpIdWithoutSelf", EmpIdWithoutSelf, SqlDbType.NVarChar)
+            oclsParm.Add("@is_left", is_left, SqlDbType.Int)
+
+            Dim Dt As New DataTable
+            Dt = oClsDataccess.GetdataTableSp("P_Get_Employee_Filter", oclsParm)
+            Try
+                ddl.ClearSelection()
+                ddl.Items.Clear()
+                ddl.DataSource = Dt
+                ddl.DataValueField = "Emp_id"
+                ddl.DataTextField = "emp_full_name"
+                ddl.DataBind()
+                ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+                ddl.SelectedIndex = 0
+            Catch ex As Exception
+                Throw ex
+            End Try
+
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub GetEmployeeForSiteManager(ByVal ddl As RadComboBox, ByVal CmpId As Integer, ByVal EmpId As String, ByVal BranchId As String, ByVal DesigId As Integer, ByVal Grd_id As Integer, ByVal dept_id As Integer, ByVal Salary_on As String, ByVal withoutself As Integer, ByVal EmpIdWithoutSelf As String)
+        Try
+
+            Dim oclsParm As New ColSqlparram
+
+            oclsParm.Add("@Cmp_id", CmpId, SqlDbType.Int)
+            oclsParm.Add("@Emp_id", 0, SqlDbType.NVarChar)
+            If Val(HttpContext.Current.Session("emp_id")) = 0 Then
+                oclsParm.Add("@Branch_id", IIf(BranchId = "", "", BranchId), SqlDbType.NVarChar)
+            Else
+                oclsParm.Add("@Branch_id", IIf(BranchId = "", HttpContext.Current.Session("branch_right").ToString, BranchId), SqlDbType.NVarChar)
+            End If
+            oclsParm.Add("@Desig_id", DesigId, SqlDbType.Int)
+            oclsParm.Add("@grd_id", Grd_id, SqlDbType.Int)
+            oclsParm.Add("@dept_id", dept_id, SqlDbType.Int)
+            oclsParm.Add("@salary_on", Salary_on, SqlDbType.NVarChar)
+            oclsParm.Add("@withoutself", withoutself, SqlDbType.Int)
+            oclsParm.Add("@EmpIdWithoutSelf", EmpIdWithoutSelf, SqlDbType.NVarChar)
+            oclsParm.Add("@desig_tran", 1, SqlDbType.Int)
+
+            Dim Dt As New DataTable
+            Dt = oClsDataccess.GetdataTableSp("P_Get_Employee_Filter", oclsParm)
+            Try
+                ddl.ClearSelection()
+                ddl.Items.Clear()
+                ddl.DataSource = Dt
+                ddl.DataValueField = "Emp_id"
+                ddl.DataTextField = "emp_full_name"
+                ddl.DataBind()
+                ddl.Items.Insert(0, New RadComboBoxItem("--SELECT--", "0"))
+                ddl.SelectedIndex = 0
+            Catch ex As Exception
+                Throw ex
+            End Try
+
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+#End Region
+End Class
+
+#End Region
+
+
+#Region "Import"
+
+Public Class clsImportData
+    Dim oClsDataccess As ClsDataccess = New ClsDataccess()
+
+
+    Public Function dt2Sql(ByVal dt As DataTable, ByVal Type As String) As String
+        Dim ErroString As String
+        ErroString = ""
+        Try
+            Dim i As Integer
+            i = 0
+
+            For Each row As DataRow In dt.Rows
+
+                Dim oclsParm As New ColSqlparram
+
+                i = i + 1
+
+                oclsParm.Add("@Emp_id", 0, SqlDbType.Int, ParameterDirection.InputOutput)
+                oclsParm.Add("@Cmp_id", Val(HttpContext.Current.Session("cmp_id")), SqlDbType.Int)
+                oclsParm.Add("@Alpha_Code", 0, SqlDbType.BigInt)
+                oclsParm.Add("@Pay_Frequency", row("Pay Frequency").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@P45Provide", row("P45/P46 to be provided Y/N").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Gender", row("Gender M/F").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Marital_Status", row("Marital Status").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Initial", row("Title").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@First_Name", row("Forename 1").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Last_Name", row("Surname").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Forename2", row("Forename 2").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Forename3", row("Forename 3").ToString().Trim(), SqlDbType.NVarChar)
+                'If row("Date of Birth").ToString <> "" Then
+                oclsParm.Add("@DOB", row("Date of Birth"), SqlDbType.DateTime)
+                'Else
+                '    oclsParm.Add("@DOB", Nothing, SqlDbType.DateTime)
+                'End If
+
+                oclsParm.Add("@Permenent_Address", row("Address 1").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Despencery_address", row("Address 2").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Address3", row("Address 3").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@City", row("Town").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Country", row("Country").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@PinCode", row("Post_Code").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Telephone_No", row("Telephone No").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Mobile_No", row("Mobile No").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Work_Email", row("Email Address").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Emergency_Contact_No", row("Emergency Contact No").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Father_Name", row("Emergency Name").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Relationship", row("Relationship to Employee").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@DOJ", row("Employment Start Date").ToString().Trim(), SqlDbType.DateTime)
+                'If row("TUPE Date").ToString <> "" Then
+                oclsParm.Add("@TUPE_Date", row("TUPE Date"), SqlDbType.DateTime)
+                'Else
+                'oclsParm.Add("@TUPE_Date", Nothing, SqlDbType.DateTime)
+                'End If
+                oclsParm.Add("@NI_no", row("NI Number").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Tax_Code", row("Tax Code").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@W1_M1", row("W1/M1"), SqlDbType.Int)
+                oclsParm.Add("@Ni_Letter", row("NI Letter").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Repaying_student_loan", row("Repaying Student Loan"), SqlDbType.TinyInt)
+                'If row("Repayment Start Date").ToString <> "" Then
+                oclsParm.Add("@Repayment_start_date", row("Repayment Start Date"), SqlDbType.DateTime)
+                'Else
+                '    oclsParm.Add("@Repayment_start_date", Nothing, SqlDbType.DateTime)
+                'End If
+                oclsParm.Add("@Desgination", row("Job Title").ToString().Trim())
+                oclsParm.Add("@Branch", row("Site Location").ToString().Trim())
+                oclsParm.Add("@BankName", row("Bank Name").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Bank_Branch", row("Branch").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@AccountName", row("Account Name").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Sort_Code", row("Sort Code").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Account_No", row("Account Number").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@B_S_Reference", row("B/S Reference").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Annual_Salary", row("Annual Salary"), SqlDbType.Int)
+                oclsParm.Add("@Citizenship", row("Citizenship").ToString().Trim(), SqlDbType.NVarChar)
+                'If row("Visa/ Permit Expiry Date").ToString <> "" Then
+                oclsParm.Add("@Visa_Expire", row("Visa/ Permit Expiry Date"), SqlDbType.DateTime)
+                'Else
+                '    oclsParm.Add("@Visa_Expire", Nothing, SqlDbType.DateTime)
+                'End If
+
+                oclsParm.Add("@SalaryOn", row("SalaryOn").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@State", row("State").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Visa_required_work", row("Work Permit Required").ToString().Trim(), SqlDbType.NVarChar)
+                oclsParm.Add("@Emp_Code", row("Employee Code"), SqlDbType.Int)
+                oclsParm.Add("@Enroll_No", row("Enroll No"), SqlDbType.Int)
+
+                oclsParm.Add("@Tran_Type", "I")
+                Try
+                    oClsDataccess.ExecStoredProcedure("P_M_Employee_Import", oclsParm)
+
+                Catch ex As Exception
+                    ErroString += "Row Id : " + i.ToString + " First Name :" + row("Forename 1").ToString + " Last Name :" + row("Surname").ToString + " Error : " + ex.Message + "<Br/> "
+                    LogHelper.Error("Employee_List:lnkImportData_Click:" + ex.Message)
+                End Try
+            Next
+        Catch ex As Exception
+            Throw ex
+        End Try
+        Return ErroString
+    End Function
+
+    Public Function ImportBranchDetail(ByVal dt As DataTable, ByVal Type As String) As String
+        Dim ErroString As String
+        ErroString = ""
+        Try
+
+            Dim i As Integer
+            i = 0
+            For Each row As DataRow In dt.Rows
+                i = i + 1
+
+                Dim oclsParm As New ColSqlparram
+                oclsParm.Add("@Cmp_id", Val(HttpContext.Current.Session("cmp_id")), SqlDbType.Int)
+                oclsParm.Add("@branch_name", row("Branch_Name"), SqlDbType.NVarChar)
+                oclsParm.Add("@branch_code", row("Branch_Code"), SqlDbType.NVarChar)
+                oclsParm.Add("@Address", row("Address").ToString)
+                oclsParm.Add("@city", row("city").ToString)
+                oclsParm.Add("@State", row("State"), SqlDbType.NVarChar)
+                oclsParm.Add("@Inclued_manager_work", row("Inclued_manager_work"), SqlDbType.TinyInt)
+                oclsParm.Add("@brand_name", row("Brand_Name"), SqlDbType.NVarChar)
+                oclsParm.Add("@Tran_Type", "I")
+                Try
+                    oClsDataccess.ExecStoredProcedure("P_M_Branch_Import", oclsParm)
+                Catch ex As Exception
+                    ErroString += " Row ID : " + i.ToString + " Branch Name : " + row("Branch_Name").ToString + " Branch Code : " + row("Branch_Code").ToString + " Error : " + ex.Message + "<Br/>"
+                    LogHelper.Error("Leave_Opening_Import:lnkImportData_Click:" + ex.Message)
+                End Try
+
+            Next
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+
+        Return ErroString
+    End Function
+
+    Public Function ImportLeaveOpening(ByVal dt As DataTable, ByVal Type As String) As String
+        Dim ErroString As String
+        ErroString = ""
+        Try
+            Dim i As Integer
+            i = 0
+            For Each row As DataRow In dt.Rows
+
+                Dim oclsParm As New ColSqlparram
+
+                i = i + 1
+
+                oclsParm.Add("@Cmp_id", Val(HttpContext.Current.Session("cmp_id")), SqlDbType.Int)
+                'oclsParm.Add("@Emp_id", Val(HttpContext.Current.Session("emp_id")), SqlDbType.Int)
+                oclsParm.Add("@Emp_Code", row("Employee Code"), SqlDbType.NVarChar)
+                oclsParm.Add("@Leave_Code", row("Leave Code"), SqlDbType.NVarChar)
+                oclsParm.Add("@balance", row("Leave Balance"), SqlDbType.NVarChar)
+                oclsParm.Add("@for_date", row("For Date"), SqlDbType.DateTime)
+                oclsParm.Add("@Tran_Type", "I")
+                Try
+                    oClsDataccess.ExecStoredProcedure("P_L_Leave_Opening_Import", oclsParm)
+                Catch ex As Exception
+                    ErroString += "<Br/> ROW_ID : " + i.ToString + " Employee Code :- " + row("Employee Code").ToString + " Leave Code :- " + row("Leave Code").ToString + " Error : " + ex.Message
+                    LogHelper.Error("Leave_Opening_Import:lnkImportData_Click:" + ex.Message)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+
+        Return ErroString
+
+    End Function
+
+    Public Function ImportBudget(ByVal dt As DataTable, ByVal Type As String) As String
+        Dim ErroString As String
+        ErroString = ""
+        Try
+            Dim i As Integer
+            i = 0
+            For Each row As DataRow In dt.Rows
+
+                Dim oclsParm As New ColSqlparram
+                i = i + 1
+                oclsParm.Add("@Cmp_id", Val(HttpContext.Current.Session("cmp_id")), SqlDbType.Int)
+                oclsParm.Add("@Branch_Code", row("Branch Code"))
+                oclsParm.Add("@From_Date", Convert.ToDateTime(row("From Date")).ToString("dd/MM/yyyy"), SqlDbType.DateTime)
+                oclsParm.Add("@To_Date", Convert.ToDateTime(row("To Date")).ToString("dd/MM/yyyy"), SqlDbType.DateTime)
+                oclsParm.Add("@Hours", row("Hours"))
+                oclsParm.Add("@Tran_Type", "I")
+                Try
+                    oClsDataccess.ExecStoredProcedure("P_M_Budget_Import", oclsParm)
+                Catch ex As Exception
+                    ErroString += "Row ID : " + i.ToString + " Branch Code :" + row("Branch Code").ToString + " From Date :" + row("From Date").ToString + " Error : " + ex.Message + "<Br/>"
+                    LogHelper.Error("Budget_List:lnkImportData_Click:" + ex.Message)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+
+        Return ErroString
+
+    End Function
+
+    Public Sub ImportIPDetail(ByVal dt As DataTable, ByVal Type As String)
+        Dim ErroString As String
+        ErroString = ""
+        Try
+            Dim i As Integer
+            i = 0
+
+            For Each row As DataRow In dt.Rows
+
+                Dim oclsParm As New ColSqlparram
+                i = i + 1
+                oclsParm.Add("@Ip_Address", row("Ip_Address"), SqlDbType.NVarChar)
+                oclsParm.Add("@Cmp_id", Val(HttpContext.Current.Session("cmp_id")), SqlDbType.Int)
+                oclsParm.Add("@Branch_Name", row("Branch_Name"), SqlDbType.NVarChar)
+                oclsParm.Add("@Device_No", row("Device_No"), SqlDbType.Int)
+                oclsParm.Add("@Device_Model", row("Device_Model"), SqlDbType.NVarChar)
+                oclsParm.Add("@Is_Active", row("Is_Active"), SqlDbType.Int)
+                oclsParm.Add("@Baud_Rate", row("Baud_Rate"), SqlDbType.Int)
+                oclsParm.Add("@Comm_Key", row("Comm_Key"), SqlDbType.Int)
+                oclsParm.Add("@Comm_Port", row("Comm_Port"), SqlDbType.Int)
+                oclsParm.Add("@Device_Name", row("Device_Name"), SqlDbType.NVarChar)
+                oclsParm.Add("@Device_Type", row("Device_Type"), SqlDbType.NVarChar)
+                oclsParm.Add("@SN", row("SN"), SqlDbType.NVarChar)
+
+                oclsParm.Add("@Tran_Type", "I")
+                Try
+                    oClsDataccess.ExecStoredProcedure("P_M_IP_Import", oclsParm)
+                Catch ex As Exception
+                    ErroString += "Row ID : " + i.ToString + " IP Address :" + row("Ip_Address").ToString + " Branch Name :" + row("Branch_Name").ToString + " Error : " + ex.Message + "<Br/>"
+                    LogHelper.Error("IP_List:ImportIPDetail:" + ex.Message)
+                End Try
+
+            Next
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+    Public Function Employee_Branch(ByVal dt As DataTable, ByVal Type As String) As String
+        Dim ErroString As String
+        ErroString = ""
+        Try
+            Dim i As Integer
+            i = 0
+            For Each row As DataRow In dt.Rows
+
+                Dim oclsParm As New ColSqlparram
+                i = i + 1
+                oclsParm.Add("@Cmp_id", Val(HttpContext.Current.Session("cmp_id")), SqlDbType.Int)
+                oclsParm.Add("@Alpha_code", row("Employee Code"))
+                oclsParm.Add("@N_Branch", row("Notification Branch"))
+                oclsParm.Add("@Roll_Branch", row("Branch Role"))
+                oclsParm.Add("@Tran_Type", "U")
+                Try
+                    oClsDataccess.ExecStoredProcedure("P_M_Employee_Branch_Import", oclsParm)
+                Catch ex As Exception
+                    ErroString += "Row ID : " + i.ToString + " Employee Code :" + row("Employee Code").ToString + " Error : " + ex.Message + "<Br/>"
+                    LogHelper.Error("All_Import.aspx:Employee_Branch:" + ex.Message)
+                End Try
+            Next
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+
+        Return ErroString
+
+    End Function
+
+
+    Public Function Employee_Terms_Condition(ByVal dt As DataTable, ByVal Type As String) As String
+        Dim ErroString As String
+        ErroString = ""
+        Try
+            Dim i As Integer
+            i = 0
+            For Each row As DataRow In dt.Rows
+
+                Dim oclsParm As New ColSqlparram
+
+                i = i + 1
+                If row("Alpha_Code").ToString() <> "" Then
+                    oclsParm.Add("@Cmp_id", Val(HttpContext.Current.Session("cmp_id")), SqlDbType.Int)
+                    oclsParm.Add("@Alpha_code", row("Alpha_Code"))
+                    oclsParm.Add("@Effective_date", row("Effective_Date"), SqlDbType.DateTime)
+                    oclsParm.Add("@Branch", row("Branch"))
+                    oclsParm.Add("@Grade", row("Grade"))
+                    oclsParm.Add("@Designation", row("Designation"))
+                    oclsParm.Add("@Department", row("Department"))
+                    oclsParm.Add("@Basic", Val(row("New_Basic")), SqlDbType.Float)
+                    oclsParm.Add("@salary_on", row("Salary_On"))
+                    oclsParm.Add("@Tran_Type", "I")
+                    oclsParm.Add("@Login_id", Val(HttpContext.Current.Session("Login_id")), SqlDbType.Int)
+                    oclsParm.Add("@ip_address", HttpContext.Current.Request.UserHostAddress.ToString())
+
+                    Try
+                        oClsDataccess.ExecStoredProcedure("P_M_Employee_Transfer_Import", oclsParm)
+                    Catch ex As Exception
+                        ErroString += "<Br/> ROW_ID : " + i.ToString + " Employee Code :- " + row("Code").ToString + " Effective Date :- " + row("Effective_Date").ToString + " Error : " + ex.Message
+                        LogHelper.Error("Change_terms_condition_Import:Employee_Terms_Condition:" + ex.Message)
+                    End Try
+                End If
+            Next
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+
+        Return ErroString
+
+    End Function
+
+    Public Function Employee_Terms_Condition_Basic(ByVal dt As DataTable, ByVal Type As String) As String
+        Dim ErroString As String
+        ErroString = ""
+        Try
+            Dim i As Integer
+            i = 0
+            For Each row As DataRow In dt.Rows
+
+                Dim oclsParm As New ColSqlparram
+
+                i = i + 1
+                If row("Alpha_Code").ToString() <> "" Then
+                    oclsParm.Add("@Cmp_id", Val(HttpContext.Current.Session("cmp_id")), SqlDbType.Int)
+                    oclsParm.Add("@Alpha_code", row("Alpha_Code"))
+                    oclsParm.Add("@Effective_date", row("Effective_Date"), SqlDbType.DateTime)
+                    oclsParm.Add("@Basic", Val(row("New_Basic")), SqlDbType.Float)
+                    oclsParm.Add("@Tran_Type", "I")
+                    oclsParm.Add("@Login_id", Val(HttpContext.Current.Session("Login_id")), SqlDbType.Int)
+                    oclsParm.Add("@ip_address", HttpContext.Current.Request.UserHostAddress.ToString())
+
+                    Try
+                        oClsDataccess.ExecStoredProcedure("P_M_Employee_Transfer_Basic_Import", oclsParm)
+                    Catch ex As Exception
+                        ErroString += "<Br/> ROW_ID : " + i.ToString + " Employee Code :- " + row("Code").ToString + " Effective Date :- " + row("Effective_Date").ToString + " Error : " + ex.Message
+                        LogHelper.Error("Change_terms_condition_Import:Employee_Terms_Condition_Basic:" + ex.Message)
+                    End Try
+                End If
+            Next
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+
+        Return ErroString
+
+    End Function
+
+    Public Function Employee_Immigration(ByVal dt As DataTable, ByVal Type As String) As String
+        Dim ErroString As String
+        ErroString = ""
+        Try
+            Dim i As Integer
+            i = 0
+            For Each row As DataRow In dt.Rows
+
+                Dim oclsParm As New ColSqlparram
+
+                i = i + 1
+                If row("Alpha_Code").ToString() <> "" Then
+                    oclsParm.Add("@Cmp_id", Val(HttpContext.Current.Session("cmp_id")), SqlDbType.Int)
+                    oclsParm.Add("@Tran_id", Val(0), SqlDbType.Int)
+                    oclsParm.Add("@Alpha_Code", row("Alpha_Code"))
+                    oclsParm.Add("@Type", row("Type"))
+                    oclsParm.Add("@Country", row("Country"))
+                    oclsParm.Add("@No", row("Number"))
+                    oclsParm.Add("@Issue_Status", row("Issue_Status"))
+                    oclsParm.Add("@Issue_Date", row("Issue_Date"), SqlDbType.DateTime)
+                    oclsParm.Add("@Expiry_Date", row("Expiry_Date"), SqlDbType.DateTime)
+                    oclsParm.Add("@Review_Date", row("Review_Date"), SqlDbType.DateTime)
+                    oclsParm.Add("@Remarks", row("Comments"))
+                    Dim HourLimit As String
+                    HourLimit = ""
+                    If row("Hours_Limit").ToString <> "0000" And row("Hours_Limit").ToString <> "00" And row("Hours_Limit").ToString <> "0" And row("Hours_Limit").ToString <> "000" And row("Hours_Limit").ToString <> ":" Then
+                        HourLimit = row("Hours_Limit").ToString
+                    End If
+                    oclsParm.Add("@Hours_Limit", HourLimit)
+                    oclsParm.Add("@Tran_Type", "I")
+                    oclsParm.Add("@Login_id", Val(HttpContext.Current.Session("Login_id")), SqlDbType.Int)
+                    oclsParm.Add("@ip_address", HttpContext.Current.Request.UserHostAddress.ToString())
+
+                    Try
+                        oClsDataccess.ExecStoredProcedure("P_E_Immigration_Import", oclsParm)
+                    Catch ex As Exception
+                        ErroString += "<Br/> ROW_ID : " + i.ToString + " Employee Code :- " + row("Alpha_Code").ToString + " Issue Date :- " + row("Issue_Date").ToString + " Error : " + ex.Message
+                        LogHelper.Error("Employee_Immigration_Import:Employee_Immigration:" + ex.Message)
+                    End Try
+                End If
+            Next
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+
+        Return ErroString
+
+    End Function
+
+End Class
+
+#End Region
+
+

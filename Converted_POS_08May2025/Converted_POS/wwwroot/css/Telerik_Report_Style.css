@@ -1,0 +1,37 @@
+﻿    .Disabled
+        {
+            display:none ;
+        }
+      
+        .ReportToolbar {
+    font-size: 8pt ! important;
+    font-family: Verdana ! important;
+    height: 28px ! important;
+    border: 1px solid ! important;
+   /* background-image: url("/Telerik.ReportViewer.axd?optype=Resource&version=10.0.16.204&name=Skins.Default.Background.gif") !important; */
+}
+        ReportToolbar INPUT, .ReportToolbar SELECT, .ReportToolbar BUTTON {
+    font-size: 8pt ! important;
+    font-family: Verdana ! important;
+}
+        .ImageButtonCell {
+    padding: 3px ! important;
+}
+        .PageNumberText {
+    font-size: 8pt ! important;
+    font-family: Verdana ! important;
+    padding-top: 1px ! important;
+    margin-left: 6px ! important;
+}
+       
+        .ReportToolbarGroup {
+    margin-left: 8px  ! important;
+    height: 26px  ! important;
+    padding-bottom: 2px  ! important;
+    padding-top: 2px  ! important;
+} 
+        .InputButtonClass {
+    display: block ! important;
+    margin-top: 5px ! important;
+    padding-top: 0 !important;
+}

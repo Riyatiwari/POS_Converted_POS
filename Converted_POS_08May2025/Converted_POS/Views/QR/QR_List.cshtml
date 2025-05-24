@@ -1,0 +1,144 @@
+﻿@page
+@model Converted_POS.Pages.Utility.QR_ListModel
+ 
+
+@section link {
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Utility/QR_List">QR List</a></li>
+        </ol>
+    </div>
+
+    <link href="~/js/vendor2/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/fonts/nunito.css" rel="stylesheet" />
+    <script src="~/js/vendors/googleapis/jquery.min.js"></script>
+    <script src="~/js/demo/datatables-demo.js"></script>
+
+    <style type="text/css">
+        .commonButton {
+            width: 150px;
+            height: 30px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            // Generate QR Code Button Click Handler
+            $('.generateCodeButton').click(function () {
+                var tillUUID = $(this).data('tilluuid');
+
+                $.ajax({
+                    url: '@Url.Action("GenerateQRCode", "QRController")',
+                    method: 'POST',
+                    data: { tillUUID: tillUUID },
+                    success: function (response) {
+                        if (response.success) {
+                            // Update the image with the generated QR code
+                            $('#imgQR_' + tillUUID).attr('src', 'data:image/png;base64,' + response.qrCodeBase64);
+                            $('#generatedCode_' + tillUUID).html('QR Code Generated');
+                        } else {
+                            console.error('Error generating QR code:', response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error in AJAX request:', error);
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+
+<div class="col-lg-12">
+    <div class="panel panel-yellow">
+        <div class="panel-heading">QR List</div>
+        <div class="panel-body pan">
+            <div class="form-body pal">
+                <div class="row">
+                    <!-- New QR Button -->
+                    <div class="col-lg-12">
+                        <a asp-page="/Configuration/Allergy_Master" class="btn btn-primary">
+                            <i class="fa fa-plus"></i>&nbsp;New QR
+                        </a>
+                    </div>
+                </div>
+                <br />
+
+                <div class="row" id="divPGroup" runat="server">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="Lsummary" width="99%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Till Name</th>
+                                        <th>TillUUID</th>
+                                        <th>Location Name</th>
+                                        <th>Venue Name</th>
+                                        <th>Text QRcode</th>
+                                        <th>Link QRcode</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.QR)
+                                    {
+                                        <tr>
+                                            <td ondblclick="window.location = '/Utility/QR_List?ID=@item.machine_id'">
+                                                &nbsp;@Html.DisplayFor(modelItem => item.machine_name)
+                                            </td>
+                                            <td ondblclick="window.location = '/Utility/QR_List?ID=@item.machine_id'">
+                                                &nbsp;@Html.DisplayFor(modelItem => item.TillUUID)
+                                            </td>
+                                            <td ondblclick="window.location = '/Utility/QR_List?ID=@item.machine_id'">
+                                                &nbsp;@Html.DisplayFor(modelItem => item.location_name)
+                                            </td>
+                                            <td ondblclick="window.location = '/Utility/QR_List?ID=@item.machine_id'">
+                                                &nbsp;@Html.DisplayFor(modelItem => item.venue_name)
+                                            </td>
+                                            <td>
+                                                <!-- Display Initial QR Code if Available -->
+                                                <img id="imgQR_@item.TillUUID"
+                                                     src="data:image/png;base64,@item.QRCodeBytes"
+                                                     alt="QR Code" width="250" height="250" />
+                                            </td>
+                                            <td>
+                                                <!-- Link QR Code (can be added if required) -->
+                                            </td>
+                                            <td>
+                                                @if (string.IsNullOrEmpty(item.TillUUID))
+                                                {
+                                                    <button class="generateCodeButton" data-tilluuid="@item.TillUUID">Generate QR</button>
+                                                    <div class="generatedCode" id="generatedCode_@item.TillUUID"></div>
+                                                }
+                                                else
+                                                {
+                                                    <span>QR Code Generated</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Till Name</th>
+                                        <th>TillUUID</th>
+                                        <th>Location Name</th>
+                                        <th>Venue Name</th>
+                                        <th>Text QRcode</th>
+                                        <th>Link QRcode</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

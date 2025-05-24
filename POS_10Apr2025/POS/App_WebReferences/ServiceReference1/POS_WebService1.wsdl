@@ -1,0 +1,4251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="Price_By_Size">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Size_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Price_By_SizeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Price_By_SizeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Ingredient_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="product_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Ingredient_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Ingredient_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Condiment_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Condiment_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Condiment_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_Condiment_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="product_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_Condiment_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Product_Condiment_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Size_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="product_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Size_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Size_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Payment_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Payment_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Payment_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Payment_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Printer_Detail_By_Product">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Product_Id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Printer_Detail_By_ProductResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Printer_Detail_By_ProductResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Printer_Detail_By_Machine">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Printer_Detail_By_MachineResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Printer_Detail_By_MachineResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Device_List_With_Payment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Device_List_With_PaymentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Device_List_With_PaymentResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="T_Payment_with_card">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="payment_card_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="sale_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="card_holder_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="expiration_date" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="pan" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="card_type" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="amount" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="type_ISO_currency_code" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="date1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="status_message" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="transaction_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="payment_account_data_token" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="retrival_reference_number" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="merchant_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="terminal_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="T_Payment_with_cardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="T_Payment_with_cardResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Login">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="user" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IP_Address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoginResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Customer_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Customer_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Customer_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Customer_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="customer_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Customer_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Customer_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Customer_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="customer_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="first_name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="last_name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contact_no" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="address" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="country_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="state_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="city_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="postal_code" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_active" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="other_id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Customer_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Customer_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="User_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="User_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="User_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="User_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="staff_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="User_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="User_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="User_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="staff_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="staff_code" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="joining_date" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contact_no" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="address" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="country_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="state_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="city_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="postal_code" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_active" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="role_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="till_code" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="till_active" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="photo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="other_id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Authentication_Code" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="User_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="User_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_Group_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_Group_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Product_Group_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_Group_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="category_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_Group_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Product_Group_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_Group_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Category_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="key_map_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_active" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="sorting_no" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_Group_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Product_Group_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Printer_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Printer_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Printer_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Printer_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="printer_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Printer_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Printer_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Printer_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="printer_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="palias" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_active" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_product_small_large" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_condiment_small_large" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Printer_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Printer_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Department_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Department_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Department_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Course_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Course_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Course_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="location_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Product_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="product_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Product_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="product_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Category_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="code" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="price" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="barcode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_active" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="department_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="course_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="printer_id" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="key_map_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="List" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Actual_Price" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="Tax_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Tax" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="other_id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="other_size" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Is_Ingredient" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Is_Condiment" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Base" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Unit_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Product_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Change_Password">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="old_pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="new_pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Change_PasswordResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Change_PasswordResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Role_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Role_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Role_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Countries_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Countries_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Countries_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="States_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Country_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="States_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="States_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Cities_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="State_Id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Cities_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Cities_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_By_CatId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_Id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="category_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_By_CatIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Product_By_CatIdResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Function_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Function_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Function_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sales_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sales_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sales_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TSales_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="sales_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TSales_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TSales_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sales_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="sales_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="total_amount" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="total_discount" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="net_amount" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="change" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="tax" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ref_id" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="actual_total_amount" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="temp_sale_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_return" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="created_date" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="modify_date" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="mode" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="value" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="location_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="input_amount" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="sale_type" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sales_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sales_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TSales_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="tsales_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="sales_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="sales_total_amount" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="product_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="sales_discount" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="quntity" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="price" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="sales_net_amount" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="sales_tax_amount" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="sales_actual_price" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="created_date" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="modify_date" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="location_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TSales_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TSales_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Table_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Table_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Table_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Table_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="table_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="min_cover" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="max_cover" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_active" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_open" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Table_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Table_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Key_Map_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Key_Map_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Key_Map_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_Group_By_KeyMapId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_Id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="key_map_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_Group_By_KeyMapIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Product_Group_By_KeyMapIdResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_By_KeyMapId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_Id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="key_map_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_By_KeyMapIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Product_By_KeyMapIdResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Location_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Location_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Location_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Location_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Location_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="code" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="city_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="state_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="country_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="till_auto_log_off" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_active" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Location_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Location_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Machine_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Machine_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Machine_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Machine_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="serial_no" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="code" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="model" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="location_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_assign" type="s:unsignedByte" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_minipos" type="s:unsignedByte" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_active" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Machine_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Machine_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Device_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Device_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Device_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Device_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="device_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serial_no" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="code" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Device_Type_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_active" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="printer_ip_address" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="port" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="network_type" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="vender_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="budrate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="device_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Width" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Device_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Device_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_ProductGroup_keymapId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="keymap_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Product_ProductGroup_keymapIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Product_ProductGroup_keymapIdResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SignIn">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="till_code" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="IP_Address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Authentication_Code" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SignInResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SignInResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Upd_StaffImg">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Staff_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Photo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Upd_StaffImgResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Upd_StaffImgResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Key_Map_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="key_map_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_active" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Key_Map_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Key_Map_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sales_By_Date">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="date1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="location_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sales_By_DateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sales_By_DateResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Tax_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Tax_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Mode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Value" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="Effective_Date" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="Is_active" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Tax_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Tax_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Tax_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Tax_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Tax_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sales_Z_Report">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="date1" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="date2" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="location_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sales_Z_ReportResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sales_Z_ReportResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Company_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Company_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Company_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Company_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Company_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Company_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Company_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TSales_By_Date">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="date1" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="location_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TSales_By_DateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TSales_By_DateResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TSales_Master1">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="values" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TSales_Master1Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TSales_Master1Result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Table_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="table_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Table_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Table_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Machine_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Machine_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Machine_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Location_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="location_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Location_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Location_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="KeyMap_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Key_map_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="KeyMap_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="KeyMap_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Device_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="device_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Device_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Device_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Settings">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SettingsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SettingsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Role_Wise_Menus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Role_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Type" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Role_Wise_MenusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Role_Wise_MenusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Role_Wise_Form">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Role_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Form_Name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Role_Wise_FormResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Role_Wise_FormResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Venue_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Venue_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Venue_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Venue_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Venue_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Venue_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Venue_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="venue_name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mac_id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="print_receipt" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="print_duplicate_receipt" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_active" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Venue_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Venue_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sales_Type_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Sales_Type_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sales_Type_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Machine_Assign_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="machine_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_assign" type="s:unsignedByte" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Machine_Assign_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Machine_Assign_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Location_By_Venue">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="venue_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Location_By_VenueResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Location_By_VenueResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Machine_By_Location">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="location_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Machine_By_LocationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Machine_By_LocationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Prefix_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Prefix_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Prefix" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_active" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Prefix_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Prefix_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Prefix_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Prefix_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Prefix_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Prefix_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Prefix_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Prefix_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Prefix_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Device_Type_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Device_Type_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Device_Type_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Device_Type_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Device_Type_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Device_Type_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Device_Type_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Device_Type_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Device_Type_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Device_Type" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_active" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Device_Type_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Device_Type_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Barcode_List">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Barcode_ListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Barcode_ListResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Barcode_Details">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Barcode_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Barcode_DetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Barcode_DetailsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Barcode_Master">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Barcode_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Barcode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="product_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="login_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ip_address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Tran_Type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Size_Id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="is_active" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Barcode_MasterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Barcode_MasterResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Barcode_By_Product">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="authUsername" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cmp_id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="product_id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="store_name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Barcode_By_ProductResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Barcode_By_ProductResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="Price_By_SizeSoapIn">
+    <wsdl:part name="parameters" element="tns:Price_By_Size" />
+  </wsdl:message>
+  <wsdl:message name="Price_By_SizeSoapOut">
+    <wsdl:part name="parameters" element="tns:Price_By_SizeResponse" />
+  </wsdl:message>
+  <wsdl:message name="Ingredient_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Ingredient_List" />
+  </wsdl:message>
+  <wsdl:message name="Ingredient_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Ingredient_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Condiment_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Condiment_List" />
+  </wsdl:message>
+  <wsdl:message name="Condiment_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Condiment_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Product_Condiment_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Product_Condiment_List" />
+  </wsdl:message>
+  <wsdl:message name="Product_Condiment_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Product_Condiment_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Size_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Size_List" />
+  </wsdl:message>
+  <wsdl:message name="Size_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Size_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Payment_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Payment_List" />
+  </wsdl:message>
+  <wsdl:message name="Payment_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Payment_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Printer_Detail_By_ProductSoapIn">
+    <wsdl:part name="parameters" element="tns:Printer_Detail_By_Product" />
+  </wsdl:message>
+  <wsdl:message name="Printer_Detail_By_ProductSoapOut">
+    <wsdl:part name="parameters" element="tns:Printer_Detail_By_ProductResponse" />
+  </wsdl:message>
+  <wsdl:message name="Printer_Detail_By_MachineSoapIn">
+    <wsdl:part name="parameters" element="tns:Printer_Detail_By_Machine" />
+  </wsdl:message>
+  <wsdl:message name="Printer_Detail_By_MachineSoapOut">
+    <wsdl:part name="parameters" element="tns:Printer_Detail_By_MachineResponse" />
+  </wsdl:message>
+  <wsdl:message name="Device_List_With_PaymentSoapIn">
+    <wsdl:part name="parameters" element="tns:Device_List_With_Payment" />
+  </wsdl:message>
+  <wsdl:message name="Device_List_With_PaymentSoapOut">
+    <wsdl:part name="parameters" element="tns:Device_List_With_PaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="T_Payment_with_cardSoapIn">
+    <wsdl:part name="parameters" element="tns:T_Payment_with_card" />
+  </wsdl:message>
+  <wsdl:message name="T_Payment_with_cardSoapOut">
+    <wsdl:part name="parameters" element="tns:T_Payment_with_cardResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapIn">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="Customer_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Customer_List" />
+  </wsdl:message>
+  <wsdl:message name="Customer_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Customer_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Customer_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:Customer_Details" />
+  </wsdl:message>
+  <wsdl:message name="Customer_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:Customer_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Customer_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Customer_Master" />
+  </wsdl:message>
+  <wsdl:message name="Customer_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Customer_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="User_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:User_List" />
+  </wsdl:message>
+  <wsdl:message name="User_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:User_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="User_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:User_Details" />
+  </wsdl:message>
+  <wsdl:message name="User_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:User_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="User_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:User_Master" />
+  </wsdl:message>
+  <wsdl:message name="User_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:User_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Product_Group_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Product_Group_List" />
+  </wsdl:message>
+  <wsdl:message name="Product_Group_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Product_Group_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Product_Group_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:Product_Group_Details" />
+  </wsdl:message>
+  <wsdl:message name="Product_Group_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:Product_Group_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Product_Group_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Product_Group_Master" />
+  </wsdl:message>
+  <wsdl:message name="Product_Group_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Product_Group_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Printer_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Printer_List" />
+  </wsdl:message>
+  <wsdl:message name="Printer_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Printer_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Printer_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:Printer_Details" />
+  </wsdl:message>
+  <wsdl:message name="Printer_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:Printer_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Printer_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Printer_Master" />
+  </wsdl:message>
+  <wsdl:message name="Printer_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Printer_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Department_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Department_List" />
+  </wsdl:message>
+  <wsdl:message name="Department_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Department_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Course_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Course_List" />
+  </wsdl:message>
+  <wsdl:message name="Course_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Course_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Product_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Product_List" />
+  </wsdl:message>
+  <wsdl:message name="Product_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Product_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Product_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:Product_Details" />
+  </wsdl:message>
+  <wsdl:message name="Product_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:Product_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Product_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Product_Master" />
+  </wsdl:message>
+  <wsdl:message name="Product_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Product_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Change_PasswordSoapIn">
+    <wsdl:part name="parameters" element="tns:Change_Password" />
+  </wsdl:message>
+  <wsdl:message name="Change_PasswordSoapOut">
+    <wsdl:part name="parameters" element="tns:Change_PasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="Role_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Role_List" />
+  </wsdl:message>
+  <wsdl:message name="Role_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Role_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Countries_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Countries_List" />
+  </wsdl:message>
+  <wsdl:message name="Countries_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Countries_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="States_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:States_List" />
+  </wsdl:message>
+  <wsdl:message name="States_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:States_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Cities_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Cities_List" />
+  </wsdl:message>
+  <wsdl:message name="Cities_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Cities_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Product_By_CatIdSoapIn">
+    <wsdl:part name="parameters" element="tns:Product_By_CatId" />
+  </wsdl:message>
+  <wsdl:message name="Product_By_CatIdSoapOut">
+    <wsdl:part name="parameters" element="tns:Product_By_CatIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="Function_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Function_List" />
+  </wsdl:message>
+  <wsdl:message name="Function_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Function_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sales_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Sales_List" />
+  </wsdl:message>
+  <wsdl:message name="Sales_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Sales_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="TSales_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:TSales_List" />
+  </wsdl:message>
+  <wsdl:message name="TSales_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:TSales_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sales_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Sales_Master" />
+  </wsdl:message>
+  <wsdl:message name="Sales_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Sales_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="TSales_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:TSales_Master" />
+  </wsdl:message>
+  <wsdl:message name="TSales_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:TSales_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Table_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Table_List" />
+  </wsdl:message>
+  <wsdl:message name="Table_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Table_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Table_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Table_Master" />
+  </wsdl:message>
+  <wsdl:message name="Table_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Table_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Key_Map_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Key_Map_List" />
+  </wsdl:message>
+  <wsdl:message name="Key_Map_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Key_Map_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Product_Group_By_KeyMapIdSoapIn">
+    <wsdl:part name="parameters" element="tns:Product_Group_By_KeyMapId" />
+  </wsdl:message>
+  <wsdl:message name="Product_Group_By_KeyMapIdSoapOut">
+    <wsdl:part name="parameters" element="tns:Product_Group_By_KeyMapIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="Product_By_KeyMapIdSoapIn">
+    <wsdl:part name="parameters" element="tns:Product_By_KeyMapId" />
+  </wsdl:message>
+  <wsdl:message name="Product_By_KeyMapIdSoapOut">
+    <wsdl:part name="parameters" element="tns:Product_By_KeyMapIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="Location_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Location_List" />
+  </wsdl:message>
+  <wsdl:message name="Location_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Location_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Location_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Location_Master" />
+  </wsdl:message>
+  <wsdl:message name="Location_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Location_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Machine_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Machine_List" />
+  </wsdl:message>
+  <wsdl:message name="Machine_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Machine_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Machine_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Machine_Master" />
+  </wsdl:message>
+  <wsdl:message name="Machine_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Machine_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Device_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Device_List" />
+  </wsdl:message>
+  <wsdl:message name="Device_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Device_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Device_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Device_Master" />
+  </wsdl:message>
+  <wsdl:message name="Device_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Device_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Product_ProductGroup_keymapIdSoapIn">
+    <wsdl:part name="parameters" element="tns:Product_ProductGroup_keymapId" />
+  </wsdl:message>
+  <wsdl:message name="Product_ProductGroup_keymapIdSoapOut">
+    <wsdl:part name="parameters" element="tns:Product_ProductGroup_keymapIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="SignInSoapIn">
+    <wsdl:part name="parameters" element="tns:SignIn" />
+  </wsdl:message>
+  <wsdl:message name="SignInSoapOut">
+    <wsdl:part name="parameters" element="tns:SignInResponse" />
+  </wsdl:message>
+  <wsdl:message name="Upd_StaffImgSoapIn">
+    <wsdl:part name="parameters" element="tns:Upd_StaffImg" />
+  </wsdl:message>
+  <wsdl:message name="Upd_StaffImgSoapOut">
+    <wsdl:part name="parameters" element="tns:Upd_StaffImgResponse" />
+  </wsdl:message>
+  <wsdl:message name="Key_Map_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Key_Map_Master" />
+  </wsdl:message>
+  <wsdl:message name="Key_Map_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Key_Map_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sales_By_DateSoapIn">
+    <wsdl:part name="parameters" element="tns:Sales_By_Date" />
+  </wsdl:message>
+  <wsdl:message name="Sales_By_DateSoapOut">
+    <wsdl:part name="parameters" element="tns:Sales_By_DateResponse" />
+  </wsdl:message>
+  <wsdl:message name="Tax_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Tax_Master" />
+  </wsdl:message>
+  <wsdl:message name="Tax_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Tax_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Tax_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Tax_List" />
+  </wsdl:message>
+  <wsdl:message name="Tax_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Tax_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sales_Z_ReportSoapIn">
+    <wsdl:part name="parameters" element="tns:Sales_Z_Report" />
+  </wsdl:message>
+  <wsdl:message name="Sales_Z_ReportSoapOut">
+    <wsdl:part name="parameters" element="tns:Sales_Z_ReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="Company_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:Company_Details" />
+  </wsdl:message>
+  <wsdl:message name="Company_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:Company_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Company_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Company_List" />
+  </wsdl:message>
+  <wsdl:message name="Company_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Company_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="TSales_By_DateSoapIn">
+    <wsdl:part name="parameters" element="tns:TSales_By_Date" />
+  </wsdl:message>
+  <wsdl:message name="TSales_By_DateSoapOut">
+    <wsdl:part name="parameters" element="tns:TSales_By_DateResponse" />
+  </wsdl:message>
+  <wsdl:message name="TSales_Master1SoapIn">
+    <wsdl:part name="parameters" element="tns:TSales_Master1" />
+  </wsdl:message>
+  <wsdl:message name="TSales_Master1SoapOut">
+    <wsdl:part name="parameters" element="tns:TSales_Master1Response" />
+  </wsdl:message>
+  <wsdl:message name="Table_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:Table_Details" />
+  </wsdl:message>
+  <wsdl:message name="Table_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:Table_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Machine_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:Machine_Details" />
+  </wsdl:message>
+  <wsdl:message name="Machine_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:Machine_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Location_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:Location_Details" />
+  </wsdl:message>
+  <wsdl:message name="Location_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:Location_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="KeyMap_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:KeyMap_Details" />
+  </wsdl:message>
+  <wsdl:message name="KeyMap_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:KeyMap_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Device_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:Device_Details" />
+  </wsdl:message>
+  <wsdl:message name="Device_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:Device_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SettingsSoapIn">
+    <wsdl:part name="parameters" element="tns:Settings" />
+  </wsdl:message>
+  <wsdl:message name="SettingsSoapOut">
+    <wsdl:part name="parameters" element="tns:SettingsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Role_Wise_MenusSoapIn">
+    <wsdl:part name="parameters" element="tns:Role_Wise_Menus" />
+  </wsdl:message>
+  <wsdl:message name="Role_Wise_MenusSoapOut">
+    <wsdl:part name="parameters" element="tns:Role_Wise_MenusResponse" />
+  </wsdl:message>
+  <wsdl:message name="Role_Wise_FormSoapIn">
+    <wsdl:part name="parameters" element="tns:Role_Wise_Form" />
+  </wsdl:message>
+  <wsdl:message name="Role_Wise_FormSoapOut">
+    <wsdl:part name="parameters" element="tns:Role_Wise_FormResponse" />
+  </wsdl:message>
+  <wsdl:message name="Venue_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Venue_List" />
+  </wsdl:message>
+  <wsdl:message name="Venue_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Venue_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Venue_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:Venue_Details" />
+  </wsdl:message>
+  <wsdl:message name="Venue_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:Venue_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Venue_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Venue_Master" />
+  </wsdl:message>
+  <wsdl:message name="Venue_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Venue_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Sales_Type_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Sales_Type_List" />
+  </wsdl:message>
+  <wsdl:message name="Sales_Type_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Sales_Type_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Machine_Assign_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:Machine_Assign_Details" />
+  </wsdl:message>
+  <wsdl:message name="Machine_Assign_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:Machine_Assign_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Location_By_VenueSoapIn">
+    <wsdl:part name="parameters" element="tns:Location_By_Venue" />
+  </wsdl:message>
+  <wsdl:message name="Location_By_VenueSoapOut">
+    <wsdl:part name="parameters" element="tns:Location_By_VenueResponse" />
+  </wsdl:message>
+  <wsdl:message name="Machine_By_LocationSoapIn">
+    <wsdl:part name="parameters" element="tns:Machine_By_Location" />
+  </wsdl:message>
+  <wsdl:message name="Machine_By_LocationSoapOut">
+    <wsdl:part name="parameters" element="tns:Machine_By_LocationResponse" />
+  </wsdl:message>
+  <wsdl:message name="Prefix_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Prefix_Master" />
+  </wsdl:message>
+  <wsdl:message name="Prefix_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Prefix_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Prefix_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Prefix_List" />
+  </wsdl:message>
+  <wsdl:message name="Prefix_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Prefix_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Prefix_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:Prefix_Details" />
+  </wsdl:message>
+  <wsdl:message name="Prefix_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:Prefix_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Device_Type_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Device_Type_List" />
+  </wsdl:message>
+  <wsdl:message name="Device_Type_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Device_Type_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Device_Type_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:Device_Type_Details" />
+  </wsdl:message>
+  <wsdl:message name="Device_Type_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:Device_Type_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Device_Type_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Device_Type_Master" />
+  </wsdl:message>
+  <wsdl:message name="Device_Type_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Device_Type_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Barcode_ListSoapIn">
+    <wsdl:part name="parameters" element="tns:Barcode_List" />
+  </wsdl:message>
+  <wsdl:message name="Barcode_ListSoapOut">
+    <wsdl:part name="parameters" element="tns:Barcode_ListResponse" />
+  </wsdl:message>
+  <wsdl:message name="Barcode_DetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:Barcode_Details" />
+  </wsdl:message>
+  <wsdl:message name="Barcode_DetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:Barcode_DetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="Barcode_MasterSoapIn">
+    <wsdl:part name="parameters" element="tns:Barcode_Master" />
+  </wsdl:message>
+  <wsdl:message name="Barcode_MasterSoapOut">
+    <wsdl:part name="parameters" element="tns:Barcode_MasterResponse" />
+  </wsdl:message>
+  <wsdl:message name="Barcode_By_ProductSoapIn">
+    <wsdl:part name="parameters" element="tns:Barcode_By_Product" />
+  </wsdl:message>
+  <wsdl:message name="Barcode_By_ProductSoapOut">
+    <wsdl:part name="parameters" element="tns:Barcode_By_ProductResponse" />
+  </wsdl:message>
+  <wsdl:portType name="POS_WebServiceSoap">
+    <wsdl:operation name="Price_By_Size">
+      <wsdl:input message="tns:Price_By_SizeSoapIn" />
+      <wsdl:output message="tns:Price_By_SizeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Ingredient_List">
+      <wsdl:input message="tns:Ingredient_ListSoapIn" />
+      <wsdl:output message="tns:Ingredient_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Condiment_List">
+      <wsdl:input message="tns:Condiment_ListSoapIn" />
+      <wsdl:output message="tns:Condiment_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Product_Condiment_List">
+      <wsdl:input message="tns:Product_Condiment_ListSoapIn" />
+      <wsdl:output message="tns:Product_Condiment_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Size_List">
+      <wsdl:input message="tns:Size_ListSoapIn" />
+      <wsdl:output message="tns:Size_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Payment_List">
+      <wsdl:input message="tns:Payment_ListSoapIn" />
+      <wsdl:output message="tns:Payment_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Printer_Detail_By_Product">
+      <wsdl:input message="tns:Printer_Detail_By_ProductSoapIn" />
+      <wsdl:output message="tns:Printer_Detail_By_ProductSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Printer_Detail_By_Machine">
+      <wsdl:input message="tns:Printer_Detail_By_MachineSoapIn" />
+      <wsdl:output message="tns:Printer_Detail_By_MachineSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Device_List_With_Payment">
+      <wsdl:input message="tns:Device_List_With_PaymentSoapIn" />
+      <wsdl:output message="tns:Device_List_With_PaymentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="T_Payment_with_card">
+      <wsdl:input message="tns:T_Payment_with_cardSoapIn" />
+      <wsdl:output message="tns:T_Payment_with_cardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <wsdl:input message="tns:LoginSoapIn" />
+      <wsdl:output message="tns:LoginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Customer_List">
+      <wsdl:input message="tns:Customer_ListSoapIn" />
+      <wsdl:output message="tns:Customer_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Customer_Details">
+      <wsdl:input message="tns:Customer_DetailsSoapIn" />
+      <wsdl:output message="tns:Customer_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Customer_Master">
+      <wsdl:input message="tns:Customer_MasterSoapIn" />
+      <wsdl:output message="tns:Customer_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="User_List">
+      <wsdl:input message="tns:User_ListSoapIn" />
+      <wsdl:output message="tns:User_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="User_Details">
+      <wsdl:input message="tns:User_DetailsSoapIn" />
+      <wsdl:output message="tns:User_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="User_Master">
+      <wsdl:input message="tns:User_MasterSoapIn" />
+      <wsdl:output message="tns:User_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Product_Group_List">
+      <wsdl:input message="tns:Product_Group_ListSoapIn" />
+      <wsdl:output message="tns:Product_Group_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Product_Group_Details">
+      <wsdl:input message="tns:Product_Group_DetailsSoapIn" />
+      <wsdl:output message="tns:Product_Group_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Product_Group_Master">
+      <wsdl:input message="tns:Product_Group_MasterSoapIn" />
+      <wsdl:output message="tns:Product_Group_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Printer_List">
+      <wsdl:input message="tns:Printer_ListSoapIn" />
+      <wsdl:output message="tns:Printer_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Printer_Details">
+      <wsdl:input message="tns:Printer_DetailsSoapIn" />
+      <wsdl:output message="tns:Printer_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Printer_Master">
+      <wsdl:input message="tns:Printer_MasterSoapIn" />
+      <wsdl:output message="tns:Printer_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Department_List">
+      <wsdl:input message="tns:Department_ListSoapIn" />
+      <wsdl:output message="tns:Department_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Course_List">
+      <wsdl:input message="tns:Course_ListSoapIn" />
+      <wsdl:output message="tns:Course_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Product_List">
+      <wsdl:input message="tns:Product_ListSoapIn" />
+      <wsdl:output message="tns:Product_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Product_Details">
+      <wsdl:input message="tns:Product_DetailsSoapIn" />
+      <wsdl:output message="tns:Product_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Product_Master">
+      <wsdl:input message="tns:Product_MasterSoapIn" />
+      <wsdl:output message="tns:Product_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Change_Password">
+      <wsdl:input message="tns:Change_PasswordSoapIn" />
+      <wsdl:output message="tns:Change_PasswordSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Role_List">
+      <wsdl:input message="tns:Role_ListSoapIn" />
+      <wsdl:output message="tns:Role_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Countries_List">
+      <wsdl:input message="tns:Countries_ListSoapIn" />
+      <wsdl:output message="tns:Countries_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="States_List">
+      <wsdl:input message="tns:States_ListSoapIn" />
+      <wsdl:output message="tns:States_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Cities_List">
+      <wsdl:input message="tns:Cities_ListSoapIn" />
+      <wsdl:output message="tns:Cities_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Product_By_CatId">
+      <wsdl:input message="tns:Product_By_CatIdSoapIn" />
+      <wsdl:output message="tns:Product_By_CatIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Function_List">
+      <wsdl:input message="tns:Function_ListSoapIn" />
+      <wsdl:output message="tns:Function_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sales_List">
+      <wsdl:input message="tns:Sales_ListSoapIn" />
+      <wsdl:output message="tns:Sales_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TSales_List">
+      <wsdl:input message="tns:TSales_ListSoapIn" />
+      <wsdl:output message="tns:TSales_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sales_Master">
+      <wsdl:input message="tns:Sales_MasterSoapIn" />
+      <wsdl:output message="tns:Sales_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TSales_Master">
+      <wsdl:input message="tns:TSales_MasterSoapIn" />
+      <wsdl:output message="tns:TSales_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Table_List">
+      <wsdl:input message="tns:Table_ListSoapIn" />
+      <wsdl:output message="tns:Table_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Table_Master">
+      <wsdl:input message="tns:Table_MasterSoapIn" />
+      <wsdl:output message="tns:Table_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Key_Map_List">
+      <wsdl:input message="tns:Key_Map_ListSoapIn" />
+      <wsdl:output message="tns:Key_Map_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Product_Group_By_KeyMapId">
+      <wsdl:input message="tns:Product_Group_By_KeyMapIdSoapIn" />
+      <wsdl:output message="tns:Product_Group_By_KeyMapIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Product_By_KeyMapId">
+      <wsdl:input message="tns:Product_By_KeyMapIdSoapIn" />
+      <wsdl:output message="tns:Product_By_KeyMapIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Location_List">
+      <wsdl:input message="tns:Location_ListSoapIn" />
+      <wsdl:output message="tns:Location_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Location_Master">
+      <wsdl:input message="tns:Location_MasterSoapIn" />
+      <wsdl:output message="tns:Location_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Machine_List">
+      <wsdl:input message="tns:Machine_ListSoapIn" />
+      <wsdl:output message="tns:Machine_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Machine_Master">
+      <wsdl:input message="tns:Machine_MasterSoapIn" />
+      <wsdl:output message="tns:Machine_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Device_List">
+      <wsdl:input message="tns:Device_ListSoapIn" />
+      <wsdl:output message="tns:Device_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Device_Master">
+      <wsdl:input message="tns:Device_MasterSoapIn" />
+      <wsdl:output message="tns:Device_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Product_ProductGroup_keymapId">
+      <wsdl:input message="tns:Product_ProductGroup_keymapIdSoapIn" />
+      <wsdl:output message="tns:Product_ProductGroup_keymapIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SignIn">
+      <wsdl:input message="tns:SignInSoapIn" />
+      <wsdl:output message="tns:SignInSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Upd_StaffImg">
+      <wsdl:input message="tns:Upd_StaffImgSoapIn" />
+      <wsdl:output message="tns:Upd_StaffImgSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Key_Map_Master">
+      <wsdl:input message="tns:Key_Map_MasterSoapIn" />
+      <wsdl:output message="tns:Key_Map_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sales_By_Date">
+      <wsdl:input message="tns:Sales_By_DateSoapIn" />
+      <wsdl:output message="tns:Sales_By_DateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Tax_Master">
+      <wsdl:input message="tns:Tax_MasterSoapIn" />
+      <wsdl:output message="tns:Tax_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Tax_List">
+      <wsdl:input message="tns:Tax_ListSoapIn" />
+      <wsdl:output message="tns:Tax_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sales_Z_Report">
+      <wsdl:input message="tns:Sales_Z_ReportSoapIn" />
+      <wsdl:output message="tns:Sales_Z_ReportSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Company_Details">
+      <wsdl:input message="tns:Company_DetailsSoapIn" />
+      <wsdl:output message="tns:Company_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Company_List">
+      <wsdl:input message="tns:Company_ListSoapIn" />
+      <wsdl:output message="tns:Company_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TSales_By_Date">
+      <wsdl:input message="tns:TSales_By_DateSoapIn" />
+      <wsdl:output message="tns:TSales_By_DateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TSales_Master1">
+      <wsdl:input message="tns:TSales_Master1SoapIn" />
+      <wsdl:output message="tns:TSales_Master1SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Table_Details">
+      <wsdl:input message="tns:Table_DetailsSoapIn" />
+      <wsdl:output message="tns:Table_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Machine_Details">
+      <wsdl:input message="tns:Machine_DetailsSoapIn" />
+      <wsdl:output message="tns:Machine_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Location_Details">
+      <wsdl:input message="tns:Location_DetailsSoapIn" />
+      <wsdl:output message="tns:Location_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="KeyMap_Details">
+      <wsdl:input message="tns:KeyMap_DetailsSoapIn" />
+      <wsdl:output message="tns:KeyMap_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Device_Details">
+      <wsdl:input message="tns:Device_DetailsSoapIn" />
+      <wsdl:output message="tns:Device_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Settings">
+      <wsdl:input message="tns:SettingsSoapIn" />
+      <wsdl:output message="tns:SettingsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Role_Wise_Menus">
+      <wsdl:input message="tns:Role_Wise_MenusSoapIn" />
+      <wsdl:output message="tns:Role_Wise_MenusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Role_Wise_Form">
+      <wsdl:input message="tns:Role_Wise_FormSoapIn" />
+      <wsdl:output message="tns:Role_Wise_FormSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Venue_List">
+      <wsdl:input message="tns:Venue_ListSoapIn" />
+      <wsdl:output message="tns:Venue_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Venue_Details">
+      <wsdl:input message="tns:Venue_DetailsSoapIn" />
+      <wsdl:output message="tns:Venue_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Venue_Master">
+      <wsdl:input message="tns:Venue_MasterSoapIn" />
+      <wsdl:output message="tns:Venue_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Sales_Type_List">
+      <wsdl:input message="tns:Sales_Type_ListSoapIn" />
+      <wsdl:output message="tns:Sales_Type_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Machine_Assign_Details">
+      <wsdl:input message="tns:Machine_Assign_DetailsSoapIn" />
+      <wsdl:output message="tns:Machine_Assign_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Location_By_Venue">
+      <wsdl:input message="tns:Location_By_VenueSoapIn" />
+      <wsdl:output message="tns:Location_By_VenueSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Machine_By_Location">
+      <wsdl:input message="tns:Machine_By_LocationSoapIn" />
+      <wsdl:output message="tns:Machine_By_LocationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Prefix_Master">
+      <wsdl:input message="tns:Prefix_MasterSoapIn" />
+      <wsdl:output message="tns:Prefix_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Prefix_List">
+      <wsdl:input message="tns:Prefix_ListSoapIn" />
+      <wsdl:output message="tns:Prefix_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Prefix_Details">
+      <wsdl:input message="tns:Prefix_DetailsSoapIn" />
+      <wsdl:output message="tns:Prefix_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Device_Type_List">
+      <wsdl:input message="tns:Device_Type_ListSoapIn" />
+      <wsdl:output message="tns:Device_Type_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Device_Type_Details">
+      <wsdl:input message="tns:Device_Type_DetailsSoapIn" />
+      <wsdl:output message="tns:Device_Type_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Device_Type_Master">
+      <wsdl:input message="tns:Device_Type_MasterSoapIn" />
+      <wsdl:output message="tns:Device_Type_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Barcode_List">
+      <wsdl:input message="tns:Barcode_ListSoapIn" />
+      <wsdl:output message="tns:Barcode_ListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Barcode_Details">
+      <wsdl:input message="tns:Barcode_DetailsSoapIn" />
+      <wsdl:output message="tns:Barcode_DetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Barcode_Master">
+      <wsdl:input message="tns:Barcode_MasterSoapIn" />
+      <wsdl:output message="tns:Barcode_MasterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Barcode_By_Product">
+      <wsdl:input message="tns:Barcode_By_ProductSoapIn" />
+      <wsdl:output message="tns:Barcode_By_ProductSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="POS_WebServiceSoap" type="tns:POS_WebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Price_By_Size">
+      <soap:operation soapAction="http://tempuri.org/Price_By_Size" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Ingredient_List">
+      <soap:operation soapAction="http://tempuri.org/Ingredient_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Condiment_List">
+      <soap:operation soapAction="http://tempuri.org/Condiment_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_Condiment_List">
+      <soap:operation soapAction="http://tempuri.org/Product_Condiment_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Size_List">
+      <soap:operation soapAction="http://tempuri.org/Size_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Payment_List">
+      <soap:operation soapAction="http://tempuri.org/Payment_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Printer_Detail_By_Product">
+      <soap:operation soapAction="http://tempuri.org/Printer_Detail_By_Product" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Printer_Detail_By_Machine">
+      <soap:operation soapAction="http://tempuri.org/Printer_Detail_By_Machine" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Device_List_With_Payment">
+      <soap:operation soapAction="http://tempuri.org/Device_List_With_Payment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="T_Payment_with_card">
+      <soap:operation soapAction="http://tempuri.org/T_Payment_with_card" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://tempuri.org/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Customer_List">
+      <soap:operation soapAction="http://tempuri.org/Customer_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Customer_Details">
+      <soap:operation soapAction="http://tempuri.org/Customer_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Customer_Master">
+      <soap:operation soapAction="http://tempuri.org/Customer_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="User_List">
+      <soap:operation soapAction="http://tempuri.org/User_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="User_Details">
+      <soap:operation soapAction="http://tempuri.org/User_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="User_Master">
+      <soap:operation soapAction="http://tempuri.org/User_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_Group_List">
+      <soap:operation soapAction="http://tempuri.org/Product_Group_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_Group_Details">
+      <soap:operation soapAction="http://tempuri.org/Product_Group_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_Group_Master">
+      <soap:operation soapAction="http://tempuri.org/Product_Group_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Printer_List">
+      <soap:operation soapAction="http://tempuri.org/Printer_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Printer_Details">
+      <soap:operation soapAction="http://tempuri.org/Printer_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Printer_Master">
+      <soap:operation soapAction="http://tempuri.org/Printer_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Department_List">
+      <soap:operation soapAction="http://tempuri.org/Department_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Course_List">
+      <soap:operation soapAction="http://tempuri.org/Course_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_List">
+      <soap:operation soapAction="http://tempuri.org/Product_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_Details">
+      <soap:operation soapAction="http://tempuri.org/Product_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_Master">
+      <soap:operation soapAction="http://tempuri.org/Product_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Change_Password">
+      <soap:operation soapAction="http://tempuri.org/Change_Password" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Role_List">
+      <soap:operation soapAction="http://tempuri.org/Role_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Countries_List">
+      <soap:operation soapAction="http://tempuri.org/Countries_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="States_List">
+      <soap:operation soapAction="http://tempuri.org/States_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Cities_List">
+      <soap:operation soapAction="http://tempuri.org/Cities_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_By_CatId">
+      <soap:operation soapAction="http://tempuri.org/Product_By_CatId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Function_List">
+      <soap:operation soapAction="http://tempuri.org/Function_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sales_List">
+      <soap:operation soapAction="http://tempuri.org/Sales_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TSales_List">
+      <soap:operation soapAction="http://tempuri.org/TSales_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sales_Master">
+      <soap:operation soapAction="http://tempuri.org/Sales_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TSales_Master">
+      <soap:operation soapAction="http://tempuri.org/TSales_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Table_List">
+      <soap:operation soapAction="http://tempuri.org/Table_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Table_Master">
+      <soap:operation soapAction="http://tempuri.org/Table_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Key_Map_List">
+      <soap:operation soapAction="http://tempuri.org/Key_Map_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_Group_By_KeyMapId">
+      <soap:operation soapAction="http://tempuri.org/Product_Group_By_KeyMapId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_By_KeyMapId">
+      <soap:operation soapAction="http://tempuri.org/Product_By_KeyMapId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Location_List">
+      <soap:operation soapAction="http://tempuri.org/Location_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Location_Master">
+      <soap:operation soapAction="http://tempuri.org/Location_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Machine_List">
+      <soap:operation soapAction="http://tempuri.org/Machine_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Machine_Master">
+      <soap:operation soapAction="http://tempuri.org/Machine_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Device_List">
+      <soap:operation soapAction="http://tempuri.org/Device_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Device_Master">
+      <soap:operation soapAction="http://tempuri.org/Device_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_ProductGroup_keymapId">
+      <soap:operation soapAction="http://tempuri.org/Product_ProductGroup_keymapId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SignIn">
+      <soap:operation soapAction="http://tempuri.org/SignIn" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Upd_StaffImg">
+      <soap:operation soapAction="http://tempuri.org/Upd_StaffImg" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Key_Map_Master">
+      <soap:operation soapAction="http://tempuri.org/Key_Map_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sales_By_Date">
+      <soap:operation soapAction="http://tempuri.org/Sales_By_Date" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Tax_Master">
+      <soap:operation soapAction="http://tempuri.org/Tax_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Tax_List">
+      <soap:operation soapAction="http://tempuri.org/Tax_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sales_Z_Report">
+      <soap:operation soapAction="http://tempuri.org/Sales_Z_Report" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Company_Details">
+      <soap:operation soapAction="http://tempuri.org/Company_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Company_List">
+      <soap:operation soapAction="http://tempuri.org/Company_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TSales_By_Date">
+      <soap:operation soapAction="http://tempuri.org/TSales_By_Date" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TSales_Master1">
+      <soap:operation soapAction="http://tempuri.org/TSales_Master1" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Table_Details">
+      <soap:operation soapAction="http://tempuri.org/Table_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Machine_Details">
+      <soap:operation soapAction="http://tempuri.org/Machine_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Location_Details">
+      <soap:operation soapAction="http://tempuri.org/Location_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="KeyMap_Details">
+      <soap:operation soapAction="http://tempuri.org/KeyMap_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Device_Details">
+      <soap:operation soapAction="http://tempuri.org/Device_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Settings">
+      <soap:operation soapAction="http://tempuri.org/Settings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Role_Wise_Menus">
+      <soap:operation soapAction="http://tempuri.org/Role_Wise_Menus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Role_Wise_Form">
+      <soap:operation soapAction="http://tempuri.org/Role_Wise_Form" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Venue_List">
+      <soap:operation soapAction="http://tempuri.org/Venue_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Venue_Details">
+      <soap:operation soapAction="http://tempuri.org/Venue_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Venue_Master">
+      <soap:operation soapAction="http://tempuri.org/Venue_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sales_Type_List">
+      <soap:operation soapAction="http://tempuri.org/Sales_Type_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Machine_Assign_Details">
+      <soap:operation soapAction="http://tempuri.org/Machine_Assign_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Location_By_Venue">
+      <soap:operation soapAction="http://tempuri.org/Location_By_Venue" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Machine_By_Location">
+      <soap:operation soapAction="http://tempuri.org/Machine_By_Location" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Prefix_Master">
+      <soap:operation soapAction="http://tempuri.org/Prefix_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Prefix_List">
+      <soap:operation soapAction="http://tempuri.org/Prefix_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Prefix_Details">
+      <soap:operation soapAction="http://tempuri.org/Prefix_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Device_Type_List">
+      <soap:operation soapAction="http://tempuri.org/Device_Type_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Device_Type_Details">
+      <soap:operation soapAction="http://tempuri.org/Device_Type_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Device_Type_Master">
+      <soap:operation soapAction="http://tempuri.org/Device_Type_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Barcode_List">
+      <soap:operation soapAction="http://tempuri.org/Barcode_List" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Barcode_Details">
+      <soap:operation soapAction="http://tempuri.org/Barcode_Details" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Barcode_Master">
+      <soap:operation soapAction="http://tempuri.org/Barcode_Master" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Barcode_By_Product">
+      <soap:operation soapAction="http://tempuri.org/Barcode_By_Product" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="POS_WebServiceSoap12" type="tns:POS_WebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Price_By_Size">
+      <soap12:operation soapAction="http://tempuri.org/Price_By_Size" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Ingredient_List">
+      <soap12:operation soapAction="http://tempuri.org/Ingredient_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Condiment_List">
+      <soap12:operation soapAction="http://tempuri.org/Condiment_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_Condiment_List">
+      <soap12:operation soapAction="http://tempuri.org/Product_Condiment_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Size_List">
+      <soap12:operation soapAction="http://tempuri.org/Size_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Payment_List">
+      <soap12:operation soapAction="http://tempuri.org/Payment_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Printer_Detail_By_Product">
+      <soap12:operation soapAction="http://tempuri.org/Printer_Detail_By_Product" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Printer_Detail_By_Machine">
+      <soap12:operation soapAction="http://tempuri.org/Printer_Detail_By_Machine" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Device_List_With_Payment">
+      <soap12:operation soapAction="http://tempuri.org/Device_List_With_Payment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="T_Payment_with_card">
+      <soap12:operation soapAction="http://tempuri.org/T_Payment_with_card" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap12:operation soapAction="http://tempuri.org/Login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Customer_List">
+      <soap12:operation soapAction="http://tempuri.org/Customer_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Customer_Details">
+      <soap12:operation soapAction="http://tempuri.org/Customer_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Customer_Master">
+      <soap12:operation soapAction="http://tempuri.org/Customer_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="User_List">
+      <soap12:operation soapAction="http://tempuri.org/User_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="User_Details">
+      <soap12:operation soapAction="http://tempuri.org/User_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="User_Master">
+      <soap12:operation soapAction="http://tempuri.org/User_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_Group_List">
+      <soap12:operation soapAction="http://tempuri.org/Product_Group_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_Group_Details">
+      <soap12:operation soapAction="http://tempuri.org/Product_Group_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_Group_Master">
+      <soap12:operation soapAction="http://tempuri.org/Product_Group_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Printer_List">
+      <soap12:operation soapAction="http://tempuri.org/Printer_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Printer_Details">
+      <soap12:operation soapAction="http://tempuri.org/Printer_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Printer_Master">
+      <soap12:operation soapAction="http://tempuri.org/Printer_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Department_List">
+      <soap12:operation soapAction="http://tempuri.org/Department_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Course_List">
+      <soap12:operation soapAction="http://tempuri.org/Course_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_List">
+      <soap12:operation soapAction="http://tempuri.org/Product_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_Details">
+      <soap12:operation soapAction="http://tempuri.org/Product_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_Master">
+      <soap12:operation soapAction="http://tempuri.org/Product_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Change_Password">
+      <soap12:operation soapAction="http://tempuri.org/Change_Password" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Role_List">
+      <soap12:operation soapAction="http://tempuri.org/Role_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Countries_List">
+      <soap12:operation soapAction="http://tempuri.org/Countries_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="States_List">
+      <soap12:operation soapAction="http://tempuri.org/States_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Cities_List">
+      <soap12:operation soapAction="http://tempuri.org/Cities_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_By_CatId">
+      <soap12:operation soapAction="http://tempuri.org/Product_By_CatId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Function_List">
+      <soap12:operation soapAction="http://tempuri.org/Function_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sales_List">
+      <soap12:operation soapAction="http://tempuri.org/Sales_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TSales_List">
+      <soap12:operation soapAction="http://tempuri.org/TSales_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sales_Master">
+      <soap12:operation soapAction="http://tempuri.org/Sales_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TSales_Master">
+      <soap12:operation soapAction="http://tempuri.org/TSales_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Table_List">
+      <soap12:operation soapAction="http://tempuri.org/Table_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Table_Master">
+      <soap12:operation soapAction="http://tempuri.org/Table_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Key_Map_List">
+      <soap12:operation soapAction="http://tempuri.org/Key_Map_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_Group_By_KeyMapId">
+      <soap12:operation soapAction="http://tempuri.org/Product_Group_By_KeyMapId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_By_KeyMapId">
+      <soap12:operation soapAction="http://tempuri.org/Product_By_KeyMapId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Location_List">
+      <soap12:operation soapAction="http://tempuri.org/Location_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Location_Master">
+      <soap12:operation soapAction="http://tempuri.org/Location_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Machine_List">
+      <soap12:operation soapAction="http://tempuri.org/Machine_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Machine_Master">
+      <soap12:operation soapAction="http://tempuri.org/Machine_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Device_List">
+      <soap12:operation soapAction="http://tempuri.org/Device_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Device_Master">
+      <soap12:operation soapAction="http://tempuri.org/Device_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Product_ProductGroup_keymapId">
+      <soap12:operation soapAction="http://tempuri.org/Product_ProductGroup_keymapId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SignIn">
+      <soap12:operation soapAction="http://tempuri.org/SignIn" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Upd_StaffImg">
+      <soap12:operation soapAction="http://tempuri.org/Upd_StaffImg" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Key_Map_Master">
+      <soap12:operation soapAction="http://tempuri.org/Key_Map_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sales_By_Date">
+      <soap12:operation soapAction="http://tempuri.org/Sales_By_Date" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Tax_Master">
+      <soap12:operation soapAction="http://tempuri.org/Tax_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Tax_List">
+      <soap12:operation soapAction="http://tempuri.org/Tax_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sales_Z_Report">
+      <soap12:operation soapAction="http://tempuri.org/Sales_Z_Report" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Company_Details">
+      <soap12:operation soapAction="http://tempuri.org/Company_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Company_List">
+      <soap12:operation soapAction="http://tempuri.org/Company_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TSales_By_Date">
+      <soap12:operation soapAction="http://tempuri.org/TSales_By_Date" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TSales_Master1">
+      <soap12:operation soapAction="http://tempuri.org/TSales_Master1" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Table_Details">
+      <soap12:operation soapAction="http://tempuri.org/Table_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Machine_Details">
+      <soap12:operation soapAction="http://tempuri.org/Machine_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Location_Details">
+      <soap12:operation soapAction="http://tempuri.org/Location_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="KeyMap_Details">
+      <soap12:operation soapAction="http://tempuri.org/KeyMap_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Device_Details">
+      <soap12:operation soapAction="http://tempuri.org/Device_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Settings">
+      <soap12:operation soapAction="http://tempuri.org/Settings" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Role_Wise_Menus">
+      <soap12:operation soapAction="http://tempuri.org/Role_Wise_Menus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Role_Wise_Form">
+      <soap12:operation soapAction="http://tempuri.org/Role_Wise_Form" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Venue_List">
+      <soap12:operation soapAction="http://tempuri.org/Venue_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Venue_Details">
+      <soap12:operation soapAction="http://tempuri.org/Venue_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Venue_Master">
+      <soap12:operation soapAction="http://tempuri.org/Venue_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Sales_Type_List">
+      <soap12:operation soapAction="http://tempuri.org/Sales_Type_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Machine_Assign_Details">
+      <soap12:operation soapAction="http://tempuri.org/Machine_Assign_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Location_By_Venue">
+      <soap12:operation soapAction="http://tempuri.org/Location_By_Venue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Machine_By_Location">
+      <soap12:operation soapAction="http://tempuri.org/Machine_By_Location" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Prefix_Master">
+      <soap12:operation soapAction="http://tempuri.org/Prefix_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Prefix_List">
+      <soap12:operation soapAction="http://tempuri.org/Prefix_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Prefix_Details">
+      <soap12:operation soapAction="http://tempuri.org/Prefix_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Device_Type_List">
+      <soap12:operation soapAction="http://tempuri.org/Device_Type_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Device_Type_Details">
+      <soap12:operation soapAction="http://tempuri.org/Device_Type_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Device_Type_Master">
+      <soap12:operation soapAction="http://tempuri.org/Device_Type_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Barcode_List">
+      <soap12:operation soapAction="http://tempuri.org/Barcode_List" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Barcode_Details">
+      <soap12:operation soapAction="http://tempuri.org/Barcode_Details" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Barcode_Master">
+      <soap12:operation soapAction="http://tempuri.org/Barcode_Master" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Barcode_By_Product">
+      <soap12:operation soapAction="http://tempuri.org/Barcode_By_Product" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="POS_WebService">
+    <wsdl:port name="POS_WebServiceSoap" binding="tns:POS_WebServiceSoap">
+      <soap:address location="http://localhost:60313/POS_WebService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="POS_WebServiceSoap12" binding="tns:POS_WebServiceSoap12">
+      <soap12:address location="http://localhost:60313/POS_WebService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

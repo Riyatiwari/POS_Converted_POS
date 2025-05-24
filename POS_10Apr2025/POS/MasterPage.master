@@ -1,0 +1,166 @@
+﻿<%@ Master Language="VB" CodeFile="MasterPage.master.vb" Inherits="MasterPage" %>
+<%@ Register Src="~/Controls/Menu_Accordian.ascx" TagName="MainMenu" TagPrefix="uc1" %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>
+         <asp:ContentPlaceHolder ID="head" runat="server">
+        </asp:ContentPlaceHolder>
+    </title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="Thu, 19 Nov 1900 08:52:00 GMT" />
+    <link rel="shortcut icon" href="images/icons/favicon.ico" />
+    <link rel="apple-touch-icon" href="images/icons/favicon.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="images/icons/favicon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="images/icons/favicon-114x114.png" />    
+    <link href="css/fonts/OpenSans.css" rel="stylesheet" />    
+    <link href="css/fonts/Oswald.css" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet"
+        href="vendors/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css" /> 
+    <link type="text/css" rel="stylesheet" href="vendors/font-awesome/css/font-awesome.min.css" />
+    <link type="text/css" rel="stylesheet" href="vendors/bootstrap/css/bootstrap.min.css" />    
+    <link type="text/css" rel="stylesheet" href="vendors/intro.js/introjs.css" />    
+    <link type="text/css" rel="stylesheet" href="vendors/sco.message/sco.message.css" />    
+    <link type="text/css" rel="stylesheet" href="vendors/animate.css/animate.css" />
+    <link type="text/css" rel="stylesheet" href="vendors/jquery-pace/pace.css" />
+    <link type="text/css" rel="stylesheet" href="vendors/iCheck/skins/all.css" />
+    <link type="text/css" rel="stylesheet" href="vendors/jquery-notific8/jquery.notific8.min.css" />
+    <link type="text/css" rel="stylesheet" href="vendors/bootstrap-daterangepicker/daterangepicker-bs3.css" />    
+    <link type="text/css" rel="stylesheet" href="css/themes/style1/MyStyle.css" class="default-style" />
+    <link type="text/css" rel="stylesheet" href="css/themes/style1/MyStyle.css" id="theme-change"
+        class="style-change color-change" />
+    <link type="text/css" rel="stylesheet" href="css/style-responsive.css" />
+    <script type="text/javascript">   
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode < 48 || charCode > 57)
+            return false;
+
+        return true;
+    }    
+    </script>
+</head>
+
+<body>
+    <form id="form1" runat="server">
+        <a id="totop" href="#"><i class="fa fa-angle-up"></i></a>        
+        <div id="header-topbar-option-demo" class="page-header-topbar">
+            <nav id="topbar" role="navigation" style="margin-bottom: 0; z-index: 2;"
+                class="navbar navbar-default navbar-static-top">
+                <div id="dvmenu" runat="server" class="navbar-header">
+                    <button type="button" data-toggle="collapse" data-target=".sidebar-collapse" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span>
+                        <span class="icon-bar"></span><span class="icon-bar"></span></button>
+                    <a id="logo" href="Dashboard.aspx" class="navbar-brand"><span class="fa fa-rocket"></span>
+                        <span class="logo-text">
+                            <asp:Label ID="lblcmpNameMaster" runat="server"></asp:Label></span>
+                        <span style="display: none" class="logo-text-icon"></span>
+                    </a>
+                </div>
+                <div id="dvMain" runat="server" class="topbar-main">
+                    <a id="menu-toggle" href="#" class="hidden-xs"><i class="fa fa-bars"></i></a>
+
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="Dashboard.aspx">Dashboard</a></li>
+                    </ul>
+                    <div id="topbar-search" class="hidden-xs">
+                        <div class="input-group" runat="server" visible="false">
+                            <input type="text" placeholder="Search..." class="form-control" />
+                            <span class="input-group-btn"><a href="javascript:;" class="btn submit">
+                                <i class="fa fa-search"></i></a>
+                            </span>
+                        </div>
+                    </div>
+                   
+                    <ul class="nav navbar navbar-top-links navbar-right mbn">  
+                        <asp:LinkButton ID="Getccess" runat="server" OnClick="Getccess_Click" class="btn btn-primary"><i class="fa fa-sync"></i>&nbsp;Full Access</asp:LinkButton>
+                  &nbsp
+                        <asp:LinkButton ID="editbtn" runat="server" OnClick="editbtn_Click" Text="Go to Last Product" Style="color: white;"></asp:LinkButton>&nbsp;&nbsp;
+                        <asp:Label ID="lblVersion" runat="server" Text="Version 1.0.3.0.0.0" Style="color: white;"></asp:Label>
+                        <li class="dropdown topbar-user">                            
+                            <a data-hover="dropdown" href="javascript:;" class="dropdown-toggle">
+                                <asp:Image runat="server" alt="" ID="imgphoto" class="img-responsive img-circle" />&nbsp;
+                                <span class="hidden-xs"><asp:Label ID="lblUserNameMaster" runat="server" Text="Label"></asp:Label></span>&nbsp;
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu dropdown-user pull-right"> 
+                                <li><a href="Switch_Account.aspx"><i class="fa fa-user" ></i>&nbsp;Switch Account</a></li>
+                                <li><a href="SignIn.aspx"><i class="glyphicon glyphicon-off"></i>&nbsp;Log Out</a></li>                                
+                            </ul>
+                           
+                        </li>
+                    </ul>
+                </div>
+            </nav>  
+        </div>        
+        <div id="wrapper">            
+            <nav id="sidebar" runat="server" role="navigation" class="navbar-default navbar-static-side">
+                <div class="sidebar-collapse menu-scroll">
+                    <ul id="side-menu" class="nav">
+                        <uc1:MainMenu ID="MainMenu1" runat="server" />
+                    </ul>
+                </div>
+            </nav>
+            <div id="page-wrapper">                
+                <div id="title-breadcrumb-option-demo" class="page-title-breadcrumb">
+                     <asp:ContentPlaceHolder ID="PlaceHolderLink" runat="server"></asp:ContentPlaceHolder>              
+                    <div class="clearfix"></div>
+                </div>                
+                <div class="page-content">
+                    <div id="form-layouts" class="row">
+                        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+                         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="vendors/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendors/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js"></script>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <script src="vendors/metisMenu/jquery.metisMenu.js"></script>
+    <script src="vendors/slimScroll/jquery.slimscroll.js"></script>
+    <script src="vendors/jquery-cookie/jquery.cookie.js"></script>
+    <script src="vendors/jquery-notific8/jquery.notific8.min.js"></script>
+    <script src="vendors/jquery-highcharts/highcharts.js"></script>
+    <script src="vendors/holder/holder.js"></script>
+    <script src="vendors/responsive-tabs/responsive-tabs.js"></script>
+    <script src="vendors/jquery-news-ticker/jquery.newsTicker.min.js"></script>
+    <script src="vendors/moment/moment.js"></script>
+    <script src="vendors/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="js/main.js"></script>
+    <script src="vendors/intro.js/intro.js"></script>
+    <script src="vendors/flot-chart/jquery.flot.js"></script>
+    <script src="vendors/flot-chart/jquery.flot.categories.js"></script>
+    <script src="vendors/flot-chart/jquery.flot.pie.js"></script>
+    <script src="vendors/flot-chart/jquery.flot.tooltip.js"></script>
+    <script src="vendors/flot-chart/jquery.flot.resize.js"></script>
+    <script src="vendors/flot-chart/jquery.flot.fillbetween.js"></script>
+    <script src="vendors/flot-chart/jquery.flot.stack.js"></script>
+    <script src="vendors/flot-chart/jquery.flot.spline.js"></script>
+    <script src="vendors/sco.message/sco.message.js"></script>
+    <script src="vendors/intro.js/intro.js"></script>
+    <script src="js/index.js"></script>
+     
+    <script src="js/wo/js/datatables.min.js"></script>
+    <script src="js/wo/js/jquery.dataTables.min.js"></script>    
+    <script src="js/wo/js/dataTables.buttons.min.js"></script>    
+    <script src="js/wo/js/flash.min.js"></script>    
+    <script src="js/wo/js/jszip.min.js"></script>
+   <%-- <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>    
+   --%> <script src="js/wo/js/buttons.html5.min.js"></script>    
+    <link href="js/wo/css/dataTables.min2.css" rel="stylesheet" />    
+    <link href="js/wo/css/buttons.dataTables.min.css" rel="stylesheet" />    
+    <link href="js/wo/css/datatables.min.css" rel="stylesheet" />
+</body>
+</html>

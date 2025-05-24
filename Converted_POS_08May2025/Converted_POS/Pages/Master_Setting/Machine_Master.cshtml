@@ -1,0 +1,953 @@
+﻿@page
+@model Converted_POS.Pages.Master_Setting.Machine_MasterModel
+@{
+    ViewData["Title"] = "Machine_Master";
+}
+
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a asp-page="/Master_Setting/Machine_List">Till List</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Master_Setting/Machine_Master">Till Master</a></li>
+        </ol>
+    </div>
+  
+
+    <script>
+        tinymce.init({
+            selector: '#txtReciptHeader',
+            menubar: false,
+            plugins: ['image', 'link', 'lists', 'code', 'undo', 'redo'],
+            toolbar: 'undo redo | bold italic underline | link image | bullist numlist',
+            height: 200
+        });
+    </script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#txtReciptHeader'), {
+                toolbar: ['bold', 'italic', 'underline', 'link', 'imageUpload', 'bulletedList', 'numberedList', 'undo', 'redo'],
+                height: 200
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+@*     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script> *@
+
+    <style>
+        .upload-container {
+            border: 2px solid #000; /* Black solid border with 2px thickness */
+            padding: 10px; /* Add some padding inside the container */
+            margin-bottom: 15px; /* Add space between containers */
+            border-radius: 5px; /* Optional: for rounded corners */
+        }
+
+        .upload-section {
+            border: 1px solid #000; /* Black solid border with 2px thickness */
+            padding: 15px; /* Add some padding inside the container */
+            margin-bottom: 15px; /* Space between sections */
+            border-radius: 5px; /* Optional: to make the corners rounded */
+        }
+
+        .tox-statusbar {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            padding-right: 15px; /* Adjust padding if necessary */
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.9.2/tinymce.min.js"></script>
+  @*   <script>
+        tinymce.init({
+            selector: '#txtReciptHeader',
+            menubar: false,
+            plugins: ['image', 'link', 'lists', 'code', 'undo', 'redo'],
+            toolbar: 'undo redo | bold italic underline | link image | bullist numlist',
+            height: 200
+        });
+    </script> *@
+       
+ 
+    <video id="videoPreview" controls style="display: none; height: 100px; width: 100px;">
+        <source id="videoSource" src="" type="video/mp4">
+    </video>
+    <script>
+        document.getElementById('VideoFile').addEventListener('change', function (e) {
+            const video = document.getElementById('videoPreview');
+            const file = e.target.files[0];
+            const objectURL = URL.createObjectURL(file);
+            video.style.display = 'block';
+            document.getElementById('videoSource').src = objectURL;
+            video.load();
+        });
+    </script>
+    <style>
+        .tox.tox-tinymce {
+            margin: 0 auto;
+            width: 100% !important; /* Ensure it takes the full width */
+            max-width: 100% !important; /* Avoid any width restrictions */
+            box-sizing: border-box;
+        }
+
+        /* Fix the alignment of the toolbar */
+        .tox-toolbar {
+            display: flex;
+            justify-content: flex-start; /* Align toolbar buttons to the left */
+            align-items: center;
+            width: 100%;
+            flex-wrap: wrap; /* Allow toolbar buttons to wrap if necessary */
+        }
+
+            /* Optional: Add spacing between toolbar icons */
+            .tox-toolbar button {
+                margin-right: 5px;
+            }
+
+        /* Customize the TinyMCE statusbar at the bottom */
+        .tox-statusbar {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 5px 10px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        /* Make sure the editor content area aligns properly */
+        .tox-editor-container {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-top: 10px;
+        }
+
+        /* Adjusting the padding and margins */
+        .tox-editor-header {
+            margin-bottom: 10px;
+        }
+
+        .tox-editor-container, .tox-editor {
+            padding: 0;
+        }
+    </style>
+    <script>
+                document.querySelector('form').addEventListener('submit', function() {
+            // Capture the content from the TinyMCE editors and set them to hidden fields
+            document.getElementById('receiptHeaderContent').value = tinymce.get('txtReciptHeader').getContent();
+            document.getElementById('receiptFooterContent').value = tinymce.get('footer').getContent();
+        });
+    </script>
+    <script>
+        // tinymce.init({
+        //     selector: '#txtReciptHeader',  // Target your editor
+        //     menubar: false,  // Disable the menu bar
+        //     plugins: [
+        //         'image',
+        //         'link',
+        //         'lists',
+        //         'code',
+        //         'preview',
+        //         'table',
+        //         'fontselect',
+        //         'textcolor',
+        //         'fullscreen',
+        //         'zoom',  // Add zoom plugin
+        //         'code',   // Add HTML plugin
+        //         'statusbar' // To enable the status bar
+        //     ],
+        //     toolbar: [
+        //         'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | forecolor backcolor | fontselect fontsizeselect | table | preview | fullscreen | code'
+        //     ],
+        //     toolbar_mode: 'floating',  // Floating toolbar for better positioning
+        //     height: 300,  // Set the height of the editor
+        //     statusbar: true,  // Enable the status bar at the bottom
+        //     setup: function (editor) {
+        //         editor.on('change', function () {
+        //             editor.save();
+        //         });
+        //     },
+        //     branding: false,  // Hide branding for TinyMCE if not needed
+        // });
+                tinymce.init({
+            selector: '#txtReciptHeader',  // Target your editor
+            menubar: false,  // Disable the menu bar
+            plugins: [
+                'image',
+                'link',
+                'lists',
+                'code',
+                'preview',
+                'table',
+                'fontselect',
+                'textcolor',
+                'fullscreen',
+                'zoom',  // Add zoom plugin
+                'statusbar' // To enable the status bar
+            ],
+            toolbar: [
+                'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | forecolor backcolor | fontselect fontsizeselect | table | preview | fullscreen | code'
+            ],
+            toolbar_mode: 'floating',  // Floating toolbar for better positioning
+            height: 300,  // Set the height of the editor
+            statusbar: true,  // Enable the status bar at the bottom
+            setup: function (editor) {
+                editor.on('change', function () {
+                    editor.save();
+                });
+            },
+            branding: false,  // Hide branding for TinyMCE if not needed
+        });
+
+
+
+         tinymce.init({
+            selector: '#footer',  // Target your editor
+            menubar: false,  // Disable the menu bar
+            plugins: [
+                'image',
+                'link',
+                'lists',
+                'code',
+                'preview',
+                'table',
+                'fontselect',
+                'textcolor',
+                'fullscreen',
+                'zoom',  // Add zoom plugin
+                'code',   // Add HTML plugin
+                'statusbar' // To enable the status bar
+            ],
+            toolbar: [
+                'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | forecolor backcolor | fontselect fontsizeselect | table | preview | fullscreen | code'
+            ],
+            toolbar_mode: 'floating',  // Floating toolbar for better positioning
+            height: 300,  // Set the height of the editor
+            statusbar: true,  // Enable the status bar at the bottom
+            setup: function (editor) {
+                editor.on('change', function () {
+                    editor.save();
+                });
+            },
+            branding: false,  // Hide branding for TinyMCE if not needed
+        });
+
+        // Initialize TinyMCE editor for the Receipt Footer
+        // tinymce.init({
+        //     selector: '#footer',
+        //     menubar: false,
+        //     plugins: 'image link lists code preview table fontselect textcolor fullscreen zoom code statusbar',
+        //     toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | forecolor backcolor | fontselect fontsizeselect | table | preview | design html',
+        //     toolbar_mode: 'floating',
+        //     height: 200,
+        //     setup: function (editor) {
+        //         editor.on('change', function () {
+        //             editor.save();   
+        //         });
+        //     },
+        //     statusbar: true,
+        //      branding: false 
+        // });
+
+        // On form submit, capture the content of TinyMCE editors and store them in hidden fields
+        document.querySelector('form').addEventListener('submit', function () {
+            // Save content for Receipt Header
+            document.getElementById('headerContent').value = tinymce.get('txtReciptHeader').getContent();
+            // Save content for Receipt Footer
+            document.getElementById('footerContent').value = tinymce.get('footer').getContent();
+        });
+    </script>
+     <script>
+    //             tinymce.init({
+    //         selector: '#footer',  // Targeting the editor
+    //         menubar: false,  // Disable menubar
+    //         plugins: [
+    //             'image',
+    //             'link',
+    //             'lists',
+    //             'code',
+    //             'preview',
+    //             'table',
+    //             'fontselect',
+    //             'textcolor',
+    //             'fullscreen',
+    //             'zoom',  // Ensure zoom plugin is included
+    //             'title',  // Add the title plugin for hover tooltips
+    //             'code',   // HTML code view plugin
+    //         ],
+    //         toolbar: [
+    //             'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | forecolor backcolor | fontselect fontsizeselect | table | preview | fullscreen | code'
+    //         ],
+    //         toolbar_mode: 'floating',  // Floating toolbar for better accessibility
+    //         height: 300,  // Adjust height of the editor
+    //         statusbar: true,  // Enable status bar
+    //         setup: function (editor) {
+    //             editor.on('change', function () {
+    //                 editor.save();
+    //             });
+    //         },
+    //         statusbar: true,  // This enables the status bar at the bottom, which will include Zoom and other info.
+    //         branding: false,  // Optional: Disable TinyMCE branding if needed
+    //     });
+        
+    </script>
+
+}
+
+<form method="post" enctype="multipart/form-data" asp-page-handler="Save">
+    <input type="hidden" name="handler" value="Save" />
+    <input type="hidden" name="machine.Receipt_Header" id="receiptHeaderContent" />
+    <input type="hidden" name="machine.Receipt_Footer" id="receiptFooterContent" />
+     <input type="hidden" name="machine.machine_id" value="@(Model.machine?.machine_id ?? 0)" />
+        <br />
+    <div class="col-lg-12 ">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Till Master</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="machine.name">Name <span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="machine.name" />
+                                <span asp-validation-for="machine.name" class="text-danger"></span>
+
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <label asp-for="machine.serial_no">Serial No</label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="machine.serial_no" inputmode="full-width-latin" />
+                                <span asp-validation-for="machine.serial_no" class="text-danger"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <label asp-for="machine.mac_address">Mac Address</label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="machine.mac_address" inputmode="full-width-latin" />
+
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <label>Model</label>
+                                <div class="clearfix"></div>
+
+                                <!-- Dropdown List using Tag Helper -->
+                                <select asp-for="machine.model" class="form-control" required>
+                                    <option value="" >SELECT</option>
+                                    <option value="19">Kinetic Saturn</option>
+                                    <option value="1">iMin D1</option>
+                                    <option value="2">iMin D4</option>
+                                    <option value="3">iMin Falcon</option>
+                                    <option value="5">Sunmi D2</option>
+                                    <option value="6">Sunmi T2</option>
+                                    <option value="7">Sunmi T2s</option>
+                                    <option value="8">PAX A920</option>
+                                    <option value="4">iMin Swan</option>
+                                    <option value="9">Sunmi T2SLite</option>
+                                    <option value="10">iMin D1 POS</option>
+                                    <option value="11">iMin D4 POS</option>
+                                    <option value="12">PAX A920 +</option>
+                                    <option value="13">Kinetic Saturn +</option>
+                                    <option value="14">Kinetic Saturn PAY</option>
+                                    <option value="15">PAX A920 PAY</option>
+                                    <option value="16">Ingenico</option>
+                                    <option value="17">Stripe S700</option>
+                                    <option value="18">Sunmi D3</option>
+                                </select>
+
+                                <!-- Validation Message -->
+                                <span @*asp-validation-for="Model"*@ class="text-danger"></span>
+
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6">
+                                <label asp-for="machine.ip_address">IP Address <span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="machine.ip_address" inputmode="full-width-latin" />
+                                <span asp-validation-for="machine.ip_address" class="text-danger"></span>
+                            </div>
+                            @* <div class="col-md-6">
+                                <label>Master Till</label>
+                                <div class="clearfix"></div>
+                                <select class="form-control"> *@
+                            @*asp-items="HardwareTypeList"*@
+                            @* <option value="">SELECT</option>
+
+                                </select>
+
+                                <span  class="text-danger"></span>
+                            </div> *@
+                            <div class="col-md-6">
+                                <label asp-for="machine.master_till">Master Till </label><br />
+                                <select asp-for="machine.master_till" class="form-control">
+                                    <option value="">Select</option>
+                                    @if (Model.TillList != null && Model.TillList.Any())
+                                    {
+                                        @foreach (var item in Model.TillList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    }
+                                </select>
+                                 
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6">
+                                <label asp-for="machine.location_id">Location<span class="text-danger">*</span></label><br />
+                                <select asp-for="machine.location_id" class="form-control">
+                                    <option value="">Select</option>
+                                    @if (Model.LocationList != null && Model.LocationList.Any())
+                                    {
+                                        @foreach (var country in Model.LocationList)
+                                        {
+                                            <option value="@country.Value">@country.Text</option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="machine.location_id" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="machine.hardware_type">Hardware type</label>
+                                <div class="clearfix"></div>
+
+                                <!-- Dropdown List using Tag Helper -->
+                                <select asp-for="machine.hardware_type" class="form-control" onchange="handleHardwareTypeChange()">
+                                    @*asp-items="HardwareTypeList"*@
+                                    <option value="">SELECT</option>
+                                    <option value="0">Till</option>
+                                    <option value="1">Mini POS</option>
+                                    <option value="2">Saturn</option>
+                                    <option value="3">Sunmi T2</option>
+                                    <option value="5">Sunmi D2</option>
+                                    <option value="4">Kiosk</option>
+                                    <option value="6">Sunmi T2SLite</option>
+                                    <option value="7">iMin D1</option>
+                                    <option value="8">iMin D4</option>
+                                    <option value="9">Falcon</option>
+                                    <option value="10">PAX A920</option>
+                                    <option value="11">Sunmi T2S</option>
+                                    <option value="12">Castles Pay</option>
+                                    <option value="13">Nucleus</option>
+                                    <option value="14">Ingenico</option>
+                                    <option value="15">Stripe S700</option>
+                                    <option value="16">Sumni D3</option>
+                                </select>
+
+                                <!-- Validation message for HardwareType -->
+
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+
+
+                            <div class="col-md-6">
+                                <label>Assign</label>
+                                <input asp-for="machine.is_assign" type="checkbox" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Till Server</label>
+                                <input asp-for="machine.till_server" type="checkbox" />
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6">
+                                <label>Active</label>
+                                <input asp-for="machine.is_active" type="checkbox" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Master Till (for Web Sales) </label>
+                                <input asp-for="machine.is_master_self" type="checkbox" />
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6">
+                                <label>Tips (Extra as Surcharge) </label>
+                                <input asp-for="machine.extraSurcharge" type="checkbox" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Only Tables Transaction </label>
+                                <input asp-for="machine.Only_table_trans" type="checkbox" />
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6">
+                                <label>Auto Surcharge</label>
+                                <input asp-for="machine.AutoSurcharge" type="checkbox" id="autoSurchargeCheckbox" />
+                            </div>
+                            <div id="surchargeOptions" style="display: none; margin-top: 10px;">
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-6">
+                                    <label>Tables</label>
+                                    <input asp-for="machine.AutoSurchargeTables" type="checkbox" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Non Tables</label>
+                                    <input asp-for="machine.AutoSurchargeNonTables" type="checkbox" />
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-6">
+                                    <label>Cloakroom</label>
+                                    <input asp-for="machine.AutoSurchargeCloakroom" type="checkbox" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Chips</label>
+                                    <input asp-for="machine.AutoSurchargeChips" type="checkbox" />
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                            </div>
+                             
+
+                            <div class="col-md-6">
+                                <label>No Cash Drawer </label>
+                                <input asp-for="machine.NoCashDrawer" type="checkbox" />
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6">
+                                <label>ReSync Request </label>
+                                <input asp-for="machine.ReSync_Request" type="checkbox" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Print Server </label>
+                                <input asp-for="machine.Is_PrintServer" type="checkbox" />
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6">
+                                <label>Service Controller Start </label>
+                                <input asp-for="machine.Service_Controller_Start" type="checkbox" />
+                                <label>(Start or Stop controller service.) </label>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Service Websale Print</label>
+                                <input asp-for="machine.Service_Websale_print" type="checkbox" />
+                                <label>(Check Web sale for kitchen print.)  </label>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6">
+                                <label>Service Print Share</label>
+                                <input asp-for="machine.Service_Print_Share" type="checkbox" />
+                                <label>(check services if attached kitchen printer is offline will try 3 times to get it online otherwise it will print to default printer.)  </label>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Service Print Share Other Till </label>
+                                <input asp-for="machine.Service_print_Share_Other_Till" type="checkbox" />
+                                <label>(Check for shared printer on from other till.) </label>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6">
+                                <label>Service Create Booking Table  </label>
+                                <input asp-for="machine.Is_ServiceBooking" type="checkbox" />
+                                <label>(Create table from BackOffice booking.)  </label>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Online Z-Report</label>
+                                <input asp-for="machine.Is_OnlineZreport" type="checkbox" />
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6">
+                                <label>Elina Transaction </label>
+                                <input asp-for="machine.ElinaTran" type="checkbox" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Quick Transaction </label>
+                                <input asp-for="machine.QuickTran" type="checkbox" id="quickTranCheckbox" />
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6" id="kitchenPrinterDiv" style="display:none;">
+                                <label>Kitchen Printer</label>
+                                <input asp-for="machine.kitchenPrint" type="checkbox" />
+                            </div>
+                            <div class="col-md-6" id="receiptPrintDiv" style="display:none;">
+                                <label>Receipt Print</label>
+                                <input asp-for="machine.ReceiptPrint" type="checkbox" />
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6">
+                                <label>Pay communicator Services - Till Request</label>
+                                <input asp-for="machine.TillRequest" type="checkbox" />
+                            </div>
+                            <div class="col-md-6">
+                                <label>Pay communicator Services - Kiosk Request</label>
+                                <input asp-for="machine.KioskRequest" type="checkbox" />
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="form-group">
+                                @*<div class="col-md-12">
+                                        <label for="txtReciptHeader">Receipt Header</label>
+                                        <textarea id="txtReciptHeader" class="form-control"></textarea>
+                                    </div>*@
+                                <div class="col-md-12" >
+                                    <label for="txtReciptHeader" asp-for="machine.Receipt_Header">Receipt Header</label>
+                                    <div class="clearfix"></div>
+                                    <textarea id="txtReciptHeader" class="form-control span12" style="width: 100%; height: 200px;"></textarea>
+                                </div>
+                               @*  <div class="col-md-12">
+                                    <label for="txtReciptHeader" asp-for="machine.Receipt_Header">Receipt Header</label>
+                                    <div class="clearfix"></div>
+                                    <textarea id="txtReciptHeader" class="form-control span12" style="width: 100%; height: 200px;"></textarea>
+                                 </div> *@
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <table class="table table-bordered table-scrollable" style="margin-left:14px; width:96%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50%;">Keymap Name</th>
+                                        <th style="width: 50%;">Shorting Number</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.KeymapModel != null && Model.KeymapModel.Any())
+                                    {
+                                        @foreach (var keymap in Model.KeymapModel)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <!-- Checkbox for selecting the keymap -->
+
+                                                    <input type="hidden" name="machine.machine_id" value="@(Model.machine?.machine_id ?? 0)" />
+
+                                                    <!-- Checkbox for selecting the keymap -->
+                                                    <input type="checkbox"
+                                                           name="selectedKeymaps[@(keymap.keymapId ?? 0)]"
+                                                           value="true"
+                                                    @(ViewData["SelectedKeymaps"] != null &&
+                                                        (ViewData["SelectedKeymaps"] as Dictionary<int, bool>)?.ContainsKey(keymap.keymapId ?? 0) == true &&
+                                                        ((Dictionary<int, bool>)ViewData["SelectedKeymaps"])[keymap.keymapId ?? 0] ? "checked" :
+                                                        (Model.KeymapModel.IndexOf(keymap) == 0 ? "checked" : "")) />  <!-- Default to checked for the first keymap -->
+                                                    @keymap.Text
+                                                </td>
+                                                <td>
+                                                    <input type="number"
+                                                           name="shortingNumbers[@(keymap.keymapId ?? 0)]"
+                                                           value="@(ViewData["ShortingNumbers"] != null &&
+                                   (ViewData["ShortingNumbers"] as Dictionary<int, int?>)?.ContainsKey(keymap.keymapId ?? 0) == true ?
+                                   ((Dictionary<int, int?>)ViewData["ShortingNumbers"])[keymap.keymapId ?? 0]?.ToString() ?? "0" : "")"
+                                                           class="form-control"
+                                                           style="width: 30%;" />
+                                                  @*   <input type="number"
+                                                           name="shortingNumbers[@keymap.keymapId]"
+                                                           value="@(ViewData["ShortingNumbers"] != null && (ViewData["ShortingNumbers"] as Dictionary<int, int?>).ContainsKey(keymap.keymapId) ? 
+          ((Dictionary<int, int?>)ViewData["ShortingNumbers"])[keymap.keymapId].ToString() : "")"
+                                                           class="form-control"
+                                                           style="width: 30%;" /> *@
+                                                </td>
+                                            </tr>
+                                        }}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <table class="table table-bordered" style="margin-top:4px;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50%; height: 32.67px; text-align: left; vertical-align: middle;">Virtual Printer</th>
+                                    <th style="width: 50%; height: 32.67px; text-align: left; vertical-align: middle;">Device</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Printers != null && Model.Printers.Any())
+                                {
+                                    @foreach (var item in Model.Printers)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <label>@item.Text</label>  <!-- This will display the printer name -->
+                                                <input type="hidden" name="printer_id" value="@item.Value" />
+                                                @*<label>@item.Printer</label>
+                                                    <input type="hidden" name="printer_id" value="@item.PrinterId" />*@
+                                            </td>
+                                            <td>
+                                                <select class="form-control" name="selectedDevices[@item.Value]" @*name="ddlDevice_@item.PrinterId"*@>
+                                                    <option value="0">No Printer</option>
+                                                    @*@foreach (var device in Model.Devices) // Loop through SelectListItem list
+                                                        {
+                                                            <option value="@device.Value">@device.Text</option>
+                                                        }*@
+                                                    @foreach (var device in Model.DeviceMappingModel)
+                                                    {
+                                                        // Retrieve the selected devices from ViewData (which is a dictionary)
+                                                        var selectedDevices = ViewData["SelectedDevices"] as Dictionary<int, int>;
+
+                                                        // Initialize selectedDeviceId to 0
+                                                        int selectedDeviceId = 0;
+
+                                                        // Check if the selected device for the current printer exists in the selectedDevices dictionary
+                                                        if (selectedDevices != null && selectedDevices.ContainsKey(Convert.ToInt32(item.Value)))
+                                                        {
+                                                            selectedDeviceId = selectedDevices[Convert.ToInt32(item.Value)];
+                                                        }
+                                                        //var isSelected = device.Value == selectedDeviceId ? "selected" : "";
+                                                        // Conditionally add the "selected" attribute if the device ID matches the selectedDeviceId
+                                                        var selectedAttribute = (int.TryParse(device.Value, out int deviceValue) && deviceValue == selectedDeviceId) ? "selected" : "";
+
+
+                                                        // Dynamically build the <option> tag with the correct value and selected attribute
+                                                        var optionHtml = $"<option value=\"{device.Value}\" {selectedAttribute}>{device.Text}</option>";
+                                                        @Html.Raw(optionHtml)
+                                                    }
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div class="col-md-12" style="padding-left:0px;">
+                            <div class="form-group">
+                                <div class="col-md-6" style="padding-left:0px;">
+                                    <label>Table Sharing</label>
+                                    <input asp-for="machine.table_sharing" type="checkbox" />
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Printer Sharing</label>
+                                    <input asp-for="machine.printer_sharing" type="checkbox" />
+                                </div>
+
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-6" style="padding-left:0px;">
+                                    <label>
+                                        Master Sync Time &nbsp;
+                                        <!-- Time input for ASP.NET Core MVC -->
+                                        <input asp-for="machine.sync_time" class="form-control" type="time" step="1" />
+                                    </label>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <label>Back to main function on till</label>
+                                    <input asp-for="machine.back_to_main_function_on_till" type="checkbox" />
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+
+                                <div class="col-md-6" style="padding-left:0px;">
+                                    <label asp-for="machine.function_id">Function Name</label><br />
+
+                                    <select asp-for="machine.function_id" class="form-control" name="function_id" id="function_id">
+                                        <option value="">Select</option>
+                                        @if (Model.FunctionList != null && Model.FunctionList.Any())
+                                        {
+                                            @foreach (var fun in Model.FunctionList)
+                                            {
+                                                <option value="@fun.Value">@fun.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                    @*<select class="form-control" name="selectedFunction" id="selectedFunction">
+                                            <option value="">Select Function</option>
+                                            @foreach (var function in ViewData["SelectedFunction"] as List<SelectListItem>)
+                                            {
+                                                <option value="@function.Value">
+                                                    @function.Text
+                                                </option>
+                                            }
+                                        </select>*@
+                                </div>
+                                <div class="col-md-6">
+                                    <label>No Logout/Hold sale</label>
+                                    <input asp-for="machine.Is_NoLogout" type="checkbox" />
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-12" style="padding-left:0px;">
+                                    <div class="col-md-6" style="padding-left:0px;">
+                                        <label asp-for="machine.TblTranLimit">Table Transaction Limit</label>
+                                        <div class="clearfix"></div>
+                                        <input class="form-control" asp-for="machine.TblTranLimit" inputmode="full-width-latin" />
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label asp-for="machine.gtway_TID">Gateway TerminalID</label>
+                                        <div class="clearfix"></div>
+                                        <input class="form-control" asp-for="machine.gtway_TID" inputmode="full-width-latin" />
+                                        <span asp-validation-for="machine.gtway_TID" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-6" style="padding-left:0px;">
+                                    <label>POS Lite </label>
+                                    <input asp-for="machine.poslite" type="checkbox" />
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-6" style="padding-left:0px;">
+                                    <label>Enable Sunmi Second Screen</label>
+                                    <input asp-for="machine.is_sunmi_second_screen" type="checkbox" />
+                                </div>
+
+                                <div class="clearfix"></div>
+                                <br />
+
+                                <div class="col-md-12 upload-section" style="margin-top: 10px;">
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <!--<label>Upload Image 1 :  &nbsp;</label>
+
+                                    <input type="file"-->
+                                    @*asp-for="ImageFile"*@
+                                    <!--accept=".jpg,.jpeg,.png,.gif" class="form-control" />
+                                    <i style="font-weight: lighter">
+                                        <span> Select file to upload(.jpg, .jpeg, .gif, .png) File size should not exceed 10Kb </span>
+
+                                    </i>
+                                    <br />
+                                    <img id="ImagePreview" style="display: none; height: 50px; width: 150px;" />-->
+                                    <label asp-for="machine.second_screen_image_1">
+                                        Upload Image 1:
+                                        <input id="File1" type="file" name="ImageFile1" accept=".jpg,.jpeg,.png,.gif" />
+                                        @if (ViewData["Base64Image1"] != null)
+                                        {
+                                            <img src="@ViewData["Base64Image1"]" alt="Image" height="100px" width="100px" />
+                                        }
+                                    </label>
+                                    <i style="font-weight: lighter">
+                                        <span> Select file to upload (.jpg, .jpeg, .gif, .png) File size should not exceed 10KB </span>
+                                    </i>
+                                    <br />
+                                    <label asp-for="machine.second_screen_image_2">
+                                        Upload Image 2:
+                                        <input id="File2" type="file" name="ImageFile2" accept=".jpg,.jpeg,.png,.gif" />
+                                        @if (ViewData["Base64Image2"] != null)
+                                        {
+                                            <img src="@ViewData["Base64Image2"]" alt="Image" height="100px" width="100px" />
+                                        }
+                                    </label>
+                                    <i style="font-weight: lighter">
+                                        <span> Select file to upload (.jpg, .jpeg, .gif, .png) File size should not exceed 10KB </span>
+                                    </i>
+                                    <br />
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <label asp-for="machine.sunmi_video_path" for="VideoFile">
+                                        Upload Video:
+                                        <input id="VideoFile" type="file" name="VideoFile" accept=".mp4 , .avi, .mov, .mkv, .flv" />
+                                        @if (ViewData["Base64Video1"] != null)
+                                        {
+                                            <video width="320" height="240" controls>
+                                                <source src="@ViewData["Base64Video1"]" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        }
+                                    </label>
+                                    <i style="font-weight: lighter">
+                                        <span> Select a video file to upload (.mp4, .avi, .mov, .mkv, .flv) File size should not exceed 100MB </span>
+                                    </i>
+                                    <br />
+
+                                </div>
+                                <div class="col-md-12" style="padding-left:0px;">
+                                    <label for="footer" asp-for="machine.Receipt_Footer">Receipt Footer</label>
+                                    <div class="clearfix"></div>
+                                    <textarea id="footer" class="form-control span12" style="width: 100%; height: 200px;"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right pal">
+                @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+
+                @*<input type="submit" value="Register For QR" class="btn btn-primary" asp-page-handler="RegisterQr" />*@
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                <input type="submit" value="Cancel" class="btn btn-primary" formnovalidate asp-page-handler="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var quickTran = document.getElementById("quickTranCheckbox");
+            var kitchenDiv = document.getElementById("kitchenPrinterDiv");
+            var receiptDiv = document.getElementById("receiptPrintDiv");
+
+            function toggleOptions() {
+                if (quickTran.checked) {
+                    kitchenDiv.style.display = "block";
+                    receiptDiv.style.display = "block";
+                } else {
+                    kitchenDiv.style.display = "none";
+                    receiptDiv.style.display = "none";
+                }
+            }
+
+            toggleOptions();
+            quickTran.addEventListener("change", toggleOptions);
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var autoSurchargeCheckbox = document.getElementById("autoSurchargeCheckbox");
+            var surchargeOptionsDiv = document.getElementById("surchargeOptions");
+
+            function toggleSurchargeOptions() {
+                if (autoSurchargeCheckbox.checked) {
+                    surchargeOptionsDiv.style.display = "block";
+                } else {
+                    surchargeOptionsDiv.style.display = "none";
+                }
+            }
+
+            // Call on page load
+            toggleSurchargeOptions();
+
+            // Bind event
+            autoSurchargeCheckbox.addEventListener("change", toggleSurchargeOptions);
+        });
+    </script>
+
+
+}

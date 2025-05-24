@@ -1,0 +1,348 @@
+﻿Imports System.Data
+Imports System.Security.Cryptography
+Imports Telerik.Web.UI
+Imports System.Data.SqlClient
+Imports System.Web.Services
+Imports System.Web.UI.WebControls
+Imports xi = Telerik.Web.UI.ExportInfrastructure
+Imports System.Web.UI
+Imports System.Web
+Imports Telerik.Web.UI.GridExcelBuilder
+Imports System.Drawing
+Imports Telerik.Web.UI.Export
+Partial Class demo_nested_grid
+     Inherits BaseClass
+    Dim oclsBind As New clsBinding
+    Dim oclsSales As New Controller_clsSales()
+    Dim oclsRole As Controller_clsRole
+    Dim oclsProductGroup As New Controller_clsCategoryMain
+    Dim dt As DataTable
+    Public Sub binddll()
+        Try
+            If radVenue.SelectedIndex = -1 Then
+                oclsBind.BindVenue(radVenue, Val(Session("cmp_id")))
+            End If
+        Catch ex As Exception
+            ScriptManager.RegisterStartupScript(Me, Me.GetType, "test", "alert('Error in processing request');", True)
+            LogHelper.Error("TableReport:binddll:" + ex.Message)
+        End Try
+    End Sub
+
+
+    Public Sub binddllloc()
+        Try
+            If radLocation.SelectedIndex = -1 Then
+                oclsBind.BindLocation(radLocation, Val(Session("cmp_id")))
+            End If
+        Catch ex As Exception
+            ScriptManager.RegisterStartupScript(Me, Me.GetType, "test", "alert('Error in processing request');", True)
+            LogHelper.Error("TableReport:binddll:" + ex.Message)
+        End Try
+    End Sub
+
+
+    Public Sub binddllMachine()
+        Try
+            If radMachine.SelectedIndex = -1 Then
+                oclsBind.BindMachine(radMachine, Val(Session("cmp_id")))
+            End If
+        Catch ex As Exception
+            ScriptManager.RegisterStartupScript(Me, Me.GetType, "test", "alert('Error in processing request');", True)
+            LogHelper.Error("TableReport:binddll:" + ex.Message)
+        End Try
+    End Sub
+    Private Sub Table_Transaction_Load(sender As Object, e As EventArgs) Handles Me.Load
+        If Not IsPostBack Then
+            If Session("cmp_id") = Nothing Then
+                Response.Redirect("SignIn.aspx", False)
+            End If
+            binddll()
+            binddllloc()
+            binddllMachine()
+            divcustom.Visible = True
+            txtFrom.SelectedDate = System.DateTime.Now
+            txtTo.SelectedDate = System.DateTime.Now
+            'BindData()
+            bindGrid()
+
+
+            'For Each column In grdTableTransaction.MasterTableView.Columns
+            '    If TypeOf column Is GridColumn Then
+
+            '        DirectCast(column, GridColumn).HeaderStyle.Width = Unit.Empty
+
+            '    End If
+            'Next
+
+
+        End If
+    End Sub
+
+    Protected Sub radVenue_SelectedIndexChanged(sender As Object, e As RadComboBoxSelectedIndexChangedEventArgs) Handles radVenue.SelectedIndexChanged
+        Try
+            If radVenue.SelectedIndex = 0 Then
+                radLocation.Items.Clear()
+                radMachine.Items.Clear()
+            Else
+                oclsBind.BindLocationByVenue(radLocation, Val(Session("cmp_id")), Val(radVenue.SelectedValue))
+                radMachine.Items.Clear()
+            End If
+
+        Catch ex As Exception
+            LogHelper.Error("ZReport:radVenue_SelectedIndexChanged:" + ex.Message)
+        End Try
+    End Sub
+    Protected Sub radLocation_SelectedIndexChanged(sender As Object, e As RadComboBoxSelectedIndexChangedEventArgs) Handles radLocation.SelectedIndexChanged
+        Try
+            If radLocation.SelectedIndex = 0 Then
+                radMachine.Items.Clear()
+            Else
+                oclsBind.BindMachineByLocation(radMachine, Val(Session("cmp_id")), Val(radLocation.SelectedValue))
+            End If
+        Catch ex As Exception
+            LogHelper.Error("ZReport:radLocation_SelectedIndexChanged:" + ex.Message)
+        End Try
+    End Sub
+
+    Private Sub LinkButton1_Click(sender As Object, e As EventArgs) Handles LinkButton1.Click
+        BindData()
+    End Sub
+    Protected Sub radDuration_SelectedIndexChanged(sender As Object, e As RadComboBoxSelectedIndexChangedEventArgs) Handles radDuration.SelectedIndexChanged
+        Try
+            If radDuration.SelectedItem.Value = "Custom" Then
+                divcustom.Visible = True
+
+            Else
+                divcustom.Visible = False
+
+            End If
+        Catch ex As Exception
+            LogHelper.Error("Stock_Management_Report:radDuration_SelectedIndexChanged:" + ex.Message)
+        End Try
+    End Sub
+
+
+    'Private Sub rptProductSUmmary_ItemDataBound(sender As Object, e As RepeaterItemEventArgs) Handles rptProductSUmmary.ItemDataBound
+    '    If e.Item.ItemType = ListItemType.Header Then
+    '        Dim rpcashSUmmary As Repeater = TryCast(e.Item.FindControl("Header1"), Repeater)
+    '        rpcashSUmmary.DataSource = dt.Columns
+    '        rpcashSUmmary.DataBind()
+    '    End If
+
+    '    If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
+    '        Dim rpcashSUmmary As Repeater = TryCast(e.Item.FindControl("Item1"), Repeater)
+    '        Dim row = TryCast(e.Item.DataItem, System.Data.DataRowView)
+    '        rpcashSUmmary.DataSource = row.Row.ItemArray
+    '        rpcashSUmmary.DataBind()
+
+
+    '    End If
+    'End Sub
+
+
+    Public Sub BindData()
+        Try
+            Dim oClsDal As ClsDataccess = New ClsDataccess()
+            Dim ds As New DataSet
+
+            Dim dtwise As Integer = 0
+
+
+            Dim n As String
+
+
+
+            Dim oColSqlparram As ColSqlparram = New ColSqlparram()
+
+            oColSqlparram.Add("@from_date", IIf(txtFrom.SelectedDate.ToString() = "", txtFrom.SelectedDate = DateTime.Now, txtFrom.SelectedDate), SqlDbType.DateTime)
+            oColSqlparram.Add("@to_date", IIf(txtTo.SelectedDate.ToString() = "", txtTo.SelectedDate = DateTime.Now, txtTo.SelectedDate), SqlDbType.DateTime)
+            oColSqlparram.Add("@location_id", IIf(radLocation.SelectedIndex > 0, radLocation.SelectedValue, "0"))
+            oColSqlparram.Add("@machine_id", IIf(radMachine.SelectedIndex > 0, radMachine.SelectedValue, "0"))
+            oColSqlparram.Add("@venue_id", IIf(radVenue.SelectedIndex > 0, radVenue.SelectedValue, "0"))
+            dt = oClsDal.GetdataTableSp("R_Table_Transaction", oColSqlparram)
+
+            rdCategory.DataSource = dt
+            rdCategory.DataBind()
+
+
+        Catch ex As Exception
+            Dim err As String = ex.Message.ToString()
+        End Try
+    End Sub
+
+    'Protected Sub grdTableTransaction_DetailTableDataBind(sender As Object, e As GridDetailTableDataBindEventArgs) Handles grdTableTransaction.DetailTableDataBind
+    '    Try
+    '        Dim oClsDal As ClsDataccess = New ClsDataccess()
+    '        Dim oColSqlparram As ColSqlparram = New ColSqlparram()
+    '        Dim dataItem As GridDataItem = DirectCast(e.DetailTableView.ParentItem, GridDataItem)
+    '        Dim hdlocation As HiddenField = DirectCast(e.DetailTableView.ParentItem.FindControl("hdLocation"), HiddenField)
+    '        Dim hddatetime As HiddenField = DirectCast(e.DetailTableView.ParentItem.FindControl("hdDatetime"), HiddenField)
+    '        Dim hdtableuuid As HiddenField = DirectCast(e.DetailTableView.ParentItem.FindControl("hdtable_uuid"), HiddenField)
+
+    '        oColSqlparram.Add("@cmp_id", Val(Session("cmp_id")), SqlDbType.Int)
+    '        oColSqlparram.Add("@ref_id", dataItem.GetDataKeyValue("Ref_id").ToString(), SqlDbType.Int)
+    '        oColSqlparram.Add("@location_id", hdlocation.Value, SqlDbType.Int)
+    '        oColSqlparram.Add("@for_date", hddatetime.Value, SqlDbType.DateTime)
+    '        oColSqlparram.Add("@table_uuid", hdtableuuid.Value)
+    '        dt = oClsDal.GetdataTableSp("R_Table_Transaction_Details", oColSqlparram)
+
+
+    '        If dt.Rows.Count > 0 Then
+    '            e.DetailTableView.DataSource = dt
+    '        Else
+    '            e.DetailTableView.DataSource = Nothing
+    '        End If
+    '    Catch ex As Exception
+    '        LogHelper.Error("Table_transaction:rdStock_DetailTableDataBind" + ex.Message)
+    '    End Try
+    'End Sub
+
+    'Private Sub grdTableTransaction_PageIndexChanged(sender As Object, e As GridPageChangedEventArgs) Handles grdTableTransaction.PageIndexChanged
+    '    Try
+    '        BindData()
+    '    Catch ex As Exception
+
+    '    End Try
+    'End Sub
+
+    Protected Sub lnkview_Click(sender As Object, e As EventArgs)
+        Try
+
+            'Dim btn As LinkButton = DirectCast(sender, LinkButton)
+            'Dim arr As String() = btn.CommandArgument.Split("#")
+            'Dim sales As Int32 = Val(arr(0).ToString())
+            'Dim tranuuid As String = arr(1).ToString()
+            'Dim oClsDal As ClsDataccess = New ClsDataccess()
+            'Dim oColSqlparram As ColSqlparram = New ColSqlparram()
+            'oColSqlparram.Add("@sales_id", Val(sales), SqlDbType.Int)
+            'oColSqlparram.Add("@tran_uuid", tranuuid)
+            'dt = oClsDal.GetdataTableSp("R_Table_Transaction_Details_View", oColSqlparram)
+
+            'If (dt.Rows.Count > 0) Then
+
+            '    ViewState("dt") = dt
+
+            '    Dim url As String = "Table_Transaction_Detail.aspx"
+
+            '    ClientScript.RegisterStartupScript(Me.GetType(), "OpenWin", "<script>openNewWin('" & url & "')</script>")
+
+            'End If
+
+            Dim url As String = "Table_Transaction_Detail.aspx"
+
+            ClientScript.RegisterStartupScript(Me.GetType(), "OpenWin", "<script>openNewWin('" & url & "')</script>")
+
+
+
+
+            ''rdDeatilView.DataSource = dt
+            ''rdDeatilView.DataBind()
+            ''If (dt.Rows.Count > 0) Then
+            ''    lblSurcharge.Text = dt.Rows(0)("Surcharge_Amount").ToString()
+            ''    lblPayment.Text = dt.Rows(0)("Payment_Type").ToString()
+
+            ''End If
+
+            ''upDetail.Update()
+            ''Dim script As String = "function f(){$find(""" + rdwinDetail.ClientID + """).show(); Sys.Application.remove_load(f);}Sys.Application.add_load(f);"
+            ''ScriptManager.RegisterStartupScript(Page, Page.GetType(), "keyallergy", script, True)
+
+
+
+
+            'Dim title As String = "Greetings"
+            'Dim body As String = "<div>test</div>"
+            ''"<table><tr><th>Header</th></tr><tr><td><b>Hello</b> friends</td></tr></table>"
+            ''<table class='table table-bordered'> <tr> <th>Name</th> <th>Quantity</th> <th>Total Amount</th> <th>Tax</th> <th>Date</th> </tr> <tr> <td></td> <td></td> <td></td> <td></td> <td></td> </tr> </table>"
+            'ClientScript.RegisterStartupScript(Me.GetType(), "Popup", "lnkview_Click('" & title & "', '" & body & "');", True)
+        Catch ex As Exception
+
+        End Try
+    End Sub
+    Protected Sub btnCancelPopup_Click(sender As Object, e As EventArgs)
+        'Dim script As String = "function f(){$find(""" + rdwinDetail.ClientID + """).close(); Sys.Application.remove_load(f);}Sys.Application.add_load(f);"
+        'ScriptManager.RegisterStartupScript(Page, Page.GetType(), "keyallergy", script, True)
+    End Sub
+
+    'Protected Sub lnk_excel_Click(sender As Object, e As EventArgs)
+    '    Try
+    '        grdTableTransaction.ExportSettings.IgnorePaging = True
+
+    '        grdTableTransaction.ExportSettings.ExportOnlyData = True
+
+    '        grdTableTransaction.ExportSettings.OpenInNewWindow = True
+
+    '        grdTableTransaction.MasterTableView.HierarchyDefaultExpanded = True
+
+    '        grdTableTransaction.MasterTableView.ExportToExcel()
+
+    '    Catch ex As Exception
+
+    '    End Try
+    'End Sub
+
+
+    '#Region "[ EXCELML FORMAT ]"
+    '    Protected Sub grdTableTransaction_ExcelMLWorkBookCreated(sender As Object, e As GridExcelMLWorkBookCreatedEventArgs)
+    '        If True Then
+    '            For Each row As RowElement In e.WorkBook.Worksheets(0).Table.Rows
+    '                row.Cells(0).StyleValue = "Style1"
+    '            Next
+
+    '            Dim style As New StyleElement("Style1")
+    '            style.InteriorStyle.Pattern = InteriorPatternType.Solid
+    '            style.InteriorStyle.Color = System.Drawing.Color.LightGray
+    '            e.WorkBook.Styles.Add(style)
+    '        End If
+    '    End Sub
+
+    '#End Region
+
+    Protected Sub rdCategory_ItemDataBound(sender As Object, e As RepeaterItemEventArgs)
+        Try
+            If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
+                Dim customerId As String = TryCast(e.Item.FindControl("hfNested_Category_id"), HiddenField).Value
+                Dim rptOrders As Repeater = TryCast(e.Item.FindControl("rptOrders"), Repeater)
+
+                oclsProductGroup.cmp_id = Val(Session("cmp_id"))
+                oclsProductGroup.Category_id = Val(customerId)
+                Dim dt As DataTable = oclsProductGroup.Select()
+
+                If dt.Rows.Count > 0 Then
+                    rptOrders.DataSource = dt
+                    rptOrders.DataBind()
+                Else
+                    rptOrders.DataSource = String.Empty
+                    rptOrders.DataBind()
+                End If
+
+
+            End If
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Public Sub bindGrid()
+        Try
+            oclsProductGroup.cmp_id = Val(Session("cmp_id"))
+            Dim dt As DataTable = oclsProductGroup.SelectAll()
+
+            'rdCategory.AllowPaging = True
+
+            If dt.Rows.Count > 0 Then
+                rdCategory.DataSource = dt
+                rdCategory.DataBind()
+            Else
+                rdCategory.DataSource = String.Empty
+                rdCategory.DataBind()
+            End If
+        Catch ex As Exception
+            ScriptManager.RegisterStartupScript(Me, Me.GetType, "test", "alert('Error in processing request');", True)
+            LogHelper.Error("Product_Group_Main_List:bindGrid:" + ex.Message)
+        End Try
+
+
+    End Sub
+
+End Class

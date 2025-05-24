@@ -1,0 +1,106 @@
+﻿@page
+@model Converted_POS.Pages.forms.Tax_MasterModel
+@{
+    ViewData["Title"] = "Tax_Master";
+}
+
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a asp-page="/Configuration/Tax_List">Tax List</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Configuration/Tax_Master">Tax Master</a></li>
+        </ol>
+    </div>
+}
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" id="hftax_id" name="tax_id" asp-for="tax.Tax_id" />
+    <br />
+    <div class="col-lg-12 ">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Tax Master</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="tax.Name">Name <span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="tax.Name" />
+                                <span asp-validation-for="tax.Name" class="text-danger"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <label asp-for="tax.Mode">Mode</label>
+                                <div class="clearfix"></div>
+                                <select asp-for="tax.Mode" class="form-control" onchange="this.form.submit()">
+                                    <option value="SELECT">SELECT</option>
+                                    <option value="%">%</option>
+                                    <option value="Amt">Amt</option>
+                                </select>
+                                <span asp-validation-for="tax.Mode" class="text-danger"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <label asp-for="tax.Value">Value<span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="tax.Value" />
+                                <span asp-validation-for="tax.Value" class="text-danger"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <label asp-for="tax.Effective_Date">Effective Date<span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="tax.Effective_Date"  placeholder="Effective Date" type="date" />
+                                <span asp-validation-for="tax.Effective_Date" class="text-danger"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-2">
+                                <label asp-for="tax.Is_active">Active</label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="tax.Is_active" inputmode="full-width-latin" type="checkbox" checked="checked" />
+                                <span asp-validation-for="tax.Is_active" class="text-danger"></span>
+                            </div>
+                           
+                              
+                            @*<div class="col-md-12">
+            <label asp-for="tax.Aimage">
+                Upload :<input id="File1" type="file" name="AimageFile" />
+                @if (ViewData["Base64Image"] != null)
+                {
+                    <img src="@ViewData["Base64Image"]" alt="Image" height="100px" width="100px" />}
+                else
+                {
+                }
+            </label>
+        </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions text-right pal">
+                <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                <input type="submit" value="Cancel" class="btn btn-primary" formnovalidate asp-page-handler="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

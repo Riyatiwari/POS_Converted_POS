@@ -1,0 +1,35 @@
+﻿
+Imports System.Threading
+Imports System.Globalization
+
+Public Class LanguageClass
+    Inherits System.Web.UI.Page
+
+    Protected Overrides Sub InitializeCulture()
+        Dim language As String = "en-us"
+        'Detect User's Language.
+        If Session("Local_Language") IsNot Nothing Then
+            'Set the Language.
+            language = Session("Local_Language").ToString()
+        End If
+        'Set theu Clture.
+        Thread.CurrentThread.CurrentCulture = New CultureInfo(language)
+        Thread.CurrentThread.CurrentUICulture = New CultureInfo(language)
+    End Sub
+
+    Public Sub bindApprscNameDdl()
+        Try
+            Dim language As String = "en-us"
+            'Detect User's Language.
+            If Session("Local_Language") IsNot Nothing Then
+                'Set the Language.
+                language = Session("Local_Language").ToString()
+            End If
+            'Set theu Clture.
+            Thread.CurrentThread.CurrentCulture = New CultureInfo(language)
+            Thread.CurrentThread.CurrentUICulture = New CultureInfo(language)
+        Catch ex As Exception
+
+        End Try
+    End Sub
+End Class

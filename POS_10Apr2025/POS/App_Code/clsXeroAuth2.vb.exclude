@@ -1,0 +1,194 @@
+﻿Imports System.Data
+Imports System.Diagnostics
+Imports System.IO
+Imports System.Net
+Imports System.Text
+Imports System.Threading.Tasks
+Imports Newtonsoft.Json.Linq
+Imports RestSharp
+
+Public Class clsXeroAuth2
+    Private xeroCode As String
+    Public accessToken As String
+    Public accessTokenExpires As DateTime
+    Private refreshToken As String
+    Public tenantID As String
+    Private stopListening As Boolean = True
+    Private callbackurl As String = "http://localhost:5000/signin/"
+    Private xeroClientId As String = "???"
+    Private xeroClientSecret As String = "???"
+
+    Public Async Function oauth2() As Task(Of Boolean)
+        Dim redirectUri As String = String.Format(callbackurl)
+        Dim listener = New HttpListener()
+        listener.Prefixes.Add(redirectUri)
+
+        Try
+            listener.Start()
+            stopListening = False
+        Catch hlex As HttpListenerException
+            Return False
+        End Try
+
+        Dim urlCallBackFormat As String = WebUtility.UrlEncode(String.Format(callbackurl))
+        Dim url As String = "https://login.xero.com/identity/connect/authorize?response_type=code&state=OzEPHd1GSvkwx0fnJ8023A&client_id=" & xeroClientId & "&scope=offline_access%20openid%20profile%20email%20accounting.settings%20accounting.transactions&redirect_uri=" & urlCallBackFormat
+        Process.Start(url)
+
+        While listener.IsListening
+            Dim context As Object = Await listener.GetContextAsync()
+            Try
+                Await ProcessRequestAsync(context)
+                stopListening = True
+            Catch ex As Exception
+                Console.WriteLine("# EXCEPTION # " + ex.StackTrace)
+            End Try
+            If stopListening = True Then listener.Stop()
+        End While
+
+        listener.Stop()
+        listener.Close()
+
+        'now get access token using code
+        Dim Basic As String = "Basic " & getBase64Encoded()
+
+        Dim getTenant As RestClient = New RestClient("https://identity.xero.com/connect/token")
+        getTenant.Timeout = -1
+        Dim requestTenant = New RestRequest(Method.POST)
+        requestTenant.AddHeader("authorization", Basic)
+        requestTenant.AddHeader("Content-Type", "application/x-www-form-urlencoded")
+        requestTenant.AddParameter("grant_type", "authorization_code")
+        requestTenant.AddParameter("code", xeroCode)
+        requestTenant.AddParameter("redirect_uri", String.Format(callbackurl))
+
+        Dim responseTenant As IRestResponse = getTenant.Execute(requestTenant)
+        Dim myJObject = JObject.Parse("{'results':" & responseTenant.Content & "}")
+        Dim tokenError As String
+        For Each Row In myJObject("results").ToList()
+            Select Case DirectCast(Row, JProperty).Name
+                Case "access_token"
+                    accessToken = DirectCast(Row, JProperty).Value
+                    Debug.Print(accessToken)
+                Case "expires_in"
+                    accessTokenExpires = DateAdd(DateInterval.Second, CDbl(DirectCast(Row, JProperty).Value), Now())
+                Case "refresh_token"
+                    refreshToken = DirectCast(Row, JProperty).Value
+                Case "error"
+                    tokenError = DirectCast(Row, JProperty).Value
+            End Select
+        Next
+
+        Try
+            getTenant = New RestClient("https://api.xero.com/connections")
+            getTenant.Timeout = -1
+            requestTenant = New RestRequest(Method.GET)
+            requestTenant.AddHeader("Authorization", "Bearer " & accessToken)
+            requestTenant.AddHeader("Content-Type", "application/json")
+            responseTenant = getTenant.Execute(requestTenant)
+            myJObject = JObject.Parse("{'results':" & responseTenant.Content & "}")
+
+            Dim commToken As JToken
+            Dim commValue As String
+            Dim dt As DataTable = New DataTable("tenants")
+            Dim c As DataColumn
+            c = New DataColumn("tenantID", System.Type.GetType("System.String"))
+            dt.Columns.Add(c)
+            c = New DataColumn("tenantName", System.Type.GetType("System.String"))
+            dt.Columns.Add(c)
+
+            Dim r As DataRow
+            For Each Row In myJObject("results").ToList()
+                r = dt.NewRow
+                commToken = Row("tenantId")
+                commValue = DirectCast(commToken, JValue).Value
+                r("tenantID") = commValue
+                commToken = Row("tenantName")
+                commValue = DirectCast(commToken, JValue).Value
+                r("tenantName") = commValue
+                dt.Rows.Add(r)
+            Next
+
+            Dim selectedTenant As String = ""
+
+            If dt.Rows.Count > 1 Then
+                'display the connections and ask user which they wish to use today
+                Using frmTenants As New frmXeroSelectTenant(dt)
+                    frmTenants.ShowDialog()
+                    selectedTenant = frmTenants.selectedTenant
+                End Using
+            ElseIf dt.Rows.Count = 1 Then
+                selectedTenant = dt(0)(0)
+            Else
+                MsgBox("Xero Intergration requires a Xero Account to be authorised to connect to!", MsgBoxStyle.Exclamation, "Authorised Xero Account Required...")
+                Return False
+            End If
+
+            tenantID = selectedTenant
+
+        Catch ex As Exception
+
+            Debug.Print(ex.Message & " " & ex.StackTrace)
+            Return False
+
+        End Try
+
+        Return True
+    End Function
+
+    Private Async Function ProcessRequestAsync(ByVal context As HttpListenerContext) As Task(Of Boolean)
+        Dim body = Await New StreamReader(context.Request.InputStream).ReadToEndAsync()
+        Dim request As HttpListenerRequest = context.Request
+
+        If request.RawUrl.StartsWith("/signin") Then
+            Dim options = context.Request.QueryString
+            xeroCode = context.Request.QueryString("code")
+            Dim state = context.Request.QueryString("state")
+            Dim b As Byte() = Encoding.UTF8.GetBytes("You may close this web page now")
+            context.Response.StatusCode = 200
+            context.Response.KeepAlive = False
+            context.Response.ContentLength64 = b.Length
+            Dim output = context.Response.OutputStream
+            Await output.WriteAsync(b, 0, b.Length)
+            context.Response.Close()
+        End If
+    End Function
+
+    Private Function getBase64Encoded() As String
+        Dim base64Decoded As String = xeroClientId & ":" & xeroClientSecret
+        Dim base64Encoded As String
+        Dim data As Byte()
+        data = System.Text.ASCIIEncoding.ASCII.GetBytes(base64Decoded)
+        base64Encoded = System.Convert.ToBase64String(data)
+        Return base64Encoded
+    End Function
+
+    Public Function getOfflineAccessCodeandRefreshToken() As Boolean
+        Dim Basic As String = "Basic " & getBase64Encoded()
+        Dim getTenant As RestClient = New RestClient("https://identity.xero.com/connect/token")
+        getTenant.Timeout = -1
+        Dim requestTenant = New RestRequest(Method.POST)
+        requestTenant.AddHeader("authorization", Basic)
+        requestTenant.AddHeader("Content-Type", "application/x-www-form-urlencoded")
+        requestTenant.AddParameter("grant_type", "refresh_token")
+        requestTenant.AddParameter("refresh_token", refreshToken)
+
+        Dim responseTenant As IRestResponse = getTenant.Execute(requestTenant)
+        Dim myJObject = JObject.Parse("{'results':" & responseTenant.Content & "}")
+        Dim tokenRrror As String
+
+        For Each Row In myJObject("results").ToList()
+            Select Case DirectCast(Row, JProperty).Name
+                Case "access_token"
+                    accessToken = DirectCast(Row, JProperty).Value
+                Case "expires_in"
+                    accessTokenExpires = DateAdd(DateInterval.Second, CDbl(DirectCast(Row, JProperty).Value), Now())
+                Case "refresh_token"
+                    refreshToken = DirectCast(Row, JProperty).Value
+                Case "error"
+                    tokenRrror = DirectCast(Row, JProperty).Value
+                    Return False
+            End Select
+        Next
+        Return True
+    End Function
+
+End Class

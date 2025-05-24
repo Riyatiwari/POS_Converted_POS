@@ -1,0 +1,328 @@
+is_global = true
+build_property.TargetFramework = net9.0
+build_property.TargetFramework = net9.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.PublishSingleFile = 
+build_property.IncludeAllContentForSelfExtract = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.RootNamespace = Converted_POS
+build_property.RootNamespace = Converted_POS
+build_property.ProjectDir = D:\POS\POS Mono\Converted_POS_08May2025\Converted_POS\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\POS\POS Mono\Converted_POS_08May2025\Converted_POS
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/BackOffice/Reset_Password.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmFja09mZmljZVxSZXNldF9QYXNzd29yZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/BackOffice/Switch_Account.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmFja09mZmljZVxTd2l0Y2hfQWNjb3VudC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Allergy_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxBbGxlcmd5X0xpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Allergy_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxBbGxlcmd5X01hc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Company_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxDb21wYW55X01hc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Function_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxGdW5jdGlvbl9MaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Function_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxGdW5jdGlvbl9NYXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Product_Group_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxQcm9kdWN0X0dyb3VwX0xpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Product_Group_Main_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxQcm9kdWN0X0dyb3VwX01haW5fTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Product_Group_Main_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxQcm9kdWN0X0dyb3VwX01haW5fTWFzdGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Product_Group_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxQcm9kdWN0X0dyb3VwX01hc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Product_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxQcm9kdWN0X0xpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Product_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxQcm9kdWN0X01hc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Staff_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxTdGFmZl9MaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Staff_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxTdGFmZl9NYXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Tax_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxUYXhfTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Configuration/Tax_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlndXJhdGlvblxUYXhfTWFzdGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Control_Settings/Device_Type_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udHJvbF9TZXR0aW5nc1xEZXZpY2VfVHlwZV9MaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Control_Settings/Device_Type_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udHJvbF9TZXR0aW5nc1xEZXZpY2VfVHlwZV9NYXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Customers_and_Promos/Customer_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJzX2FuZF9Qcm9tb3NcQ3VzdG9tZXJfTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Customers_and_Promos/Customer_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJzX2FuZF9Qcm9tb3NcQ3VzdG9tZXJfTWFzdGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Customers_and_Promos/Profile_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJzX2FuZF9Qcm9tb3NcUHJvZmlsZV9MaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Customers_and_Promos/Profile_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJzX2FuZF9Qcm9tb3NcUHJvZmlsZV9NYXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/CourseCategory_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcQ291cnNlQ2F0ZWdvcnlfTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/CourseCategory_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcQ291cnNlQ2F0ZWdvcnlfTWFzdGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Course_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcQ291cnNlX0xpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Course_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcQ291cnNlX01hc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/DepartmentCategory_list.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcRGVwYXJ0bWVudENhdGVnb3J5X2xpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/DepartmentCategory_master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcRGVwYXJ0bWVudENhdGVnb3J5X21hc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Department_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcRGVwYXJ0bWVudF9MaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Department_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcRGVwYXJ0bWVudF9NYXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Device_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcRGV2aWNlX0xpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Device_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcRGV2aWNlX01hc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Location_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcTG9jYXRpb25fTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Location_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcTG9jYXRpb25fTWFzdGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Machine_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcTWFjaGluZV9MaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Machine_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcTWFjaGluZV9NYXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Printer_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcUHJpbnRlcl9MaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Printer_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcUHJpbnRlcl9NYXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Product_Price_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcUHJvZHVjdF9QcmljZV9NYXN0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Product_Price_Master_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcUHJvZHVjdF9QcmljZV9NYXN0ZXJfTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Table_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcVGFibGVfTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Master_Setting/Table_Master.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFzdGVyX1NldHRpbmdcVGFibGVfTWFzdGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Receipt.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjZWlwdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Receipt_Payment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjZWlwdF9QYXltZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Reports/SalesReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0c1xTYWxlc1JlcG9ydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Reports/TableTransactionDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0c1xUYWJsZVRyYW5zYWN0aW9uRGV0YWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Reports/ZReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0c1xaUmVwb3J0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Shared/QR1_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXFFSMV9MaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Shared/_CookieConsentPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9Db29raWVDb25zZW50UGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/SignIn.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2lnbkluLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Utility/Auto_Sync_History.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXRpbGl0eVxBdXRvX1N5bmNfSGlzdG9yeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Utility/Auto_Sync_Recored.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXRpbGl0eVxBdXRvX1N5bmNfUmVjb3JlZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/Utility/QR_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXRpbGl0eVxRUl9MaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Views/ProductGroupMain/MainIndex.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdEdyb3VwTWFpblxNYWluSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Views/ProductGroup/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdEdyb3VwXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Views/PSummaryReport/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUFN1bW1hcnlSZXBvcnRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Views/PSummary/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUFN1bW1hcnlcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Views/QR/QR_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUVJcUVJfTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Views/Reports/ProductReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xQcm9kdWN0UmVwb3J0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Views/Shared/QR_List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFFSX0xpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Views/TillSummaryReport/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlsbFN1bW1hcnlSZXBvcnRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Views/TransactionReport/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNhY3Rpb25SZXBvcnRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/POS/POS Mono/Converted_POS_08May2025/Converted_POS/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = X1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 

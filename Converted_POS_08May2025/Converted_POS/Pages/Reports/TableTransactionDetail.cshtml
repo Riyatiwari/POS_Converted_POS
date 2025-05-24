@@ -1,0 +1,228 @@
+﻿@page
+@model Converted_POS.Pages.Reports.TableTransactionDetailModel
+@{
+}
+
+@section link {
+    <link type="text/css" rel="stylesheet" href="vendors/font-awesome/css/font-awesome.min.css" />
+    <link type="text/css" rel="stylesheet" href="vendors/bootstrap/css/bootstrap.min.css" />
+
+    <!--Loading style-->
+    <link type="text/css" rel="stylesheet" href="css/themes/style1/yellow-green.css" />
+    <link type="text/css" rel="stylesheet" href="css/themes/style1/yellow-green.css" />
+    <link type="text/css" rel="stylesheet" href="css/style-responsive.css" />
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <link type="text/css" rel="stylesheet" href="css/themes/style1/MyStyle.css" />
+    <link type="text/css" rel="stylesheet" href="css/themes/style1/MyStyle.css" />
+
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+    <link href="vendor2/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/fonts/nunito.css" rel="stylesheet" />
+    <script src="vendors/googleapis/jquery.min.js"></script>
+    <script src="js2/demo/datatables-demo.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#Psummary thead tr').clone(true).appendTo('#Psummary thead');
+
+            Grid();
+
+        });
+
+        function Grid() {
+
+
+            $("#Psummary tr").not(':first').hover(
+                function () {
+                    $(this).css("background", "#efefef").css("cursor", "Pointer").css("font-weight", "bold").css("box-shadow", "0 4px 2px -3px rgba(0, 0, 0, 0.5) inset").css("-webkit-box-shadow", "0 4px 2px -3px rgba(0, 0, 0, 0.5) inset");
+                },
+                function () {
+                    $(this).css("background", "").css("cursor", "").css("font-weight", "").css("box-shadow", "").css("-webkit-box-shadow", "");
+                }
+            );
+
+
+            var groupCol = 0;
+
+
+            var table = $('#Psummary').DataTable({
+
+                orderCellsTop: true,
+                dom: 'Bfrtip',
+                "buttons": [
+                    'excel'
+                ],
+                "stripeClasses": ['odd-row', 'even-row'],
+                "destroy": true,
+                "columnDefs": [
+
+                    { "visible": true, "targets": +groupCol }
+
+                ],
+
+                "displayLength": 50,
+                "searching": true
+
+            });
+
+
+
+            var table1 = $('#Psummary').DataTable();
+
+
+
+            $('#Psummary thead tr:eq(1) th').each(function (i) {
+
+                var title = $(this).text();
+
+                $(this).html('<input type="text" style="width:98%" placeholder="Search ' + title + '" />');
+
+                $('input', this).on('keyup change', function () {
+
+                    if (table1.column(i).search() !== this.value) {
+                        table1
+
+                            .column($(this).parent().index() + ':visible')
+                            .search(this.value)
+                            .draw()
+                            ;
+
+                    }
+                    else {
+                        table1
+                            .column($(this).parent().index() + ':visible')
+                            .search('')
+                            .draw()
+                            ;
+
+                    }
+                });
+            });
+
+            var tableTemp = $('#Psummary').DataTable();
+
+        }
+    </script>
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        $(document).ready(function () {
+            // Extract 'till' parameter from URL
+            var till = getQueryParam('till');
+
+            // Check if the 'till' parameter exists in the URL
+            if (till) {
+                // Loop through each row in the table and set the 'Till' column
+                $('#Psummary tbody tr').each(function () {
+                    // Find the cell in the 'Till' column (assumed to be the second column)
+                    $(this).find('td').eq(1).text(till);  // .eq(1) targets the second td (Till column)
+                });
+            }
+        });</script>
+    <script>
+        $(document).ready(function () {
+            // Event handler for the "View" link
+            $(".view-detail").on("click", function () {
+                var id = $(this).data("id");  // Get the transaction ID from the data attribute
+                var till = $(this).data("till");  // Get the Till value from the data attribute
+                var username = $(this).data("username");  // Get the Username value from the data attribute
+                var formattedTotalAmount = $(this).data("formattedtotalamount");  // Get the Formatted Total Amount value from the data attribute
+                var date = $(this).data("date");  // Get the Date value from the data attribute
+
+                // Construct the URL with all the parameters
+                var url = '/reports/TableTransactionDetail?id=' + id +
+                    '&till=' + till +
+                    '&username=' + username +
+                    '&formattedTotalAmount=' + formattedTotalAmount +
+                    '&date=' + date;  // Add date to the URL
+
+                // Redirect to the TableTransactionDetail page with the constructed URL
+                window.location.href = url;
+            });
+        });
+    </script>
+}
+<body>
+    <div class="panel panel-yellow" style="padding: 10px;">
+        <div class="col-md-12" id="header" style="padding-top: 10px; width: 100%;">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <tbody>
+                    <!--<tr>
+                        <td>
+                            Table name:-->
+                    @*<span>@Model.TableName</span>*@
+                    <!--</td>
+                    <td>
+                        Payment type:-->
+                    @*<span>@Model.PaymentType</span>*@
+                    <!--</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Ref no:-->
+                    @*<span>@Model.RefNo</span>*@
+                    <!--</td>
+                    <td>
+                        Payment amount:-->
+                    @*<span>@Model.PaymentAmount.ToString("C")</span>*@
+                    <!--</td>
+                    </tr>-->
+                </tbody>
+            </table>
+        </div>
+        <br />
+        <div class="col-md-12" style="padding: 10px;">
+            <div id="ltTable">
+                @*@Html.Raw(Model.TableDetails)*@ <!-- Assuming you return HTML table as string from model -->
+            </div>
+        </div>
+
+        <div class="col-md-12" id="footer" style="padding: 10px; background-color: #B8DBFD !important; color: #777">
+            <br />
+            <div style="text-align: left; padding-left: 20px;">
+                @*<p>Table Status: <span>@Model.TableStatus</span></p>
+                    <p>Payment Amount: <span>@Model.PaymentAmount.ToString("C")</span></p>
+                    <p>Surcharge Amount: <span>@Model.SurchargeAmount.ToString("C")</span></p>
+                    <p>Payment Type: <span>@Model.PaymentType</span></p>
+                    <p>Total Change: <span>@Model.TotalChange.ToString("C")</span></p>
+                    <p>Tip Amount: <span>@Model.TipAmount.ToString("C")</span></p>*@
+            </div>
+            <br />
+        </div>
+        <div class="col-md-12" style="padding: 10px;">
+            <table class="table table-bordered" style="border: 1px solid #ccc; font-size: 9pt; font-family: Arial">
+                <thead>
+                    <tr>
+                        <th style="background-color: #B8DBFD; border: 1px solid #ccc">Name</th>
+                        <th style="background-color: #B8DBFD; border: 1px solid #ccc">Till</th>
+                        <th style="background-color: #B8DBFD; border: 1px solid #ccc">Operator</th>
+                        <th style="background-color: #B8DBFD; border: 1px solid #ccc">Quantity</th>
+                        <th style="background-color: #B8DBFD; border: 1px solid #ccc">Total Amount</th>
+                        <th style="background-color: #B8DBFD; border: 1px solid #ccc">Tax</th>
+                        <th style="background-color: #B8DBFD; border: 1px solid #ccc">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @*@foreach (var transaction in Model.TransactionDetails)
+                    {*@
+                        <tr>
+                            <td></td>
+                            <td>@Request.Query["till"]</td>
+                            <td>@Request.Query["username"]</td>
+                            <td></td>
+                            <td>@Request.Query["formattedTotalAmount"]</td>
+                            <td></td>
+                            <td>@Request.Query["date"]</td>
+                        </tr>
+                    @*}*@
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>

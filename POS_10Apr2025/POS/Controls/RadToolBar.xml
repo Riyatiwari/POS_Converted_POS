@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+
+  <tools name="MainToolbar" dockable="true" enabled="true">
+    <!--<tool name="AjaxSpellCheck" />-->
+    <tool name="InsertSymbol" />
+    <tool name="FormatCodeBlock" />
+    <tool name="FormatStripper" />
+    <tool separator="true"/>
+    <tool name="StripAll" />
+    <tool name="StripCss" />
+    <tool name="StripFont" />
+    <tool name="StripSpan" />
+    <tool name="StripWord" />
+  </tools>
+  <tools>
+    <tool name="InsertFormElement" />
+    <tool name="InsertFormForm" />
+    <tool name="InsertFormButton" />
+    <tool name="InsertFormCheckbox" />
+    <tool name="InsertFormHidden" />
+    <tool name="InsertFormPassword" />
+    <tool name="InsertFormRadio" />
+    <tool name="InsertFormReset" />
+    <tool name="InsertFormSelect" />
+    <tool name="InsertFormSubmit" />
+    <tool name="InsertFormTextarea" />
+    <tool name="InsertFormText" />
+  </tools>
+  <tools name="EnhancedEditToolbar" dockingZone="Bottom" dockable="true" enabled="true">
+    <tool name="ToggleScreenMode" />
+    <tool name="ToggleTableBorder" />
+    <tool name="Zoom" />
+    <tool name="ModuleManager" />
+  </tools>
+
+
+
+
+</root>

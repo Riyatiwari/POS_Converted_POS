@@ -1,0 +1,284 @@
+﻿Imports System.Data
+Imports System.IO
+Partial Class demo_TreeView
+     Inherits BaseClass
+    Dim oClsDataccess As New ClsDataccess
+    'Dim oClsRole As New clsRole
+    Dim oClsRole As New Controller_clsRole
+
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+        Try
+
+            'If Not IsPostBack Then
+            'txtRname.Focus()
+            BindFormGrid()
+                Bind_dt()
+                If Session("cmp_id") = Nothing Then
+                    Response.Redirect("SignIn.aspx", False)
+                End If
+            'If Not Session("RoleEdit") = Nothing Then
+            '    EditRole()
+            'End If
+            'End If
+
+        Catch ex As Exception
+            LogHelper.Error("Role_Master:Page_Load:" + ex.Message)
+        End Try
+    End Sub
+
+    Private Sub Bind_dt()
+
+        Dim dt As DataTable = New DataTable
+        'dt.Columns.Add("id", GetType(Integer))
+        dt.Columns.Add("form_id", GetType(Integer))
+        dt.Columns.Add("view", GetType(Integer))
+        dt.Columns.Add("add", GetType(Integer))
+        dt.Columns.Add("edit", GetType(Integer))
+        dt.Columns.Add("delete", GetType(Integer))
+
+
+        'Dim row As DataRow = dt.NewRow()
+        'row("id") = i
+        'row("cmp_id") = 0
+        'row("name") = ""
+        'row("code") = val1 + i.ToString()
+        'row("caption_type") = ""
+
+        'dt.Rows.Add(row)
+
+        ViewState("Data_dt") = dt
+    End Sub
+
+    Public Sub BindFormGrid()
+        Try
+            Dim dtFomrs As DataTable = oClsRole.SelectAllForm()
+            ViewState("dt") = dtFomrs
+            rdCategory.DataSource = dtFomrs
+            rdCategory.DataBind()
+
+        Catch ex As Exception
+            ScriptManager.RegisterStartupScript(Me, Me.GetType, "test", "alert('Error in processing request');", True)
+            LogHelper.Error("Role_Master:BindFormGrid:" + ex.Message)
+        End Try
+    End Sub
+    Protected Sub rdCategory_ItemDataBound(sender As Object, e As RepeaterItemEventArgs)
+        Try
+            If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
+                Dim hf_Form_id As String = TryCast(e.Item.FindControl("hf_Form_id"), HiddenField).Value
+                Dim rptOrders As Repeater = TryCast(e.Item.FindControl("rptOrders"), Repeater)
+
+                oClsRole.Form_Id = Val(hf_Form_id)
+                Dim dt As DataTable = oClsRole.SelectChildForm()
+
+                If dt.Rows.Count > 0 Then
+                    rptOrders.DataSource = dt
+                    rptOrders.DataBind()
+                Else
+                    rptOrders.DataSource = String.Empty
+                    rptOrders.DataBind()
+                End If
+
+                'Dim target As CheckBox = DirectCast(sender, CheckBox)
+
+
+                ''Dim node As RadTreeNode = DirectCast(target.Parent, RadTreeNode)
+                'Dim vi As CheckBox = DirectCast(e.Item.FindControl("View"), CheckBox)
+                'Dim ad As CheckBox = DirectCast(e.Item.FindControl("Add"), CheckBox)
+                'Dim ed1 As CheckBox = DirectCast(e.Item.FindControl("Edit"), CheckBox)
+                'Dim de As CheckBox = DirectCast(e.Item.FindControl("Delete"), CheckBox)
+
+                'Dim v As HiddenField = CType(e.Item.FindControl("hv"), HiddenField)
+                'Dim a As HiddenField = CType(e.Item.FindControl("ha"), HiddenField)
+                'Dim ed As HiddenField = CType(e.Item.FindControl("he"), HiddenField)
+                'Dim d As HiddenField = CType(e.Item.FindControl("hd"), HiddenField)
+                'Dim f As Integer = 0
+
+                ''If target.Checked = True Then
+                ''    v.Value = 1
+                ''    a.Value = 1
+                ''    ed.Value = 1
+                ''    d.Value = 1
+                ''Else
+                ''    v.Value = 0
+                ''    a.Value = 0
+                ''    ed.Value = 0
+                ''    d.Value = 0
+                ''End If
+                'If vi.Checked = True Then
+                '            v.Value = 1
+                '        Else
+                '            v.Value = 0
+                '        End If
+
+                '        If ad.Checked = True Then
+                '            a.Value = 1
+                '        Else
+                '            a.Value = 0
+                '        End If
+                '        If ed1.Checked = True Then
+                '            ed.Value = 1
+                '        Else
+                '            ed.Value = 0
+                '        End If
+                '        If de.Checked = True Then
+                '            d.Value = 1
+                '        Else
+                '            d.Value = 0
+                '        End If
+
+                ''If v.Value = 1 Or a.Value = 1 Or ed.Value = 1 Or d.Value = 1 Then
+                ''    node.Checked = True
+                ''ElseIf v.Value = 0 And a.Value = 0 And ed.Value = 0 And d.Value = 0 Then
+                ''    node.Checked = False
+                ''Else
+                ''    node.Checked = False
+                ''End If
+
+            End If
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    'Protected Sub chkcheck_CheckedChanged(sender As Object, e As EventArgs)
+    '    Try
+
+    '        Dim target As CheckBox = DirectCast(sender, CheckBox)
+
+    '        'For Each radTreeNode As RadTreeNode In rtlForm.Nodes
+
+    '        '    Dim node As RadTreeNode = DirectCast(target.Parent, RadTreeNode)
+    '        '    Dim vi As CheckBox = DirectCast(node.FindControl("View"), CheckBox)
+    '        '    Dim ad As CheckBox = DirectCast(node.FindControl("Add"), CheckBox)
+    '        '    Dim ed1 As CheckBox = DirectCast(node.FindControl("Edit"), CheckBox)
+    '        '    Dim de As CheckBox = DirectCast(node.FindControl("Delete"), CheckBox)
+
+    '        '    For Each temp In rtlForm.Nodes
+
+    '        '        Dim v As HiddenField = CType(temp.FindControl("hv"), HiddenField)
+    '        '        Dim a As HiddenField = CType(temp.FindControl("ha"), HiddenField)
+    '        '        Dim ed As HiddenField = CType(temp.FindControl("he"), HiddenField)
+    '        '        Dim d As HiddenField = CType(temp.FindControl("hd"), HiddenField)
+    '        '        Dim f As Integer = 0
+
+    '        '        If target.Checked = True Then
+    '        '            v.Value = 1
+    '        '            a.Value = 1
+    '        '            ed.Value = 1
+    '        '            d.Value = 1
+    '        '        Else
+    '        '            v.Value = 0
+    '        '            a.Value = 0
+    '        '            ed.Value = 0
+    '        '            d.Value = 0
+    '        '        End If
+    '        '        If vi.Checked = True Then
+    '        '            v.Value = 1
+    '        '        Else
+    '        '            v.Value = 0
+    '        '        End If
+
+    '        '        If ad.Checked = True Then
+    '        '            a.Value = 1
+    '        '        Else
+    '        '            a.Value = 0
+    '        '        End If
+    '        '        If ed1.Checked = True Then
+    '        '            ed.Value = 1
+    '        '        Else
+    '        '            ed.Value = 0
+    '        '        End If
+    '        '        If de.Checked = True Then
+    '        '            d.Value = 1
+    '        '        Else
+    '        '            d.Value = 0
+    '        '        End If
+
+    '        '        If v.Value = 1 Or a.Value = 1 Or ed.Value = 1 Or d.Value = 1 Then
+    '        '            node.Checked = True
+    '        '        ElseIf v.Value = 0 And a.Value = 0 And ed.Value = 0 And d.Value = 0 Then
+    '        '            node.Checked = False
+    '        '        Else
+    '        '            node.Checked = False
+    '        '        End If
+
+    '        '    Next temp
+    '        'Next
+    '    Catch ex As Exception
+    '        LogHelper.Error("Role_Master:chkcheck_CheckedChanged:" + ex.Message)
+    '    End Try
+    'End Sub
+
+    Protected Sub rptOrders_ItemCommand(source As Object, e As RepeaterCommandEventArgs)
+        Try
+
+            If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
+
+                ' Dim node As RadTreeNode = DirectCast(target.Parent, RadTreeNode)
+                Dim vi As CheckBox = DirectCast(e.Item.FindControl("View"), CheckBox)
+                Dim ad As CheckBox = DirectCast(e.Item.FindControl("Add"), CheckBox)
+                Dim ed1 As CheckBox = DirectCast(e.Item.FindControl("Edit"), CheckBox)
+                Dim de As CheckBox = DirectCast(e.Item.FindControl("Delete"), CheckBox)
+
+
+                Dim hfFormid As String = TryCast(e.Item.FindControl("hfFormid"), HiddenField).Value
+                Dim hv As String = TryCast(e.Item.FindControl("hv"), HiddenField).Value
+                Dim ha As String = TryCast(e.Item.FindControl("ha"), HiddenField).Value
+                Dim he As String = TryCast(e.Item.FindControl("he"), HiddenField).Value
+                Dim hd As String = TryCast(e.Item.FindControl("hd"), HiddenField).Value
+
+                Dim Data_dt As DataTable = New DataTable()
+                Data_dt = DirectCast(ViewState("Data_dt"), DataTable)
+
+                Dim row As DataRow = Data_dt.NewRow()
+                'row("id") = i
+                row("form_id") = Val(hfFormid)
+
+                If vi.Checked = True Then
+                    row("view") = 1
+                Else
+                    row("view") = 0
+                End If
+
+                If ad.Checked = True Then
+                    row("add") = 1
+                Else
+                    row("add") = 0
+                End If
+
+                If ed1.Checked = True Then
+                    row("edit") = 1
+                Else
+                    row("edit") = 0
+                End If
+
+                If de.Checked = True Then
+                    row("delete") = 1
+                Else
+                    row("delete") = 0
+                End If
+
+                Data_dt.Rows.Add(row)
+
+                ViewState("Data_dt") = Data_dt
+            End If
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Protected Sub rptOrders_ItemDataBound(sender As Object, e As RepeaterItemEventArgs)
+        Try
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+    Protected Sub rdCategory_ItemCommand(source As Object, e As RepeaterCommandEventArgs)
+
+    End Sub
+    Protected Sub View_CheckedChanged(sender As Object, e As EventArgs)
+
+    End Sub
+End Class

@@ -1,0 +1,142 @@
+﻿@page
+@model Converted_POS.Pages.Master_Setting.Printer_MasterModel
+@{
+    ViewData["Title"] = "Printer_Master";
+}
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a asp-page="/Master_Setting/Printer_list">Printer list</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Master_Setting/Printer_master">Printer Master</a></li>
+        </ol>
+    </div>
+    <script>
+        document.querySelector("form").onsubmit = function () {
+            var selectedValue = document.querySelector('input[name="printer.is_product_small_large"]:checked')?.value;
+            console.log('Selected Value:', selectedValue); // Log the selected radio button value
+        };
+    </script>
+
+}
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @*<input type="hidden" asp-for="DType.department_category_id" />*@
+    <br />
+
+    <div class="col-lg-12 ">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Printer Master</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="printer.name">Name<span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="printer.name" />
+                                <span asp-validation-for="printer.name" class="text-danger"></span>
+
+                                <div class="clearfix"></div>
+                                <br />
+
+                                <label asp-for="printer.Alias">Alias</label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="printer.Alias" />
+                                <span asp-validation-for="printer.Alias" class="text-danger"></span>
+
+                                <div class="clearfix"></div>
+                                <br />
+
+                                <div class="col-lg-12">
+                                    <input asp-for="printer.is_product_small_large" id="radioSmall" type="radio" name="printer.is_product_small_large" value="0" />
+                                    <label asp-for="printer.is_product_small_large" for="radioSmall">Print Product Small</label>
+                                    <span asp-validation-for="printer.is_product_small_large" class="text-danger"></span>
+
+                                    <input asp-for="printer.is_product_small_large" id="radioLarge" type="radio" name="printer.is_product_small_large" value="1" />
+                                    <label asp-for="printer.is_product_small_large" for="radioLarge">Print Product Large</label>
+                                    <span asp-validation-for="printer.is_product_small_large" class="text-danger"></span>
+
+                                    <input asp-for="printer.is_product_small_large" id="radioExtraLarge" type="radio" name="printer.is_product_small_large" value="2" />
+                                    <label asp-for="printer.is_product_small_large" for="radioExtraLarge">Print Product Extra Large</label>
+                                    <span asp-validation-for="printer.is_product_small_large" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-lg-12">
+                                    <input asp-for="printer.is_condiment_small_large" id="radioCSmall" type="radio" name="printer.is_condiment_small_large" value="3" />
+                                    <label asp-for="printer.is_condiment_small_large" for="radioCSmall">Print Condiments Small</label>
+                                    <span asp-validation-for="printer.is_condiment_small_large" class="text-danger"></span>
+
+                                    <input asp-for="printer.is_condiment_small_large" id="radioCLarge" type="radio" name="printer.is_condiment_small_large" value="4" />
+                                    <label asp-for="printer.is_condiment_small_large" for="radioCLarge">Print Condiments Large</label>
+                                    <span asp-validation-for="printer.is_condiment_small_large" class="text-danger"></span>
+
+                                    <input asp-for="printer.is_condiment_small_large" id="radioCExtraLarge" type="radio" name="printer.is_condiment_small_large" value="5" />
+                                    <label asp-for="printer.is_condiment_small_large" for="radioCExtraLarge">Print Condiments Extra Large</label>
+                                    <span asp-validation-for="printer.is_condiment_small_large" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-2">
+                                    <label asp-for="printer.group_by">Group By</label>
+                                    <input asp-for="printer.group_by" type="checkbox" />
+                                    <span asp-validation-for="printer.group_by" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-3">
+                                    <label asp-for="printer.consile_date">ConsoliDate</label>
+                                    <input asp-for="printer.consile_date" type="checkbox" />
+                                    <span asp-validation-for="printer.consile_date" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-3">
+                                    <label asp-for="printer.OrderFlag">Is OrderFlag</label>
+                                    <input asp-for="printer.OrderFlag" type="checkbox" />
+                                    <span asp-validation-for="printer.OrderFlag" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-3">
+                                    <label asp-for="printer.is_active">Active</label>
+                                    <input asp-for="printer.is_active" type="checkbox" />
+                                    <span asp-validation-for="printer.is_active" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-3">
+                                    <label asp-for="printer.portValue">Default Printer</label>
+                                    <input asp-for="printer.portValue" type="checkbox" /><br />
+                                    <span asp-validation-for="printer.portValue" class="text-danger"></span>
+                                </div>
+                                <span>
+                                    Note: This will be consider as default printer for print.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions text-right pal">
+                    <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                    <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                    <input type="submit" value="Cancel" class="btn btn-primary" formnovalidate asp-page-handler="Cancel" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

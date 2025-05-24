@@ -1,0 +1,17 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+@media (max-width: 767px) {
+
+
+    .btnBying {
+        /* margin: 7px -6px -19px -5px;*/
+        margin: 0px 0px 0px 0px;
+        width: 0px;
+        height: 34px;
+    }
+
+
+    .hide-in-mobile {
+        display: none;
+    }
+}

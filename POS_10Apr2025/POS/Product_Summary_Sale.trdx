@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="sqlDataSource1" Width="25.6540002553542cm" Name="Product_Summary_Rpt" xmlns="http://schemas.telerik.com/reporting/2012/4.2">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ConnectionString="POS" SelectCommand="dbo.P_R_Product" SelectCommandType="StoredProcedure" Name="sqlDataSource1" ParameterValues="{&quot;@cmp_id&quot;:&quot;1039&quot;,&quot;@date1&quot;:&quot;01/01/2018&quot;,&quot;@date2&quot;:&quot;12/18/2019&quot;,&quot;@product_id&quot;:&quot;0&quot;,&quot;@category_id&quot;:&quot;0&quot;,&quot;@type&quot;:&quot;ALL&quot;,&quot;@duration&quot;:&quot;Custom&quot;}">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Decimal" Name="@cmp_id">
+          <Value>
+            <String>= Parameters.cmpid.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="DateTime" Name="@date1">
+          <Value>
+            <String>= Parameters.date1.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="DateTime" Name="@date2">
+          <Value>
+            <String>= Parameters.date2.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="String" Name="@product_id">
+          <Value>
+            <String>= Parameters.productid.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="String" Name="@category_id">
+          <Value>
+            <String>= Parameters.categoryid.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="String" Name="@type">
+          <Value>
+            <String>= Parameters.type.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+        <SqlDataSourceParameter DbType="String" Name="@duration">
+          <Value>
+            <String>=Parameters.duration.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="1.79999989906947cm" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="23.4940653522809cm" Height="0.70000022649765cm" Left="0cm" Top="0.762000059549012cm" Value="Product Summary Report" Name="ReportNameTextBox">
+          <Style TextAlign="Center">
+            <Font Name="Segoe UI" Size="14pt" Bold="True" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.132291763917437cm" Name="detailSection1" />
+    <PageFooterSection Height="2cm" Name="pageFooterSection1">
+      <Items>
+        <TextBox Width="23.4940656447411cm" Height="0.600000202655792cm" Left="-0.00000000000000033cm" Top="0.687916647531921cm" Value="Page: {PageNumber} " Name="ReportPageNumberTextBox">
+          <Style TextAlign="Center">
+            <Font Name="Segoe UI" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageFooterSection>
+    <ReportHeaderSection Height="3.39999954581262cm" Name="reportHeaderSection1">
+      <Items>
+        <Table DataSourceName="sqlDataSource1" Width="22.6059982764721cm" Height="1.63291683739163cm" Left="0.762000059549012cm" Top="1.24800033912658cm" Name="table2" StyleName="Corporate.TableNormal">
+          <Body>
+            <Cells>
+              <TableCell RowIndex="0" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="3.13475589421821cm" Height="0.500000113911703cm" Left="4.40000025431315in" Top="0.299999872843425in" Value="= Fields.Pname" Name="textBox11" StyleName="Corporate.TableBody">
+                    <Style VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.07888631095339cm" Height="0.500000113911703cm" Left="4.40000025431315in" Top="0.299999872843425in" Value="= Fields.price" Name="textBox13" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.972701124236639in" Height="0.500000113911703cm" Left="4.40000025431315in" Top="0.299999872843425in" Value="= Fields.sale_qunt" Name="textBox19" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.4138319664076cm" Height="0.500000113911703cm" Left="4.40000025431315in" Top="0.299999872843425in" Value="= Fields.Total_amt" Name="textBox14" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.41382674514538cm" Height="0.500000113911703cm" Left="4.40000025431315in" Top="0.299999872843425in" Value="= Fields.Discount" Name="textBox16" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="5" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.86130357030264cm" Height="0.500000113911703cm" Left="4.40000025431315in" Top="0.299999872843425in" Value="= Fields.Net_amt" Name="textBox4" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="6" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="3.04640908236791cm" Height="0.500000105088283cm" Left="4.40000025431315in" Top="0.299999872843425in" Value="= Fields.sales_tax_amount" Name="textBox23" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="7" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.824079487132628in" Height="0.500000105088283cm" Left="4.40000025431315in" Top="0.299999872843425in" Value="= Fields.Volume_Sold" Name="textBox24" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="8" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.824079487132628in" Height="0.500000105088283cm" Left="4.40000025431315in" Top="0.299999872843425in" Value="= Fields.qty_sold" Name="textBox25" StyleName="Corporate.TableBody">
+                    <Style TextAlign="Right" VerticalAlign="Middle" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+            </Cells>
+            <Columns>
+              <Column Width="3.13475587008841cm" />
+              <Column Width="2.07888629495115cm" />
+              <Column Width="0.972701116749267in" />
+              <Column Width="2.41383194782712cm" />
+              <Column Width="2.41382672656494cm" />
+              <Column Width="2.86130354827774cm" />
+              <Column Width="3.04640908236791cm" />
+              <Column Width="0.824079487132628in" />
+              <Column Width="0.824079487132628in" />
+            </Columns>
+            <Rows>
+              <Row Height="0.500000105088283cm" />
+            </Rows>
+          </Body>
+          <Corner />
+          <RowGroups>
+            <TableGroup Name="detail">
+              <Groupings>
+                <Grouping />
+              </Groupings>
+            </TableGroup>
+          </RowGroups>
+          <ColumnGroups>
+            <TableGroup Name="pname">
+              <ReportItem>
+                <Panel Width="18.4196744484059cm" Height="0.579999941371893cm" Left="0cm" Top="0cm" Name="panel1">
+                  <Items>
+                    <TextBox Width="0.686059832572937in" Height="0.19999997317791in" Left="4.13828214009603in" Top="0in" Value="To date :" Name="textBox17">
+                      <Style TextAlign="Right" VerticalAlign="Middle">
+                        <Font Bold="True" />
+                      </Style>
+                    </TextBox>
+                    <TextBox Width="1.00000012715658in" Height="0.19999997317791in" Left="0.900000015894572in" Top="0in" Value="From date :" Name="textBox18">
+                      <Style TextAlign="Right" VerticalAlign="Middle">
+                        <Font Bold="True" />
+                      </Style>
+                    </TextBox>
+                    <TextBox Width="1.19999980926514in" Height="0.199999968210856in" Left="2.00000015894572in" Top="0in" Value="= Fields.Fromdt" Name="textBox2" />
+                    <TextBox Width="1.1999994913737in" Height="0.199999968210856in" Left="4.85246721903483in" Top="0in" Value="= Fields.Todt" Name="textBox7" />
+                  </Items>
+                </Panel>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group">
+                  <ReportItem>
+                    <TextBox Width="3.13475480923745cm" Height="0.552916776810443cm" Left="0cm" Top="0cm" Value="Product" Name="textBox33" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                </TableGroup>
+                <TableGroup Name="group1">
+                  <ReportItem>
+                    <TextBox Width="2.07888614814216cm" Height="0.552916776810443cm" Left="0cm" Top="0cm" Value="Price" Name="textBox12" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                </TableGroup>
+                <TableGroup Name="group7">
+                  <ReportItem>
+                    <TextBox Width="0.972701537222049in" Height="0.552916776810443cm" Left="0in" Top="0in" Value="Sale Quantity" Name="textBox3" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                </TableGroup>
+                <TableGroup Name="group3">
+                  <ReportItem>
+                    <TextBox Width="2.41383166321021cm" Height="0.552916776810443cm" Left="0cm" Top="0cm" Value="Total Amount" Name="textBox15" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                </TableGroup>
+                <TableGroup Name="group4">
+                  <ReportItem>
+                    <TextBox Width="2.41382694723104cm" Height="0.552916776810443cm" Left="0cm" Top="0cm" Value="Discount" Name="textBox20" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                </TableGroup>
+                <TableGroup Name="group5">
+                  <ReportItem>
+                    <TextBox Width="2.86130380985107cm" Height="0.552916776810443cm" Left="0cm" Top="0cm" Value="Net Amount" Name="textBox21" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                </TableGroup>
+                <TableGroup Name="group6">
+                  <ReportItem>
+                    <TextBox Width="3.0464080134405cm" Height="0.552916776810443cm" Left="0cm" Top="0cm" Value="Total Tax" Name="textBox22" StyleName="Corporate.TableHeader">
+                      <Style Visible="True" TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup Name="group2">
+              <ReportItem>
+                <TextBox Width="0.824079960328954in" Height="0.579999954252249cm" Left="0in" Top="0in" Name="textBox5" StyleName="" />
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group8">
+                  <ReportItem>
+                    <TextBox Width="0.824079960328954in" Height="0.552916776810443cm" Left="0in" Top="0in" Value="Volume Sold" Name="textBox6" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+            <TableGroup Name="group9">
+              <ReportItem>
+                <TextBox Width="0.824079960328954in" Height="0.579999954252249cm" Left="0in" Top="0in" Name="textBox8" StyleName="" />
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group10">
+                  <ReportItem>
+                    <TextBox Width="0.824079960328954in" Height="0.552916776810443cm" Left="0in" Top="0in" Value="Quality Sold" Name="textBox9" StyleName="Corporate.TableHeader">
+                      <Style TextAlign="Center" />
+                    </TextBox>
+                  </ReportItem>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+          </ColumnGroups>
+        </Table>
+        <TextBox Width="9.19996007283529in" Height="0.200000047683716in" Left="0.00003941853841205in" Top="0.0913387139638265in" Value="= Fields.receipt_header" Name="textBox1">
+          <Style TextAlign="Center" />
+        </TextBox>
+      </Items>
+    </ReportHeaderSection>
+  </Items>
+  <PageSettings PaperKind="A4Extra" Landscape="False">
+    <Margins>
+      <MarginsU Left="2px" Right="2px" Top="2px" Bottom="2px" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style Color="Black">
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <StyleSelector Type="Table" StyleName="Corporate.TableNormal" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style>
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Corporate.TableBody" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style BackgroundColor="28, 58, 112" Color="White" VerticalAlign="Middle">
+        <Font Name="Tahoma" Size="10pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Corporate.TableHeader" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="cmpid" Type="Float" Text="cmpid" />
+    <ReportParameter Name="date1" Type="DateTime" Text="date1" />
+    <ReportParameter Name="date2" Type="DateTime" Text="date2" />
+    <ReportParameter Name="productid" Text="productid" />
+    <ReportParameter Name="categoryid" Text="categoryid" />
+    <ReportParameter Name="type" Text="type" />
+    <ReportParameter Name="duration" Text="duration" />
+  </ReportParameters>
+</Report>

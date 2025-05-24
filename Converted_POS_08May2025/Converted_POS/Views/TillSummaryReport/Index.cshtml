@@ -1,0 +1,175 @@
+@model Converted_POS.ViewModels.TillSummaryReportViewModel
+@using System.Data
+@{
+    ViewData["Title"] = "Till Summary Report";
+}
+
+<div class="panel panel-yellow">
+    <div class="panel-heading">Till Summary Report</div>
+    <div class="panel-body pan">
+        <div class="form-body pal">
+            <div class="row">
+                <div class="col-lg-12">
+                    @if (!Model.CanView)
+                    {
+                        <div class="alert alert-danger">
+                            You do not have permission to view this report.
+                        </div>
+                        return;
+                    }
+
+                    <form id="reportForm" method="post">
+                        <div class="row">
+                            <div class="col-lg-6" id="customDateRange" style="display: @(Model.ShowCustomDateRange ? "block" : "none")">
+                                <div class="form-group">
+                                    <label>From Date:</label>
+                                    <input asp-for="FromDate" class="form-control datepicker" />
+                                    <span asp-validation-for="FromDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6" id="customDateRange" style="display: @(Model.ShowCustomDateRange ? "block" : "none")">
+                                <div class="form-group">
+                                    <label>To Date:</label>
+                                    <input asp-for="ToDate" class="form-control datepicker" />
+                                    <span asp-validation-for="ToDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Duration:</label>
+                                    <select asp-for="Duration" asp-items="Model.Durations" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Sales Type:</label>
+                                    <select class="form-control">
+                                        <option value="All">All</option>
+                                        <option value="Till">Till</option>
+                                        <option value="Online">Online</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Venue:</label>
+                                    <select asp-for="VenueId" asp-items="Model.Venues" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Location:</label>
+                                    <select asp-for="LocationId" asp-items="Model.Locations" class="form-control"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Machine:</label>
+                                    <select asp-for="MachineId" asp-items="Model.Machines" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Display Report:</label>
+                                    <select asp-for="DisplayReport" asp-items="Model.DisplayReportTypes" class="form-control"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-lg-12 text-right">
+                                <button type="submit" class="btn btn-primary">View Report</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            @if (Model.ReportData != null)
+            {
+                <div class="row mt-4">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="tillSummaryTable" class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Venue</th>
+                                                <th>Location</th>
+                                                <th>Machine</th>
+                                                <th>Username</th>
+                                                <th>Timespan</th>
+                                                <th>Qty</th>
+                                                <th>Gross</th>
+                                                <th>Discount</th>
+                                                <th>Net</th>
+                                                <th>Last Tran.</th>
+                                                <th>Surcharge</th>
+                                                <th>VAT</th>
+                                                <th>VAT0</th>
+                                                <th>VAT5</th>
+                                                <th>VAT12</th>
+                                                <th>VAT20</th>
+                                                <th>@ViewBag.Dept1</th>
+                                                <th>@ViewBag.Dept2</th>
+                                                <th>@ViewBag.Dept3</th>
+                                                <th>@ViewBag.Dept4</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (DataRow row in Model.ReportData.Rows)
+                                            {
+                                                <tr>
+                                                    <td>@row["venue_name"]</td>
+                                                    <td>@row["l_name"]</td>
+                                                    <td>@row["m_name"]</td>
+                                                    <td>@row["username"]</td>
+                                                    <td>@Convert.ToDateTime(row["timespan"]).ToString("dd/MM/yyyy")</td>
+                                                    <td>@row["Qty"]</td>
+                                                    <td>@row["Gross"]</td>
+                                                    <td>@row["discount"]</td>
+                                                    <td>@row["Net"]</td>
+                                                    <td>@row["LastTransaction"]</td>
+                                                    <td>@row["surcharge"]</td>
+                                                    <td>@row["VAT"]</td>
+                                                    <td>@row["VAT0"]</td>
+                                                    <td>@row["VAT5"]</td>
+                                                    <td>@row["VAT12"]</td>
+                                                    <td>@row["VAT20"]</td>
+                                                    <td>@row[ViewBag.Dept1.ToString().Replace(" ", "_")]</td>
+                                                    <td>@row[ViewBag.Dept2.ToString().Replace(" ", "_")]</td>
+                                                    <td>@row[ViewBag.Dept3.ToString().Replace(" ", "_")]</td>
+                                                    <td>@row[ViewBag.Dept4.ToString().Replace(" ", "_")]</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/tillSummaryReport.js"></script>
+    
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

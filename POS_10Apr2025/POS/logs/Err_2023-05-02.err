@@ -1,0 +1,26 @@
+02-05-2023 12:09:08:DBManager:connection_data:Object reference not set to an instance of an object.
+02-05-2023 12:09:08:DBManager:connection_data:Object reference not set to an instance of an object.
+02-05-2023 12:12:23:DBManager:connection_data:Object reference not set to an instance of an object.
+02-05-2023 12:12:23:DBManager:connection_data:Object reference not set to an instance of an object.
+02/05/2023 12:12:35 PM:Register:email_id:System.Threading.ThreadAbortException: Thread was being aborted.
+   at System.Threading.Thread.AbortInternal()
+   at System.Threading.Thread.Abort(Object stateInfo)
+   at System.Web.HttpResponse.AbortCurrentThread()
+   at System.Web.HttpResponse.End()
+   at System.Web.HttpResponse.Redirect(String url, Boolean endResponse, Boolean permanent)
+   at System.Web.HttpResponse.Redirect(String url)
+   at Register_Register.btnRegister_Click(Object sender, EventArgs e) in D:\Working\POS\Register\Register.aspx.vb:line 112
+02-05-2023 12:13:25:DBManager:connection_data:Object reference not set to an instance of an object.
+02-05-2023 12:13:25:DBManager:connection_data:Object reference not set to an instance of an object.
+02-05-2023 12:13:46:DBManager:connection_data:Object reference not set to an instance of an object.
+02-05-2023 12:13:46:DBManager:connection_data:Object reference not set to an instance of an object.
+02/05/2023 12:13:55 PM:Register:email_id:System.Threading.ThreadAbortException: Thread was being aborted.
+   at System.Threading.Thread.AbortInternal()
+   at System.Threading.Thread.Abort(Object stateInfo)
+   at System.Web.HttpResponse.AbortCurrentThread()
+   at System.Web.HttpResponse.End()
+   at System.Web.HttpResponse.Redirect(String url, Boolean endResponse, Boolean permanent)
+   at System.Web.HttpResponse.Redirect(String url)
+   at Register_Register.btnRegister_Click(Object sender, EventArgs e) in D:\Working\POS\Register\Register.aspx.vb:line 112
+02-05-2023 12:15:54:DBManager:connection_data:Object reference not set to an instance of an object.
+02-05-2023 12:15:54:DBManager:connection_data:Object reference not set to an instance of an object.

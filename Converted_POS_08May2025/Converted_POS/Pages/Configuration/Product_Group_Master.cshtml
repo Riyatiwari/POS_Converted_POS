@@ -1,0 +1,201 @@
+﻿@page
+@model Converted_POS.Pages.Configuration.Product_Group_MasterModel
+@{
+    ViewData["Title"] = "Product_Group_Master";
+}
+
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a asp-page="/Configuration/Product_Group_List">Sub Group List</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Configuration/Product_Group_Master">Sub Group Master</a></li>
+        </ol>
+    </div>
+}
+
+
+@*<select class="form-control" asp-for="category_id"
+            asp-items="@(new SelectList(ViewBag.ddl,"maincategory_id","name"))">
+    </select>*@
+@*<form asp-controller="clsProductGroupMain_DAL" asp-action="SelectAll" method="post" role="form">
+    <div class="form-group">
+        <div class="alert-danger" asp-validation-summary="ModelOnly"></div>
+        <label asp-for="category_id"></label>*@
+@*<select asp-for="category_id"
+            class="form-control"
+            asp-items="@(new SelectList(ViewBag.ddl,"Value", "Text"))">
+    </select>*@
+@*</div>
+        <div class="form-group">
+            <input id="Submit1" class="btn btn-success" type="submit" value="submit" />
+        </div>
+    </form>*@
+
+
+@*@using (Html.BeginForm())
+    {*@
+@*//ViewData["MainModel"] = new SelectList(MainModel, "category_id", "name");
+    //ViewData["name"] = new SelectList((IEnumerable<>)MainModel, "category_id", "name");*@
+
+
+
+@*}*@
+
+<form method="post" enctype="multipart/form-data" asp-page-handler="SaveSelectedMachines">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" id="hfmaincategory_id" name="category_id" asp-for="DTypePG.category_id" />
+    <br />
+    <div class="col-lg-12 ">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Sub Group Master</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label asp-for="DTypePG.maincategory_id">Sub Group<span class="text-danger">*</span></label><br />
+
+                                    <select asp-for="DTypePG.maincategory_id" class="form-control">
+                                        <option value="0">Select</option> @*disabled selected title="Select"*@
+                                        @foreach (var item in Model.DType_LCPGM)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>                                    
+                                    <span asp-validation-for="DTypePG.maincategory_id" class="text-danger"></span>
+                                    
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-12">
+                                    <label asp-for="DTypePG.name">Name <span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" asp-for="DTypePG.name" placeholder="Name" />
+                                    <span asp-validation-for="DTypePG.name" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-12">
+                                    <label asp-for="DTypePG.description">Description</label>
+                                    <div class="clearfix"></div>
+                                    <textarea class="form-control" asp-for="DTypePG.description" placeholder="Description" rows="4"></textarea>
+                                    <span asp-validation-for="DTypePG.description" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-12">
+                                    <label asp-for="DTypePG.sorting_no">Sorting No </label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" asp-for="DTypePG.sorting_no" placeholder="Sorting No" />
+                                    <span asp-validation-for="DTypePG.sorting_no" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+
+                                <div>
+                                    <div class="col-md-6">
+                                        <label asp-for="DTypePG.is_active">Active</label> &nbsp;
+                                        <input asp-for="DTypePG.is_active" type="checkbox" checked="checked" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="DTypePG.Order_at_table">Order at table</label> &nbsp;
+                                        <input asp-for="DTypePG.Order_at_table" type="checkbox" />
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <div>
+                                    <div class="col-md-6">
+                                        <label asp-for="DTypePG.click_and_collect">Click and Collect</label> &nbsp;
+                                        <input asp-for="DTypePG.click_and_collect" type="checkbox" /> &nbsp;
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="DTypePG.deliver">Deliver</label> &nbsp;
+                                        <input asp-for="DTypePG.deliver" type="checkbox" />
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+
+                                <div class="col-md-12">
+                                    <input type="hidden" name="ImageFileName" id="ImageFileName" value="@ViewData["Base64Image"]" />
+                                    <label asp-for="DTypePG.Aimage">
+                                        Upload :<input id="File1" type="file" name="AimageFile" />
+                                        @if (ViewData["Base64Image"] != null)
+                                        {
+                                            <img src="@ViewData["Base64Image"]" alt="Image" height="100px" width="100px" />}
+                                        else
+                                        {
+                                        }
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @*<label asp-for="DTypePG.SelectedMachineIds">Till</label><br />
+                                        @foreach (var item in Model.DTypedetail)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" id="chk_Machine_@item.machine_id" name="DTypePG.SelectedMachineIds" value="@item.machine_id" @(Model.SelectedMachineIds.Contains(item.machine_id) ? "checked" : "") />
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <label for="chk_Machine_@item.machine_id">@item.Machine</label><br /><br />
+                                                    <input type="hidden" id="hdmachine_id_@item.machine_id" name="hdmachine_id" value="@item.machine_id" />
+                                                </td>
+                                            </tr>
+                                        }*@
+                                    <label asp-for="DTypePG.SelectedMachineIds">Till</label><br />
+                                    @foreach (var item in Model.DTypedetail)
+                                    {
+                                        <div>
+                                            <input type="checkbox"
+                                                   id="chk_Machine_@item.machine_id"
+                                                   name="DTypePG.SelectedMachineIds"
+                                                   value="@item.machine_id"
+                                                   @(Model.DTypePG.SelectedMachineIds.Contains(item.machine_id) ? "checked" : "") />
+                                            <label for="chk_Machine_@item.machine_id">@item.Machine</label><br />
+                                        </div>}
+                                    @*<input id="Checkbox1" type="checkbox" />&nbsp;&nbsp;&nbsp; <br />*@
+                                    @*<input id="Checkbox2" type="checkbox" />&nbsp;&nbsp;*@
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <label asp-for="DTypePG.web_sales_description">Web Sales Description</label>
+                                <div class="clearfix"></div>
+                                <textarea class="form-control" asp-for="DTypePG.web_sales_description" placeholder="Web Sales Description" rows="4"></textarea>
+                                <span asp-validation-for="DTypePG.web_sales_description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <br />
+            <div class="text-right pal">
+                <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                <input type="submit" value="Cancel" class="btn btn-primary" formnovalidate asp-page-handler="Cancel" />
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

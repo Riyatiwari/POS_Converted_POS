@@ -1,0 +1,206 @@
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.Text
+Imports Newtonsoft.Json.Linq
+
+Namespace MoonAPNS
+    Public Class NotificationPayload
+        Public Property Alert() As NotificationAlert
+            Get
+                Return m_Alert
+            End Get
+            Set(value As NotificationAlert)
+                m_Alert = value
+            End Set
+        End Property
+        Private m_Alert As NotificationAlert
+
+        Public Property DeviceToken() As String
+            Get
+                Return m_DeviceToken
+            End Get
+            Set(value As String)
+                m_DeviceToken = value
+            End Set
+        End Property
+        Private m_DeviceToken As String
+
+        Public Property Contentavailable() As System.Nullable(Of Integer)
+            Get
+                Return m_Contentavailable
+            End Get
+            Set(value As System.Nullable(Of Integer))
+                m_Contentavailable = value
+            End Set
+        End Property
+        Private m_Contentavailable As System.Nullable(Of Integer)
+
+        Public Property Title() As String
+            Get
+                Return m_Title
+            End Get
+            Set(value As String)
+                m_Title = value
+            End Set
+        End Property
+        Private m_Title As String
+
+        Public Property Action() As String
+            Get
+                Return m_Action
+            End Get
+            Set(value As String)
+                m_Action = value
+            End Set
+        End Property
+        Private m_Action As String
+
+        Public Property Sound() As String
+            Get
+                Return m_Sound
+            End Get
+            Set(value As String)
+                m_Sound = value
+            End Set
+        End Property
+        Private m_Sound As String
+
+        Friend Property PayloadId() As Integer
+            Get
+                Return m_PayloadId
+            End Get
+            Set(value As Integer)
+                m_PayloadId = value
+            End Set
+        End Property
+        Private m_PayloadId As Integer
+
+        Public Property CustomItems() As Dictionary(Of String, Object())
+            Get
+                Return m_CustomItems
+            End Get
+            Private Set(value As Dictionary(Of String, Object()))
+                m_CustomItems = value
+            End Set
+        End Property
+        Private m_CustomItems As Dictionary(Of String, Object())
+
+        Public Sub New(deviceToken__1 As String)
+            DeviceToken = deviceToken__1
+            Alert = New NotificationAlert()
+            CustomItems = New Dictionary(Of String, Object())()
+        End Sub
+
+        Public Sub New(deviceToken__1 As String, alert__2 As String)
+            DeviceToken = deviceToken__1
+            Alert = New NotificationAlert() With { _
+             .Body = alert__2 _
+            }
+            CustomItems = New Dictionary(Of String, Object())()
+        End Sub
+
+        Public Sub New(deviceToken__1 As String, alert__2 As String, sound__4 As String)
+            DeviceToken = deviceToken__1
+            Alert = New NotificationAlert() With { _
+             .Body = alert__2 _
+            }
+            Sound = sound__4
+            CustomItems = New Dictionary(Of String, Object())()
+        End Sub
+
+        Public Sub New(deviceToken__1 As String, alert__2 As String, sound__4 As String, Contentavailable__5 As Integer, title_1 As String, action_1 As String)
+            DeviceToken = deviceToken__1
+            Alert = New NotificationAlert() With { _
+             .Body = alert__2 _
+            }
+            Sound = sound__4
+            Contentavailable = Contentavailable__5
+            Title = title_1
+            Action = action_1
+            CustomItems = New Dictionary(Of String, Object())()
+        End Sub
+
+
+
+        Public Sub AddCustom(key As String, ParamArray values As Object())
+            If values IsNot Nothing Then
+                Me.CustomItems.Add(key, values)
+            End If
+        End Sub
+
+        Public Function ToJson() As String
+            Dim json As New JObject()
+
+            Dim aps As New JObject()
+
+            If Not Me.Alert.IsEmpty Then
+                If Not String.IsNullOrEmpty(Me.Alert.Body) AndAlso String.IsNullOrEmpty(Me.Alert.LocalizedKey) AndAlso String.IsNullOrEmpty(Me.Alert.ActionLocalizedKey) AndAlso (Me.Alert.LocalizedArgs Is Nothing OrElse Me.Alert.LocalizedArgs.Count <= 0) Then
+                    aps("alert") = New JValue(Me.Alert.Body)
+                Else
+                    Dim jsonAlert As New JObject()
+
+                    If Not String.IsNullOrEmpty(Me.Alert.LocalizedKey) Then
+                        jsonAlert("loc-key") = New JValue(Me.Alert.LocalizedKey)
+                    End If
+
+                    If Me.Alert.LocalizedArgs IsNot Nothing AndAlso Me.Alert.LocalizedArgs.Count > 0 Then
+                        jsonAlert("loc-args") = New JArray(Me.Alert.LocalizedArgs.ToArray())
+                    End If
+
+                    If Not String.IsNullOrEmpty(Me.Alert.Body) Then
+                        jsonAlert("body") = New JValue(Me.Alert.Body)
+                    End If
+
+                    If Not String.IsNullOrEmpty(Me.Alert.ActionLocalizedKey) Then
+                        jsonAlert("action-loc-key") = New JValue(Me.Alert.ActionLocalizedKey)
+                    End If
+
+                    aps("alert") = jsonAlert
+                End If
+            End If
+
+            If Not String.IsNullOrEmpty(Me.Sound) Then
+                aps("sound") = New JValue(Me.Sound)
+            End If
+
+            If Not String.IsNullOrEmpty(Me.Contentavailable) Then
+                aps("content-available") = New JValue(Me.Contentavailable)
+            End If
+
+            If Not String.IsNullOrEmpty(Me.Title) Then
+                aps("title") = New JValue(Me.Title)
+            End If
+
+            If Not String.IsNullOrEmpty(Me.Action) Then
+                aps("action") = New JValue(Me.Action)
+            End If
+
+            json("aps") = aps
+
+            For Each key As String In Me.CustomItems.Keys
+                If Me.CustomItems(key).Length = 1 Then
+                    json(key) = New JValue(Me.CustomItems(key)(0))
+                ElseIf Me.CustomItems(key).Length > 1 Then
+                    json(key) = New JArray(Me.CustomItems(key))
+                End If
+            Next
+
+            Dim rawString As String = json.ToString(Newtonsoft.Json.Formatting.None, Nothing)
+
+            Dim encodedString As New StringBuilder()
+            For Each c As Char In rawString
+                If CInt(Val(c)) < 32 OrElse CInt(Val(c)) > 127 Then
+                    encodedString.Append("\u" + [String].Format("{0:x4}", Convert.ToUInt32(c)))
+                Else
+                    encodedString.Append(c)
+                End If
+            Next
+            Return rawString
+            ' encodedString.ToString();
+        End Function
+
+        Public Overrides Function ToString() As String
+            Return ToJson()
+        End Function
+    End Class
+End Namespace

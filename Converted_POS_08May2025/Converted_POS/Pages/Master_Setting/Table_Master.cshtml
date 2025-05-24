@@ -1,0 +1,103 @@
+﻿@page
+@model Converted_POS.Pages.Master_Setting.Table_MasterModel
+@{
+    ViewData["Title"] = "Table_Master";
+}
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a asp-page="/Master_Setting/Table_list">Table list</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Master_Setting/Table_master">Table Master</a></li>
+        </ol>
+    </div>
+}
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @*<input type="hidden" asp-for="DType.department_category_id" />*@
+    <br />
+    <div class="col-lg-12 ">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Table Master</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="table.name">Name<span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="table.name" />
+                                <span asp-validation-for="table.name" class="text-danger"></span>
+                                <div class="clearfix"></div>
+                                <br />
+
+                                <label asp-for="table.location_id">Location</label>
+                                <select asp-for="table.location_id" id="" class="form-control">
+                                    <option value="">Select</option>
+                                    @foreach (var item in Model.DTTable)
+                                    {
+                                        var selectedAttribute = item.Value == Model.table?.location_id.ToString() ? "selected" : "";
+
+                                        var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                        @Html.Raw(optionHtml)
+                                        @*<option value="@item.Value">@item.Text</option>*@
+                                    }
+                                </select>
+                                <span asp-validation-for="table.location_id" class="text-danger"></span>
+                                <div class="clearfix"></div>
+                                <br />
+                                <label asp-for="table.min_cover">Minimum Cover<span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="table.min_cover" />
+                                <span asp-validation-for="table.min_cover" class="text-danger"></span>
+                                <div class="clearfix"></div>
+                                <br />
+                                <label asp-for="table.max_cover">Maximum Cover<span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="table.max_cover" />
+                                <span asp-validation-for="table.max_cover" class="text-danger"></span>
+                                <div class="clearfix"></div>
+                                <br />
+                                <label asp-for="table.SortingNo">Sorting No<span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="table.SortingNo" />
+                                <span asp-validation-for="table.SortingNo" class="text-danger"></span>
+                                @*<label asp-for="DType.department_category_name">
+            Deparment Category Name
+            <span class="text-danger">*</span>
+        </label>*@
+                                @*<div class="clearfix"></div>
+        <select id="ddlDeptCat" name="Department_category_id" asp-items="@Model.Dept_cate" class="form-control">
+        </select>
+        <span asp-validation-for="DType.Name" class="text-danger"></span>
+        <div class="clearfix"></div>
+        <br />*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions text-right pal">
+                    <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                    <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                    <input type="submit" value="Cancel" class="btn btn-primary" formnovalidate asp-page-handler="Cancel" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+

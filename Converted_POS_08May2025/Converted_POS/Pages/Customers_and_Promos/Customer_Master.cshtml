@@ -1,0 +1,817 @@
+﻿@page
+@model Converted_POS.Pages.forms.Customer_MasterModel
+@{
+    ViewData["Title"] = "Customer_Master";
+}
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a id="customerListButton" asp-page="/Customers_and_Promos/Customer_List">Customer List</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Customers_and_Promos/Customer_Master">Customer Master</a></li>
+        </ol>
+    </div>
+    <style>
+        .dropdown-checkboxes {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+            .dropdown-checkboxes .dropdown-button {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #ccc;
+                background-color: #f9f9f9;
+                cursor: pointer;
+                text-align: left;
+            }
+
+            .dropdown-checkboxes .dropdown-menu {
+                display: none;
+                position: absolute;
+                background-color: white;
+                min-width: 100%;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+                padding: 12px 16px;
+                list-style: none;
+                max-height: 200px;
+                overflow-y: auto;
+                border: 1px solid #ccc;
+            }
+
+            .dropdown-checkboxes.show .dropdown-menu {
+                display: block;
+            }
+
+            .dropdown-checkboxes .dropdown-menu li {
+                align-items: center;
+                padding: 5px 0;
+            }
+
+            .dropdown-checkboxes .dropdown-menu input[type="checkbox"] {
+                margin-right: 10px;
+                width: auto;
+            }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function updateDropdownButtonText() {
+                var selected = [];
+                $('.venue-checkbox:checked').each(function () {
+                    selected.push($(this).next('label').text());
+                });
+
+                //var buttonText = selected.length > 0 ? selected.join(', ') : 'Select Venue';
+                //$('#dropdownMenuButton').text(buttonText);
+            }
+
+            // Initialize button text based on pre-selected checkboxes
+            updateDropdownButtonText();
+
+            $('#dropdownMenuButton').click(function () {
+                $('.dropdown-menu').toggleClass('show');
+            });
+
+            $('#checkAll').click(function () {
+                var checked = this.checked;
+                $('.venue-checkbox').each(function () {
+                    this.checked = checked;
+                });
+                updateDropdownButtonText();
+            });
+
+            $('.venue-checkbox').click(function () {
+                if ($('.venue-checkbox:checked').length === $('.venue-checkbox').length) {
+                    $('#checkAll').prop('checked', true);
+                } else {
+                    $('#checkAll').prop('checked', false);
+                }
+                updateDropdownButtonText();
+            });
+
+            $(document).click(function (event) {
+                if (!$(event.target).closest('.custom-dropdown').length) {
+                    if ($('.dropdown-menu').hasClass('show')) {
+                        $('.dropdown-menu').removeClass('show');
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            function updateDropdownButtonText() {
+                var selected = [];
+                $('.printer-checkbox:checked').each(function () {
+                    selected.push($(this).next('label').text());
+                });
+
+                var buttonText = selected.length > 0 ? selected.join(', ') : 'Select';
+                $('#dropdownMenuButton').text(buttonText);
+            }
+
+            // Initialize button text based on pre-selected checkboxes
+            updateDropdownButtonText();
+
+            $('#dropdownMenuButton').click(function () {
+                $('.dropdown-checkboxes').toggleClass('show');
+            });
+
+            $('#checkAll').click(function () {
+                var checked = this.checked;
+                $('.printer-checkbox').each(function () {
+                    this.checked = checked;
+                });
+                updateDropdownButtonText();
+            });
+
+            $('.printer-checkbox').click(function () {
+                if ($('.printer-checkbox:checked').length === $('.printer-checkbox').length) {
+                    $('#checkAll').prop('checked', true);
+                } else {
+                    $('#checkAll').prop('checked', false);
+                }
+                updateDropdownButtonText();
+            });
+
+            $(document).click(function (event) {
+                if (!$(event.target).closest('.dropdown-checkboxes').length) {
+                    if ($('.dropdown-checkboxes').hasClass('show')) {
+                        $('.dropdown-checkboxes').removeClass('show');
+                    }
+                }
+            });
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Function to update URL parameters
+            function updateUrlParameter(param, value) {
+                //var url = new URL(window.location.href);
+                //url.searchParams.set(param, value);
+                //window.history.pushState({}, '', url);
+                var url = new URL(window.location.href);
+                if (value !== undefined && value !== null && value !== '') {
+                    url.searchParams.set(param, value);
+                } else {
+                    url.searchParams.delete(param);
+                }
+                window.history.pushState({}, '', url);
+            }
+
+            // Event handler for country dropdown change
+            $('#countryDropdown').change(function () {
+                var selectedCountryId = $(this).val();
+
+                // Update the URL with the selected country ID
+                updateUrlParameter('country_id', selectedCountryId);
+
+                // Fetch states based on the selected country
+                $.ajax({
+                    url: '/Customer/GetState', // Endpoint to get states
+                    type: 'GET',
+                    data: { country_id: selectedCountryId },
+                    success: function (data) {
+                        $('#stateDropdown').empty().append('<option value="">Select State</option>');
+                        $.each(data, function (index, item) {
+                            $('#stateDropdown').append($('<option>').val(item.Value).text(item.Text));
+                        });
+
+                        $('#cityDropdown').empty().append('<option value="">Select City</option>');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching states:', status, error);
+                    }
+                });
+            });
+
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCountryId = urlParams.get('country_id');
+            if (selectedCountryId) {
+                $('#countryDropdown').val(selectedCountryId).trigger('change');
+            }
+        });
+        $(document).ready(function () {
+            // Fetch states if country_id is available in the URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCountryId = urlParams.get('country_id');
+            if (selectedCountryId) {
+                $('#countryDropdown').val(selectedCountryId).trigger('change');
+            }
+        });
+        function redirectToCountry() {
+            var selectedCountryId = $('#countryDropdown').val();
+            var customerId = $('#hfcustomer_id').val(); // Assuming this is a hidden input field that holds the staff ID
+
+            // Update the URL parameter without reloading the page
+            updateUrlParameter('country_id', selectedCountryId);
+
+            // Load states based on the selected country
+            loadStates(selectedCountryId);
+        }
+
+        function redirectToState() {
+            /*var selectedCityId = $('#cityDropdown').val();*/
+            var selectedStateId = $('#stateDropdown').val();
+            var selectedCountryId = $('#countryDropdown').val();
+            var customerId = $('#hfcustomer_id').val(); // Assuming this is a hidden input field that holds the staff ID
+
+            // Update the URL parameter without reloading the page
+            updateUrlParameter('state_id', selectedStateId);
+
+            // Optionally, you could load cities here based on the selected state
+        }
+        function redirectToCity() {
+            var selectedCityId = $('#cityDropdown').val();
+            var selectedStateId = $('#stateDropdown').val();
+            var selectedCountryId = $('#countryDropdown').val();
+            var customerId = $('#hfcustomer_id').val(); // Assuming this is a hidden input field that holds the staff ID
+
+            // Update the URL parameter without reloading the page
+            updateUrlParameter('city_id', selectedCityId);
+
+            updateUrlParameter('state_id', selectedStateId);
+            updateUrlParameter('country_id', selectedCountryId);
+            // Optionally, you could load cities here based on the selected state
+        }
+        function updateUrlParameter(param, value) {
+            var url = new URL(window.location.href);
+            url.searchParams.set(param, value);
+            window.history.pushState({}, '', url);
+        }
+
+        function loadStates(selectedCountryId) {
+            $.ajax({
+                url: "/Customer/GetState", // Replace with your endpoint to fetch states
+                data: { country_id: countryId },
+                success: function (data) {
+                    $('#stateDropdown').empty(); // Clear existing options
+                    $('#stateDropdown').append('<option value="">Select State</option>'); // Add default option
+
+                    $.each(data, function (key, value) {
+                        $('#stateDropdown').append($('<option>').text(value.Text).attr('value', value.Value));
+                    });
+
+                    // Clear the city dropdown
+                    $('#cityDropdown').empty().append('<option value="">Select City</option>');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading states:', status, error);
+                }
+            });
+        }
+
+        // Ensure this function is called when the country dropdown changes
+        $('#countryDropdown').change(function () {
+            redirectToCountry();
+        });
+
+        // Ensure this function is called when the state dropdown changes
+        $('#stateDropdown').change(function () {
+            redirectToState();
+            // Optionally load cities here
+        });
+        //$('#cityDropdown').change(function () {
+        //    redirectToCity();
+        //    // Optionally load cities here
+        //});
+
+
+        $('#cityDropdown').change(function () {
+            //var selectedCityId = $(this).val();
+            //updateUrlParameter('city_id', selectedCityId);
+            var selectedCityId = $(this).val();
+            var selectedStateId = $('#stateDropdown').val();
+            var selectedCountryId = $('#countryDropdown').val();
+
+            // Update the URL with the selected city ID
+            updateUrlParameter('city_id', selectedCityId);
+
+            // Optionally, you could make an AJAX call here if needed
+            // Example: loadCityDetails(selectedCityId);
+
+            // Perform any additional actions you need
+            console.log('City changed to:', selectedCityId);
+        });
+        $(function () {
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCityId = urlParams.get('city_id');
+
+            if (selectedCityId) {
+                $('#cityDropdown').val(selectedCityId);
+            }
+        });
+        function loadCityDetails(cityId) {
+            $.ajax({
+                url: '/YourEndpoint/LoadCityDetails', // Replace with your endpoint
+                type: 'GET',
+                data: { city_id: cityId },
+                success: function (data) {
+                    // Handle the response data here
+                    console.log('City details loaded:', data);
+                    // For example, update other parts of the page with the data
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading city details:', status, error);
+                }
+            });
+        }
+        // On page load, check URL parameters and initialize dropdowns
+        $(document).ready(function () {
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCountryId = urlParams.get('country_id');
+            var selectedStateId = urlParams.get('state_id');
+
+            if (selectedCountryId) {
+                $('#countryDropdown').val(selectedCountryId);
+                loadStates(selectedCountryId);
+
+                if (selectedStateId) {
+                    $('#stateDropdown').val(selectedStateId);
+                    // Optionally, load cities here
+                }
+            }
+        });
+        function updateUrlAndRefresh() {
+            // Get the selected country ID
+            var selectedCountryId = document.getElementById('countryDropdown').value;
+            var id = getIdFromUrl(); // Assuming the ID is static. Adjust if needed.
+
+            // Build the new URL
+            var newUrl = `/Customers_and_Promos/Customer_Master?ID=${id}&country_id=${selectedCountryId}`;
+
+            // Update the URL without reloading the page
+            window.history.pushState({}, '', newUrl);
+
+            // Reload the page to apply the new URL parameters
+            window.location.href = newUrl;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('countryDropdown').addEventListener('change', updateUrlAndRefresh);
+        });
+        function getIdFromUrl() {
+            // Extract ID from the URL
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('ID');
+        }
+
+        function updateUrlAndRefresh() {
+            // Get the selected country ID and state ID
+            var selectedCountryId = document.getElementById('countryDropdown').value;
+            var selectedStateId = document.getElementById('stateDropdown') ? document.getElementById('stateDropdown').value : '';
+            var selectedCityId = document.getElementById('cityDropdown') ? document.getElementById('cityDropdown').value : '';
+
+            var id = getIdFromUrl();  // Assuming the ID is static. Adjust if needed.
+
+            // Build the new URL
+            var newUrl = `/Customers_and_Promos/Customer_Master?ID=${id}`;
+            if (selectedCountryId) {
+                newUrl += `&country_id=${selectedCountryId}`;
+            }
+            if (selectedStateId) {
+                newUrl += `&state_id=${selectedStateId}`;
+            }
+            if (selectedCityId) {
+                newUrl += `&city_id=${selectedCityId}`;
+            }
+            // Update the URL and reload the page
+            window.history.pushState({}, '', newUrl);
+            window.location.href = newUrl;
+        }
+
+        function setupEventListeners() {
+            document.getElementById('countryDropdown').addEventListener('change', updateUrlAndRefresh);
+            var stateDropdown = document.getElementById('stateDropdown');
+            if (stateDropdown) {
+                stateDropdown.addEventListener('change', updateUrlAndRefresh);
+            }
+        }
+
+        function populateDropdowns() {
+            // Extract URL parameters
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCountryId = urlParams.get('country_id');
+            var selectedStateId = urlParams.get('state_id');
+
+            if (selectedCountryId) {
+                // Set the selected country
+                var countryDropdown = document.getElementById('countryDropdown');
+                countryDropdown.value = selectedCountryId;
+
+                // Load states based on the selected country
+                loadStates(selectedCountryId, selectedStateId);
+            }
+
+            if (selectedStateId) {
+                var stateDropdown = document.getElementById('stateDropdown');
+                if (stateDropdown) {
+                    stateDropdown.value = selectedStateId;
+                }
+            }
+        }
+
+        function loadStates(countryId, selectedStateId) {
+            // Use AJAX to fetch states for the selected country and update the state dropdown
+            $.ajax({
+                url: "/Customer/GetState", // Replace with your endpoint to fetch states
+                data: { country_id: countryId },
+                success: function (data) {
+                    var stateDropdown = $('#stateDropdown');
+                    stateDropdown.empty(); // Clear existing options
+                    stateDropdown.append('<option value="">Select State</option>');
+                    $.each(data, function (key, value) {
+                        var option = $('<option>').text(value.Text).attr('value', value.Value);
+                        if (value.Value === selectedStateId) {
+                            option.prop('selected', true);
+                        }
+                        stateDropdown.append(option);
+                    });
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            setupEventListeners();
+            populateDropdowns(); // Ensure dropdowns are populated on page load
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Function to update URL parameters
+            function updateUrlParameter(param, value) {
+                var url = new URL(window.location.href);
+                if (value !== undefined && value !== null && value !== '') {
+                    url.searchParams.set(param, value);
+                } else {
+                    url.searchParams.delete(param);
+                }
+                window.history.pushState({}, '', url);
+            }
+    </script>
+    <script>
+        $(document).ready(function () {
+            const fields = ['fname', 'lname', 'address', 'email', 'number', 'otherid', 'bounuspoint', 'postalcode', 'cardnumber', 'countryDropdown', 'stateDropdown', 'cityDropdown', 'profile', 'chkCredit'];
+
+            // Function to clear form values
+            function clearFormValues() {
+                fields.forEach(field => {
+                    $(`#${field}`).val('');
+                });
+            }
+
+            // Function to restore form values from localStorage
+            function restoreFormValues() {
+                fields.forEach(field => {
+                    const value = localStorage.getItem(field);
+                    if (value !== null) {
+                        $(`#${field}`).val(value);
+                    }
+                });
+            }
+
+            // Function to save form values to localStorage
+            function saveFormValues() {
+                fields.forEach(field => {
+                    localStorage.setItem(field, $(`#${field}`).val());
+                });
+            }
+
+            // Handle User List button click
+            $('#userListButton').click(function () {
+                // Clear form values from localStorage and the form itself
+                fields.forEach(field => {
+                    localStorage.removeItem(field);
+                });
+                clearFormValues();
+            });
+
+            // Restore form values when the page loads
+            restoreFormValues();
+
+            // Save form values to localStorage on input change
+            fields.forEach(field => {
+                $(`#${field}`).on('input', function () {
+                    saveFormValues();
+                });
+            });
+
+            // Clear form values from localStorage on form submission
+            $('#yourForm').on('submit', function () {
+                fields.forEach(field => {
+                    localStorage.removeItem(field);
+                });
+            });
+
+            // Handle New User button click
+            $('#newUserButton').click(function () {
+                // Clear localStorage for new user creation
+                fields.forEach(field => {
+                    localStorage.removeItem(field);
+                });
+
+                // Optionally, reset form fields if needed
+                clearFormValues();
+            });
+
+            // AJAX Functions for Dropdowns
+            function updateStates(countryId) {
+                $.ajax({
+                    url: '/path/to/your/state/endpoint',
+                    data: { country_id: countryId },
+                    success: function (data) {
+                        const stateDropdown = $('#stateDropdown');
+                        stateDropdown.empty().append('<option value="">Select State</option>');
+                        $.each(data.states, function (index, item) {
+                            stateDropdown.append($('<option>').val(item.Value).text(item.Text));
+                        });
+                        $('#stateDropdown').val('').change(); // Clear state and city dropdowns
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error loading states:', status, error);
+                    }
+                });
+            }
+
+            function updateCities(stateId) {
+                $.ajax({
+                    url: '/path/to/your/city/endpoint',
+                    data: { state_id: stateId },
+                    success: function (data) {
+                        const cityDropdown = $('#cityDropdown');
+                        cityDropdown.empty().append('<option value="">Select City</option>');
+                        $.each(data.cities, function (index, item) {
+                            cityDropdown.append($('<option>').val(item.Value).text(item.Text));
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error loading cities:', status, error);
+                    }
+                });
+            }
+
+            $('#countryDropdown').change(function () {
+                const countryId = $(this).val();
+                if (countryId) {
+                    updateStates(countryId);
+                } else {
+                    $('#stateDropdown').empty().append('<option value="">Select State</option>');
+                    $('#cityDropdown').empty().append('<option value="">Select City</option>');
+                }
+            });
+
+            $('#stateDropdown').change(function () {
+                const stateId = $(this).val();
+                if (stateId) {
+                    updateCities(stateId);
+                } else {
+                    $('#cityDropdown').empty().append('<option value="">Select City</option>');
+                }
+            });
+        });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="path/to/your/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @*<script>
+            $(document).ready(function () {
+                // When the checkbox is clicked
+                $('#backhoffice').change(function () {
+                    if ($(this).is(':checked')) {
+                        // Show the dropdown
+                        $('#accessRoleContainer').show();
+                    } else {
+                        // Hide the dropdown
+                        $('#accessRoleContainer').hide();
+                    }
+                });
+
+                // Optionally, you can initialize the visibility based on the checkbox state on page load
+                if ($('#backhoffice').is(':checked')) {
+                    $('#accessRoleContainer').show();
+                } else {
+                    $('#accessRoleContainer').hide();
+                }
+            });
+        </script>*@
+    <script>
+        document.getElementById("yourFormId").addEventListener("submit", function (event) {
+            var select = document.getElementById("ProGrp");
+            if (select.value === "") {
+                event.preventDefault(); // Prevent form submission
+                document.getElementById("roleError").innerText = "Please select a role.";
+                document.getElementById("roleError").style.display = "block";
+            } else {
+                document.getElementById("roleError").style.display = "none"; // Hide error message
+            }
+        });
+    </script>
+}
+
+<form id="yourForm" method="post" onsubmit="return validateForm();" enctype="multipart/form-data">
+    @*enctype="multipart/form-data"*@
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" id="hfcustomer_id" name="customer_id" asp-for="customer.customer_id" />
+    <br />
+    <div class="col-lg-12 ">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Customer Master</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    <label asp-for="customer.first_name">First Name<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input id="fname" class="form-control" asp-for="customer.first_name" />
+                                    <span asp-validation-for="customer.first_name" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="customer.last_name">Last Name<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input id="lname" class="form-control" asp-for="customer.last_name" />
+                                    <span asp-validation-for="customer.last_name" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="customer.address">Address<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input id="address" class="form-control" asp-for="customer.address" />
+                                    <span asp-validation-for="customer.address" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    <label asp-for="customer.email">Email<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input id="email" class="form-control" asp-for="customer.email" />
+                                    <span asp-validation-for="customer.email" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="customer.contact_no">Contact<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input id="number" class="form-control" asp-for="customer.contact_no" />
+                                    <span asp-validation-for="customer.contact_no" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="customer.other_id">Other Id<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input id="otherid" class="form-control" asp-for="customer.other_id" />
+                                    <span asp-validation-for="customer.other_id" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    <label asp-for="customer.bounus_point">Bonus Point<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input id="bounuspoint" class="form-control" asp-for="customer.bounus_point" />
+                                    <span asp-validation-for="customer.bounus_point" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="customer.postal_code">Postal Code<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input id="postalcode" class="form-control" asp-for="customer.postal_code" />
+                                    <span asp-validation-for="customer.postal_code" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="customer.CardNumber">Card Number<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input id="cardnumber" class="form-control" asp-for="customer.CardNumber" />
+                                    <span asp-validation-for="customer.CardNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-4" style="margin-top: 20px;">
+                                    <label for="countryDropdown">Country</label>
+                                    <select id="countryDropdown" class="form-control" name="CountryId" onchange="redirectToCountry()">
+                                        <option value="">Select</option>
+                                        @foreach (var country in Model.DTCountry)
+                                        {
+                                            <option value="@country.Value">@country.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-4" style="margin-top: 20px;">
+                                    <label for="stateDropdown">State</label>
+                                    <select id="stateDropdown" class="form-control" name="StateId" onchange="redirectToState()">
+                                        <option value="">Select</option>
+                                        @if (Model.DTState != null)
+                                        {
+                                            @foreach (var state in Model.DTState)
+                                            {
+                                                <option value="@state.Value">@state.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-4" style="margin-top: 20px;">
+                                    <label for="cityDropdown">City</label>
+                                    <select id="cityDropdown" class="form-control" name="CityId" onchange="redirectToCity()">
+                                        <option value="">Select</option>
+                                        @if (Model.DTCity != null)
+                                        {
+                                            @foreach (var city in Model.DTCity)
+                                            {
+                                                <option value="@city.Value">@city.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-4" style="margin-top: 20px;" id="accessRoleContainer" style="display: none;">
+                                    <label>Profile</label>
+                                    <select id="profile" class="form-control">
+                                        <option value="">Select Profile</option>
+                                        @foreach (var item in Model.DTProfile)
+                                        {
+                                            var selectedAttribute = item.Value == Model.customer?.customer_id.ToString() ? "selected" : "";
+
+                                            var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                            @Html.Raw(optionHtml)
+                                            @*<option value="@item.Value">@item.Text</option>*@
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-4" style="margin-top: 20px;" id="accessRoleContainer" style="display: none;">
+                                    <label>Price Level</label>
+                                    <select id="pricelevel" class="form-control">
+                                        <option value="">Select Price Level</option>
+                                        @foreach (var item in Model.DTPriceLevel)
+                                        {
+                                            var selectedAttribute = item.Value == Model.customer?.customer_id.ToString() ? "selected" : "";
+
+                                            var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                            @Html.Raw(optionHtml)
+                                            @*<option value="@item.Value">@item.Text</option>*@
+                                        }
+                                    </select>
+                                </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="col-md-4">
+                                    <label asp-for="customer.DateTimeExpiry">Expiry Date<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input id="datetime" class="form-control" asp-for="customer.DateTimeExpiry" inputmode="full-width-latin" placeholder="Expiry Date" />
+                                    <span asp-validation-for="customer.DateTimeExpiry" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top: 20px;">
+                                @*<div class="col-md-4">
+                                        <label for="fileUpload">Upload</label>
+                                        <input id="photo" asp-for="customer.CustomerProfile" type="file" class="form-control" />
+                                    </div>*@
+                                <input type="hidden" name="ImageFileName" id="ImageFileName" value="@ViewData["Base64Image"]" />
+
+                                <label asp-for="customer.CustomerProfile">
+                                    Upload<input id="File1" type="file" name="CustomerProfileFile" />
+                                    @if (ViewData["Base64Image"] != null)
+                                    {
+                                        <img src="@ViewData["Base64Image"]" alt="Image" height="100px" width="100px" />}
+                                    else
+                                    {
+                                    }
+                                </label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="col-md-4">
+                                    <label>Credit Account</label>&nbsp;&nbsp;&nbsp;
+                                    <input asp-for="customer.Is_credit" type="checkbox" /> @*id="chkCredit" name="chkCredit"*@
+                                </div>
+                                <div class="col-md-4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions text-right pal">
+                <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                <input type="submit" value="Cancel" class="btn btn-primary" formnovalidate asp-page-handler="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

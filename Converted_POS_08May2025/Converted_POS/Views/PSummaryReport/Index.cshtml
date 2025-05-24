@@ -1,0 +1,268 @@
+@model Converted_POS.ViewModels.PSummaryReportViewModel
+@{
+    ViewData["Title"] = "Product Summary Report";
+}
+
+@section Styles {
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <style>
+        tr.group,
+        tr.group:hover {
+            background-color: #8fd6fd !important;
+            color: #111111;
+            border: #111111 1px solid;
+            font-weight: bold;
+        }
+
+        table.dataTable thead th,
+        table.dataTable thead td {
+            padding: 0px;
+        }
+
+        .odd-row { background-color: #f9f9f9; }
+        .even-row { background-color: #ffffff; }
+    </style>
+}
+
+<div class="page-header pull-left">
+    <ol class="breadcrumb page-breadcrumb pull-left">
+        <li><i class="fa fa-home"></i>&nbsp;<a asp-controller="Home" asp-action="Index">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li class="active">Product Summary</li>
+    </ol>
+</div>
+
+<div class="panel panel-yellow">
+    <div class="panel-heading">Product Summary Report</div>
+    <div class="panel-body pan">
+        <div class="form-body pal">
+            @if (!Model.CanView)
+            {
+                <div class="alert alert-danger">
+                    You do not have permission to view this report.
+                </div>
+                return;
+            }
+
+            <form asp-action="Index" method="post" id="reportForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Duration"></label>
+                            <select asp-for="Duration" asp-items="Model.Durations" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="LocationId"></label>
+                            <select asp-for="LocationId" asp-items="Model.Locations" class="form-control">
+                                <option value="">Select Location</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="customDateRange" style="display: @(Model.Duration == "Custom" ? "block" : "none")">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FromDate"></label>
+                                <input asp-for="FromDate" class="form-control datepicker" />
+                                <span asp-validation-for="FromDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ToDate"></label>
+                                <input asp-for="ToDate" class="form-control datepicker" />
+                                <span asp-validation-for="ToDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="CategoryId"></label>
+                            <select asp-for="CategoryId" asp-items="Model.Categories" class="form-control">
+                                <option value="">Select Product Group</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ProductId"></label>
+                            <select asp-for="ProductId" asp-items="Model.Products" class="form-control">
+                                <option value="">Select Product</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="SelectedTills"></label>
+                            <select asp-for="SelectedTills" asp-items="Model.Tills" class="form-control" multiple="multiple">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="CustomerId"></label>
+                            <select asp-for="CustomerId" asp-items="Model.Customers" class="form-control">
+                                <option value="">Select Customer</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="IncludeReturns" /> @Html.DisplayNameFor(m => m.IncludeReturns)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="radio-inline">
+                                @foreach (var type in Model.ReportTypes)
+                                {
+                                    <label class="radio-inline">
+                                        <input type="radio" name="ReportType" value="@type.Value" @(type.Selected ? "checked" : "") />
+                                        @type.Text
+                                    </label>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary">View Report</button>
+                    </div>
+                </div>
+            </form>
+
+            @if (Model.ReportData != null)
+            {
+                <hr />
+                <div class="row">
+                    <div class="col-md-12 text-right mb-3">
+                        <button type="button" id="lbtnsize" onclick="toggleLocation()" class="btn btn-link">Show Location</button>
+                        <button type="button" id="LinksizeA" onclick="toggleSize()" class="btn btn-link">Show Size</button>
+                        <span class="ml-3"><strong>Group By:</strong></span>
+                        <div class="btn-group" role="group">
+                            <input type="radio" name="groupby" title="Product Group" value="0" checked="checked" /> Product Group
+                            <input type="radio" name="groupby" title="Product" value="1" /> Product
+                            <input type="radio" name="groupby" title="Size" value="11" /> Size
+                            <input type="radio" name="groupby" title="Location" value="12" /> Location
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="Psummary" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Product Group</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Sales Qty</th>
+                                <th>Sales Qty Other</th>
+                                <th>Return Qty</th>
+                                <th>Total Amount</th>
+                                <th>Discount</th>
+                                <th>Net Amount</th>
+                                <th>Total Tax</th>
+                                <th>Total Volume Sold</th>
+                                <th>Total Qty Sold</th>
+                                <th>Size</th>
+                                <th>Location</th>
+                            </tr>
+                            <tr>
+                                <th>Product Group</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Sales Qty</th>
+                                <th>Sales Qty Other</th>
+                                <th>Return Qty</th>
+                                <th>Total Amount</th>
+                                <th>Discount</th>
+                                <th>Net Amount</th>
+                                <th>Total Tax</th>
+                                <th>Total Volume Sold</th>
+                                <th>Total Qty Sold</th>
+                                <th>Size</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DataRow row in Model.ReportDataTable.Rows)
+                            {
+                                <tr>
+                                    <td>@row["ProductGroup"]</td>
+                                    <td>
+                                        <a href="/Product/Edit/@row["product_id"]" target="_blank">@row["Pname"]</a>
+                                    </td>
+                                    <td>@row["price"]</td>
+                                    <td>
+                                        <a href="/Product/Transactions?cID=@row["cID"]&pid=@row["product_id"]&PR=@row["PR"]&LID=@row["LID"]&D=@row["D"]&s_date=@row["s_date"]&e_date=@row["e_date"]&type=@row["type"]&Dis=0&other=0&cusId=@row["custID"]" target="_blank">
+                                            @row["Sale_qunt"]
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/Product/Transactions?cID=@row["cID"]&pid=@row["product_id"]&PR=@row["PR"]&LID=@row["LID"]&D=@row["D"]&s_date=@row["s_date"]&e_date=@row["e_date"]&type=@row["type"]&Dis=0&other=1&cusId=@row["custID"]" target="_blank">
+                                            @row["sale_qunt_other"]
+                                        </a>
+                                    </td>
+                                    <td>@row["return_qunt"]</td>
+                                    <td>@row["Total_amt"]</td>
+                                    <td>
+                                        <a href="/Product/Transactions?cID=@row["cID"]&pid=@row["product_id"]&PR=@row["PR"]&LID=@row["LID"]&D=@row["D"]&s_date=@row["s_date"]&e_date=@row["e_date"]&type=@row["type"]&Dis=1&other=0&cusId=@row["custID"]" target="_blank">
+                                            @row["Discount"]
+                                        </a>
+                                    </td>
+                                    <td>@row["Net_amt"]</td>
+                                    <td>@row["Sales_tax_amount"]</td>
+                                    <td>@row["Volume_sold"]</td>
+                                    <td>@row["Qty_Sold"]</td>
+                                    <td>@row["Size"]</td>
+                                    <td>@row["Locationname"]</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/vendor/datatables/buttons.html5.min.js"></script>
+    <script src="~/js/pSummaryReport.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.datepicker').datepicker({
+                format: 'dd/MM/yyyy',
+                autoclose: true,
+                todayHighlight: true,
+                orientation: 'bottom'
+            });
+            
+            // Set default dates
+            var today = new Date();
+            $('#FromDate').datepicker('setDate', today);
+            $('#ToDate').datepicker('setDate', today);
+        });
+    </script>
+} 

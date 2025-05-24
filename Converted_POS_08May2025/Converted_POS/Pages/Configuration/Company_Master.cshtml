@@ -1,0 +1,635 @@
+﻿@page
+@model Converted_POS.Pages.forms.Company_MasterModel
+@{
+    ViewData["Title"] = "Company_Master";
+}
+@using Microsoft.AspNetCore.Http
+@{
+    var storeName = HttpContext.Request.HttpContext.Session.GetString("Storename");
+    var userName = HttpContext.Request.HttpContext.Session.GetString("Username");
+
+    if (string.IsNullOrEmpty(userName))
+    {
+        userName = "Administrator";
+    }
+}
+@section link {
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/BackOffice/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Configuration/Company_Master">Company Settings</a></li>
+        </ol>
+    </div>
+
+
+    <script>
+        document.getElementById('startDate').addEventListener('change', function () {
+            var selectedDate = this.value;
+
+
+            document.getElementById('hiddenStartDate').value = selectedDate;
+
+
+            console.log('Selected Date:', selectedDate);
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const calendarIcon = document.querySelector('.input-group-addon');
+            const startDateInput = document.getElementById('startDate');
+
+
+            calendarIcon.addEventListener('click', function () {
+                startDateInput.focus();
+            });
+
+
+            startDateInput.addEventListener('change', function () {
+                const selectedDate = startDateInput.value;
+                console.log('Selected Date:', selectedDate);
+
+
+            });
+        });
+    </script>
+
+    <script>
+        function redirectToCountryy() {
+                var countryId = document.getElementById("countryDropdown").value;
+        window.location.href = `/Configuration/Company_Master?country_id=${countryId}`;
+        }
+
+        function redirectToStatee() {
+           var selectedCountryId = document.getElementById("countryDropdown").value;
+            var selectedStateId = document.getElementById("stateDropdown").value;
+          var url = "/Configuration/Company_Master?country_id=" + selectedCountryId + "&state_id=" + selectedStateId;
+
+            window.history.pushState({}, '', url);
+            loadCities(selectedStateId);
+            location.reload();
+
+        }
+
+        function redirectToCityy() {
+           var selectedCountryId = document.getElementById("countryDropdown").value;
+            var selectedStateId = document.getElementById("stateDropdown").value;
+            var selectedCityId = document.getElementById("cityDropdown").value;
+         var url = "/Configuration/Company_Master?country_id=" + selectedCountryId + "&state_id=" + selectedStateId + "&city_id=" + selectedCityId;
+            window.history.pushState({}, '', url);
+            loadCities(selectedStateId);
+            location.reload();
+
+        }
+
+        function loadStates(countryId) {
+
+            $.ajax({
+                url: "/Configuration/GetStates",
+                data: { country_id: countryId },
+                success: function (data) {
+                    $('#stateDropdown').empty();
+                    $.each(data, function (key, value) {
+                        $('#stateDropdown').append($('<option>').text(value.Text).attr('value', value.Value));
+                    });
+                }
+            });
+        }
+
+        function loadCities(stateId) {
+
+            $.ajax({
+                url: "/Configuration/GetCities",
+                data: { state_id: stateId },
+                success: function (data) {
+                    $('#cityDropdown').empty();
+                    $.each(data, function (key, value) {
+                        $('#cityDropdown').append($('<option>').text(value.Text).attr('value', value.Value));
+                    });
+                }
+            });
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        $.ajax({
+            type: "GET",
+            url: "~\Controls\RadToolBar.xml",
+            dataType: "xml",
+            success: function (xml) {
+                // Call function to process XML data
+                parseXML(xml);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error loading XML:", error);
+            }
+        });
+        function parseXML(xml) {
+            // Clear existing content if needed
+            $('#toolbarContainer').empty();
+
+            // Process MainToolbar tools
+            $(xml).find('tools[name="MainToolbar"] tool').each(function () {
+                var toolName = $(this).attr('name');
+                var button = $('<button>').text(toolName).attr('id', 'btn_' + toolName);
+                $('#toolbarContainer').append(button);
+            });
+
+            // Process InsertForm tools
+            $(xml).find('tools tool').each(function () {
+                var toolName = $(this).attr('name');
+                var button = $('<button>').text(toolName).attr('id', 'btn_' + toolName);
+                $('#toolbarContainer').append(button);
+            });
+
+            // Process EnhancedEditToolbar tools
+            $(xml).find('tools[name="EnhancedEditToolbar"] tool').each(function () {
+                var toolName = $(this).attr('name');
+                var button = $('<button>').text(toolName).attr('id', 'btn_' + toolName);
+                $('#toolbarContainer').append(button);
+            });
+        }
+    </script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Summernote CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+
+    <!-- Summernote JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: '#editor',
+            plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+            toolbar: 'undo redo | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            toolbar_mode: 'floating',
+            height: 200,
+            menubar: false,
+            setup: function (editor) {
+                editor.on('change', function (e) {  // Ensure 'change' is lowercase
+                    editor.save();
+                });
+            }
+        });
+    </script>
+    <script>
+        tinymce.init({
+            selector: '#footer',
+            plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+            toolbar: 'undo redo | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            toolbar_mode: 'floating',
+            height: 200,
+            menubar: false,
+            setup: function (editor) {
+                editor.on('change', function (e) {  // Ensure 'change' is lowercase
+                    editor.save();
+                });
+            }
+        });
+    </script>
+}
+<form method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @*<input type="hidden" id="hfstaff_id" name="staff_id" asp-for="Staff.staff_id" />*@
+    <br />
+    <div class="col-lg-12 ">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Company Settings</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <label>Company Name<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" placeholder="Company Name" name="CompanyName" value="@storeName" />
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Code<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" placeholder="Code" value="@storeName" readonly />
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Address</label>
+                                    <div class="clearfix"></div>
+                                    <textarea class="form-control" placeholder="Address"></textarea>
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <label>Start Date<span class="text-danger">*</span></label>
+                                    <div>
+                                        <input type="date" id="startDate" class="form-control date-picker" placeholder="Select Start Date" name="Starting_Date">
+                                        <input type="hidden" id="hiddenStartDate" name="hiddenStartDate" />
+                                    </div>
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Venue</label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" placeholder="Venue" />
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <label>Domain<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" value="@(('@') + "jwtest")" readonly />
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Email</label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" placeholder="Email" />
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    @*  <label>Country</label><br />
+                                    <select id="countryDropdown" name="CountryId" onchange="redirectToCountryy()" class="form-control">
+                                        <option value="">Select Country</option>
+                                        @foreach (var country in Model.CountryList) *@
+                                    @* {
+                                            <option value="@country.Value">@country.Text</option>
+                                        }
+                                    </select> *@
+                                    <label for="countryDropdown">Country</label>
+                                    <!--<select--> @*asp-for="SelectedCountry" asp-items="Model.Countries"*@
+                                    <!--class="form-control">
+                                        <option value="">Select Country</option>
+                                    </select>-->
+                                    <select id="countryDropdown" class="form-control" name="countryId" onchange="redirectToCountryy()">
+                                        <option value="">Select</option>
+                                        @foreach (var item in Model.CountryList)
+                                        {
+                                            //var selectedAttribute = item.Value == Model.staff?.country_id.ToString() ? "selected" : "";
+                                            var selectedAttribute = (item.Value != null && ViewData["CountryId"] != null && item.Value.ToString() == ViewData["CountryId"].ToString()) ? "selected" : "";
+
+
+                                            var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                            @Html.Raw(optionHtml)
+                                        }
+                                        @*<option value="@item.Value">@item.Text</option>*@
+                                        @*}*@
+                                        @*@foreach (var country in Model.DTCountry)
+                                            {
+                                                <option value="@country.Value">@country.Text</option>
+
+                                            }*@
+
+                                    </select>
+                                    <span class="text-danger" id="countryErrorMessage" style="display:none;">
+                                        Country is required.
+                                    </span>
+                                </div>
+                                <div class="col-md-3">
+                                    @* <label>State</label><br />
+                                    <select id="stateDropdown" name="StateId" onchange="redirectToState()" class="form-control">
+                                        <option value="">Select State</option>
+                                        @if (Model.StateList != null)
+                                        { *@
+                                    @* foreach (var state in Model.StateList)
+                                            {
+                                                <option value="@state.Value">@state.Text</option>
+                                            }
+                                        }
+                                    </select> *@
+                                    <label for="stateDropdown">State</label>
+                                    <!--<select--> @*asp-for="SelectedState" asp-items="Model.States"*@
+                                    <!--class="form-control">
+                                        <option value="">Select State</option>
+                                    </select>-->
+                                    <select id="stateDropdown" class="form-control" name="stateId" onchange="redirectToStatee()">
+                                        <option value="">Select State</option>
+                                        @if (Model.StateList != null && Model.StateList.Any())
+                                        {
+                                            @foreach (var item in Model.StateList)
+                                            {
+                                                //var selectedAttribute = item.Value == ViewData["StateId"].ToString() ? "selected" : "";
+                                                var selectedAttribute = (item.Value != null && ViewData["StateId"] != null && item.Value.ToString() == ViewData["StateId"]?.ToString()) ? "selected" : "";
+
+                                                var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                                //var selected = item.Value == ViewData["StateId"].ToString() ? "selected" : "";
+                                                @Html.Raw(optionHtml)
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                        @*@if (Model.DTState != null)
+                                            {
+                                                @foreach (var state in Model.DTState)
+                                                {
+                                                    <option value="@state.Value">@state.Text</option>
+                                                }
+                                            }*@
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <label>Website</label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" placeholder="Website" />
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Contact</label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" placeholder="Contact" />
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    @* <label>City</label><br />
+                                    <select id="cityDropdown" name="CityId" class="form-control">
+                                        <option value="">Select City</option>
+                                        @if (Model.CityList != null)
+                                        { *@
+                                    @* @foreach (var city in Model.CityList)
+                                            {
+                                                <option value="@city.Value">@city.Text</option>
+                                            }
+                                        }
+                                    </select> *@
+                                    <label for="cityDropdown">City</label>
+                                    <!--<select--> @*asp-for="SelectedCity" asp-items="Model.Cities"*@
+                                    <!--class="form-control">
+                                        <option value="">Select City</option>
+                                    </select>-->
+                                    <select id="cityDropdown" class="form-control" name="cityId" onchange="redirectToCityy()">
+                                        <option value="">Select</option>
+                                        @if (Model.CityList != null && Model.CityList.Any())
+                                        {
+                                            @foreach (var item in Model.CityList)
+                                            {
+                                                //var selectedAttribute = item.Value == Model.staff?.city_id.ToString() ? "selected" : "";
+                                                var selectedAttribute = (item.Value != null && ViewData["CityId"] != null && item.Value.ToString() == ViewData["CityId"].ToString()) ? "selected" : "";
+                                                var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                                //var selected = item.Value == ViewData["CityId"].ToString() ? "selected" : "";
+                                                @Html.Raw(optionHtml)
+                                                @*<option value="@item.Value">@item.Text</option>*@
+                                            }
+                                        }
+                                        @*@foreach (var city in Model.DTCity)
+                                            {
+                                                <option value="@city.Value">@city.Text</option>
+                                            }*@
+                                        @*@if (Model.DTCity != null)
+                                            {
+                                                @foreach (var city in Model.DTCity)
+                                                {
+                                                    <option value="@city.Value">@city.Text</option>
+                                                }}*@
+                                    </select>
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <label>Branch</label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" placeholder="Branch" />
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Synchronization</label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" placeholder="Synchronization" />
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Product Type</label><br />
+                                    <select id="productDropdown" name="" onchange="" class="form-control">
+                                        <option value="">Select Product Type</option>
+                                        <option>TenderPOS</option>
+                                        <option>TenderLITE</option>
+                                        @*@if (Model.ProductList != null)
+                    {
+                        foreach (var product in Model.ProductList)
+                        {
+                            <option value="@product.Value">@product.Text</option>
+                        }
+                    }*@
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Postal Code</label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" placeholder="Postal Code" />
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <label>Description</label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" placeholder="Description" />
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Logo</label><br />
+                                    <input type="file" name="fUImage" id="fUImage" class="form-control p-1" />
+                                    <span>Select file to upload(.jpg, .jpeg, .gif, .png) File size should not exceed 5Kb</span>
+
+                                    @*<img id="imgPreview" src="@Model.ImageData" alt="Uploaded Image" />*@
+                                    @*<img src="@ViewData["ImageData"]" alt="Uploaded Image" />*@
+                                    <br />
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Vat No</label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" placeholder="Vat No" value="1234567890" />
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <label>Receipt Header</label>
+                                    <div class="clearfix"></div>
+                                    <textarea id="editor" class="form-control span12" style="width: 100%; height: 200px;">jwtest1</textarea>
+                                    @*<textarea id="txtReciptHeader" name="txtReciptHeader" ToolsFile="~/Controls/RadToolBar.xml" class="form-control span12" style="width: 100%; height: 200px; overflow: auto;"></textarea>*@
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Receipt Footer</label>
+                                    <div class="clearfix"></div>
+                                    <textarea id="footer" class="form-control span12" style="width: 100%; height: 200px;"></textarea>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3">
+                                    <label>Log Off Time (In minutes)</label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" value="60" />
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>No.Of Park Sale Per Operator</label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" value="3" />
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3">
+                                    <label>Currency</label><br />
+                                    <select id="currencyDropdown" name="" onchange="" class="form-control">
+                                        <option value="">Select Currency</option>
+                                        @if (Model.CurrencyList != null)
+                                        {
+                                            foreach (var currency in Model.CurrencyList)
+                                            {
+                                                <option value="@currency.Value">@currency.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Week start day</label><br />
+                                    <select id="Dropdown" name="" onchange="redirectTo()" class="form-control">
+                                        <option value="">Monday</option>
+                                        <option value="">Tuesday</option>
+                                        <option value="">Wednesday</option>
+                                        <option value="">Thursday</option>
+                                        <option value="">Friday</option>
+                                        <option value="">Saturday</option>
+                                        <option value="">Sunday</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3">
+                                    <label>Business Done by</label><br />
+                                    <select class="form-control">
+                                        <option value="">Select</option>
+                                        <option>Department</option>
+                                        <option>Department Category</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>PaymentGateway</label><br />
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3">
+                                    <label>Show Chips Settings (On Backoffice)</label><br />
+                                    <input type="checkbox" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Limit the duration</label><br />
+                                    <input type="checkbox" />
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3">
+                                    <label>Display Cash Declaration (On Business Done)</label><br />
+                                    <input type="checkbox" checked="checked" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Apply Seccond Tax</label><br />
+                                    <input type="checkbox" />
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3">
+                                    <label>Tax Exclusive</label><br />
+                                    <span class="text-danger">(Note : Exclusive tax will be apply only on new product.)</span><br />
+                                    <input type="checkbox" />
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="text-right pal">
+                <input type="submit" value="Clear All Data" class="btn btn-primary" asp-page-handler="ClearAllData" />
+                <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                <input type="submit" value="Cancel" class="btn btn-primary" asp-page-handler="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

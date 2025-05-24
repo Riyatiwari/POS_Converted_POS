@@ -1,0 +1,384 @@
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.IO
+Imports System.Linq
+Imports System.Net.Security
+Imports System.Net.Sockets
+Imports System.Security.Cryptography.X509Certificates
+Imports System.Text
+Imports System.Threading
+Imports NLog
+
+
+Namespace MoonAPNS
+    Public Class PushNotification
+        Private Shared ReadOnly Logger As Logger = LogManager.GetCurrentClassLogger()
+        Private _apnsClient As TcpClient
+        Private _apnsStream As SslStream
+        Private _certificate As X509Certificate
+        Private _certificates As X509CertificateCollection
+
+        Public Property P12File() As String
+            Get
+                Return m_P12File
+            End Get
+            Set(value As String)
+                m_P12File = value
+            End Set
+        End Property
+        Private m_P12File As String
+        Public Property P12FilePassword() As String
+            Get
+                Return m_P12FilePassword
+            End Get
+            Set(value As String)
+                m_P12FilePassword = value
+            End Set
+        End Property
+        Private m_P12FilePassword As String
+
+
+        ' Default configurations for APNS
+        Private Const ProductionHost As String = "gateway.push.apple.com"
+        Private Const SandboxHost As String = "gateway.sandbox.push.apple.com"
+        Private Const NotificationPort As Integer = 2195
+
+        ' Default configurations for Feedback Service
+        Private Const ProductionFeedbackHost As String = "feedback.push.apple.com"
+        Private Const SandboxFeedbackHost As String = "feedback.sandbox.push.apple.com"
+        Private Const FeedbackPort As Integer = 2196
+
+
+        Private _conected As Boolean = False
+
+        Private ReadOnly _host As String
+        Private ReadOnly _feedbackHost As String
+
+        Private _notifications As New List(Of NotificationPayload)()
+        Private _rejected As New List(Of String)()
+
+        Private _errorList As New Dictionary(Of Integer, String)()
+
+
+        Public Sub New(useSandbox As Boolean, p12File As String, p12FilePassword As String)
+            If useSandbox Then
+                _host = SandboxHost
+                _feedbackHost = SandboxFeedbackHost
+            Else
+                _host = ProductionHost
+                _feedbackHost = ProductionFeedbackHost
+            End If
+
+            'Load Certificates in to collection.
+            _certificate = If(String.IsNullOrEmpty(p12FilePassword), New X509Certificate2(File.ReadAllBytes(p12File)), New X509Certificate2(File.ReadAllBytes(p12File), p12FilePassword))
+            _certificates = New X509CertificateCollection() From { _
+             _certificate _
+            }
+
+            ' Loading Apple error response list.
+            _errorList.Add(0, "No errors encountered")
+            _errorList.Add(1, "Processing error")
+            _errorList.Add(2, "Missing device token")
+            _errorList.Add(3, "Missing topic")
+            _errorList.Add(4, "Missing payload")
+            _errorList.Add(5, "Invalid token size")
+            _errorList.Add(6, "Invalid topic size")
+            _errorList.Add(7, "Invalid payload size")
+            _errorList.Add(8, "Invalid token")
+            _errorList.Add(255, "None (unknown)")
+        End Sub
+
+        Public Function SendToApple(queue As List(Of NotificationPayload)) As List(Of String)
+            Logger.Info("Payload queue received.")
+            _notifications = queue
+            If queue.Count < 8999 Then
+                SendQueueToapple(_notifications)
+            Else
+                Const pageSize As Integer = 8999
+                Dim numberOfPages As Integer = (queue.Count / pageSize) + (If(queue.Count Mod pageSize = 0, 0, 1))
+                Dim currentPage As Integer = 0
+
+                While currentPage < numberOfPages
+                    _notifications = (queue.Skip(currentPage * pageSize).Take(pageSize)).ToList()
+                    SendQueueToapple(_notifications)
+                    currentPage += 1
+                End While
+            End If
+            'Close the connection
+            Disconnect()
+            Return _rejected
+        End Function
+
+        Private Sub SendQueueToapple(queue As IEnumerable(Of NotificationPayload))
+            Dim i As Integer = 1000
+            For Each item In queue
+                If Not _conected Then
+                    Connect(_host, NotificationPort, _certificates)
+                    Dim response = New Byte(5) {}
+                    _apnsStream.BeginRead(response, 0, 6, AddressOf ReadResponse, New MyAsyncInfo(response, _apnsStream))
+                End If
+                Try
+                    If item.DeviceToken.Length = 64 Then
+                        'check lenght of device token, if its shorter or longer stop generating Payload.
+                        item.PayloadId = i
+                        Dim payload As Byte() = GeneratePayload(item)
+                        _apnsStream.Write(payload)
+                        Logger.Info("Notification successfully sent to APNS server for Device Toekn : " + item.DeviceToken)
+                        'Wait to get the response from apple.
+                        Thread.Sleep(1000)
+                    Else
+                        Logger.[Error]("Invalid device token length, possible simulator entry: " + item.DeviceToken)
+                    End If
+                Catch ex As Exception
+                    Logger.[Error]("An error occurred on sending payload for device token {0} - {1}", item.DeviceToken, ex.Message)
+                    _conected = False
+                End Try
+                i += 1
+            Next
+        End Sub
+
+        Private Sub ReadResponse(ar As IAsyncResult)
+            If Not _conected Then
+                Return
+            End If
+            Dim payLoadId As String = ""
+            Dim payLoadIndex As Integer = 0
+            Try
+                Dim info = TryCast(ar.AsyncState, MyAsyncInfo)
+                info.MyStream.ReadTimeout = 100
+                If _apnsStream.CanRead Then
+                    Dim command = Convert.ToInt16(info.ByteArray(0))
+                    Dim status = Convert.ToInt16(info.ByteArray(1))
+                    Dim ID = New Byte(3) {}
+                    Array.Copy(info.ByteArray, 2, ID, 0, 4)
+
+                    payLoadId = Encoding.[Default].GetString(ID)
+                    payLoadIndex = ((Integer.Parse(payLoadId)) - 1000)
+                    Logger.[Error]("Apple rejected palyload for device token : " + _notifications(payLoadIndex).DeviceToken)
+                    Logger.[Error]("Apple Error code : " + _errorList(status))
+                    Logger.[Error]("Connection terminated by Apple.")
+                    _rejected.Add(_notifications(payLoadIndex).DeviceToken)
+                    _conected = False
+                End If
+            Catch ex As Exception
+                Logger.[Error]("An error occurred while reading Apple response for token {0} - {1}", _notifications(payLoadIndex).DeviceToken, ex.Message)
+            End Try
+        End Sub
+
+        Private Sub Connect(host As String, port As Integer, certificates As X509CertificateCollection)
+            Logger.Info("Connecting to apple server.")
+            Try
+                _apnsClient = New TcpClient()
+                _apnsClient.Connect(host, port)
+            Catch ex As SocketException
+                Logger.[Error]("An error occurred while connecting to APNS servers - " + ex.Message)
+            End Try
+
+            Dim sslOpened = OpenSslStream(host, certificates)
+
+            If sslOpened Then
+                _conected = True
+                Logger.Info("Conected.")
+            End If
+
+        End Sub
+
+        Private Sub Disconnect()
+            Try
+                Thread.Sleep(500)
+                _apnsClient.Close()
+                _apnsStream.Close()
+                _apnsStream.Dispose()
+                _apnsStream = Nothing
+                _conected = False
+                Logger.Info("Disconnected.")
+            Catch ex As Exception
+                Logger.[Error]("An error occurred while disconnecting. - " + ex.Message)
+            End Try
+        End Sub
+
+        Private Function OpenSslStream(host As String, certificates As X509CertificateCollection) As Boolean
+            Logger.Info("Creating SSL connection.")
+            _apnsStream = New SslStream(_apnsClient.GetStream(), False, AddressOf validateServerCertificate, AddressOf SelectLocalCertificate)
+
+            Try
+                _apnsStream.AuthenticateAsClient(host, certificates, System.Security.Authentication.SslProtocols.Tls, False)
+            Catch ex As System.Security.Authentication.AuthenticationException
+                Logger.[Error](ex.Message)
+                Return False
+            End Try
+
+            If Not _apnsStream.IsMutuallyAuthenticated Then
+                Logger.[Error]("SSL Stream Failed to Authenticate")
+                Return False
+            End If
+
+            If Not _apnsStream.CanWrite Then
+                Logger.[Error]("SSL Stream is not Writable")
+                Return False
+            End If
+            Return True
+        End Function
+
+        Private Function validateServerCertificate(sender As Object, certificate As X509Certificate, chain As X509Chain, sslPolicyErrors As SslPolicyErrors) As Boolean
+            Return True
+            ' Dont care about server's cert
+        End Function
+
+        Private Function SelectLocalCertificate(sender As Object, targetHost As String, localCertificates As X509CertificateCollection, remoteCertificate As X509Certificate, acceptableIssuers As String()) As X509Certificate
+            Return _certificate
+        End Function
+
+        Private Shared Function GeneratePayload(payload As NotificationPayload) As Byte()
+            Try
+                'convert Devide token to HEX value.
+                Dim deviceToken As Byte() = New Byte(payload.DeviceToken.Length / 2 - 1) {}
+                For i As Integer = 0 To deviceToken.Length - 1
+                    deviceToken(i) = Byte.Parse(payload.DeviceToken.Substring(i * 2, 2), System.Globalization.NumberStyles.HexNumber)
+                Next
+
+                Dim memoryStream = New MemoryStream()
+
+                ' Command
+                memoryStream.WriteByte(1)
+                ' Changed command Type 
+                'Adding ID to Payload
+                memoryStream.Write(Encoding.ASCII.GetBytes(payload.PayloadId.ToString()), 0, payload.PayloadId.ToString().Length)
+
+                'Adding ExpiryDate to Payload
+                Dim epoch As Integer = CInt((DateTime.UtcNow.AddMinutes(300) - New DateTime(1970, 1, 1)).TotalSeconds)
+                Dim timeStamp As Byte() = BitConverter.GetBytes(epoch)
+                memoryStream.Write(timeStamp, 0, timeStamp.Length)
+
+                Dim tokenLength As Byte() = BitConverter.GetBytes(CType(32, Int16))
+                Array.Reverse(tokenLength)
+                ' device token length
+                memoryStream.Write(tokenLength, 0, 2)
+
+                ' Token
+                memoryStream.Write(deviceToken, 0, 32)
+
+                ' String length
+                Dim apnMessage As String = payload.ToJson()
+                Logger.Info(Convert.ToString("Payload generated for " + payload.DeviceToken + " : ") & apnMessage)
+
+                Dim apnMessageLength As Byte() = BitConverter.GetBytes(CType(apnMessage.Length, Int16))
+                Array.Reverse(apnMessageLength)
+
+                ' message length
+                memoryStream.Write(apnMessageLength, 0, 2)
+
+                ' Write the message
+                memoryStream.Write(Encoding.ASCII.GetBytes(apnMessage), 0, apnMessage.Length)
+                Return memoryStream.ToArray()
+            Catch ex As Exception
+                Logger.[Error]("Unable to generate payload - " + ex.Message)
+                Return Nothing
+            End Try
+        End Function
+
+        Public Function GetFeedBack() As List(Of Feedback)
+            Try
+                Dim feedbacks = New List(Of Feedback)()
+                Logger.Info("Connecting to feedback service.")
+
+                If Not _conected Then
+                    Connect(_feedbackHost, FeedbackPort, _certificates)
+                End If
+
+                If _conected Then
+                    'Set up
+                    Dim buffer As Byte() = New Byte(37) {}
+                    Dim recd As Integer = 0
+                    Dim minTimestamp As DateTime = DateTime.Now.AddYears(-1)
+
+                    'Get the first feedback
+                    recd = _apnsStream.Read(buffer, 0, buffer.Length)
+                    Logger.Info("Feedback response received.")
+
+                    If recd = 0 Then
+                        Logger.Info("Feedback response is empty.")
+                    End If
+
+                    'Continue while we have results and are not disposing
+                    While recd > 0
+                        Logger.Info("processing feedback response")
+                        Dim fb = New Feedback()
+
+                        'Get our seconds since 1970 ?
+                        Dim bSeconds As Byte() = New Byte(3) {}
+                        Dim bDeviceToken As Byte() = New Byte(31) {}
+
+                        Array.Copy(buffer, 0, bSeconds, 0, 4)
+
+                        'Check endianness
+                        If BitConverter.IsLittleEndian Then
+                            Array.Reverse(bSeconds)
+                        End If
+
+                        Dim tSeconds As Integer = BitConverter.ToInt32(bSeconds, 0)
+
+                        'Add seconds since 1970 to that date, in UTC and then get it locally
+                        fb.Timestamp = New DateTime(1970, 1, 1, 0, 0, 0, _
+                         DateTimeKind.Utc).AddSeconds(tSeconds).ToLocalTime()
+
+
+                        'Now copy out the device token
+                        Array.Copy(buffer, 6, bDeviceToken, 0, 32)
+
+                        fb.DeviceToken = BitConverter.ToString(bDeviceToken).Replace("-", "").ToLower().Trim()
+
+                        'Make sure we have a good feedback tuple
+                        If fb.DeviceToken.Length = 64 AndAlso fb.Timestamp > minTimestamp Then
+                            'Raise event
+                            'this.Feedback(this, fb);
+                            feedbacks.Add(fb)
+                        End If
+
+                        'Clear our array to reuse it
+                        Array.Clear(buffer, 0, buffer.Length)
+
+                        'Read the next feedback
+                        recd = _apnsStream.Read(buffer, 0, buffer.Length)
+                    End While
+                    'clode the connection here !
+                    Disconnect()
+                    If feedbacks.Count > 0 Then
+                        Logger.Info("Total {0} feedbacks received.", feedbacks.Count)
+                    End If
+                    Return feedbacks
+                End If
+            Catch ex As Exception
+                Logger.[Error]("Error occurred on receiving feed back. - " + ex.Message)
+                Return Nothing
+            End Try
+            Return Nothing
+        End Function
+    End Class
+
+    Public Class MyAsyncInfo
+        Public Property ByteArray() As [Byte]()
+            Get
+                Return m_ByteArray
+            End Get
+            Set(value As [Byte]())
+                m_ByteArray = value
+            End Set
+        End Property
+        Private m_ByteArray As [Byte]()
+        Public Property MyStream() As SslStream
+            Get
+                Return m_MyStream
+            End Get
+            Set(value As SslStream)
+                m_MyStream = value
+            End Set
+        End Property
+        Private m_MyStream As SslStream
+
+        Public Sub New(array As [Byte](), stream As SslStream)
+            ByteArray = array
+            MyStream = stream
+        End Sub
+    End Class
+End Namespace

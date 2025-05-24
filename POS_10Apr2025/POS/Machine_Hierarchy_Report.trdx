@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report Width="9.69291432698568in" Name="Machine_Hierarchy_Report" xmlns="http://schemas.telerik.com/reporting/2012/4.2">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" ConnectionString="POS" SelectCommand="dbo.P_R_Machine_hierarchy" SelectCommandType="StoredProcedure" Name="sqlDataSource1" ParameterValues="{&quot;@cmp_id&quot;:&quot;1039&quot;,&quot;@date1&quot;:&quot;02/23/2019&quot;,&quot;@date2&quot;:&quot;02/23/2019&quot;,&quot;@venue_id&quot;:&quot;0&quot;,&quot;@location_id&quot;:&quot;0&quot;,&quot;@machine_id&quot;:&quot;0&quot;,&quot;@device_id&quot;:&quot;0&quot;,&quot;@duration&quot;:&quot;Today&quot;}">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Decimal" Name="@cmp_id" />
+        <SqlDataSourceParameter DbType="DateTime" Name="@date1" />
+        <SqlDataSourceParameter DbType="DateTime" Name="@date2" />
+        <SqlDataSourceParameter DbType="String" Name="@venue_id" />
+        <SqlDataSourceParameter DbType="String" Name="@location_id" />
+        <SqlDataSourceParameter DbType="String" Name="@machine_id" />
+        <SqlDataSourceParameter DbType="String" Name="@device_id" />
+        <SqlDataSourceParameter DbType="String" Name="@duration" />
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="0.700000047683716in" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="24.6198021222352cm" Height="0.70000022649765cm" Left="0.00010012308478013cm" Top="0.761999857687954cm" Value="Till Hierarchy Report" Name="ReportNameTextBox">
+          <Style TextAlign="Center">
+            <Font Name="Segoe UI" Size="14pt" Bold="True" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.0999998847643534in" Name="detailSection1" />
+    <PageFooterSection Height="1in" Name="pageFooterSection1">
+      <Items>
+        <TextBox Width="24.6198020174503cm" Height="0.600000202655792cm" Left="0.00010012308477991cm" Top="0.978958306103118cm" Value="Page: {PageNumber} " Name="ReportPageNumberTextBox">
+          <Style TextAlign="Center">
+            <Font Name="Segoe UI" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageFooterSection>
+    <ReportHeaderSection Height="1in" Name="reportHeaderSection1">
+      <Items>
+        <TextBox Width="24.6198013435177cm" Height="0.600000083446503cm" Left="0.00020024616956026cm" Top="0.00010032494583816cm" Value="= Fields.receipt_header" Name="textBox1">
+          <Style TextAlign="Center" />
+        </TextBox>
+        <Table DataSourceName="sqlDataSource1" Width="9.10000103015033in" Height="0.631250023841858in" Left="0.300000031789144in" Top="0.299999952316284in" Name="table1" StyleName="Corporate.TableNormal">
+          <Body>
+            <Cells>
+              <TableCell RowIndex="0" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.115865851939603in" Height="0.200000002980232in" Left="0in" Top="0in" Name="textBox8" StyleName="Corporate.TableBody">
+                    <Style Visible="False" LineWidth="0pt" LineColor="White">
+                      <BorderStyle Default="None" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+            </Cells>
+            <Columns>
+              <Column Width="0.115865866731506in" />
+            </Columns>
+            <Rows>
+              <Row Height="0.200000004387359in" />
+            </Rows>
+          </Body>
+          <Corner>
+            <Cells>
+              <TableCell RowIndex="1" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.23808096502097in" Height="0.23125001506714in" Left="0in" Top="0in" Value="Venue" Name="textBox17" StyleName="Corporate.TableHeader" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.38870649854652in" Height="0.23125001506714in" Left="0in" Top="0in" Value="Location" Name="textBox10" StyleName="Corporate.TableHeader" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="2.38870649854652in" Height="0.23125001506714in" Left="0in" Top="0in" Value="Till" Name="textBox12" StyleName="Corporate.TableHeader" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="1" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.96864111655445in" Height="0.23125001506714in" Left="0in" Top="0in" Value="Device" Name="textBox14" StyleName="Corporate.TableHeader" />
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="0" RowSpan="1" ColumnSpan="4">
+                <ReportItem>
+                  <Panel Width="8.98413507866846in" Height="0.211987336476644in" Left="0in" Top="0in" Name="panel1">
+                    <Items>
+                      <TextBox Width="0.686059832572937in" Height="0.19999997317791in" Left="4.84375in" Top="0in" Value="To date :" Name="textBox7">
+                        <Style TextAlign="Right" VerticalAlign="Middle">
+                          <Font Bold="True" />
+                        </Style>
+                      </TextBox>
+                      <TextBox Width="2.7499213218689in" Height="0.19999997317791in" Left="0.697916666666667in" Top="0in" Value="From date :" Name="textBox18">
+                        <Style TextAlign="Right" VerticalAlign="Middle">
+                          <Font Bold="True" />
+                        </Style>
+                      </TextBox>
+                      <TextBox Width="1.20000012715658in" Height="0.199999968210856in" Left="3.5in" Top="0.0119873682657878in" Value="= Fields.Fromdt" Name="textBox3" />
+                      <TextBox Width="1.1999994913737in" Height="0.199999968210856in" Left="5.60000038146973in" Top="0.0119873682657878in" Value="= Fields.Todt" Name="textBox5" />
+                    </Items>
+                  </Panel>
+                </ReportItem>
+              </TableCell>
+            </Cells>
+          </Corner>
+          <RowGroups>
+            <TableGroup Name="venue1">
+              <ReportItem>
+                <TextBox Width="2.23808100670847in" Height="0.200000002980232in" Left="0in" Top="0in" Value="= Fields.Venue" Name="textBox9" StyleName="">
+                  <Style>
+                    <BorderStyle Top="Solid" Bottom="Solid" Left="Solid" Right="Solid" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="location1">
+                  <ReportItem>
+                    <TextBox Width="2.38870654303965in" Height="0.200000002980232in" Left="0in" Top="0in" Value="= Fields.Location" Name="textBox11" StyleName="">
+                      <Style>
+                        <BorderStyle Top="Solid" Bottom="Solid" Left="Solid" Right="Solid" />
+                      </Style>
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="machine1">
+                      <ReportItem>
+                        <TextBox Width="2.38870654303965in" Height="0.200000002980232in" Left="0in" Top="0in" Value="= Fields.Machine" Name="textBox13" StyleName="">
+                          <Style>
+                            <BorderStyle Top="Solid" Bottom="Solid" Left="Solid" Right="Solid" />
+                          </Style>
+                        </TextBox>
+                      </ReportItem>
+                      <ChildGroups>
+                        <TableGroup Name="device1">
+                          <ReportItem>
+                            <TextBox Width="1.96864115322325in" Height="0.200000002980232in" Left="0in" Top="0in" Value="= Fields.Device" Name="textBox15" StyleName="">
+                              <Style>
+                                <BorderStyle Top="Solid" Bottom="Solid" Left="Solid" Right="None" />
+                              </Style>
+                            </TextBox>
+                          </ReportItem>
+                          <ChildGroups>
+                            <TableGroup Name="detail">
+                              <Groupings>
+                                <Grouping />
+                              </Groupings>
+                            </TableGroup>
+                          </ChildGroups>
+                          <Groupings>
+                            <Grouping Expression="= Fields.Device" />
+                          </Groupings>
+                          <Sortings>
+                            <Sorting Expression="= Fields.Device" Direction="Asc" />
+                          </Sortings>
+                        </TableGroup>
+                      </ChildGroups>
+                      <Groupings>
+                        <Grouping Expression="= Fields.Machine" />
+                      </Groupings>
+                      <Sortings>
+                        <Sorting Expression="= Fields.Machine" Direction="Asc" />
+                      </Sortings>
+                    </TableGroup>
+                  </ChildGroups>
+                  <Groupings>
+                    <Grouping Expression="= Fields.Location" />
+                  </Groupings>
+                  <Sortings>
+                    <Sorting Expression="= Fields.Location" Direction="Asc" />
+                  </Sortings>
+                </TableGroup>
+              </ChildGroups>
+              <Groupings>
+                <Grouping Expression="= Fields.Venue" />
+              </Groupings>
+              <Sortings>
+                <Sorting Expression="= Fields.Venue" Direction="Asc" />
+              </Sortings>
+            </TableGroup>
+          </RowGroups>
+          <ColumnGroups>
+            <TableGroup Name="device">
+              <ReportItem>
+                <TextBox Width="0.115865867810591in" Height="0.200000007947286in" Left="0in" Top="0in" Name="textBox2" StyleName="Corporate.TableHeader">
+                  <Style Visible="False" LineColor="White">
+                    <BorderWidth Default="0px" />
+                    <Padding Left="0pt" Right="0pt" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="group">
+                  <ReportItem>
+                    <TextBox Width="0.115865866731506in" Height="0.23125001506714in" Left="0in" Top="0in" Name="textBox4" StyleName="Corporate.TableHeader">
+                      <Style Visible="False" LineColor="White">
+                        <BorderStyle Default="None" />
+                        <BorderWidth Default="0px" />
+                        <Padding Left="0pt" Right="0pt" />
+                      </Style>
+                    </TextBox>
+                  </ReportItem>
+                </TableGroup>
+              </ChildGroups>
+            </TableGroup>
+          </ColumnGroups>
+        </Table>
+      </Items>
+    </ReportHeaderSection>
+  </Items>
+  <PageSettings PaperKind="A4" Landscape="True">
+    <Margins>
+      <MarginsU Left="1in" Right="1in" Top="1in" Bottom="1in" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style Color="Black">
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <StyleSelector Type="Table" StyleName="Corporate.TableNormal" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style>
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Corporate.TableBody" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style BackgroundColor="28, 58, 112" Color="White" VerticalAlign="Middle">
+        <Font Name="Tahoma" Size="10pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Corporate.TableHeader" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="cmpid" Type="Float" Text="cmpid" />
+    <ReportParameter Name="date1" Type="DateTime" Text="date1" />
+    <ReportParameter Name="date2" Type="DateTime" Text="date2" />
+    <ReportParameter Name="venueid" Text="venueid" />
+    <ReportParameter Name="locationid" Text="locationid" />
+    <ReportParameter Name="machineid" Text="machineid" />
+    <ReportParameter Name="deviceid" Text="deviceid" />
+    <ReportParameter Name="duration" Text="duration" />
+  </ReportParameters>
+</Report>

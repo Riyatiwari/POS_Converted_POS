@@ -1,0 +1,3906 @@
+﻿
+
+@page
+@model Converted_POS.Pages.forms.Product_MasterModel
+@{
+    ViewData["Title"] = "Product_Master";
+}
+
+@section link {
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/BackOffice/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a asp-page="/Configuration/Product_List">Product List</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Configuration/Product_Master">Product Master</a></li>
+        </ol>
+    </div>
+
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown with Checkboxes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        @@media (min-width: 767px) {
+            .main {
+                margin-top: -38px;
+            }
+
+            .main-content {
+                border: 2px solid #eceaea;
+                /*  box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2);*/
+                /* padding: 20px; */ /* Padding for inner content */
+                /* border-radius: 8px;  Optional: rounded corners */
+                /*  height: 617px;*/
+                width: 78.7%;
+                /*margin-left: 22px;*/
+                margin-top: -3px;
+                height: auto;
+                min-height: 380px;
+            }
+
+
+            .btnProductMaster, .btnSelling, .btnBuying, .btnProduct, .btnBarcode, .btnIngredients, .btnCondiments, .btnAllergy {
+                background-color: transparent;
+                width: 188px;
+                margin: 1px -38px 1px -38px;
+                font-size: 17px;
+                background-color: #f0efef;
+            }
+
+            .btnProductMaster, .btnSelling, .btnBuying, .btnProduct, .btnBarcode, .btnIngredients, .btnCondiments, .btnAllergy {
+                clip-path: polygon(0px 0px, 92.06% -1.98%, 100% 32.42%, 100% 100%, 0px 100%);
+            }
+
+            .pdmaster {
+                margin-bottom: 15px;
+                width: 1205px;
+            }
+
+            .pdsize {
+                margin-bottom: 15px;
+                width: 1205px;
+            }
+
+            .pddescpsn {
+                width: 1205px;
+            }
+
+            .separator {
+                /*top: 39px;*/
+                height: 68%;
+                margin-top: -4px;
+            }
+
+            .productMasterForm {
+                margin-right: 50px;
+            }
+
+            .left-side {
+                /*     margin-top: 39px;*/
+                margin-top: 5px;
+                left: 27px;
+                width: 21%;
+                height: 100%
+            }
+
+            .pd {
+                margin-left: -20px;
+            }
+
+            input {
+                width: 100%;
+            }
+
+            .main-content {
+                /*margin-top: -43px;*/
+                height: auto;
+            }
+
+            .pdsetting {
+                margin-left: -52px;
+            }
+
+            .pdset {
+                margin-left: -27px;
+                padding-right: 10px;
+            }
+            /*.btn {
+                                margin-left: 515px;
+                            }*/
+            .pdname {
+                margin-top: -191px;
+                margin-left: -5px;
+                margin-right: -43px;
+                font-size: 24px;
+            }
+
+            .icon-container {
+                margin-top: -159px;
+                display: flex;
+                align-items: center;
+            }
+
+            .panel-container {
+                /*   margin-left: -7px;*/
+                overflow: auto;
+                white-space: nowrap;
+                display: inline-block;
+                flex-wrap: wrap;
+                display: flex;
+                width: 98%;
+            }
+
+            .brform {
+                margin-right: 50px;
+            }
+
+            .BYSIZW {
+                margin-top: -18px;
+                margin-left: 1px;
+            }
+
+            .BYSZ {
+                margin-left: -14px;
+            }
+            /*.pdset {
+                                margin-top: -18px;
+                            }*/
+            img {
+                height: 95px;
+                width: 95px;
+            }
+
+            .nxtbtn {
+                margin-top: -35px;
+            }
+
+            .prebtn {
+                margin-top: 11px;
+            }
+
+            .pdl {
+                margin-top: 0px;
+                padding: 0px;
+            }
+        }
+
+
+        @@media (max-width: 767px) {
+
+            .main-content {
+                border: 2px solid #eceaea;
+                /* box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2);*/
+                /*padding: 20px;
+                border-radius: -18px;*/
+                /* height: 617px;*/
+                /*margin-left: 103px;
+                margin-left: 22px;
+                width: 100;*/
+                margin-left: 0px;
+                /*margin-top: -14px;*/
+            }
+
+            .table-container {
+                width: 40%;
+            }
+
+            table.table th, table.table td {
+                padding: 8px;
+                min-width: 100px;
+            }
+
+            .step1 {
+                margin-bottom: 20px;
+            }
+
+            .btnProductMaster, .btnSelling, .btnBuying, .btnProduct, .btnBarcode, .btnIngredients, .btnCondiments, .btnAllergy {
+                clip-path: polygon(0px 0px, 92.06% -1.98%, 100% 32.42%, 100% 100%, 0px 100%);
+                background-color: #f0efef;
+            }
+
+            .syz {
+                width: 242px;
+            }
+
+            .inpt input {
+                width: 96%;
+            }
+
+            .selprz input {
+                width: 96%;
+            }
+
+            .bys {
+                margin-bottom: 36px;
+            }
+
+            .step {
+                margin-top: -36px;
+                /* margin-bottom:20px;*/
+            }
+
+            .dlll {
+                width: 96%;
+            }
+
+            .cdonly {
+                margin-top: -41px;
+            }
+
+            .pdl {
+                margin-top: 110px;
+                padding: 0px;
+            }
+
+            .selprz {
+                margin-top: -67px;
+            }
+
+            .nxtbtn {
+                margin-top: -44px;
+            }
+
+            .prebtn {
+                height: 83px;
+                margin-top: 25px;
+            }
+
+            .panel-container {
+                width: 92%;
+                display: nowrap; /* Prevent wrapping on small screens */
+                overflow: auto; /* Allow horizontal scrolling */
+                margin-left: 16px; /* Remove left margin for mobile view */
+                padding: 10px 0; /* Optional padding for aesthetics */
+            }
+
+                .panel-container div {
+                    flex: 0 0 auto; /* Prevent flex items from shrinking */
+                }
+
+            .btnProductMaster, .btnSelling, .btnBuying, .btnProduct, .btnBarcode, .btnIngredients, .btnCondiments, .btnAllergy {
+                /*width: 140px;*/
+                width: 110px;
+                margin: 2px;
+                font-size: 15px;
+                /* width: 80px;*/
+                margin-right: 5px;
+            }
+
+            .main-wrapper img {
+                height: 51px;
+            }
+
+            .conimg {
+                margin-bottom: -102px;
+            }
+
+            .BYSIZW {
+                margin-left: 18px;
+                width: 100%;
+            }
+
+            .pdset {
+                margin-top: -6px;
+            }
+
+            .BYSIZW {
+                margin-top: 29px;
+                width: 100%;
+            }
+
+            .brform {
+                /*margin-top: 51px;*/
+            }
+
+            body {
+                background-color: white
+            }
+
+            .icon-container {
+                margin-top: -3px;
+                display: flex;
+                align-items: center;
+                font-size: 12px;
+                margin-left: 12px;
+            }
+
+            .pdname {
+                /* margin-top: -197px;*/
+                margin-left: 8px;
+                margin-right: -49px;
+                font-size: 14px;
+            }
+
+            .lbtn {
+                margin-bottom: 80px;
+            }
+
+            .pdsetting {
+                margin-left: 0px;
+                margin-top: 32px;
+            }
+
+            .form-row {
+                margin-top: -14px;
+                margin-bottom: 19px;
+                /* margin-top: 28px;*/
+            }
+
+            .left-side {
+                /* margin-top: -29px;*/
+                /*margin-top: 140px;*/
+                left: 19px;
+                width: 26.8%;
+                height: 48%;
+            }
+
+            .main-content {
+                margin-top: -46px;
+                /*  margin-top: 13px;*/
+                left: 12px;
+                height: auto;
+            }
+
+            .pd {
+                margin-left: -15px;
+            }
+
+            .btnProductMaster, .btnSelling, .btnBuying, .btnProduct, .btnBarcode, .btnIngredients, .btnCondiments, .btnAllergy {
+                /*background-color: transparent;*/
+                margin-right: 5px;
+            }
+
+            .separator {
+                top: 38px;
+                height: 129%;
+                margin-top: 122px;
+            }
+
+            .page-content {
+                padding: 10px;
+            }
+
+            .panel-container {
+                overflow: auto;
+                white-space: nowrap;
+                justify-content: flex-start;
+                align-items: flex-start;
+                /*    margin-left: 41px;*/
+            }
+
+                .panel-container div {
+                    margin: 2px;
+                    /*padding: 1px;
+                                    min-width: 150px;*/
+                    /*  flex: 1 1 auto;*/
+                    box-sizing: border-box;
+                    overflow: visible;
+                    text-align: center;
+                }
+
+                .panel-container button {
+                    display: block;
+                    text-align: center;
+                    white-space: normal;
+                }
+
+                .panel-container div {
+                    word-break: break-word;
+                }
+            /*  .btn {
+                                margin-bottom: 35px;
+                                margin-top: 29px;
+                            }*/
+        }
+
+
+        .page-content {
+            background-color: white;
+            margin-top: -10px;
+        }
+
+        .panel-container {
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+            .form-row > div {
+                flex: 1;
+                min-width: 220px;
+            }
+
+        .left-side {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+            .left-side img {
+                margin: 5px;
+            }
+
+        }
+
+
+
+
+
+
+        .highlight {
+            background-color: yellow; /* or any color you prefer */
+            color: black; /* adjust text color if needed */
+        }
+        /*
+                        .page-content {
+                            background-color: white;
+                            margin-top: 2px;
+                        }*/
+
+        .panel-container {
+            display: nowrap;
+            overflow: auto;
+            justify-content: space-around;
+            align-items: center;
+            left: 0;
+            /* margin: 0px 0px 0px 0px;
+                            padding: 0px 0px 0px 0px;*/
+        }
+
+        /*       .left-side {
+                            position: absolute;
+                            left: 8px;
+                            margin-top: 37px;
+                            height: 100%;
+                            width: 20%;
+                            background-color: transparent;
+                            padding: 10px;
+                            text-align: center;
+                            font-size: 17px;
+                        }*/
+        .left-side {
+            position: absolute;
+            background-color: transparent;
+            padding: 10px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .separator {
+            position: absolute;
+            left: calc(20% + 45px);
+            /* top: 60px;*/
+            height: 68%;
+            width: 0.8px;
+            background-color: gray;
+            margin-left: -45px;
+        }
+
+        .col-md-12 img {
+            /* border: 1px solid black;*/
+        }
+
+        .main-content {
+            margin-left: 20%;
+            /* height: 60px;*/
+            font-family: poppins;
+        }
+
+        .panel {
+            border: none;
+            margin-left: 0px;
+            margin-right: 0px;
+            width: 100%;
+        }
+
+        .panel-heading {
+            margin-right: 0;
+        }
+
+        .btnProductMaster, .btnSelling, .btnBuying, .btnProduct, .btnBarcode, .btnIngredients, .btnCondiments, .btnAllergy {
+            /*  background-color: transparent;*/
+            /* border-radius: 8px;*/
+            /*border-width: 0;*/
+            color: black;
+            cursor: pointer;
+            display: inline-block;
+            font-family: poppins;
+            /*font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+            /*   font-size: 17px;*/
+            font-weight: 500;
+            line-height: 25px;
+            list-style: none;
+            height: 40px;
+            padding: 2px 0px 2px 0px;
+            /*border-radius: 20px;*/
+            text-align: center;
+            transition: all 200ms;
+            vertical-align: baseline;
+            white-space: nowrap;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            /*border-radius: 10px 10px 0 0;*/
+            /*  margin-right: 20PX;
+            margin-left: -23px;
+            margin-left: -53px;*/
+            clip-path: polygon(0px 0px, 92.06% -1.98%, 100% 32.42%, 100% 100%, 0px 100%);
+        }
+
+        .btnProductMaster, .btnSelling, .btnBuying, .btnProduct, .btnBarcode, .btnIngredients, .btnCondiments, .btnAllergy {
+            margin-left: -14px;
+        }
+        /*
+            .btnallergy {
+
+            border-radius: 0px 20px 20px 0px;
+
+        }
+        .btnproductmaster {
+            border-radius: 20px 0px 0px 20px;
+        }*/
+
+        .name, .BaseSize, .description, select {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .footer-section {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+        }
+
+        .panelProductMaster, .panelSelling, .panelBuying, .panelProduct, .panelBarcode, .panelIngredients, .panelCondiments, .panelAllergy {
+            margin: 2px 2px 2px 2px;
+            padding: 0px;
+        }
+
+        thead tr:last-child {
+            border-bottom: 1px solid black;
+        }
+
+        #regForm {
+            background-color: #ffffff;
+            margin: 100px auto;
+            padding: 40px;
+            width: 70%;
+            min-width: 300px;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 17px;
+            font-family: poppins;
+            /*border: 1px solid #aaaaaa;*/
+        }
+
+            input.invalid {
+                background-color: #ffdddd;
+            }
+
+        .tab {
+            display: none;
+        }
+
+        .step {
+            height: 15px;
+            width: 100%;
+            margin: 0 2px;
+            border: none;
+            border-radius: 50%;
+            display: inline-block;
+            /*opacity: 0.5;*/
+        }
+
+            .step.active {
+                opacity: 1;
+            }
+
+            .step.finish {
+                background-color: #04AA6D;
+            }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            width: 50%; /* Align items vertically in the center */
+        }
+
+        .mySlides {
+            display: inline-flex;
+        }
+
+        .slideshow-container {
+            position: relative;
+            max-width: 100%;
+            margin: auto;
+        }
+
+        .mySlides {
+            display: none;
+        }
+
+        .w3-button {
+            position: absolute;
+            top: 50%;
+            /*transform: translateY(-50%);*/
+            font-size: 24px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .w3-display-left {
+            left: 10px;
+            transform: translateY(-50%);
+        }
+
+        .w3-display-right {
+            right: 10px;
+            transform: translateY(-50%);
+        }
+
+        .icon-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .icon-img {
+            height: 20px;
+            width: 20px;
+            margin-right: 8px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .icon-label {
+            vertical-align: middle;
+        }
+        /*.checkbox-wrapper input[type="checkbox"] {
+                                margin-right: 5px;*/ /* Adjust margin between checkbox and label */
+        /*}*/
+        .dropdown-checkboxes {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+            .dropdown-checkboxes .dropdown-button {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #ccc;
+                background-color: #f9f9f9;
+                cursor: pointer;
+                text-align: left;
+            }
+
+            .dropdown-checkboxes .dropdown-menu {
+                display: none;
+                position: absolute;
+                background-color: white;
+                min-width: 100%;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+                padding: 12px 16px;
+                list-style: none;
+                max-height: 200px;
+                overflow-y: auto;
+                border: 1px solid #ccc;
+            }
+
+            .dropdown-checkboxes.show .dropdown-menu {
+                display: block;
+            }
+
+            .dropdown-checkboxes .dropdown-menu li {
+                align-items: center;
+                padding: 5px 0;
+            }
+
+            .dropdown-checkboxes .dropdown-menu input[type="checkbox"] {
+                margin-right: 10px;
+                width: auto;
+            }
+
+        .form-control {
+            display: block;
+            height: 44px;
+        }
+
+        .highlight {
+            background-color: darkgray;
+            /*border: 2px solid #999595;*/
+        }
+
+        .panel-container div {
+            display: inline-block;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /*.panel-container {
+                            display: flex;
+                            overflow-x: auto;
+                            white-space: nowrap;
+                            scroll-behavior: smooth;
+                        }*/
+
+        /* .panel-container button {
+                                margin: 5px;
+                                padding: 10px 20px;
+                                cursor: pointer;
+                                border: 1px solid #ccc;
+                                background-color: #f0f0f0;
+                                white-space: nowrap;
+                            }
+        */
+        .highlight {
+            background-color: #1b7bbd;
+            color: white;
+        }
+
+        .dropdown-button .dropdown-icon {
+            margin-left: 10px;
+        }
+
+        #SellingSizesandPricesForm {
+            display: flex;
+            justify-content: space-between;
+            margin-left: 18px;
+            /*margin-top: 20px;*/
+        }
+
+            #SellingSizesandPricesForm .table {
+                width: 98%;
+                border-collapse: collapse;
+            }
+
+                #SellingSizesandPricesForm .table th,
+                #SellingSizesandPricesForm .table td {
+                    border: 1px solid #ccc;
+                    padding: 8px;
+                    text-align: center;
+                }
+
+                #SellingSizesandPricesForm .table th {
+                    background-color: #f2f2f2;
+                }
+
+        #BuyingSizesandCostForm, #IngredientsForm, #CondimentsForm, #AllergyForm {
+            display: flex;
+            justify-content: space-between;
+            margin-left: 18px;
+        }
+
+            #BuyingSizesandCostForm .table, #IngredientsForm.table, #CondimentsForm.table, #AllergyForm.table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+                #BuyingSizesandCostForm .table th,
+                #BuyingSizesandCostForm .table td, #IngredientsForm .table th,
+                #IngredientsForm .table td, #CondimentsForm.table th,
+                #CondimentsForm .table td, #AllergyForm.table th,
+                #AllergyForm .table td {
+                    border: 1px solid #ccc;
+                    padding: 8px;
+                    text-align: center;
+                }
+
+                #BuyingSizesandCostForm .table th, #IngredientsForm .table th, #CondimentsForm .table th, #AllergyForm .table th {
+                    background-color: #f2f2f2;
+                }
+
+
+        #BarcodeForm {
+            display: flex;
+            justify-content: space-between;
+            margin-left: 18px;
+        }
+
+            #BarcodeForm .table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+                #BarcodeForm .table th,
+                #BarcodeForm .table td {
+                    border: 1px solid #ccc;
+                    padding: 8px;
+                    text-align: center;
+                }
+
+                #BarcodeForm .table th {
+                    background-color: #f2f2f2;
+                }
+
+        #CondimentsForm {
+            display: flex;
+            justify-content: space-between;
+            margin-left: 18px;
+        }
+
+            #CondimentsForm .table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+                #CondimentsForm .table th,
+                #CondimentsForm .table td {
+                    border: 1px solid #ccc;
+                    padding: 8px;
+                    text-align: center;
+                }
+
+                #CondimentsForm .table th {
+                    background-color: #f2f2f2;
+                }
+
+        #AllergyForm {
+            display: flex;
+            justify-content: space-between;
+            margin-left: 18px;
+        }
+
+            #AllergyForm .table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+                #AllergyForm .table th,
+                #AllergyForm .table td {
+                    border: 1px solid #ccc;
+                    padding: 8px;
+                    text-align: center;
+                }
+
+                #AllergyForm .table th {
+                    background-color: #f2f2f2;
+                }
+
+        .table-container {
+            width: 30%;
+            margin-left: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .step-buttons {
+            margin-top: 20px;
+        }
+
+        .table {
+            margin-bottom: 50px;
+            margin-top: 18px;
+        }
+
+        /* .btn {
+            margin: 0 10px;
+        }*/
+        .table-container {
+            width: 85%;
+            margin-left: 10px;
+            margin-top: 20px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+
+        table.table {
+            border-collapse: collapse;
+            background-color: #ffffff;
+        }
+
+
+            table.table th {
+                background-color: #f4f4f4;
+                color: #333;
+                padding: 10px;
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+
+            table.table td {
+                padding: 10px;
+                border: 1px solid #ddd;
+                vertical-align: middle;
+            }
+
+
+            table.table select {
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+
+
+        .fa-minus-square-o {
+            cursor: pointer;
+            color: #d9534f;
+        }
+
+
+        .container {
+            /*    margin: 0 auto;*/
+            /*padding: 15px;*/
+        }
+
+
+        .mb-3 {
+            margin-bottom: 1rem;
+        }
+
+        .text-end {
+            text-align: end;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 40px;
+        }
+
+
+        .table {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+
+            .table th, .table td {
+                padding: 10px;
+                border: 1px solid #ddd;
+            }
+
+            .table th, .table td {
+                width: 100px;
+                text-align: center;
+            }
+
+                .table th:nth-child(1), .table td:nth-child(1) {
+                    width: 150px;
+                }
+                /* Location */
+                .table th:nth-child(2), .table td:nth-child(2) {
+                    width: 150px;
+                }
+                /* Name */
+                .table th:nth-child(3), .table td:nth-child(3) {
+                    width: 100px;
+                }
+                /* Size */
+                .table th:nth-child(4), .table td:nth-child(4) {
+                    width: 80px;
+                }
+                /* Qty */
+                .table th:nth-child(5), .table td:nth-child(5) {
+                    width: 100px;
+                }
+                /* Price */
+                .table th:nth-child(6), .table td:nth-child(6) {
+                    width: 100px;
+                }
+                /* Tax */
+                .table th:nth-child(7), .table td:nth-child(7) {
+                    width: 100px;
+                }
+                /* Sorting No. */
+                .table th:nth-child(8), .table td:nth-child(8) {
+                    width: 150px;
+                }
+                /* Click and Collect */
+                .table th:nth-child(9), .table td:nth-child(9) {
+                    width: 100px;
+                }
+                /* Deliver */
+                .table th:nth-child(10), .table td:nth-child(10) {
+                    width: 150px;
+                }
+                /* Order at table */
+                .table th:nth-child(11), .table td:nth-child(11) {
+                    width: 100px;
+                }
+                /* Is Active */
+                .table th:nth-child(12), .table td:nth-child(12) {
+                    width: 100px;
+                }
+        /* Action */
+
+        .fa-minus-square-o.fa-lg {
+            color: gray;
+        }
+
+        .float-right {
+            float: right;
+        }
+
+        .float-right {
+            float: right;
+        }
+
+        @@media (max-width: 768px) {
+            .table-container {
+                margin-left: 0;
+                overflow-x: auto;
+            }
+
+            table.table th,
+            table.table td {
+                padding: 8px;
+                min-width: 120px;
+            }
+
+            .table-wrapper {
+                margin-right: 17px;
+            }
+
+            .table-container {
+                margin-left: 0;
+                overflow-x: auto;
+            }
+
+            .table th, .table td {
+                padding: 8px;
+            }
+        }
+    </style>
+
+    <script>
+        const { add } = require("../../wwwroot/js/vendors/moment/test/moment/add_subtract");
+
+        var formVisible = false;
+
+        function toggleProductMasterForm() {
+            var form = document.getElementById("productMasterForm");
+            if (!formVisible) {
+                form.style.display = "block";
+
+                formVisible = true;
+            }
+
+            else {
+                form.style.display = "none";
+                formVisible = false;
+            }
+        }
+
+    </script>
+    <script>
+
+
+        var currentPanelIndex = 0;
+        var panels = [
+            toggleProductMasterForm,
+            toggleSellingSizesandPricesForm,
+            toggleBuyingSizesandCostForm,
+            toggleProductSettingsForm,
+            toggleBarcodeForm,
+            toggleIngredientsForm,
+            toggleCondimentsForm,
+            toggleAllergyForm
+        ];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            /*toggleProductMasterForm();*/
+            panels[currentPanelIndex]();
+        });
+
+        function clearHighlight() {
+            var buttons = document.querySelectorAll('.btnProductMaster, .btnSelling, .btnBuying, .btnProduct, .btnBarcode, .btnIngredients, .btnCondiments, .btnAllergy');
+            buttons.forEach(function (button) {
+                button.classList.remove('highlight');
+            });
+        }
+
+        function hideAllForms() {
+            document.getElementById("productMasterForm").style.display = "none";
+            document.getElementById("SellingSizesandPricesForm").style.display = "none";
+            document.getElementById("BuyingSizesandCostForm").style.display = "none";
+            document.getElementById("ProductSettingsForm").style.display = "none";
+            document.getElementById("BarcodeForm").style.display = "none";
+            document.getElementById("IngredientsForm").style.display = "none";
+            document.getElementById("CondimentsForm").style.display = "none";
+            document.getElementById("AllergyForm").style.display = "none";
+        }
+        function toggleProductMasterForm() {
+            clearHighlight();
+            hideAllForms();
+            document.querySelector('.btnProductMaster').classList.add('highlight');
+            document.getElementById("productMasterForm").style.display = "block";
+        }
+
+        function toggleSellingSizesandPricesForm() {
+            clearHighlight();
+            hideAllForms();
+            document.querySelector('.btnSelling').classList.add('highlight');
+            document.getElementById("SellingSizesandPricesForm").style.display = "block";
+        }
+
+        function toggleBuyingSizesandCostForm() {
+            clearHighlight();
+            hideAllForms();
+            document.querySelector('.btnBuying').classList.add('highlight');
+            document.getElementById("BuyingSizesandCostForm").style.display = "block";
+        }
+
+        function toggleProductSettingsForm() {
+            clearHighlight();
+            hideAllForms();
+            document.querySelector('.btnProduct').classList.add('highlight');
+            document.getElementById("ProductSettingsForm").style.display = "block";
+        }
+
+        function toggleBarcodeForm() {
+            clearHighlight();
+            hideAllForms();
+            document.querySelector('.btnBarcode').classList.add('highlight');
+            document.getElementById("BarcodeForm").style.display = "block";
+        }
+
+        function toggleIngredientsForm() {
+            clearHighlight();
+            hideAllForms();
+            document.querySelector('.btnIngredients').classList.add('highlight');
+            document.getElementById("IngredientsForm").style.display = "block";
+        }
+
+        function toggleCondimentsForm() {
+            clearHighlight();
+            hideAllForms();
+            document.querySelector('.btnCondiments').classList.add('highlight');
+            document.getElementById("CondimentsForm").style.display = "block";
+        }
+
+        function toggleAllergyForm() {
+            clearHighlight();
+            hideAllForms();
+            document.querySelector('.btnAllergy').classList.add('highlight');
+            document.getElementById("AllergyForm").style.display = "block";
+        }
+
+        function navigatePanel(direction) {
+            const container = document.querySelector('.panel-container');
+            const scrollAmount = 5;
+            const totalScrollSteps = 20;
+            const intervalTime = 10;
+
+            let scrollStep = 0;
+            const scrollInterval = setInterval(() => {
+                container.scrollBy({ left: direction * scrollAmount, behavior: 'auto' });
+                scrollStep++;
+                if (scrollStep >= totalScrollSteps) {
+                    clearInterval(scrollInterval);
+                }
+            }, intervalTime);
+
+            currentPanelIndex += direction;
+            if (currentPanelIndex < 0) {
+                currentPanelIndex = 0;
+            } else if (currentPanelIndex >= panels.length) {
+                currentPanelIndex = panels.length - 1;
+            }
+            panels[currentPanelIndex]();
+        }
+
+    </script>
+    <script>
+
+        var currentStep = 1;
+        var steps = document.getElementsByClassName("step");
+
+        function nextStep() {
+            if (currentStep < steps.length) {
+                steps[currentStep - 1].style.display = "none";
+                currentStep++;
+                steps[currentStep - 1].style.display = "block";
+            }
+        }
+        function nextStep1() {
+            if (currentStep < steps.length) {
+                steps[currentStep - 1].style.display = "block";
+                currentStep++;
+                steps[currentStep - 1].style.display = "none";
+            }
+        }
+
+
+        function prevStep() {
+            if (currentStep > 1) {
+                steps[currentStep - 1].style.display = "none";
+                currentStep--;
+                steps[currentStep - 1].style.display = "block";
+            }
+        }
+
+        function submitForm() {
+
+        }
+
+    </script>
+    <script>
+
+        document.getElementById('btnSave').addEventListener('click', function () {
+            document.querySelector('form').submit(); // Trigger form submission
+        });
+        document.getElementById('btnReset').addEventListener('click', function () {
+
+        });
+        document.getElementById('btnCancel').addEventListener('click', function () {
+
+        });
+
+    </script>
+    <script>
+
+        let slideIndex = 0;
+        showSlides();
+
+        function plusDivs(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function showSlides() {
+            let i;
+            const slides = document.getElementsByClassName("mySlides");
+            if (slideIndex >= slides.length) { slideIndex = 0 }
+            if (slideIndex < 0) { slideIndex = slides.length - 1 }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slides[slideIndex].style.display = "block";
+        }
+
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+    </script>
+    <script>
+
+
+        $(document).ready(function () {
+            function updateDropdownButtonText() {
+                var selected = [];
+                $('.printer-checkbox:checked').each(function () {
+                    selected.push($(this).next('label').text());
+                });
+
+                var buttonText = selected.length > 0 ? selected.join(', ') : 'Select';
+                $('#dropdownMenuButton').text(buttonText);
+            }
+
+            // Initialize button text based on pre-selected checkboxes
+            updateDropdownButtonText();
+
+            $('#dropdownMenuButton').click(function () {
+                $('.dropdown-checkboxes').toggleClass('show');
+            });
+
+            $('#checkAll').click(function () {
+                var checked = this.checked;
+                $('.printer-checkbox').each(function () {
+                    this.checked = checked;
+                });
+                updateDropdownButtonText();
+            });
+
+            $('.printer-checkbox').click(function () {
+                if ($('.printer-checkbox:checked').length === $('.printer-checkbox').length) {
+                    $('#checkAll').prop('checked', true);
+                } else {
+                    $('#checkAll').prop('checked', false);
+                }
+                updateDropdownButtonText();
+            });
+
+            $(document).click(function (event) {
+                if (!$(event.target).closest('.dropdown-checkboxes').length) {
+                    if ($('.dropdown-checkboxes').hasClass('show')) {
+                        $('.dropdown-checkboxes').removeClass('show');
+                    }
+                }
+            });
+        });
+
+
+
+    </script>
+    <script>
+
+        document.getElementById('fileupload').addEventListener('change', function(event) {
+        var files = event.target.files;
+        var preview = document.getElementById('previewImages');
+        preview.innerHTML = '';
+        Array.from(files).forEach(file => {
+            if (file.size > 10240) {
+                alert("File size should not exceed 10KB");
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.height = '80px';
+                img.style.width = '80px';
+                img.style.margin = '10px';
+                preview.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+
+    function deleteImage(imageId) {
+        if (confirm('Are you sure you want to delete this record?')) {
+            $.ajax({
+                url: '@Url.Action("DeleteImage", "YourController")',
+                type: 'POST',
+                data: { id: imageId },
+                success: function() {
+                    window.location.reload();
+                }
+            });
+        }
+    }
+
+
+    </script>
+    <script>
+
+        document.getElementById('fileupload').addEventListener('change', function (event) {
+            var files = event.target.files;
+            var preview = document.getElementById('previewImages');
+            preview.innerHTML = ''; // Clear previous previews
+
+            var imagesTableBody = document.getElementById('imagesTableBody');
+            var uploadedImages = document.getElementById('uploadedImages');
+            var uploadedImages2 = document.getElementById('uploadedImages2');
+
+            Array.from(files).forEach(file => {
+                if (file.size > 10240) {
+                    alert("File size should not exceed 10KB");
+                    return;
+                }
+
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.height = '95px';
+                    img.style.width = '95px';
+                    img.style.margin = '10px';
+
+                    // Append image to preview section
+                    preview.appendChild(img);
+
+                    // Append image to table
+                    var row = imagesTableBody.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+
+                    cell1.innerHTML = '<img src="' + e.target.result + '" style="height:80px; width:80px;" />';
+                    cell2.innerHTML = '<button type="button" class="btn btn-danger" onclick="deleteImage(this)">Delete</button>';
+
+                    // Append image to one of the uploaded images sections
+                    if (uploadedImages.children.length < 4) {
+                        uploadedImages.appendChild(img.cloneNode());
+                    } else {
+                        uploadedImages2.appendChild(img.cloneNode());
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        function deleteImage(button) {
+            var row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+
+            // Additional code to remove the image from the preview or uploaded images sections if needed
+        }
+
+    </script>
+    <script>
+
+        function editProduct(productId) {
+            // Logic to edit the product
+            console.log("Edit product:", productId);
+        }
+
+        function deleteProduct(productId) {
+            // Logic to delete the product
+            console.log("Delete product:", productId);
+        }
+
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            function handleEditButtonClick(event) {
+                event.stopPropagation(); // Prevent the event from propagating further
+
+                // Hide all other forms
+                document.getElementById('SellingSizesandPricesForm').style.display = 'none';
+                // Hide any other forms if they exist
+
+                // Show the Ingredients form
+                document.getElementById('IngredientsForm').style.display = 'block';
+
+                // Find the closest table row
+                const row = event.target.closest('tr');
+
+                if (!row) return; // Exit if no row is found
+
+                // Extract data from the row's data attributes
+                const name = row.getAttribute('data-name') || '';
+                const baseSize = row.getAttribute('data-base-size') || '';
+                const size = row.getAttribute('data-size') || '';
+                const unit = row.getAttribute('data-unit') || '';
+
+                // Populate form fields with the extracted data
+                document.getElementById('IngriName').value = name;
+                document.getElementById('IngreBaseSize').value = baseSize;
+                document.getElementById('txtSize').value = size;
+
+                // Set the selected option in the dropdown
+                const selectUnit = document.getElementById('selectUnit');
+                selectUnit.value = unit;
+            }
+
+            // Attach click event listener to all edit buttons
+            document.querySelectorAll('.ingredient-row .edit-btn').forEach(button => {
+                button.addEventListener('click', handleEditButtonClick);
+            });
+        });
+
+
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to handle editing
+            function editProduct(element) {
+                // Find the closest table row
+                const row = element.closest('tr');
+
+                if (!row) return; // Exit if no row is found
+
+                // Extract data from the row's data attributes
+                const condiment = row.getAttribute('data-condiment') || '';
+                const productName = row.getAttribute('data-productname') || '';
+                const price = row.getAttribute('data-price') || '';
+                const choice = row.getAttribute('data-choice') || '';
+                const minSelect = row.getAttribute('data-minselect') || '';
+                const maxSelect = row.getAttribute('data-maxselect') || '';
+
+                // Populate form fields with the extracted data
+                document.getElementById('CondiName').value = condiment;
+                document.getElementById('txtProductName').value = productName;
+                document.getElementById('txtPrice').value = price;
+                document.getElementById('Select1').value = choice;
+                document.getElementById('txtMinSelect').value = minSelect;
+                document.getElementById('txtMaxSelect').value = maxSelect;
+
+                // Show the Condiments form
+                document.getElementById('CondimentsForm').style.display = 'block';
+            }
+
+            // Attach click event listener to all edit buttons
+            document.querySelectorAll('.table .fa-pencil-square-o').forEach(button => {
+                button.addEventListener('click', function () {
+                    editProduct(this);
+                });
+            });
+        });
+
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            function editIngredient(element) {
+                // Hide any other forms
+                document.getElementById('CondimentsForm').style.display = 'none';
+
+                // Show the Ingredients form
+                document.getElementById('IngredientsForm').style.display = 'block';
+
+                // Find the closest table row
+                const row = element.closest('tr');
+
+                if (!row) return; // Exit if no row is found
+
+                // Extract data from the row's data attributes
+                const name = row.getAttribute('data-name') || '';
+                const baseSize = row.getAttribute('data-base-size') || '';
+                const size = row.getAttribute('data-size') || '';
+                const unit = row.getAttribute('data-unit') || '';
+
+                // Populate form fields with the extracted data
+                document.getElementById('IngriName').value = name;
+                document.getElementById('IngreBaseSize').value = baseSize;
+                document.getElementById('txtSize').value = size;
+
+                // Set the selected option in the dropdown
+                const selectUnit = document.getElementById('selectUnit');
+                selectUnit.value = unit;
+            }
+
+            // Attach click event listener to all edit buttons
+            document.querySelectorAll('.ingredient-row .edit-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    editIngredient(this);
+                });
+            });
+        });
+
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            function editSellingSizeAndPrice(element) {
+                // Hide all forms
+                document.getElementById('CondimentsForm').style.display = 'none';
+                document.getElementById('IngredientsForm').style.display = 'none';
+
+                // Show the Selling Sizes and Prices form
+                document.getElementById('SellingSizesandPricesForm').style.display = 'block';
+
+                // Find the closest table row
+                const row = element.closest('tr');
+
+                if (!row) return; // Exit if no row is found
+
+                // Extract data from the row's data attributes
+                const locationId = row.getAttribute('data-location-id') || '';
+                const name = row.getAttribute('data-name') || '';
+                const size = row.getAttribute('data-size') || '';
+                const unitId = row.getAttribute('data-unit-id') || '';
+                const price = row.getAttribute('data-price') || '';
+                const taxId = row.getAttribute('data-tax-id') || '';
+                const sortingNo = row.getAttribute('data-sorting-no') || '';
+                const clickCollect = row.getAttribute('data-click-collect') === '1' ? true : false;
+                const deliver = row.getAttribute('data-deliver') === '1' ? true : false;
+                const orderAtTable = row.getAttribute('data-order-at-table') === '1' ? true : false;
+                const isActive = row.getAttribute('data-is-active') === '1' ? true : false;
+
+                // Populate form fields with the extracted data
+                document.getElementById('Sellinglocation').value = locationId;
+                document.getElementById('SellingName').value = name;
+                document.getElementById('SellingSize').value = size;
+                document.getElementById('qtySelect').value = unitId;
+                document.getElementById('txtPPrice').value = price;
+                document.getElementById('SellingTax').value = taxId;
+                document.getElementById('txtPSortingNo').value = sortingNo;
+                document.getElementById('chkClickAndCollect').checked = clickCollect;
+                document.getElementById('chkDeliver').checked = deliver;
+                document.getElementById('chkOrderAtTable').checked = orderAtTable;
+                document.getElementById('chkIsActive').checked = isActive;
+            }
+
+            // Attach click event listener to all edit buttons
+            document.querySelectorAll('.product-row .edit-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    editSellingSizeAndPrice(this);
+                });
+            });
+        });
+
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to handle showing the Buying Sizes and Cost form
+            function showBuyingForm() {
+                // Hide all other forms
+                document.getElementById('SellingSizesandPricesForm').style.display = 'none';
+                document.getElementById('CondimentsForm').style.display = 'none';
+                document.getElementById('IngredientsForm').style.display = 'none';
+
+                // Show the Buying Sizes and Cost form
+                document.getElementById('BuyingSizesandCostForm').style.display = 'block';
+            }
+
+            // Function to handle showing the Selling Sizes and Prices form
+            function showSellingForm() {
+                // Hide all other forms
+                document.getElementById('BuyingSizesandCostForm').style.display = 'none';
+                document.getElementById('CondimentsForm').style.display = 'none';
+                document.getElementById('IngredientsForm').style.display = 'none';
+
+                // Show the Selling Sizes and Prices form
+                document.getElementById('SellingSizesandPricesForm').style.display = 'block';
+            }
+
+            // Function to populate the Buying Sizes and Cost form
+            function editBuyingSizeAndCost(element) {
+                showBuyingForm(); // Make sure the Buying form is shown
+
+                // Find the closest table row
+                const row = element.closest('tr');
+
+                if (!row) return; // Exit if no row is found
+
+                // Extract data from the row's data attributes
+                const locationId = row.getAttribute('data-location-id') || '';
+                const name = row.getAttribute('data-name') || '';
+                const size = row.getAttribute('data-size') || '';
+                const qtyId = row.getAttribute('data-qty-id') || '';
+                const cost = row.getAttribute('data-cost') || '';
+                const taxId = row.getAttribute('data-tax-id') || '';
+
+                // Populate form fields with the extracted data
+                document.getElementById('buyingLocationSelect').value = locationId;
+                document.getElementById('buyingNameInput').value = name;
+                document.getElementById('buyingSizeInput').value = size;
+                document.getElementById('buyingQtySelect').value = qtyId;
+                document.getElementById('buyingCostInput').value = cost;
+                document.getElementById('buyingTaxSelect').value = taxId;
+            }
+
+            // Attach click event listener to all edit buttons in the Buying form
+            document.querySelectorAll('#BuyingSizesandCostForm .edit-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    editBuyingSizeAndCost(this);
+                });
+            });
+
+            // Function to populate the Selling Sizes and Prices form
+            function editSellingSizeAndPrice(element) {
+                showSellingForm(); // Make sure the Selling form is shown
+
+                // Find the closest table row
+                const row = element.closest('tr');
+
+                if (!row) return; // Exit if no row is found
+
+                // Extract data from the row's data attributes
+                const locationId = row.getAttribute('data-location-id') || '';
+                const name = row.getAttribute('data-name') || '';
+                const size = row.getAttribute('data-size') || '';
+                const unitId = row.getAttribute('data-unit-id') || '';
+                const price = row.getAttribute('data-price') || '';
+                const taxId = row.getAttribute('data-tax-id') || '';
+                const sortingNo = row.getAttribute('data-sorting-no') || '';
+                const clickCollect = row.getAttribute('data-click-collect') === '1' ? true : false;
+                const deliver = row.getAttribute('data-deliver') === '1' ? true : false;
+                const orderAtTable = row.getAttribute('data-order-at-table') === '1' ? true : false;
+                const isActive = row.getAttribute('data-is-active') === '1' ? true : false;
+
+                // Populate form fields with the extracted data
+                document.getElementById('Sellinglocation').value = locationId;
+                document.getElementById('SellingName').value = name;
+                document.getElementById('SellingSize').value = size;
+                document.getElementById('qtySelect').value = unitId;
+                document.getElementById('txtPPrice').value = price;
+                document.getElementById('SellingTax').value = taxId;
+                document.getElementById('txtPSortingNo').value = sortingNo;
+                document.getElementById('chkClickAndCollect').checked = clickCollect;
+                document.getElementById('chkDeliver').checked = deliver;
+                document.getElementById('chkOrderAtTable').checked = orderAtTable;
+                document.getElementById('chkIsActive').checked = isActive;
+            }
+
+            // Attach click event listener to all edit buttons in the Selling form
+            document.querySelectorAll('#SellingSizesandPricesForm .edit-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    editSellingSizeAndPrice(this);
+                });
+            });
+
+            // Initialize by showing the appropriate form based on the current context
+            // For example, you might want to show the Buying form by default or based on some condition
+            // showBuyingForm(); // Uncomment this if you want to show Buying form on load
+        });
+
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to handle showing the Barcode form
+            function showBarcodeForm() {
+                // Hide all other forms
+                document.getElementById('SellingSizesandPricesForm').style.display = 'none';
+                document.getElementById('BuyingSizesandCostForm').style.display = 'none';
+                document.getElementById('CondimentsForm').style.display = 'none';
+                document.getElementById('IngredientsForm').style.display = 'none';
+
+                // Show the Barcode form
+                document.getElementById('BarcodeForm').style.display = 'block';
+            }
+
+            // Function to populate the Barcode form
+            function editBarcode(element) {
+                showBarcodeForm(); // Make sure the Barcode form is shown
+
+                // Find the closest table row
+                const row = element.closest('tr');
+
+                if (!row) return; // Exit if no row is found
+
+                // Extract data from the row's data attributes
+                const barcode = row.getAttribute('data-barcode') || '';
+                const size = row.getAttribute('data-size') || '';
+
+                // Populate form fields with the extracted data
+                document.getElementById('txtBarcode').value = barcode;
+                document.getElementById('BarcodeSize').value = size;
+            }
+
+            // Attach click event listener to all edit buttons in the Barcode form
+            document.querySelectorAll('#BarcodeForm .edit-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    editBarcode(this);
+                });
+            });
+
+            // Attach click event listener to show Barcode form (e.g., a menu or button)
+            document.getElementById('showBarcodeButton').addEventListener('click', showBarcodeForm);
+
+            // Example of initialization - Show Barcode form on load if needed
+            // showBarcodeForm(); // Uncomment this if you want to show Barcode form on page load
+        });
+
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to handle showing the Allergy form
+            function showAllergyForm() {
+                // Hide all other forms
+                document.getElementById('SellingSizesandPricesForm').style.display = 'none';
+                document.getElementById('BuyingSizesandCostForm').style.display = 'none';
+                document.getElementById('BarcodeForm').style.display = 'none';
+                document.getElementById('CondimentsForm').style.display = 'none';
+                document.getElementById('IngredientsForm').style.display = 'none';
+
+                // Show the Allergy form
+                document.getElementById('AllergyForm').style.display = 'block';
+            }
+
+            // Function to populate the Allergy form
+            function editAllergy(element) {
+                showAllergyForm(); // Ensure the Allergy form is shown
+
+                // Find the closest table row
+                const row = element.closest('tr');
+
+                if (!row) return; // Exit if no row is found
+
+                // Extract data from the row's data attributes
+                const name = row.getAttribute('data-name') || '';
+
+                // Populate form fields with the extracted data
+                document.getElementById('allergyName').value = name;
+            }
+
+            // Attach click event listener to all edit buttons in the Allergy form
+            document.querySelectorAll('#AllergyForm .edit-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    editAllergy(this);
+                });
+            });
+
+            // Attach click event listener to show Allergy form (e.g., a menu or button)
+            document.getElementById('showAllergyButton').addEventListener('click', showAllergyForm);
+
+            // Example of initialization - Show Allergy form on load if needed
+            // showAllergyForm(); // Uncomment this if you want to show Allergy form on page load
+        });
+
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Function to show the Product Master Form
+            function showProductMasterForm() {
+                document.getElementById('productMasterForm').style.display = 'block';
+                document.getElementById('SellingSizesandPricesForm').style.display = 'none';
+            }
+
+            // Function to handle the editing of product data
+            function handleEditProduct(data) {
+                // Populate Product Master form with product data
+                document.getElementById('txtProName').value = data.Name || '';
+                document.getElementById('ProGrp').value = date.CategoryId || '';
+                document.getElementById('Select1').value = data.CategoryId || '';
+                document.getElementById('Dep').value = data.DepartmentId || '';
+                document.getElementById('Cou').value = data.CourseId || '';
+                document.getElementById('txtBaseSize').value = data.Base || '';
+                document.getElementById('BaseUnit').value = data.UnitId || '';
+
+                // Handle checkboxes
+                const checkboxes = document.querySelectorAll('.printer-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = data.PrinterId ? data.PrinterId.includes(checkbox.value) : false;
+                });
+
+                document.getElementById('TextAreaDes').value = data.Description || '';
+            }
+
+            // Handle form submissions if needed
+            document.querySelector('form[action="ProductController/HandleNextStep"]').addEventListener('submit', function (event) {
+                // Custom logic before form submission
+                // For example, validate fields or handle additional actions
+            });
+
+            // Example function to show the form when a button is clicked
+            document.getElementById('showProductMasterBtn').addEventListener('click', () => {
+                showProductMasterForm();
+            });
+
+            // Example: Fetch and edit product data
+            // This should be replaced with actual data fetching logic
+            const exampleProductData = {
+                Name: 'Example Product',
+                CategoryId: '1',
+                DepartmentId: '2',
+                CourseId: '3',
+                Base: 'Size Base',
+                UnitId: '4',
+                PrinterId: ['5', '6'],
+                Description: 'This is an example description.'
+            };
+
+            // Simulate loading product data (you might get this from a server or another source)
+            handleEditProduct(exampleProductData);
+        });
+
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Prevent form submission when clicking on tab buttons
+            const tabButtons = document.querySelectorAll('.panelProductMaster, .panelSelling, .panelBuying, .panelProduct,.panelBarcode,.panelIngredients,.panelCondiments,.panelAllergy');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault(); // Prevent default form submission
+                    // Call your toggle functions
+                    if (this.classList.contains('btnProductMaster')) {
+                        toggleProductMasterForm();
+                    } else if (this.classList.contains('btnSelling')) {
+                        toggleSellingSizesandPricesForm();
+                    } else if (this.classList.contains('btnBuying')) {
+                        toggleBuyingSizesandCostForm();
+                    } else if (this.classList.contains('btnProduct')) {
+                        toggleProductSettingsForm();
+                    } else if (this.classList.contains('btnBarcode')) {
+                        toggleBarcodeForm();
+                    } else if (this.classList.contains('btnIngredients')) {
+                        toggleIngredientsForm();
+                    } else if (this.classList.contains('btnCondiments')) {
+                        toggleCondimentsForm();
+                    } else if (this.classList.contains('btnAllergy')) {
+                        toggleAllergyForm();
+                    }
+                });
+            });
+        });
+
+    </script>
+    <script>
+        function addSellingSizesAndPrices() {
+            // Gather values from the form
+            const locationSelect = document.getElementById('Sellinglocation');
+            const locationValue = locationSelect.value; // Location value for validation
+            const locationText = locationSelect.options[locationSelect.selectedIndex].text;
+
+            const name = document.getElementById('SellingName').value;
+            const size = document.getElementById('SellingSize').value;
+            const qtySelect = document.getElementById('qtySelect');
+            const qtyValue = qtySelect.value; // Qty value for validation
+            const qtyText = qtySelect.options[qtySelect.selectedIndex].text;
+            const price = document.getElementById('txtPPrice').value;
+            const taxSelect = document.getElementById('SellingTax');
+            const taxValue = taxSelect.value; // Tax value for validation
+            const taxText = taxSelect.options[taxSelect.selectedIndex].text;
+            const sortingNo = document.getElementById('txtPSortingNo').value;
+
+            // Validation: check for empty values
+            if (!locationValue || !name || !size || !price  || !sortingNo) {
+                alert("Please fill all the required fields.");
+                return; // Stop execution if validation fails
+            }
+
+            const clickAndCollect = document.getElementById('chkClickAndCollect').checked ? "true" : "false";
+            const deliver = document.getElementById('chkDeliver').checked ? "true" : "false";
+            const orderAtTable = document.getElementById('chkOrderAtTable').checked ? "true" : "false";
+            const isActive = document.getElementById('chkIsActive').checked ? "true" : "false";
+
+            // Create a new row in the table
+            const tableBody = document.querySelector('.table tbody');
+            const newRow = document.createElement('tr');
+
+            newRow.innerHTML = `
+                <td>${locationText}</td>
+                <td>${name}</td>
+                <td>${size}</td>
+                <td>${qtyText}</td>
+                <td>${price}</td>
+                <td>${taxText}</td>
+                <td>${sortingNo}</td>
+                <td>${clickAndCollect}</td>
+                <td>${deliver}</td>
+                <td>${orderAtTable}</td>
+                <td>${isActive}</td>
+                <td>
+                    <i class="fa fa-pencil-square-o fa-lg edit-btn"></i> &nbsp;&nbsp;
+                    <i class="fa fa-minus-square-o fa-lg delete-btn" onclick="deleteSelling(this)"></i>
+                </td>
+            `;
+
+            tableBody.appendChild(newRow);
+
+            // Optionally, clear the input fields after adding
+            clearForm();
+        }
+
+        function deleteSelling(element) {
+            console.log("Delete function called"); // Debug line
+            if (confirm("Are you sure you want to delete this item?")) {
+                const row = element.closest('tr'); // Get the closest row
+                if (row) {
+                    console.log("Row found and removed"); // Debug line
+                    row.remove(); // Remove the row from the DOM
+                }
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('Sellinglocation').value = '';
+            document.getElementById('SellingName').value = '';
+            document.getElementById('SellingSize').value = '';
+            document.getElementById('qtySelect').value = '';
+            document.getElementById('txtPPrice').value = '';
+            document.getElementById('SellingTax').value = '';
+            document.getElementById('txtPSortingNo').value = '';
+            document.getElementById('chkClickAndCollect').checked = false;
+            document.getElementById('chkDeliver').checked = false;
+            document.getElementById('chkOrderAtTable').checked = false;
+            document.getElementById('chkIsActive').checked = false;
+        }
+    </script>
+    <script>
+
+        // Function to add event listeners to all edit buttons
+        function addEditEventListeners() {
+            const editButtons = document.querySelectorAll('.edit-btn');
+            editButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // Get the parent row of the clicked button
+                    const row = button.closest('tr');
+
+                    // Extract data attributes from the row
+                    const locationText = row.cells[0].innerText; // Location
+                    const name = row.cells[1].innerText; // Name
+                    const size = row.cells[2].innerText; // Size
+                    const qtyText = row.cells[3].innerText; // Quantity
+                    const price = row.cells[4].innerText; // Price
+                    const taxText = row.cells[5].innerText; // Tax
+                    const sortingNo = row.cells[6].innerText; // Sorting No.
+                    const clickAndCollect = row.cells[7].innerText === "true"; // Click and Collect
+                    const deliver = row.cells[8].innerText === "true"; // Deliver
+                    const orderAtTable = row.cells[9].innerText === "true"; // Order at Table
+                    const isActive = row.cells[10].innerText === "true"; // Is Active
+
+                    // Populate the form fields with the row data
+                    document.getElementById('Sellinglocation').value = locationText; // You may need to set the corresponding ID based on the location name
+                    document.getElementById('SellingName').value = name;
+                    document.getElementById('SellingSize').value = size;
+                    // Set the quantity based on the selected text
+                    const qtySelect = document.getElementById('qtySelect');
+                    for (let i = 0; i < qtySelect.options.length; i++) {
+                        if (qtySelect.options[i].text === qtyText) {
+                            qtySelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                    document.getElementById('txtPPrice').value = price;
+                    // Set the tax based on the selected text
+                    const taxSelect = document.getElementById('SellingTax');
+                    for (let i = 0; i < taxSelect.options.length; i++) {
+                        if (taxSelect.options[i].text === taxText) {
+                            taxSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                    document.getElementById('txtPSortingNo').value = sortingNo;
+                    document.getElementById('chkClickAndCollect').checked = clickAndCollect;
+                    document.getElementById('chkDeliver').checked = deliver;
+                    document.getElementById('chkOrderAtTable').checked = orderAtTable;
+                    document.getElementById('chkIsActive').checked = isActive;
+                });
+            });
+        }
+
+        // Call the function to add edit event listeners after the table is populated
+        addEditEventListeners();
+
+    </script>
+    <script>
+
+        function addBuyingSizesAndCost() {
+            const buyingLocationSelect = document.getElementById('buyingLocationSelect');
+            const locationText = buyingLocationSelect.options[buyingLocationSelect.selectedIndex].text;
+            const name = document.getElementById('buyingNameInput').value;
+            const size = document.getElementById('buyingSizeInput').value;
+            const qtySelect = document.getElementById('buyingQtySelect');
+            const qtyText = qtySelect.options[qtySelect.selectedIndex].text;
+            const cost = document.getElementById('buyingCostInput').value;
+            const taxSelect = document.getElementById('buyingTaxSelect');
+            const taxText = taxSelect.options[taxSelect.selectedIndex].text;
+
+            // Validation
+            if (!locationText || name === '' || size === '' || qtyText === 'Select' || cost === '' || taxText === 'Select') {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            // Create a new row in the buying table
+            const tableBody = document.getElementById('buyingTableBody');
+            const newRow = document.createElement('tr');
+
+            newRow.innerHTML = `
+                                                        <td>${locationText}</td>
+                                                        <td>${name}</td>
+                                                        <td>${size}</td>
+                                                        <td>${qtyText}</td>
+                                                        <td>${cost}</td>
+                                                        <td>${taxText}</td>
+                                                        <td>
+                                                            <i class="fa fa-pencil-square-o fa-lg edit-btn"></i> &nbsp;&nbsp;
+                                                            <i class="fa fa-minus-square-o fa-lg delete-btn"></i>
+                                                        </td>
+                                                    `;
+
+            tableBody.appendChild(newRow);
+            clearBuyingForm();
+        }
+
+        function clearBuyingForm() {
+            document.getElementById('buyingLocationSelect').selectedIndex = 0; // Reset to 'Select'
+            document.getElementById('buyingNameInput').value = '';
+            document.getElementById('buyingSizeInput').value = '';
+            document.getElementById('buyingQtySelect').selectedIndex = 0; // Reset to 'Select'
+            document.getElementById('buyingCostInput').value = '';
+            document.getElementById('buyingTaxSelect').selectedIndex = 0; // Reset to 'Select'
+        }
+
+    </script>
+    <script>
+
+        function addCondiment() {
+            var name = $("#CondiName").val();
+            var productName = $("#txtProductName").val();
+            var price = $("#txtPrice").val();
+            var choice = $("#Select1").val();
+            var minSelect = $("#txtMinSelect").val();
+            var maxSelect = $("#txtMaxSelect").val();
+
+            if (name === "" || productName === "" || price === "" || minSelect === "" || maxSelect === "") {
+                alert("Please fill all the fields.");
+                return;
+            }
+
+            var choiceText = $("#Select1 option:selected").text();
+
+            var newRow = `<tr>
+                                                <td><label>${name}</label></td>
+                                                <td><label>${productName}</label></td>
+                                                <td><label>${price}</label></td>
+                                                <td><label>${choiceText}</label></td>
+                                                <td><label>${minSelect}</label></td>
+                                                <td><label>${maxSelect}</label></td>
+                                                <td>
+                                                    <i class="fa fa-pencil-square-o fa-lg" onclick="editProduct(this)"></i> &nbsp;&nbsp;
+                                                    <i class="fa fa-minus-square-o fa-lg" onclick="deleteCondiment(this)"></i>
+                                                </td>
+                                              </tr>`;
+
+            // Append the new row to the condiment table body
+            $("#condimentTableBody").append(newRow);
+
+            // Clear the form inputs
+            $("#CondiName, #txtProductName, #txtPrice, #Select1, #txtMinSelect, #txtMaxSelect").val('');
+        }
+
+
+
+
+    </script>
+    <script>
+
+
+        function addAllergy() {
+            var allergyNameInput = document.getElementById("allergyName");
+            var allergyName = allergyNameInput.value.trim();
+
+            if (allergyName === "") {
+                alert("Please enter an allergy name.");
+                return;
+            }
+
+            var newRow = document.createElement("tr");
+            newRow.classList.add("allergy-row");
+            newRow.setAttribute("data-name", allergyName);
+
+            newRow.innerHTML = `
+                                    <td><label>${allergyName}</label></td>
+                                    <td>
+                                        <i class="fa fa-pencil-square-o fa-lg edit-btn"></i> &nbsp;&nbsp;
+                                        <i class="fa fa-minus-square-o fa-lg delete-btn" onclick="deleteAllergy(this)"></i>
+                                    </td>
+                                `;
+
+            // Append the new row to the allergy table body
+            document.getElementById("allergyTableBody").appendChild(newRow);
+
+            // Clear the input field
+            allergyNameInput.value = "";
+        }
+
+        function deleteAllergy(element) {
+            // Confirm before deleting
+            if (confirm("Are you sure you want to delete this allergy?")) {
+                var row = element.closest('tr'); // Get the closest row
+                if (row) {
+                    row.remove(); // Remove the row from the DOM
+                }
+            }
+        }
+
+    </script>
+    <script>
+
+        function addBarcode() {
+            var barcodeInput = document.getElementById("txtBarcode");
+            var sizeSelect = document.getElementById("BarcodeSize");
+            var barcodeValue = barcodeInput.value.trim();
+            var sizeValue = sizeSelect.value;
+
+            // Check if the input fields are not empty
+            if (barcodeValue === "" || sizeValue === "") {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            // Create a new table row
+            var newRow = document.createElement("tr");
+            newRow.classList.add("barcode-row");
+            newRow.setAttribute("data-barcode", barcodeValue);
+            newRow.setAttribute("data-size", sizeValue);
+
+            // Add the cells to the new row
+            newRow.innerHTML = `
+                                            <td>${barcodeValue}</td>
+                                            <td>${sizeSelect.options[sizeSelect.selectedIndex].text}</td>
+                                            <td>
+                                                <i class="fa fa-pencil-square-o fa-lg edit-btn"></i> &nbsp;&nbsp;
+                                                <i class="fa fa-minus-square-o fa-lg delete-btn" onclick="deleteBarcode(this)"></i>
+                                            </td>
+                                        `;
+
+            // Append the new row to the table body
+            document.getElementById("barcodeTableBody").appendChild(newRow);
+
+            // Clear the input fields
+            barcodeInput.value = "";
+            sizeSelect.selectedIndex = 0; // Reset to default
+        }
+
+        function deleteBarcode(element) {
+            // Confirm before deleting
+            if (confirm("Are you sure you want to delete this barcode?")) {
+                var row = element.closest('tr'); // Get the closest row
+                if (row) {
+                    row.remove(); // Remove the row from the DOM
+                }
+            }
+        }
+
+    </script>
+    <script>
+
+        function addIngredient() {
+            var name = $("#IngriName").val();
+            var baseSize = $("#IngreBaseSize").val();
+            var size = $("#txtSize").val();
+            var unit = $("#selectUnit").val();
+
+            if (name === "" || baseSize === "" || size === "" || unit === "") {
+                alert("Please fill all the fields.");
+                return;
+            }
+
+            // Create a new row for the ingredients table
+            var newRow = `<tr class="ingredient-row" data-name="${name}" data-base-size="${baseSize}" data-size="${size}" data-unit="${unit}">
+                                            <td>${name}</td>
+                                            <td>${baseSize}</td>
+                                            <td>${size}</td>
+                                            <td>${$("#selectUnit option:selected").text()}</td>
+                                            <td>
+                                                <i class="fa fa-pencil-square-o fa-lg edit-btn" onclick="editIngredient(this)"></i> &nbsp;&nbsp;
+                                                <i class="fa fa-minus-square-o fa-lg delete-btn" onclick="deleteIngredient(this)"></i>
+                                            </td>
+                                          </tr>`;
+
+            // Append the new row to the ingredients table body specifically
+            $("#ingredientsTableBody").append(newRow);
+
+            // Clear the input fields
+            $("#IngriName, #IngreBaseSize, #txtSize, #selectUnit").val('');
+        }
+
+        function deleteIngredient(element) {
+            // Confirm before deleting
+            if (confirm("Are you sure you want to delete this ingredient?")) {
+                var row = element.closest('tr'); // Get the closest row
+                if (row) {
+                    row.remove(); // Remove the row from the DOM
+                }
+            }
+        }
+
+    </script>
+    <script>
+        $('#sellingTableBody tr').each(function () {
+            const row = $(this);
+
+            const productId = row.data('id');
+            const price = row.data('price');
+
+            console.log("Row Data:", {
+                productId: productId,
+                price: price,
+                locationId: row.data('location-id'),
+                name: row.data('name'),
+                size: row.data('size'),
+                unitId: row.data('unit-id'),
+                taxId: row.data('tax-id'),
+                sortingNo: row.data('sorting-no'),
+                clickAndCollect: row.data('click-collect'),
+                deliver: row.data('deliver'),
+                orderAtTable: row.data('order-at-table'),
+                isActive: row.data('is-active')
+            });
+
+            if (productId && price) {
+                productList.push({
+                    ProductId: productId,
+                    LocationId: row.data('location-id'),
+                    SName: row.data('name'),
+                    Size: row.data('size'),
+                    UnitId: row.data('unit-id'),
+                    Price: price,
+                    TaxId: row.data('tax-id'),
+                    SortingNo: row.data('sorting-no'),
+                    ClickAndCollect: row.data('click-collect') === 'true' ? 1 : 0,
+                    Deliver: row.data('deliver') === 'true' ? 1 : 0,
+                    OrderAtTable: row.data('order-at-table') === 'true' ? 1 : 0,
+                    IsActive: row.data('is-active') === 'true' ? 1 : 0
+                });
+            } else {
+                console.warn("Invalid Product Found: ", productId, price);  // Log the invalid product details
+            }
+        });
+
+        console.log("Final Product List:", productList);
+
+        if (productList.length === 0) {
+            alert("No valid products found.");
+        }
+    </script>
+
+    @*<script>
+        const testProduct = [{
+            ProductId: "1",
+            SizeId: "1",
+            Name: "Test Product",
+            Size: "Medium",
+            UnitId: "1",
+            IsActive: 1,
+            LocationId: "1",
+            PriceId: "1",
+            Price: 10.0,
+            ActualPrice: 9.0,
+            Tax: 1.0,
+            CompanyId: "1",
+            LoginId: "1",
+            IpAddress: "UserIPAddress",
+            TaxId: "1",
+            Tax2: 0.5,
+            TaxId2: "2"
+        }];
+               function addSellingSizesAndPrices() {
+            const products = [];
+            const rows = document.querySelectorAll('#sellingTableBody .product-row');
+
+            rows.forEach(row => {
+                const product = {
+                    ProductId: row.getAttribute('data-id'),
+                    SizeId: row.getAttribute('data-size-id'), // Ensure this attribute is set
+                    Name: row.getAttribute('data-name'),
+                    Size: row.getAttribute('data-size'), // Assuming this is a string
+                    UnitId: row.getAttribute('data-unit-id'),
+                    IsActive: row.getAttribute('data-is-active') === "true" ? 1 : 0,
+                    LocationId: row.getAttribute('data-location-id'),
+                    PriceId: row.getAttribute('data-price-id'), // Ensure this attribute is set
+                    Price: parseFloat(row.getAttribute('data-price')),
+                    ActualPrice: parseFloat(row.getAttribute('data-actual-price')),
+                    Tax: parseFloat(row.getAttribute('data-tax')),
+                    CompanyId: row.getAttribute('data-company-id'),
+                    LoginId: row.getAttribute('data-login-id'),
+                    IpAddress: "UserIPAddress", // Replace with actual logic to get IP
+                    TaxId: row.getAttribute('data-tax-id'),
+                    Tax2: parseFloat(row.getAttribute('data-tax2')), // Assuming this is set if needed
+                    TaxId2: row.getAttribute('data-tax-id2') // Assuming this is set if needed
+                };
+                products.push(product);
+            });
+
+
+                   $.ajax({
+                       url: '/Product/SaveSellingSizesAndPrices',
+                       type: 'POST',
+                       contentType: 'application/json',
+                       data: JSON.stringify(testProduct), // Ensure this is the correct product array
+                       success: function (response) {
+                           alert('Data saved successfully!');
+                       },
+                       error: function (xhr, status, error) {
+                           console.error('Error details:', xhr.responseText);
+                           alert('Error saving data: ' + xhr.responseText); // Log the response text for more details
+                       }
+                   });
+        }
+
+        // Attach event listener to the Save button
+        document.getElementById('btnSave').addEventListener('click', function () {
+            addSellingSizesAndPrices();
+        });
+            </script>*@
+
+
+    @*<script>
+        function saveProducts() {
+            var products = [];
+
+            $('#sellingTableBody tr.product-row').each(function () {
+                var product = {
+                    ProductId: $(this).data('id'),
+                    LocationId: $(this).data('location-id'),
+                    Name: $(this).data('name'),
+                    Size: $(this).data('size'),
+                    UnitId: $(this).data('unit-id'),
+                    Price: $(this).data('price'),
+                    TaxId: $(this).data('tax-id'),
+                    SortingNo: $(this).data('sorting-no'),
+                    ClickAndCollect: $(this).data('click-collect'),
+                    Deliver: $(this).data('deliver'),
+                    OrderAtTable: $(this).data('order-at-table'),
+                    IsActive: $(this).data('is-active')
+                };
+                products.push(product);
+            });
+
+            // Check if products array is populated
+            console.log("Products to save:", products);
+
+            $.ajax({
+                url: '/Product_master/Save',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(products),
+                success: function (response) {
+                    alert('Products saved successfully!');
+                },
+                error: function (xhr, status, error) {
+                    alert('Error saving products: ' + error);
+                    console.error("Error response:", xhr.responseText);
+                }
+            });
+        }
+    </script>*@
+
+
+    <script>
+        function openAllergyWindow() {
+            var allergyWindow = $find("<%= rdwinAllergy.ClientID %>");
+            if (allergyWindow) {
+                allergyWindow.show();
+            }
+        }
+
+        function closeAllergyWindow() {
+            var allergyWindow = $find("<%= rdwinAllergy.ClientID %>");
+            if (allergyWindow) {
+                allergyWindow.close();
+            }
+        }
+
+        function saveAllergies() {
+            var selectedAllergies = [];
+            var grid = $find("<%= rdAllergy.ClientID %>");
+            var items = grid.get_masterTableView().get_dataItems();
+
+            for (var i = 0; i < items.length; i++) {
+                var checkBox = items[i].findElement("ClientSelectColumn");
+                if (checkBox && checkBox.checked) {
+                    selectedAllergies.push({
+                        allergy_id: items[i].getDataKeyValue("Allergy_id"),
+                        name: items[i].getDataKeyValue("name")
+                    });
+                }
+            }
+
+            // Send the selected allergies to the server
+            PageMethods.SaveAllergyData(selectedAllergies, onSaveSuccess, onError);
+        }
+
+        function onSaveSuccess(result) {
+            closeAllergyWindow();
+            // Optionally, refresh the allergy list here
+            // refreshAllergyList();
+        }
+
+        function onError(error) {
+            console.error("Error saving allergy data: " + error.get_message());
+        }
+
+    </script>
+    <script>
+        function openAllergyModal() {
+            // Get the value of the allergyName input field
+            var allergyName = document.getElementById("allergyName").value;
+
+            // Set the value to the modal label
+            document.getElementById("modalAllergyName").innerText = allergyName;
+
+            // Trigger the modal to open
+            $('#allergyModal').modal('show');
+        }
+
+        // Function to save selected allergies
+        function saveAllergy() {
+            let selectedAllergies = [];
+            document.querySelectorAll('input[name="allergy"]:checked').forEach(function (checkbox) {
+                selectedAllergies.push(checkbox.value);
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/Product/SaveAllergySelection",
+                data: { allergyIds: selectedAllergies },
+                success: function (response) {
+                    alert("Allergies saved successfully!");
+                    $('#allergyModal').modal('hide');
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error saving allergy data: " + error);
+                    alert("Failed to save allergies. Please try again.");
+                }
+            });
+        }
+    </script>
+</head>
+        <body>
+            <form method="post" asp-page-handler="Save" id="mainForm">
+                <div class="page-content">
+
+                    <div class="prebtn" style="float:left" onclick="navigatePanel(-1)"> <span class="icon">&#9664;</span></div>
+                    <div class="panel-container">
+
+
+                        <div class="panelProductMaster" onclick="toggleProductMasterForm()">
+                            <button class="btnProductMaster" role="button">General</button>
+                        </div>
+                        <div class="panelSelling" onclick="toggleSellingSizesandPricesForm()">
+                            <button class="btnSelling" role="button">Selling</button>
+                        </div>
+                        <div class="panelBuying" onclick="toggleBuyingSizesandCostForm()">
+                            <button class="btnBuying" role="button">Buying</button>
+                        </div>
+                        <div class="panelProduct" onclick="toggleProductSettingsForm()">
+                            <button class="btnProduct" role="button">Settings</button>
+                        </div>
+                        <div class="panelBarcode" onclick="toggleBarcodeForm()">
+                            <button class="btnBarcode" role="button">Barcode</button>
+                        </div>
+                        <div class="panelIngredients" onclick="toggleIngredientsForm()">
+                            <button class="btnIngredients" role="button">Recipes</button>
+                        </div>
+                        <div class="panelCondiments" onclick="toggleCondimentsForm()">
+                            <button class="btnCondiments" role="button">Modifiers</button>
+                        </div>
+                        <div class="panelAllergy" onclick="toggleAllergyForm()">
+                            <button class="btnAllergy" role="button">Allergens</button>
+                        </div>
+
+
+                    </div>
+                    <div class="nxtbtn" style="float:right" onclick="navigatePanel(1)"><span class="icon">&#9654;</span></div>
+
+
+
+                    <div class="left-side" style="margin-left:-28px;">
+                        <div class="col-md-6 img" style="" id="uploadedImages">
+                            <img src="~/images/avatar/Pasta.jpg" alt="img" />&nbsp;&nbsp;
+                            <img src="~/images/avatar/Pizza.jpg" alt="img" />
+                        </div>
+                        <div class="col-md-6 conimg" id="uploadedImages2">
+                            <img src="~/images/avatar/download.jpg" alt="img" />&nbsp;&nbsp;
+                            <img src="~/images/avatar/th (1).jpg" alt="img" />
+
+                        </div>
+                        <div class="align-center">
+                            <div class="col-md-12 pdname" id="pdname" style="">
+                                <label class="pdl" style="margin-left:-24px; margin-right:27px;">@Model.product?.Name</label>
+                            </div>
+                            <div class="col-md-12 icon-container">
+                                @*<img src="~/images/avatar/icon_qty2.png" alt="Qty Icon" class="icon-img" />*@
+    <label class="icon-label">@Model.product?.Base @Model.product?.UnitName</label>
+    </div>
+
+    @*<div class="col-md-12" style="margin-top: 10px; margin-left: -38px;">
+            <label>Base : 1000 ML</label>
+        </div>*@
+    </div>
+    </div>
+    @*<div class="separator"></div>*@
+    <div class="bordermain">
+        <div class="main-content">
+            <br /><br />
+            <div id="productMasterForm" class="main" style="display: none; margin-left: 18px;">
+                <div style="margin-left: 1px; font-family: poppins;"><h3><b>Product Master</b></h3></div>
+
+
+                <br /><br />
+                <div class="form-row col-md-12" id="pdmastesr">
+                    <div class="col-md-3">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Name</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="txtProName" name="product.Name" placeholder="Name" style="height: 45px; font-family: poppins;"
+                                   value="@Model.product?.Name">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div style="margin-left: -27px; padding-right: 10px;">
+                            <label>Product Group</label>
+                            <span class="text-danger">*</span>
+                            <select id="ProGrp" name="product.CategoryId" class="form-control">
+                                <option selected="true">Select</option>
+                                @foreach (var item in Model.DT)
+                                {
+                                    var selectedAttribute = item.Value == Model.product?.CategoryId.ToString() ? "selected" : "";
+
+                                    var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                    @Html.Raw(optionHtml)
+                                    @*<option value="@item.Value">@item.Text</option>*@
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div style="margin-left: -27px; padding-right: 10px; ">
+                            <label>Department</label>
+                            <select id="Dep" name="product.DepartmentId" class="form-control">
+                                <option value="">Select</option>
+                                @foreach (var item in Model.DTdepartment)
+                                {
+                                    var selectedAttribute = item.Value == Model.product?.DepartmentId.ToString() ? "selected" : "";
+
+                                    var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                    @Html.Raw(optionHtml)
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div style="margin-left: -27px; padding-right: 10px;">
+                            <label>Course</label>
+                            <select id="Cou" name="product.CourseId" class="form-control">
+                                <option selected="true">Select</option>
+                                @foreach (var item in Model.DTcourse)
+                                {
+                                    var selectedAttribute = item.Value == Model.product?.CourseId.ToString() ? "selected" : "";
+
+                                    var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                    @Html.Raw(optionHtml)
+                                    @*<option value="@item.Value">@item.Text</option>*@
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row col-md-12" id="pdsize">
+                    <div class="col-md-3">
+                        <div style="margin-left: -27px; padding-right: 10px;">
+                            <label>Base Size</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="BaseSize" id="txtBaseSize" name="product.Base" style="height:45px;" value="@Model.product?.Base">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div style="margin-left: -27px; padding-right: 10px;">
+                            <label>Base Unit</label>
+                            <span class="text-danger">*</span>
+
+
+                            <select id="BaseUnit" name="product.UnitId" class="form-control">
+                                <option selected="true">Select</option>
+                                @foreach (var item in Model.DTUnit)
+                                {
+                                    var selectedAttribute = item.Value == Model.product?.UnitId.ToString() ? "selected" : "";
+
+                                    var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                    @Html.Raw(optionHtml)
+                                    @*<option value="@item.Value">@item.Text</option>*@
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div style="margin-left:-27px; margin-right:10px;">
+                            <div class="dropdown-checkboxes">
+                                <label for="dropdownMenuButton">Printer</label>
+                                <div class="dropdown-button" id="dropdownMenuButton">
+                                    Select
+                                    <i class="fas fa-caret-down dropdown-icon"></i>
+                                </div>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <input type="checkbox" id="checkAll"> <label for="checkAll">Check All</label>
+                                    </li>
+                                    @foreach (var item in Model.DTprinter)
+                                    {
+                                        var isChecked = Model.product?.PrinterId != null && Model.product.PrinterId.Contains(item.Value) ? "checked" : "";
+                                        <li>
+                                            <input type="checkbox" name="product.PrinterId" class="printer-checkbox" value="@item.Value" @isChecked>
+                                            <label>@item.Text</label>
+
+                                            @*<input type="checkbox" class="printer-checkbox" value="@item.Value"> <label>@item.Text</label>*@
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        @*<div style="margin-left:-27px; margin-right:10px;">
+                            <label><input type="checkbox" id="checkAll"> Check All</label>
+                            @foreach (var item in Model.DTprinter)
+                            {
+                    <div>
+                        <label><input type="checkbox" class="printer-checkbox" value="@item.Value"> @item.Text</label>
+                    </div>}
+                        </div>*@
+                    </div>
+                </div>
+                <div class="form-row col-md-12" id="pddescpsn">
+                    <div class="col-md-3">
+                        <div style="margin-left: -27px; padding-right: 10px;">
+                            <label>Description</label>
+                            <textarea id="TextAreaDes" name="product.Description" class="description" rows="4" cols="25" placeholder="Description">@Model.product?.Description</textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div style="margin-left:-27px;">
+                            @*<label>Upload :</label>
+                        <input id="File1" type="file" style="padding-left:0px;" />
+                        <p>Select file to upload(.jpg, .jpeg, .gif, .png). File size should not exceed 10Kb</p>*@
+                            <div class="col-md-12">
+                                <label class="lbl">Upload :&nbsp;</label>
+                                <input type="file" id="fileupload" name="fileupload" accept=".jpg,.jpeg,.png,.gif" class="form-control" multiple />
+                                <i style="font-weight: lighter">
+                                    <label class="lbl">Select files to upload (.jpg, .jpeg, .gif, .png). </label>
+                                    <label class="lbl">File size should not exceed 10KB each</label>
+                                </i>
+                                <div id="previewImages" style="margin-top:10px;"></div>
+                                <input type="hidden" id="hdlogo" name="hdlogo" />
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+            </div>
+            <div id="SellingSizesandPricesForm" class="main" style="display: none; margin-left: 18px;">
+                <div style="margin-left: 1px;"><h3><b>Selling Sizes and Prices</b></h3></div>
+                <div class="form-row col-md-12">
+                    <!-- Location -->
+                    <div class="col-md-4">
+                        <div style="margin-left: -27px; padding-right: 10px;">
+                            <label>Location</label>
+                            <select id="Sellinglocation" name="product.CourseId" class="form-control">
+                                @*<option value="" selected="true">Select</option>*@
+                                @foreach (var item in Model.DTLocation)
+                                {
+                                    var selectedAttribute = item.Value == Model.product?.CourseId.ToString() ? "selected" : "";
+                                    var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                    @Html.Raw(optionHtml)
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Name</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="SellingName" name="product.SName" placeholder="Name" style="height: 45px; font-family: poppins;">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Size</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="SellingSize" name="product.Size" placeholder="Size" style="height: 45px; font-family: poppins;">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row col-md-12">
+                    <div class="col-md-4">
+                        <div style="margin-left: -27px; padding-right: 10px;">
+                            <label>Qty</label>
+                            <select id="qtySelect" name="product.UnitId" class="form-control">
+                                <option value="" selected="true">Select</option>
+                                @foreach (var item in Model.DTUnit)
+                                {
+                                    var selectedAttribute = item.Value == Model.NewProduct?.UnitId.ToString() ? "selected" : "";
+                                    var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                    @Html.Raw(optionHtml)
+
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Price</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="txtPPrice" name="product.Price" placeholder="Price" style="height: 45px; font-family: poppins;">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left: -27px; padding-right: 10px;">
+                            <label>Tax</label>
+                            <select id="SellingTax" name="product.TaxId" class="form-control">
+                                <option value="" selected="true">Select</option>
+                                @foreach (var item in Model.DTTax)
+                                {
+                                    var selectedAttribute = item.Value == Model.product?.TaxId.ToString() ? "selected" : "";
+                                    var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                    @Html.Raw(optionHtml)
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row col-md-12">
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Sorting No.</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="txtPSortingNo" name="product.SortingNo" placeholder="Sorting No." style="height: 45px; font-family: poppins;">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>
+                            Click and Collect
+                            <input type="checkbox" @*name="product.sClickAndCollect"*@ id="chkClickAndCollect" />
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <label>
+                            Deliver
+                            <input type="checkbox" name="product.sDeliver" id="chkDeliver" />
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <label>
+                            Order at table
+                            <input type="checkbox" name="product.sOrderAtTable" id="chkOrderAtTable" />
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <label>
+                            Is Active
+                            <input type="checkbox" name="product.sIsActive" id="chkIsActive" />
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <a class="btn btn-primary" onclick="addSellingSizesAndPrices()" style="margin-top: 30px;margin-left:913px;">Add Selling Sizes and Prices</a>
+                </div>
+                <div class="table-wrapper" style="width: 95.25%; margin-left: 10px; margin-top: 20px;">
+                    <table class="table" style="width:3000px;">
+                        <thead>
+                            <tr>
+                                <th>Location</th>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Tax</th>
+                                <th>Sorting No.</th>
+                                <th>Click and Collect</th>
+                                <th>Deliver</th>
+                                <th>Order at table</th>
+                                <th>Is Active</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sellingTableBody">
+                            @if (Model.productsList != null && Model.productsList.Any())
+                            {
+                                @foreach (var product in Model.productsList)
+                                {
+                                    if (product.Price > 0)
+                                    {
+                                        <tr data-id="@product.ProductId"
+                                            data-location-id="@product.LocationId"
+                                            data-name="@product.SName"
+                                            data-size="@product.sbaseSize"
+                                            data-unit-id="@product.UnitId"
+                                            data-price="@product.Price"
+                                            data-tax-id="@product.TaxId"
+                                            data-sorting-no="@product.SortingNo"
+                                            data-click-collect="@product.ClickAndCollect"
+                                            data-deliver="@product.Deliver"
+                                            data-order-at-table="@product.OrderAtTable"
+                                            data-is-active="@product.IsActive"
+                                            class="product-row">
+                                            <td>@(Model.DTLocation?.FirstOrDefault(x => x.Value == product.LocationId.ToString())?.Text ?? "Select")</td>
+                                            <td>@product.SName</td>
+                                            <td>@product.sbaseSize</td>
+                                            <td>@(Model.DTUnit?.FirstOrDefault(x => x.Value == product.UnitId.ToString())?.Text ?? "No Unit Selected")</td>
+                                            <td>@product.Price</td>
+                                            <td>@(Model.DTTax?.FirstOrDefault(x => x.Value == product.TaxId.ToString())?.Text ?? "Select")</td>
+                                            <td>@product.SortingNo</td>
+                                            <td>@(product.ClickAndCollect == 1 ? "true" : "false")</td>
+                                            <td>@(product.Deliver == 1 ? "true" : "false")</td>
+                                            <td>@(product.OrderAtTable == 1 ? "true" : "false")</td>
+                                            <td>@(product.IsActive == 1 ? "true" : "false")</td>
+                                            <td>
+                                                <i class="fa fa-pencil-square-o fa-lg edit-btn"></i> &nbsp;&nbsp;
+                                                <i class="fa fa-minus-square-o fa-lg delete-btn" onclick="deleteSelling(this)"></i>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                @*<p>No products available.</p>*@
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @*</div>*@
+
+
+            <div id="BuyingSizesandCostForm" class="main" style="display: none; margin-left: 18px; margin-right: 50px;">
+                <div class="bys">
+                    <h3><b>Buying Sizes and Cost</b></h3>
+                </div>
+
+
+                <div class="form-row col-md-12">
+                    <!-- Location -->
+                    <div class="col-md-4">
+                        <div style="margin-left: -27px; padding-right: 10px;">
+                            <label>Location</label>
+                            <select id="buyingLocationSelect" name="product.BLocationId" class="form-control">
+                                <option selected="true">Select</option>
+                                @foreach (var item in Model.DTLocation)
+                                {
+                                    var selectedAttribute = item.Value == Model.NewProduct?.BLocationId.ToString() ? "selected" : "";
+                                    var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                    @Html.Raw(optionHtml)
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Name</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="buyingNameInput" name="product.tName" placeholder="Name" style="height: 45px; font-family: poppins;"
+                                   value="@Model.NewProduct?.tName">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Size</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="buyingSizeInput" name="product.BbaseSize" placeholder="Size" style="height: 45px; font-family: poppins;"
+                                   value="@Model.NewProduct?.BbaseSize">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row col-md-12">
+                    <div class="col-md-4">
+                        <div style="margin-left: -27px; padding-right: 10px;">
+                            <label>Qty</label>
+                            <select id="buyingQtySelect" name="product.BUnitId" class="form-control">
+                                <option selected="true">Select</option>
+                                @foreach (var item in Model.DTUnit)
+                                {
+                                    var selectedAttribute = item.Value == Model.NewProduct?.BUnitId.ToString() ? "selected" : "";
+                                    var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                    @Html.Raw(optionHtml)
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Cost</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="buyingCostInput" name="product.BPrice" placeholder="Cost" style="height: 45px; font-family: poppins;"
+                                   value="@Model.NewProduct?.BPrice">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left: -27px; padding-right: 10px;">
+                            <label>Tax</label>
+                            <select id="buyingTaxSelect" name="product.BTaxId" class="form-control">
+                                <option selected="true">Select</option>
+                                @foreach (var item in Model.DTTax)
+                                {
+                                    var selectedAttribute = item.Value == Model.NewProduct?.BTaxId.ToString() ? "selected" : "";
+                                    var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                    @Html.Raw(optionHtml)
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <a class="btn btn-primary float-right" onclick="addBuyingSizesAndCost()" style="margin-top: 30px; margin-right: 40px;">Add Buying Sizes and Cost</a>
+                </div>
+
+                <div class="table-wrapper" style="width: 95.55%; margin-left: 10px; margin-top: 20px;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Location</th>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th>Qty</th>
+                                <th>Cost</th>
+                                <th>Tax</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="buyingTableBody">
+                            @if (Model.productsList != null && Model.productsList.Any())
+                            {
+                                @foreach (var product in Model.Products)
+                                {
+                                    if (double.TryParse(product.BbaseSize, out double baseSize) && baseSize > 0.00)
+                                    {
+                                        <tr class="product-row"
+                                            data-location-id="@product.BLocationId"
+                                            data-name="@product.tName"
+                                            data-size="@product.BbaseSize"
+                                            data-qty-id="@product.BUnitId"
+                                            data-cost="@product.BPrice"
+                                            data-tax-id="@product.BTaxId">
+                                            <td>
+                                                <label id="LocationLabel">
+                                                    @if (Model.DTLocation != null && Model.DTLocation.Any())
+                                                    {
+                                                        var selectedItem = Model.DTLocation.FirstOrDefault(x => x.Value == product.BLocationId.ToString());
+                                                        if (selectedItem != null)
+                                                        {
+                                                            @selectedItem.Text
+                                                        }
+                                                        else
+                                                        {
+                                                            @:Select
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        @:No Location Available
+                                                    }
+                                                </label>
+                                            </td>
+                                            <td>@product.tName</td>
+                                            <td>@product.BbaseSize</td>
+                                            <td>
+                                                <label id="UnitLabel">
+                                                    @if (Model.DTUnit != null && Model.DTUnit.Any())
+                                                    {
+                                                        var selectedItem = Model.DTUnit.FirstOrDefault(x => x.Value == product.BUnitId.ToString());
+                                                        if (selectedItem != null)
+                                                        {
+                                                            @selectedItem.Text
+                                                        }
+                                                        else
+                                                        {
+                                                            @:Select
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        @:No Unit Available
+                                                    }
+                                                </label>
+                                            </td>
+                                            <td>@product.BPrice</td>
+                                            <td>
+                                                <label id="TaxLabel">
+                                                    @if (Model.DTTax != null && Model.DTTax.Any())
+                                                    {
+                                                        var selectedItem = Model.DTTax.FirstOrDefault(x => x.Value == product.BTaxId.ToString());
+                                                        if (selectedItem != null)
+                                                        {
+                                                            @selectedItem.Text
+                                                        }
+                                                        else
+                                                        {
+                                                            @:Select
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        @:No Tax Available
+                                                    }
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <i class="fa fa-pencil-square-o fa-lg edit-btn"></i> &nbsp;&nbsp;
+                                                <i class="fa fa-minus-square-o fa-lg delete-btn"></i>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                @*<p>No products available.</p>*@
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="ProductSettingsForm" class="main" style="display: none; margin-left: 18px; margin-right: 50px;">
+                <div class="pdset" style="margin-left: 1px;"><h3><b>Product Settings</b></h3></div><br />
+
+
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="pdsetting">
+                            <div class="col-md-2">
+                                @*<label class="lbl">
+                                <input id="ctl00_ContentPlaceHolder1_RadPanelBar1_i4_chkActive" type="checkbox" name="ctl00$ContentPlaceHolder1$RadPanelBar1$i4$chkActive">
+                                &nbsp; Is Active
+                            </label>*@
+
+                                <input id="CBIsActive" name="product.IsActive" type="checkbox" @(Model.product?.IsActive == 1 ? "checked" : "") />
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>Is Active</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="pdsetting">
+                            <div class="col-md-2">
+                                @*<label class="lbl">
+                                <input id="ctl00_ContentPlaceHolder1_RadPanelBar1_i4_chkActive" type="checkbox" name="ctl00$ContentPlaceHolder1$RadPanelBar1$i4$chkActive">
+                                &nbsp; Stocked
+                            </label>*@
+                                <input id="CBIsStock" name="product.IsStock" type="checkbox" @(Model.product?.IsStock == 1 ? "checked" : "") />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Stocked</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="pdsetting">
+                            <div class="col-md-2">
+                                @*<label class="lbl">
+                                <input id="ctl00_ContentPlaceHolder1_RadPanelBar1_i4_chkActive" type="checkbox" name="ctl00$ContentPlaceHolder1$RadPanelBar1$i4$chkActive">
+                                &nbsp; Zero Priced
+                            </label>*@
+                                <input id="CBSizeZero" name="product.SizeZero" type="checkbox" @(Model.product?.SizeZero == 1 ? "checked" : "") />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Zero Priced</label>
+                            </div>
+                        </div>
+                    </div>
+                </div><br /><br />
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="pdsetting">
+                            <div class="col-md-2 cdonly">
+                                @*<label class="lbl" style="margin-left:-20px;">
+                                <input id="ctl00_ContentPlaceHolder1_RadPanelBar1_i4_chkActive" type="checkbox" name="ctl00$ContentPlaceHolder1$RadPanelBar1$i4$chkActive">
+                                &nbsp; Condiment Only
+                            </label>*@
+                                <input id="CBIsCondiment" name="product.IsCondiment" type="checkbox" @(Model.product?.IsCondiment == 1 ? "checked" : "") />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Condiment Only</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="pdsetting">
+                            <div class="col-md-2">
+                                @*<label class="lbl" style="margin-left:-25px;">
+                                <input id="ctl00_ContentPlaceHolder1_RadPanelBar1_i4_chkActive" type="checkbox" name="ctl00$ContentPlaceHolder1$RadPanelBar1$i4$chkActive">
+                                &nbsp; Package Product
+                            </label>*@
+                                @*<input id="Checkbox5" type="checkbox" />*@
+                                <input id="CBIsPkgProduct" name="product.IsPkgProduct" type="checkbox" @(Model.product?.IsPkgProduct == 1 ? "checked" : "") />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Package Product</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="pdsetting">
+                            <div class="col-md-2">
+                                @*<label class="lbl" style="margin-left:+10px;">
+                                <input id="ctl00_ContentPlaceHolder1_RadPanelBar1_i4_chkActive" type="checkbox" name="ctl00$ContentPlaceHolder1$RadPanelBar1$i4$chkActive">
+                                &nbsp; Sold Out
+                            </label>*@
+                                @*<input id="Checkbox6" type="checkbox" />*@
+                                <input id="CBIsOutOfStock" name="product.IsOutOfStock" type="checkbox" @(Model.product?.IsOutOfStock == 1 ? "checked" : "") />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Sold Out</label>
+                            </div>
+                        </div>
+                    </div>
+                </div><br /><br />
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="pdsetting">
+                            <div class="col-md-2 cdonly">
+                                @*<label class="lbl" style="margin-left:-10px;">
+                                <input id="ctl00_ContentPlaceHolder1_RadPanelBar1_i4_chkActive" type="checkbox" name="ctl00$ContentPlaceHolder1$RadPanelBar1$i4$chkActive">
+                                &nbsp; Highlighted Product
+                            </label>*@
+                                @*<input id="Checkbox7" type="checkbox" />*@
+                                <input id="CBIsHouse" name="product.IsHouse" type="checkbox" @(Model.product?.IsHouse == 1 ? "checked" : "") />
+                            </div>
+                            <div class="col-md-8">
+                                <label>Highlighted Product</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="pdsetting">
+                            <div class="col-md-2">
+                                @*<label class="lbl">
+                                <input id="ctl00_ContentPlaceHolder1_RadPanelBar1_i4_chkActive" type="checkbox" name="ctl00$ContentPlaceHolder1$RadPanelBar1$i4$chkActive">
+                                &nbsp; Price by Weight
+                            </label>*@
+                                @*<input id="Checkbox8" type="checkbox" />*@
+                                <input id="CBIsPriceOnScaleWeight" name="product.IsPriceOnScaleWeight" type="checkbox" @(Model.product?.IsPriceOnScaleWeight == 1 ? "checked" : "") />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Price by Weight</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="pdsetting">
+                            <div class="col-md-2">
+
+                                @*<label class="lbl">
+                                <input id="ctl00_ContentPlaceHolder1_RadPanelBar1_i4_chkActive" type="checkbox" name="ctl00$ContentPlaceHolder1$RadPanelBar1$i4$chkActive">
+                                &nbsp; CloakRoom
+                            </label>*@
+
+                                @*<input id="Checkbox9" type="checkbox" />*@
+                                <input id="CBCloakRoom" name="product.CloakRoom" type="checkbox" @(Model.product?.CloakRoom == 1 ? "checked" : "") />
+                            </div>
+                            <div class="col-md-4">
+                                <label>CloakRoom</label>
+                            </div>
+                        </div>
+                    </div>
+                </div><br /><br />
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="pdsetting">
+                            <div class="col-md-2 cdonly">
+                                @*<label class="lbl">
+                                <input id="ctl00_ContentPlaceHolder1_RadPanelBar1_i4_chkActive" type="checkbox" name="ctl00$ContentPlaceHolder1$RadPanelBar1$i4$chkActive">
+                                &nbsp; Kiosk
+                            </label>*@
+
+                                @*<input id="Checkbox10" type="checkbox" />*@
+                                <input id="CBForKiosk" name="product.ForKiosk" type="checkbox" @(Model.product?.ForKiosk == 1 ? "checked" : "") />
+
+                            </div>
+                            <div class="col-md-4 ">
+                                <label>Kiosk</label><br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br /><br />
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="pdset">
+                            <label>Other Size</label>
+                            <input type="text" class="BaseSize" id="txtOtherSize" name="product.OtherSize" placeholder="Other Size" style="height: 45px; font-family: poppins;" value="@Model.product?.OtherSize">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="pdset">
+                            <label>Other Id</label>
+                            <input type="text" class="BaseSize" id="txtOtherId" name="product.OtherId" placeholder="Other Id" style="height: 45px; font-family: poppins;" value="@Model.product?.OtherId">
+                        </div>
+                    </div>
+                </div><br />
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="pdset">
+                            <label>Sorting No</label>
+                            <input type="text" class="BaseSize" id="txtSorting_No" name="product.Sorting_No" placeholder="Sorting No" style="height: 45px; font-family: poppins;"
+                                   value="@Model.product?.Sorting_No">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="pdset">
+                            <label>List</label>
+                            <input type="text" class="BaseSize" id="txtList" name="product.List" placeholder="List" style="height: 45px; font-family: poppins;" value="@Model.product?.List">
+                        </div>
+                    </div>
+                </div><br />
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="lbtn" style="margin-left: -26px;">
+                            <a class="btn btn-primary">Show Product Associated To</a>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+
+            </div>
+
+            <!-- Barcode Form -->
+            <div id="BarcodeForm" class="brform main" style="display: none; margin-left: 18px;">
+                <div style="margin-left: 1px;">
+                    <h3><b>Barcode</b></h3>
+                </div>
+                <br /><br />
+
+                <div class="form-row col-md-8">
+                    <!-- Barcode -->
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Barcode</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="txtBarcode" name="Barcode" placeholder="Barcode" style="height: 45px; font-family: poppins;" value="">
+                        </div>
+                    </div>
+                    <!-- Size -->
+                    <div class="col-md-4">
+                        <div style="margin-left: -27px; padding-right: 10px;">
+                            <label>Size</label>
+                            <select id="BarcodeSize" class="form-control">
+                                <option value="">Select</option>
+                                @*@foreach (var item in Model.DTSize)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }*@
+                                @foreach (var item in Model.DTSize)
+                                {
+                                    var selectedAttribute = item.Value == Model.product?.BarcodeID.ToString() ? "selected" : "";
+                                    var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                    @Html.Raw(optionHtml)
+
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <br /><br /><br /><br />
+
+                <div>
+                    <a class="btn btn-primary float-right" style="margin-top: 30px; margin-right: 164px;" onclick="addBarcode()">Add Barcode</a>
+                </div>
+
+                <div class="table-wrapper" style="width: 85%; margin-left: 10px; margin-top: 20px;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Barcode</th>
+                                <th>Size</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.productsList != null && Model.productsList.Any())
+                            {
+                                @foreach (var product in Model.BarcodeList)
+                                {
+                                    <tr data-id="@product.ProductId"
+                                        data-barcode="@product.Barcode"
+                                        data-size="@product.BarcodeID"
+                                        class="barcode-row">
+                                        <td>@product.Barcode</td>
+                                        @*<td>@(Model.DTSize?.FirstOrDefault(x => x.Value == product.BarcodeID.ToString())?.Text ?? "No Unit Selected")</td>*@
+                                        <td>@product.SizeName</td>
+                                        <input id="Hidden1" type="hidden" asp-for="product.BarcodeID" />
+                                        <td>
+                                            <i class="fa fa-pencil-square-o fa-lg edit-btn"></i> &nbsp;&nbsp;
+                                            <i class="fa fa-minus-square-o fa-lg delete-btn" onclick="deleteBarcode(this)"></i>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                @*<p>No products available.</p>*@
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+            <div id="IngredientsForm" class="main" style="display: none;">
+                <div style="margin-left: 1px;"><h3><b>Ingredients</b></h3></div><br /><br />
+                @*<form>
+                <div>
+                    <a class="btn btn-primary" style="margin-top: -38px;">Add New Ingredient</a>
+                </div>
+            </form>*@
+
+                <div class="form-row col-md-8">
+                    <!-- Name -->
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Name</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="IngriName" name="Name" placeholder="Name" style="height: 45px; font-family: poppins;" value="@Model.NewProduct?.Name">
+                        </div>
+                    </div>
+                    <!-- Base Size -->
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Base Size</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="IngreBaseSize" name="BaseSize" placeholder="Base Size" style="height: 45px; font-family: poppins;" value="@Model.NewProduct?.baseSize">
+                        </div>
+                    </div>
+                    <!-- Size -->
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Size</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="txtSize" name="Size" placeholder="Size" style="height: 45px; font-family: poppins;" value="@Model.NewProduct?.Size">
+                        </div>
+                    </div>
+                    <!-- Unit -->
+                    <div class="col-md-4">
+                        <div style="margin-left: -27px; padding-right: 10px;">
+                            <label>Unit</label>
+                            <select id="selectUnit" class="form-control">
+                                <option value="">Select</option>
+                                @foreach (var item in Model.DTUnit)
+                                {
+                                    var selectedAttribute = item.Value == Model.NewProduct?.UnitId.ToString() ? "selected" : "";
+
+                                    var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                    @Html.Raw(optionHtml)
+                                    @*<option value="@item.Value">@item.Text</option>*@
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+                <div>
+                    <a class="btn btn-primary float-right" onclick="addIngredient()" style="margin-top: -13px; margin-right: 172px;">Add Ingredient</a>
+                </div>
+
+                <div class="table-wrapper" style="width: 85%; margin-left: 10px; margin-top: 20px;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Base Size</th>
+                                <th>Size</th>
+                                <th>Unit</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ingredientsTableBody">
+                            @if (Model.productsList != null && Model.productsList.Any())
+                            {
+
+                                @foreach (var product in Model.IngredientsList)
+                                {
+                                    <tr class="ingredient-row"
+                                        data-name="@product.Name"
+                                        data-base-size="@product.baseSize"
+                                        data-size="@product.Size"
+                                        data-unit="@product.UnitId">
+                                        <td>@product.Name</td>
+                                        <td>@product.baseSize</td>
+                                        <td>@product.Size</td>
+                                        <td>
+                                            @if (Model.DTUnit != null && Model.DTUnit.Any())
+                                            {
+                                                // Use the null-coalescing operator and conditional access to prevent null reference issues
+                                                var selectedItem = Model.DTUnit.FirstOrDefault(x => x.Value == product.UnitId.ToString());
+                                                @if (selectedItem != null)
+                                                {
+                                                    @selectedItem.Text }
+                                                else
+                                                {
+                                                    @:Select
+                                                } }
+                                            else
+                                            {
+                                                @:No Unit Available
+                                            }
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-pencil-square-o fa-lg edit-btn"></i> &nbsp;&nbsp;
+                                            <i class="fa fa-minus-square-o fa-lg delete-btn"></i>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                @*<p>No products available.</p>*@
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="CondimentsForm" class="main" style="display: none; ">
+                <div style="margin-left: 1px;  "><h3><b>Condiments</b></h3></div><br /><br />
+                @*<form>
+                <div>
+                    <a class="btn btn-primary" style="margin-top: -38px;">Add New Condiment</a>
+                    <a class="btn btn-primary" style="margin-top: -38px;">Add or View Condiment</a>
+                </div>
+            </form>*@
+
+                <div class="form-row col-md-8">
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Name</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="CondiName" name="Name" placeholder="Name" style="height: 45px; font-family: poppins;">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Product Name</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="txtProductName" name="ProductName" placeholder="Product Name" style="height: 45px; font-family: poppins;">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Price</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="txtPrice" name="Price" placeholder="Price" style="height: 45px; font-family: poppins;">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left: -27px; padding-right: 10px;">
+                            <label>Choice</label>
+                            <select id="Select1" class="form-control">
+                                <option value="">Select</option>
+                                <option value="1">Choice 1</option>
+                                <option value="2">Choice 2</option>
+                                <option value="3">Choice 3</option>
+                                <option value="4">Choice 4</option>
+                                <option value="5">Choice 5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Min selected</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="txtMinSelect" name="MinSelected" placeholder="Min selected" style="height: 45px; font-family: poppins;">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Max selected</label>
+                            <span class="text-danger">*</span>
+                            <input type="text" class="name" id="txtMaxSelect" name="MaxSelected" placeholder="Max selected" style="height: 45px; font-family: poppins;">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div>
+                    <a class="btn btn-primary" onclick="addCondiment()" style="margin-top: 30px; margin-left:907px;">Add Condiment</a>
+                </div>
+
+                @*<table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Choice</th>
+                        <th>Min selected</th>
+                        <th>Max selected</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input asp-for="NewProduct.Condiment" class="form-control" /></td>
+                        <td><input asp-for="NewProduct.Name" class="form-control" /></td>
+                        <td><input asp-for="NewProduct.Price" class="form-control" /></td>
+                        <td>
+                            <select class="form-control">
+
+                                <option value="">Select</option>
+                                <option value="1">Choice 1</option>
+                                <option value="2">Choice 2</option>
+                                <option value="3">Choice 3</option>
+                                <option value="4">Choice 4</option>
+                                <option value="5">Choice 5</option>
+                            </select>
+                        </td>
+                        <td><input asp-for="NewProduct.minselect" class="form-control" /></td>
+                        <td><input asp-for="NewProduct.maxselect" class="form-control" /></td>
+                        <td>
+                            <button type="submit" class="btn btn-primary"> <i class="fa fa-plus"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>*@
+                <div class="table-wrapper" style="width: 85%; margin-left: 10px; margin-top: 20px;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Choice</th>
+                                <th>Min selected</th>
+                                <th>Max selected</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="condimentTableBody">
+
+                            @if (Model.productsList != null && Model.productsList.Any())
+                            {
+
+                                @foreach (var product in Model.CondimentsList)
+                                {
+                                    <tr data-condiment="@product.Condiment"
+                                        data-productname="@product.ProductName"
+                                        data-price="@product.Price"
+                                        data-choice="@product.ChoiceId"
+                                        data-minselect="@product.minselect"
+                                        data-maxselect="@product.maxselect">
+                                        <td><label>@product.Condiment</label></td>
+                                        <td><label>@product.ProductName</label></td>
+                                        <td><label>@product.Price</label></td>
+                                        <td>
+                                            <label>
+                                                @{
+                                                    var choices = new Dictionary<string, string>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {
+                        { "1", "Choice 1" },
+                        { "2", "Choice 2" },
+                        { "3", "Choice 3" },
+                        { "4", "Choice 4" },
+                        { "5", "Choice 5" }
+                    };
+
+                                                    choices.TryGetValue(product.ChoiceId.ToString(), out var selectedChoice);
+                                                    @selectedChoice
+                                                }
+                                            </label>
+                                        </td>
+                                        <td><label>@product.minselect</label></td>
+                                        <td><label>@product.maxselect</label></td>
+                                        <td>
+                                            <i class="fa fa-pencil-square-o fa-lg" onclick="editProduct(this)"></i> &nbsp;&nbsp;
+                                            <i class="fa fa-minus-square-o fa-lg" onclick="deleteCondiment(this)"></i>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                @*<p>No products available.</p>*@
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Allergy Form -->
+            <!--<div id="AllergyForm" class="main" style="display: none;">
+    <div style="margin-left: 1px;">
+        <h3><b>Allergy</b></h3>
+    </div>
+    <br /><br />
+
+    <div class="form-row col-md-8">
+        <!-- Allergy Name -->
+            <!--<div class="col-md-4">
+                <div style="margin-left:-27px; padding-right:10px;">
+                    <label>Allergy Name</label>
+                    <span class="text-danger">*</span><br />
+                    <input type="text" class="name" id="allergyName" name="Name" placeholder="Allergy Name" style="height: 45px; width:50%; font-family: poppins;"
+                           value="">
+                </div>
+            </div>
+        </div>
+        <br /><br /><br /><br />
+
+        <div>
+            <a class="btn btn-primary float-right" style="margin-top: 15px; margin-right: 469px;" onclick="addAllergy()">Add Allergy</a>
+        </div>
+
+        <div class="table-wrapper" style="width: 60%; margin-left: 10px; margin-top: 20px;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Allergy Name</th>
+                        <th>Action</th>
+                        <div class="modal fade" id="allergyModal" tabindex="-1" role="dialog" aria-labelledby="allergyModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="allergyModalLabel">Allergy List</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Allergy Name</th>
+                                                    <th>Select</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (ViewBag.Allergies != null)
+                                                {
+                                                    foreach (var allergy in ViewBag.Allergies)
+                                                    {
+                                    <tr>
+                                        <td>@allergy.AllergyName</td>
+                                        <td><input type="checkbox" name="allergy" value="@allergy.AllergyId"></td>
+                                    </tr>                }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" onclick="saveAllergy()">Save</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tr>
+                </thead>
+                <p>No products available.</p> 
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>-->
+            <div id="AllergyForm" class="main" style="display: none;">
+                <div style="margin-left: 1px;">
+                    <h3><b>Allergy</b></h3>
+                </div>
+                <br /><br />
+
+                <div class="form-row col-md-8">
+                    <!-- Allergy Name -->
+                    <div class="col-md-4">
+                        <div style="margin-left:-27px; padding-right:10px;">
+                            <label>Allergy Name</label>
+                            <span class="text-danger">*</span><br />
+                            <input type="text" class="name" id="allergyName" name="Name" placeholder="Allergy Name"
+                                   style="height: 45px; width:50%; font-family: poppins;"
+                                   onclick="openAllergyModal()" value="">
+                        </div>
+                    </div>
+                </div>
+                <br /><br /><br /><br />
+
+                <div>
+                    <a class="btn btn-primary float-right" style="margin-top: 15px; margin-right: 469px;" onclick="addAllergy()">Add Allergy</a>
+                </div>
+
+                <div class="table-wrapper" style="width: 60%; margin-left: 10px; margin-top: 20px;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Allergy Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allergyTableBody">
+                            @if (Model.productsList != null && Model.productsList.Any())
+                            {
+                                @foreach (var allergy in Model.AllergyList)
+                                {
+                                    <tr class="allergy-row" data-name="@allergy.Allergy">
+                                        <td>
+                                            <label>
+                                                @allergy.Allergy
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-pencil-square-o fa-lg edit-btn"></i> &nbsp;&nbsp;
+                                            <i class="fa fa-minus-square-o fa-lg delete-btn" onclick="deleteAllergy(this)"></i>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                @*<p>No products available.</p>*@
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal for Showing Allergy Name -->
+            <div class="modal fade" id="allergyModal" tabindex="-1" role="dialog" aria-labelledby="allergyModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="allergyModalLabel">Allergy List</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <label id="modalAllergyName"></label> 
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Allergy Name</th>
+                                        <th>Select</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.Allergies != null)
+                                    {
+                                        foreach (var allergy in ViewBag.Allergies)
+                                        {
+                                            <tr>
+                                                <td>@allergy.AllergyName</td>
+                                                <td><input type="checkbox" name="allergy" value="@allergy.AllergyId"></td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" onclick="saveAllergy()">Save</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button to trigger modal manually if needed -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#allergyModal" id="triggerModal" style="display: none;">
+                Trigger Modal
+            </button>
+
+        </div>
+    </div>
+
+    <div class="footer-section">
+        <button type="submit" class="btn btn-primary" id="btnSave"  onclick="saveProducts()">Save</button>
+        <button type="submit" class="btn btn-primary" id="btnReset">Reset</button>
+        <button type="submit" class="btn btn-primary" id="btnCancel">Cancel</button>
+    </div>
+
+    </div>
+    </form>
+
+    </body>
+</html>
+
+

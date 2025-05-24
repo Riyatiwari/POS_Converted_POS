@@ -1,0 +1,197 @@
+<div>
+	<table class="mGrid" cellspacing="0" cellpadding="4" Border="1" id="ContentPlaceHolder1_grid_view" style="color:#333333;border-color:Black;width:100%;border-collapse:collapse;">
+		<tr>
+			<th scope="col">row_Id</th><th scope="col">Location_Name</th><th scope="col">Product_id</th><th scope="col">Product_Group_name</th><th scope="col">Product_Name</th><th scope="col">base qty / size / ml</th><th scope="col">stock_on_hand</th><th scope="col">count_quantity</th>
+		</tr><tr>
+			<td>59</td><td>The Elm Fulham</td><td>494</td><td>Bar Snacks</td><td>Crisps</td><td>1 Qty</td><td>31.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>60</td><td>The Elm Fulham</td><td>495</td><td>Bar Snacks</td><td>Nuts</td><td>1 Qty</td><td>19.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>61</td><td>The Elm Fulham</td><td>496</td><td>Bar Snacks</td><td>Pork Scratching</td><td>1 Qty</td><td>0.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>62</td><td>The Elm Fulham</td><td>497</td><td>Bar Snacks</td><td>Sausage Roll</td><td>1 Qty</td><td>71.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>63</td><td>The Elm Fulham</td><td>498</td><td>Bar Snacks</td><td>Pork Pie</td><td>1 Qty</td><td>15.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>68</td><td>The Elm Fulham</td><td>503</td><td>Bar Snacks</td><td>Coffee</td><td>1 Qty</td><td>-65.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>73</td><td>The Elm Fulham</td><td>511</td><td>Bar Snacks</td><td>free budvar</td><td>1 Qty</td><td>-2.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>76</td><td>The Elm Fulham</td><td>516</td><td>Bar Snacks</td><td>Open item</td><td>1 Qty</td><td>0 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>85</td><td>The Elm Fulham</td><td>529</td><td>Bar Snacks</td><td>poutine</td><td>1 Qty</td><td>0 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>92</td><td>The Elm Fulham</td><td>537</td><td>Bar Snacks</td><td>fries</td><td>1 Qty</td><td>-22.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>17</td><td>The Elm Fulham</td><td>452</td><td>Bottled Minerals</td><td>Red Bull</td><td>200 Ml</td><td>26.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>18</td><td>The Elm Fulham</td><td>453</td><td>Bottled Minerals</td><td>Big Tom Tomato Juice</td><td>1 Qty</td><td>9.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>19</td><td>The Elm Fulham</td><td>454</td><td>Bottled Minerals</td><td>Tonic</td><td>1 Qty</td><td>38.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>20</td><td>The Elm Fulham</td><td>455</td><td>Bottled Minerals</td><td>Light Tonic</td><td>1 Qty</td><td>61.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>21</td><td>The Elm Fulham</td><td>456</td><td>Bottled Minerals</td><td>Ginger Beer</td><td>1 Qty</td><td>24.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>22</td><td>The Elm Fulham</td><td>457</td><td>Bottled Minerals</td><td>Ginger Ale</td><td>1 Qty</td><td>15.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>23</td><td>The Elm Fulham</td><td>458</td><td>Bottled Minerals</td><td>Still Water</td><td>1 Qty</td><td>28.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>24</td><td>The Elm Fulham</td><td>459</td><td>Bottled Minerals</td><td>Sparkling Water</td><td>1 Qty</td><td>21.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>25</td><td>The Elm Fulham</td><td>460</td><td>Bottled Minerals</td><td>Coke Bottle</td><td>1 Qty</td><td>23.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>26</td><td>The Elm Fulham</td><td>461</td><td>Bottled Minerals</td><td>D Coke Bottle</td><td>1 Qty</td><td>16.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>27</td><td>The Elm Fulham</td><td>462</td><td>Bottled Minerals</td><td>Coke Zero</td><td>1 Qty</td><td>8.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>28</td><td>The Elm Fulham</td><td>463</td><td>Bottled Minerals</td><td>Orange Juice</td><td>1 Qty</td><td>12.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>29</td><td>The Elm Fulham</td><td>464</td><td>Bottled Minerals</td><td>Apple Juice</td><td>1 Qty</td><td>10.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>30</td><td>The Elm Fulham</td><td>465</td><td>Bottled Minerals</td><td>Cranberry Juice</td><td>1 Qty</td><td>6.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>31</td><td>The Elm Fulham</td><td>466</td><td>Bottled Minerals</td><td>Apple And Mango</td><td>1 Qty</td><td>14.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>32</td><td>The Elm Fulham</td><td>467</td><td>Bottled Minerals</td><td>Orange And Passionfruit</td><td>1 Qty</td><td>18.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>33</td><td>The Elm Fulham</td><td>468</td><td>Bottled Minerals</td><td>Apple And Raspberry</td><td>1 Qty</td><td>21.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>49</td><td>The Elm Fulham</td><td>484</td><td>Brandy</td><td>Martell Vs</td><td>700 Ml</td><td>0.60 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>77</td><td>The Elm Fulham</td><td>517</td><td>Cocktails</td><td>pimms n lemnade</td><td>700 Ml</td><td>1.28 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>75</td><td>The Elm Fulham</td><td>513</td><td>Cocktails</td><td>Moscow mule</td><td>1 Qty</td><td>0 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>34</td><td>The Elm Fulham</td><td>469</td><td>Cordials</td><td>Lime</td><td>1000 Ml</td><td>10.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>35</td><td>The Elm Fulham</td><td>470</td><td>Cordials</td><td>Blackcurrent</td><td>1000 Ml</td><td>1.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>36</td><td>The Elm Fulham</td><td>471</td><td>Cordials</td><td>Eldeflower</td><td>1000 Ml</td><td>0.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>7</td><td>The Elm Fulham</td><td>439</td><td>Draught Beer</td><td>Guinness</td><td>1000 Ml</td><td>45.44 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>8</td><td>The Elm Fulham</td><td>440</td><td>Draught Beer</td><td>Budvar original</td><td>1000 Ml</td><td>122.44 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>9</td><td>The Elm Fulham</td><td>443</td><td>Draught Beer</td><td>Cider</td><td>1000 Ml</td><td>13.86 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>10</td><td>The Elm Fulham</td><td>444</td><td>Draught Beer</td><td>Cask pale</td><td>1000 Ml</td><td>83.53 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>79</td><td>The Elm Fulham</td><td>520</td><td>Draught Beer</td><td>Keg pale Guest</td><td>1000 Ml</td><td>80.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>80</td><td>The Elm Fulham</td><td>522</td><td>Draught Beer</td><td>BUD No Alcohol</td><td>1000 Ml</td><td>35.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>69</td><td>The Elm Fulham</td><td>505</td><td>Draught Beer</td><td>Notting hells</td><td>1000 Ml</td><td>58.86 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>70</td><td>The Elm Fulham</td><td>507</td><td>Draught Beer</td><td>Polari</td><td>1000 Ml</td><td>99.43 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>71</td><td>The Elm Fulham</td><td>508</td><td>Draught Beer</td><td>mulled cider</td><td>1000 Ml</td><td>0.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>72</td><td>The Elm Fulham</td><td>509</td><td>Draught Beer</td><td>market bar</td><td>1 Qty</td><td>0.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>94</td><td>The Elm Fulham</td><td>539</td><td>Draught Beer</td><td>Cask Dark</td><td>1000 Ml</td><td>52.20 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>95</td><td>The Elm Fulham</td><td>540</td><td>Draught Beer</td><td>Cask Best bitter</td><td>1000 Ml</td><td>56.23 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>82</td><td>The Elm Fulham</td><td>526</td><td>Draught Beer</td><td>BUD Dark</td><td>1000 Ml</td><td>9.43 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>83</td><td>The Elm Fulham</td><td>527</td><td>Draught Beer</td><td>European guest</td><td>1000 Ml</td><td>34.43 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>90</td><td>The Elm Fulham</td><td>535</td><td>Gin</td><td>hendricks</td><td>700 Ml</td><td>0.30 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>47</td><td>The Elm Fulham</td><td>482</td><td>Gin</td><td>Beefeater</td><td>700 Ml</td><td>2.10 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>48</td><td>The Elm Fulham</td><td>483</td><td>Gin</td><td>premium gin</td><td>700 Ml</td><td>3.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>78</td><td>The Elm Fulham</td><td>518</td><td>Liqueurs</td><td>aperol</td><td>700 Ml</td><td>0.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>67</td><td>The Elm Fulham</td><td>502</td><td>Liqueurs</td><td>Jagermeister</td><td>700 Ml</td><td>6.50 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>50</td><td>The Elm Fulham</td><td>485</td><td>Liqueurs</td><td>Amaretto Disaronno</td><td>700 Ml</td><td>0.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>51</td><td>The Elm Fulham</td><td>486</td><td>Liqueurs</td><td>Antica Sambuca Black</td><td>700 Ml</td><td>1.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>52</td><td>The Elm Fulham</td><td>487</td><td>Liqueurs</td><td>Antica Sambuca Classic</td><td>700 Ml</td><td>0.90 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>53</td><td>The Elm Fulham</td><td>488</td><td>Liqueurs</td><td>Baileys Irish Cream</td><td>700 Ml</td><td>0.10 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>54</td><td>The Elm Fulham</td><td>489</td><td>Liqueurs</td><td>Cointreau</td><td>700 Ml</td><td>0.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>55</td><td>The Elm Fulham</td><td>490</td><td>Liqueurs</td><td>Malibu</td><td>700 Ml</td><td>0.20 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>56</td><td>The Elm Fulham</td><td>491</td><td>Liqueurs</td><td>Southern Comfort</td><td>700 Ml</td><td>1.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>57</td><td>The Elm Fulham</td><td>492</td><td>Liqueurs</td><td>Tia Maria</td><td>700 Ml</td><td>1.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>64</td><td>The Elm Fulham</td><td>499</td><td>Packaged</td><td>Budweiser Btl</td><td>1 Qty</td><td>0.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>74</td><td>The Elm Fulham</td><td>512</td><td>Packaged</td><td>GF Peroni</td><td>1 Qty</td><td>0.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>81</td><td>The Elm Fulham</td><td>524</td><td>Packaged</td><td>guinness ZERO</td><td>1 Qty</td><td>11.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>11</td><td>The Elm Fulham</td><td>445</td><td>Packaged</td><td>Peroni</td><td>1 Qty</td><td>0.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>12</td><td>The Elm Fulham</td><td>446</td><td>Packaged</td><td>Rekordelig S And L</td><td>1 Qty</td><td>0.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>13</td><td>The Elm Fulham</td><td>448</td><td>Packaged</td><td>Schnieder Alc Free</td><td>1 Qty</td><td>5.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>84</td><td>The Elm Fulham</td><td>528</td><td>Packaged</td><td>augistiner hells</td><td>1 Qty</td><td>29.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>86</td><td>The Elm Fulham</td><td>530</td><td>Packaged</td><td>leifmans kreik</td><td>1 Qty</td><td>22.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>87</td><td>The Elm Fulham</td><td>532</td><td>Packaged</td><td>Arbor Pico mountain</td><td>1 Qty</td><td>7.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>88</td><td>The Elm Fulham</td><td>533</td><td>Packaged</td><td>magic rock saucery</td><td>1 Qty</td><td>24.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>89</td><td>The Elm Fulham</td><td>534</td><td>Packaged</td><td>Chimay blue</td><td>1 Qty</td><td>21.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>93</td><td>The Elm Fulham</td><td>538</td><td>Packaged</td><td>Corona</td><td>1 Qty</td><td>22.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>14</td><td>The Elm Fulham</td><td>449</td><td>Post Mix</td><td>Coke</td><td>7000 Ml</td><td>0.50 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>15</td><td>The Elm Fulham</td><td>450</td><td>Post Mix</td><td>Diet Coke</td><td>7000 Ml</td><td>1.10 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>16</td><td>The Elm Fulham</td><td>451</td><td>Post Mix</td><td>Lemonade</td><td>7000 Ml</td><td>1.10 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>3</td><td>The Elm Fulham</td><td>435</td><td>Red Wine</td><td>Pinot Noir</td><td>750 Ml</td><td>12.90 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>4</td><td>The Elm Fulham</td><td>436</td><td>Red Wine</td><td>Malbec</td><td>750 Ml</td><td>6.50 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>5</td><td>The Elm Fulham</td><td>437</td><td>Red Wine</td><td>Rioja</td><td>750 Ml</td><td>9.10 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>6</td><td>The Elm Fulham</td><td>438</td><td>Rose Wine</td><td>Provence Rose</td><td>750 Ml</td><td>2.10 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>43</td><td>The Elm Fulham</td><td>478</td><td>Rum</td><td>Havana Club 3Yr</td><td>700 Ml</td><td>0.70 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>44</td><td>The Elm Fulham</td><td>479</td><td>Rum</td><td>Spiced Rum</td><td>700 Ml</td><td>0.50 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>45</td><td>The Elm Fulham</td><td>480</td><td>Rum</td><td>Kraken Spiced</td><td>700 Ml</td><td>0.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>46</td><td>The Elm Fulham</td><td>481</td><td>Rum</td><td>Dark rum</td><td>700 Ml</td><td>1.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>58</td><td>The Elm Fulham</td><td>493</td><td>Tequilla</td><td>Olmeca</td><td>700 Ml</td><td>0.40 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>37</td><td>The Elm Fulham</td><td>472</td><td>Vodka</td><td>Absolut</td><td>700 Ml</td><td>3.50 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>38</td><td>The Elm Fulham</td><td>473</td><td>Whiskey</td><td>Bells</td><td>700 Ml</td><td>0.50 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>39</td><td>The Elm Fulham</td><td>474</td><td>Whiskey</td><td>Glenmorangie</td><td>700 Ml</td><td>1.50 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>40</td><td>The Elm Fulham</td><td>475</td><td>Whiskey</td><td>Laphroig</td><td>700 Ml</td><td>0.90 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>41</td><td>The Elm Fulham</td><td>476</td><td>Whiskey</td><td>Jack Daniels</td><td>700 Ml</td><td>0.90 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>42</td><td>The Elm Fulham</td><td>477</td><td>Whiskey</td><td>Jamesons</td><td>700 Ml</td><td>0.80 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>91</td><td>The Elm Fulham</td><td>536</td><td>Whiskey</td><td>makers mark</td><td>700 Ml</td><td>2.30 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>65</td><td>The Elm Fulham</td><td>500</td><td>White Wine</td><td>small prosecco</td><td>1 Qty</td><td>4.00 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>66</td><td>The Elm Fulham</td><td>501</td><td>White Wine</td><td>big prosecco</td><td>750 Ml</td><td>2.00 Qty</td><td>0 Qty</td>
+		</tr><tr class="alt">
+			<td>1</td><td>The Elm Fulham</td><td>433</td><td>White Wine</td><td>Sauvignon Blanc</td><td>750 Ml</td><td>12.50 Qty</td><td>0 Qty</td>
+		</tr><tr>
+			<td>2</td><td>The Elm Fulham</td><td>434</td><td>White Wine</td><td>Pinot Grigio</td><td>750 Ml</td><td>10.33 Qty</td><td>0 Qty</td>
+		</tr>
+	</table>
+</div>

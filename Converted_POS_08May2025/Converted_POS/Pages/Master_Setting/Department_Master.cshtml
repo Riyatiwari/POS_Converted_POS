@@ -1,0 +1,109 @@
+﻿@page
+@model Converted_POS.Pages.Master_Setting.Department_MasterModel
+@{
+    ViewData["Title"] = "Department_Master";
+}
+
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a asp-page="/Master_Setting/Department_list">Department list</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Master_Setting/Department_master">Department Master</a></li>
+        </ol>
+    </div>
+        
+}
+
+
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="DType.Department_id" />
+    <br />
+
+    <div class="col-lg-12 ">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Department Master</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                 
+                                    <label asp-for="DType.Name"> Department Name <span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" asp-for="DType.Name" />
+                                    <span asp-validation-for="DType.Name" class="text-danger"></span>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                 
+                                @* <label asp-for="DType.department_category_name"> Deparment Category Name 
+ <span class="text-danger">*</span></label>
+ <div class="clearfix"></div>
+
+ <select id="ddlDeptCat" name="Department_category_id" asp-items="@Model.Dept_cate" class="form-control">
+     <option value="">Select</option>
+ </select>
+ <span asp-validation-for="DType.department_category_name" class="text-danger"></span>
+ <div class="clearfix"></div>
+ <br /> *@
+                                 
+                                    <label asp-for="DType.department_category_name">
+                                        Department Category
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="clearfix"></div>
+                                    <select id="ddlDeptCat" name="Department_category_id" asp-for="DType.Department_category_id" asp-items="@Model.Dept_cate" class="form-control">
+                                        <option value="">Select</option>
+                                    </select>
+                                    @*<span asp-validation-for="DType.Name" class="text-danger"></span>*@
+                                    <div class="clearfix"></div>
+                                    <br />
+
+                               
+                                    <label asp-for="DType.Value">Value<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" asp-for="DType.Value" />
+                                    <span asp-validation-for="DType.Value" class="text-danger"></span>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions text-right pal">
+                    <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                    <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                    <input type="submit" value="Cancel" class="btn btn-primary" asp-page-handler="Cancel" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+         // Check if category name already exists and show a pop-up if true
+        @if (!Model.IsDepartmentInserted)
+        {
+            <text>
+                         alert('Department already exists. Please choose a different name.');
+            </text>
+        }
+    </script>
+}
+
+
+

@@ -1,0 +1,317 @@
+﻿Imports Microsoft.VisualBasic
+Imports System.Drawing
+Imports System.Web.HttpRequest
+Imports System.Data
+Public Class class_bar
+    'Dimensions of the bitmap
+    Const BMP_HEIGHT As Integer = 250
+
+    Const BMP_WIDTH As Integer = 400
+
+    'Margins of the chart
+    Const CHART_LEFT_MARGIN As Integer = 30
+    Const CHART_RIGHT_MARGIN As Integer = 25
+    Const CHART_TOP_MARGIN As Integer = 10
+    Const CHART_BOTTOM_MARGIN As Integer = 10
+
+    'Dimensions of the chart
+    Const CHART_HEIGHT As Integer = BMP_HEIGHT - CHART_TOP_MARGIN - CHART_BOTTOM_MARGIN
+    Const CHART_WIDTH As Integer = BMP_WIDTH - CHART_LEFT_MARGIN - CHART_RIGHT_MARGIN
+
+    'Scale increment of the chart
+    Const SCALE_INCREMENT As Integer = 1
+
+    'The amount of space in pixels between the top of each bar on the chart and
+    'the label for that bar.
+    Const BAR_LABEL_SPACE As Integer = 15
+
+    'Color of lines and borders around various objects
+    Public ReadOnly LINE_COLOR As New Pen(Color.Black, 1)
+    Public ReadOnly LINE_COLOR_OUTER As New Pen(Color.White, 1)
+
+
+    'Text color for various titles
+    Public ReadOnly TEXT_COLOR As New SolidBrush(Color.Black)
+
+    'Integer array which contains the bar values that are drawn on the chart
+    Dim barValue As DataRow()
+
+    'Create an instance of our Bitmap class and set its dimensions to the constants
+    'BMP_WIDTH and BMP_HEIGHT
+    Dim bitmap As New Bitmap(BMP_WIDTH, BMP_HEIGHT)
+
+    'Create an instance of the Graphics class that is associated with our Bitmap 
+    'image. This is the surface onto which all other objects for our bitmap will be 
+    'placed.
+    Dim chart As Graphics = Graphics.FromImage(bitmap)
+    Public Sub drow_page(ByVal GetBarValues As DataRow(), ByVal id As Integer, ByVal barstring As DataRow())
+
+        'The highest bar value that appears on the chart
+        Dim highBarValue As Integer
+
+        'The number of bars that will be displayed on the chart
+        Dim numberOfBars As Integer
+
+        'Highest scale value along the y-axis of the chart
+        Dim maximumScaleValue As Integer = 0
+
+        'Number of horizontal scale lines on the chart
+        Dim numberOfHorizontalScaleLines As Integer
+
+        'The factor which ensures that the horizontal scale lines are proportional
+        'to the height of the chart 
+        Dim verticalScaleRatio As Single
+
+        'The factor which ensures that the height of the bars is proportional to the height
+        'of the chart
+        Dim barHeightRatio As Single
+
+        '--------------------------------------------------------------------------------------
+        'Get the integer array of bar values that will be drawn on the chart
+        '--------------------------------------------------------------------------------------
+
+        'Get the bar values which will be drawn on the chart
+        barValue = GetBarValues
+
+        '--------------------------------------------------------------------------------------
+        'The following elements are used to determine dimensions and placement of certain
+        'objects on our bar chart.
+        '--------------------------------------------------------------------------------------
+
+        'Set the number of chart bars to the length of the integer array that contains their values
+        numberOfBars = barValue.Length
+
+        'The highest bar value to display. This variable is used to determine the maximum
+        'scale value. The function GetHighBarValue spins through all the BarValue array
+        'elements to find the highest number in the array.
+        highBarValue = GetHighBarValue(numberOfBars, _
+                                        barValue, _
+                                        highBarValue)
+
+        'Highest scale value along the y-axis of the chart
+        maximumScaleValue = GetMaximumScaleValue(maximumScaleValue, _
+                                                highBarValue, _
+                                                SCALE_INCREMENT)
+
+        'Number of horizontal scale lines on the chart. This is used as an index when
+        'drawing the scale lines.
+        numberOfHorizontalScaleLines = maximumScaleValue / SCALE_INCREMENT
+
+        'This ensures that the horizontal scale lines are proportional to the height
+        'of the chart
+        verticalScaleRatio = CHART_HEIGHT / numberOfHorizontalScaleLines
+
+        'The factor which ensures that the height of the bars is proportional to the height
+        'of the chart
+        barHeightRatio = CHART_HEIGHT / maximumScaleValue
+
+        '-------------------------------------------------------------------------------------
+        'Draw the chart elements
+        '--------------------------------------------------------------------------------------
+
+        'Color fill the bitmap, color fill the bar chart area of the bitmap and draw a border
+        'around it
+        DrawChartBackground()
+
+        'Draw and label the horizontal scale elements of the chart
+        DrawScaleElements(numberOfHorizontalScaleLines, _
+                            verticalScaleRatio, _
+                            maximumScaleValue, barstring)
+
+        'Draw the bars on the chart
+        DrawChartBars(numberOfBars, _
+                    barHeightRatio)
+
+        '--------------------------------------------------------------------------------------
+        'Finalize the chart
+        '--------------------------------------------------------------------------------------
+        bitmap.Save(HttpContext.Current.Server.MapPath("app_file/Skill/" & id & "_skill_graph.jpg"), Imaging.ImageFormat.Jpeg)
+
+        chart.Dispose()
+        bitmap.Dispose()
+
+    End Sub
+    Public Function GetHighBarValue(ByVal numberOfBars As Integer, _
+                           ByVal bar_Value As DataRow(), _
+                           ByVal highBarValue As Integer)
+        'Index variable
+        Dim i As Integer
+        barValue = bar_Value
+        'Get the highest bar value from the array of bar numbers
+        For i = 0 To numberOfBars - 1
+            If barValue(i).Item(0) > highBarValue Then
+                highBarValue = barValue(i).Item(0)
+            End If
+        Next
+
+        Return highBarValue
+    End Function
+    Public Function GetMaximumScaleValue(ByVal maximumScaleValue As Integer, _
+                                ByVal highBarValue As Integer, _
+                                ByVal scaleIncrement As Integer)
+
+        'Get the highest multiple of the scale increment
+        maximumScaleValue = Math.Ceiling(highBarValue / scaleIncrement) * scaleIncrement
+
+        'If the highest bar is too close to the top of the bar chart, its label will sit
+        'above the chart area of our bitmap. To prevent that from happening, we will need
+        'to increase the maximum scale value by one additional scale increment.
+        If (maximumScaleValue - highBarValue) < BAR_LABEL_SPACE Then
+            maximumScaleValue += scaleIncrement
+        End If
+
+        Return maximumScaleValue
+    End Function
+
+    Public Sub DrawChartBackground()
+
+        'The base color of the bitmap image
+        Dim clearCanvas As Color = Color.Transparent
+
+        'Background color of the bitmap image
+        Dim bmpBackgroundColor As New SolidBrush(Color.White)
+
+        'Background color of the chart area. This is the area onto which the chart bars
+        'and their labels will be placed.
+        Dim chartBackgroundColor As New SolidBrush(Color.LightGray)
+
+        'Clear the drawing surface and fill it with the color specified by the variable,
+        'ClearCanvas.
+        chart.Clear(clearCanvas)
+
+        'Set the background color of the bitmap image
+        chart.FillRectangle(bmpBackgroundColor, 0, 0, BMP_WIDTH, BMP_HEIGHT)
+
+        'Draw a border around the outermost border of our chart
+        chart.DrawRectangle(LINE_COLOR_OUTER, 0, 0, BMP_WIDTH - 1, BMP_HEIGHT - 1)
+
+        'Color fill and draw a border around the area of the bitmap which will contain the
+        'chart bars and their labels
+        chart.FillRectangle(chartBackgroundColor, _
+                            CHART_LEFT_MARGIN, _
+                            CHART_TOP_MARGIN, _
+                            CHART_WIDTH, _
+                            CHART_HEIGHT)
+
+        chart.DrawRectangle(LINE_COLOR, _
+                            CHART_LEFT_MARGIN, _
+                            CHART_TOP_MARGIN, _
+                            CHART_WIDTH, _
+                            CHART_HEIGHT)
+
+    End Sub
+
+    Public Sub DrawScaleElements(ByVal numberOfHorizontalScaleLines As Integer, _
+                                    ByVal verticalScaleRatio As Single, _
+                                    ByVal maximumScaleValue As Integer, ByVal barstring As DataRow())
+
+        'The X coordinate of the scale label.
+        Const SCALE_X As Integer = CHART_LEFT_MARGIN - 25
+
+        'The Y coordinate of the scale label at the top of the chart
+        Const SCALE_Y As Integer = CHART_TOP_MARGIN - 5
+
+        'Index variable
+        Dim i As Integer
+
+        'Draw the horizontal scale lines. We don't need to draw lines at the top and bottom of the
+        'chart since those lines have already been drawn.
+        For i = 1 To numberOfHorizontalScaleLines - 1
+            chart.DrawLine(LINE_COLOR, _
+                CHART_LEFT_MARGIN, _
+                CHART_TOP_MARGIN + (i * verticalScaleRatio), _
+                CHART_LEFT_MARGIN + CHART_WIDTH, _
+                CHART_TOP_MARGIN + (i * verticalScaleRatio))
+        Next
+
+        'Label the scale lines
+        For i = 0 To numberOfHorizontalScaleLines
+            chart.DrawString(maximumScaleValue - (i * SCALE_INCREMENT), _
+                New Font("arial", FontSize.Large, FontStyle.Regular), _
+                TEXT_COLOR, _
+                SCALE_X, _
+                SCALE_Y + (i * verticalScaleRatio))
+        Next
+        For i = 0 To barstring.Length - 1
+            If i = 0 Then
+                chart.DrawString(barstring(i).Item(1), New Font("arial", FontSize.Large, FontStyle.Regular), TEXT_COLOR, SCALE_X + 50, 10)
+            Else
+                chart.DrawString(barstring(i).Item(1), New Font("arial", FontSize.Large, FontStyle.Regular), TEXT_COLOR, SCALE_X + ((i + 1) * 55), 10)
+            End If
+
+        Next
+
+    End Sub
+
+    Public Sub DrawChartBars(ByVal numberOfBars As Integer, _
+                                ByVal barHeightRatio As Single)
+
+        'Determine the positioning of each bar
+        Dim columnSpacing As Single
+
+        'Current bar height as defined in proportion to the chart dimensions
+        Dim currentBarHeight As Single
+
+        'BarWidth is the width of the bars on the chart, which is calculated by dividing the
+        'chart width by the effective number of bars on the chart. The effective number of bars
+        'is the sum of the space at the beginning and end of the chart (one bar width each)
+        'and the total number of chart bars.
+        Dim barWidth As Integer = Math.Floor(CHART_WIDTH / (2 + numberOfBars))
+
+        'Array of SolidBrush objecs that is used as fill colors for the bars and
+        'color-coded legend boxes
+        Dim fillColor As SolidBrush() = New System.Drawing.SolidBrush() _
+                {New System.Drawing.SolidBrush(Color.LightSteelBlue), _
+                New System.Drawing.SolidBrush(Color.MediumVioletRed), _
+                New System.Drawing.SolidBrush(Color.CadetBlue), _
+                New System.Drawing.SolidBrush(Color.Honeydew), _
+                New System.Drawing.SolidBrush(Color.DarkGoldenrod)}
+
+        Dim numberOfFillColors As Integer = fillColor.Length
+
+        'Index variables
+        Dim i As Integer
+        Dim j As Integer = 0
+
+        'Initialize column spacing
+        columnSpacing = barWidth
+
+        'Color fill, draw a border around, and label each chart bar
+        For i = 0 To numberOfBars - 1
+
+            'Scale each bar height to make it proportional to the bar chart dimensions
+            currentBarHeight = Convert.ToSingle(barValue(i).Item(0)) * barHeightRatio
+
+            'Color fill each bar, then draw the border around it
+            chart.FillRectangle(fillColor(j), _
+                columnSpacing + CHART_LEFT_MARGIN, _
+                BMP_HEIGHT - CHART_BOTTOM_MARGIN - currentBarHeight, _
+                barWidth, _
+                currentBarHeight)
+
+            chart.DrawRectangle(LINE_COLOR, _
+                columnSpacing + CHART_LEFT_MARGIN, _
+                BMP_HEIGHT - CHART_BOTTOM_MARGIN - currentBarHeight, _
+                barWidth, _
+                currentBarHeight)
+
+            'Put each bar's numerical value on top of the bar
+            chart.DrawString(Convert.ToString(barValue(i).Item(0)), _
+                New Font("arial", FontSize.Large, FontStyle.Regular), _
+                TEXT_COLOR, _
+                columnSpacing + CHART_LEFT_MARGIN, _
+                BMP_HEIGHT - CHART_BOTTOM_MARGIN - currentBarHeight - BAR_LABEL_SPACE)
+
+            'Repeat the color pattern for each group of bars
+            j += 1
+            If j > (numberOfFillColors - 1) Then
+                j = 0
+            End If
+
+            'Increment the column spacing variable so that the next bar is appropriately
+            'spaced.
+            columnSpacing += barWidth
+
+        Next
+    End Sub
+End Class

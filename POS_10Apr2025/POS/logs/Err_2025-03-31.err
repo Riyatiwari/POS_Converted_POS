@@ -1,0 +1,159 @@
+3/31/2025 12:58:15 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 12:58:18 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 12:58:48 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 12:58:54 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 1:01:03 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 1:01:03 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 1:01:03 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 1:01:03 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 1:01:04 PM:POS_WS:getStore():Error converting data type nvarchar to numeric.
+3/31/2025 1:01:09 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 1:01:09 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 1:03:33 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 1:03:33 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+31/03/2025 2:11:14 PM:POS_WS:CallMethod():The request channel timed out while waiting for a reply after 00:00:59.9990034. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.
+3/31/2025 2:13:34 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:13:34 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+31/03/2025 2:13:35 PM:POS_WS:CallMethod():Object reference not set to an instance of an object.
+3/31/2025 2:13:40 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:13:40 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:13:44 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:13:44 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:14:17 PM:POS_WS:getStore():Error converting data type nvarchar to numeric.
+3/31/2025 2:14:21 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:14:21 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:14:24 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:14:24 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:14:25 PM:POS_WS:getStore():Error converting data type nvarchar to numeric.
+3/31/2025 2:17:28 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:17:28 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:17:28 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+31/03/2025 2:17:28 PM:SignIn:btnLogIn_Click:test
+3/31/2025 2:22:49 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:22:49 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:23:33 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:23:33 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:25:54 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:25:54 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:25:56 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:25:56 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:28:44 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:28:44 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:28:46 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:28:46 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+31/03/2025 2:36:22 PM:POS_WS:CallMethod():The request channel timed out while waiting for a reply after 00:00:59.9989989. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.
+3/31/2025 2:44:49 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:44:49 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:44:53 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:44:53 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:45:14 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:45:14 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:45:16 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:45:16 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:54:38 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:54:38 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+31/03/2025 2:54:40 PM:POS_WS:CallMethod():The request channel timed out while waiting for a reply after 00:01:00. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.
+3/31/2025 2:54:43 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:54:43 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:58:22 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:58:22 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:58:25 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 2:58:25 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:11:22 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:11:22 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:11:24 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:11:24 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:14:23 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:14:24 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:14:26 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:14:26 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:15:50 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:15:50 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:15:54 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:15:54 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+31/03/2025 3:16:55 PM:POS_WS:CallMethod():The request channel timed out while waiting for a reply after 00:01:00. Increase the timeout value passed to the call to Request or increase the SendTimeout value on the Binding. The time allotted to this operation may have been a portion of a longer timeout.
+3/31/2025 3:16:59 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:16:59 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:17:07 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:17:07 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:50:50 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:50:50 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:51:08 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:51:08 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:51:08 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:51:08 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:51:08 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:51:08 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:51:11 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:51:11 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:51:11 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:51:11 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:51:11 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:51:11 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:51:11 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 3:51:11 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:19:15 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:19:15 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:19:15 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+31/03/2025 4:19:15 PM:SignIn:btnLogIn_Click:test
+3/31/2025 4:20:20 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:20:20 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+31/03/2025 4:20:20 PM:POS_WS:CallMethod():An endpoint configuration section for contract 'ServiceReference1.POS_WebServiceSoap' could not be loaded because more than one endpoint configuration for that contract was found. Please indicate the preferred endpoint configuration section by name.
+3/31/2025 4:20:39 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:20:39 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:20:47 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:20:47 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:41:28 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:41:28 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:41:37 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:41:37 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:41:51 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:41:51 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:41:55 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:41:55 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:41:56 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:41:56 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:41:56 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:41:56 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:42:06 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:42:06 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:42:06 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:42:06 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:42:12 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:42:12 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:42:12 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:42:12 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:42:25 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:42:25 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:42:25 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:42:25 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:43:26 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:43:26 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:43:26 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:43:26 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:43:50 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:43:50 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:43:52 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 4:43:52 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 5:04:52 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 5:04:52 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 5:04:54 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 5:04:54 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 5:05:22 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 5:05:22 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 5:05:22 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 5:05:22 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 6:35:18 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 6:35:18 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 6:35:18 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+31/03/2025 6:35:18 PM:SignIn:btnLogIn_Click:test
+3/31/2025 6:35:22 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 6:35:22 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 6:35:22 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+31/03/2025 6:35:22 PM:SignIn:btnLogIn_Click:test
+31/03/2025 6:43:41 PM:SignIn:btnLogIn_Click:A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: SQL Network Interfaces, error: 26 - Error Locating Server/Instance Specified)
+3/31/2025 6:43:54 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 6:43:54 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+3/31/2025 6:43:54 PM:DBManager:connection_data:Object reference not set to an instance of an object.
+31/03/2025 6:43:54 PM:SignIn:btnLogIn_Click:test
+31/03/2025 6:43:58 PM:SignIn:btnLogIn_Click:A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: SQL Network Interfaces, error: 26 - Error Locating Server/Instance Specified)

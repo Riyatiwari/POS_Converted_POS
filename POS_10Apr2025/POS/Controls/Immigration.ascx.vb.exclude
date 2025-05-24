@@ -1,0 +1,660 @@
+﻿Imports System
+Imports System.Data
+Imports System.Data.SqlClient
+Imports Telerik.Web.UI
+
+Partial Class Controls_Immigration
+    Inherits System.Web.UI.UserControl
+    Dim oClsDataccess As New ClsDataccess
+    Dim colFillDll As New clsCommonDLL
+    Dim oClsGeneral As New clsGeneral
+    'Public oSessionManager As New SessionManager
+    'Dim DefStr As String = "dt_"
+    'Dim Page_Name As String = "Controls_Immigration"
+
+    'Protected Sub Page_Init(sender As Object, e As System.EventArgs) Handles Me.Init
+    '    Try
+    '        SqlDataSource1.SelectCommand = "Select * from E_immigration where cmp_id = " & Val(Session("cmp_id")) & " and emp_id = " & Val(Session("Emp_Edit"))
+    '    Catch ex As Exception
+    '        LogHelper.Error("Control:Immigration:Page_Init:" + ex.Message)
+    '    End Try
+    'End Sub
+
+    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        Try
+            If Not IsPostBack Then
+                ddlStatus.ClearSelection()
+                bindDll()
+                BindGrid()
+                Dim oclsParm As New ColSqlparram
+                oclsParm.Add("@cmp_id", Val(Session("cmp_id")), SqlDbType.Int)
+                oclsParm.Add("@Emp_id", Val(Session("Emp_Edit")), SqlDbType.Int)
+                Dim dtEmp As DataTable = oClsDataccess.GetdataTableSp("Get_Employee_WorkEmail", oclsParm)
+                'Dim dtEmp As DataTable = oClsDataccess.Getdatatable("select is_left from m_employee where emp_id = " & Val(Session("Emp_Edit")))
+                If dtEmp.Rows.Count > 0 Then
+                    If dtEmp.Rows(0)("is_left") = "1" Then
+                        ViewState("immIs_left") = "1"
+                        lnkSave.Visible = False
+                    End If
+                End If
+
+
+            End If
+            lblmsg.Text = ""
+
+
+            'binsession()
+
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:Page_Load:" + ex.Message)
+        End Try
+
+
+    End Sub
+
+    Protected Sub BindGrid()
+        Try
+            Dim dt As DataTable
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(Session("cmp_id")), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(Session("Emp_Edit")), SqlDbType.Int)
+            dt = oClsDataccess.GetdataTableSp("Get_E_immigration", oclsParm)
+
+            rgImmigration.DataSource = dt
+            rgImmigration.DataBind()
+
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:BindGrid:" + ex.Message)
+        End Try
+    End Sub
+
+    Protected Sub ReBindGrid()
+        Try
+            Dim dt As DataTable
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(Session("cmp_id")), SqlDbType.Int)
+            oclsParm.Add("@emp_id", Val(Session("Emp_Edit")), SqlDbType.Int)
+            dt = oClsDataccess.GetdataTableSp("Get_E_immigration", oclsParm)
+
+            rgImmigration.DataSource = dt
+
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:ReBindGrid():" + ex.Message)
+        End Try
+    End Sub
+
+    Sub bindDll()
+        Try
+            colFillDll.bindCountryDdl(ddlCOUNTRY_ID)
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:bindDll:" + ex.Message)
+        End Try
+    End Sub
+
+    'Protected Sub binsession()
+    '    Try
+    '        If Not IsPostBack Then
+    '            Dim strVal As String = ""
+    '            If HttpContext.Current.Session(DefStr + Page_Name) Is Nothing Then
+    '                For Each column As GridColumn In rgImmigration.MasterTableView.Columns
+    '                    strVal += column.UniqueName + "#"
+    '                Next
+    '                oSessionManager.CreateSessionDT(Page_Name.ToString, strVal.ToString)
+    '            Else
+    '                Dim FilterExpression As String = ""
+    '                For Each row As DataRow In HttpContext.Current.Session(DefStr + Page_Name).Rows
+    '                    If row("FIN").ToString() <> "" And row("VAL").ToString() <> "" Then
+    '                        Dim arr As Array = row("VAL").ToString().Split("#")
+    '                        If Not [String].IsNullOrEmpty(FilterExpression) Then
+    '                            FilterExpression += " AND "
+    '                        End If
+    '                        If arr.Length - 1 = 0 Then
+    '                            Dim a As Integer = 0
+    '                            Try
+    '                                DateTime.Parse(row("VAL"))
+    '                            Catch ex As Exception
+    '                                a = 1
+    '                            End Try
+
+    '                            If a = 1 Then
+    '                                FilterExpression += "([" + row("FIN").ToString() + "] Like '%" + row("VAL").ToString() + "%')"
+    '                            Else
+    '                                FilterExpression += "( [" + row("FIN").ToString() + "] = '" + row("VAL") + "' )"
+    '                            End If
+    '                        Else
+    '                            If row("VAL").ToString.Contains("01/01/1900") Then
+    '                                FilterExpression += "( [" + row("FIN").ToString() + "] = '" + row("VAL").ToString().Replace("01/01/1900", "").Replace("#", "") + "' )"
+    '                            Else
+    '                                FilterExpression += "(([" + row("FIN").ToString() + "] >= '" + arr(0) + "') AND ([" + row("FIN").ToString() + "] <= '" + arr(1) + "'))"
+    '                            End If
+    '                        End If
+    '                    End If
+    '                Next
+    '                If FilterExpression = "" Then
+    '                    rgImmigration.MasterTableView.FilterExpression = String.Empty
+    '                    rgImmigration.MasterTableView.Rebind()
+    '                Else
+    '                    rgImmigration.MasterTableView.FilterExpression = FilterExpression
+    '                    rgImmigration.MasterTableView.CurrentResetPageIndexAction = GridResetPageIndexAction.SetPageIndexToFirst
+    '                    rgImmigration.MasterTableView.Rebind()
+    '                End If
+
+    '                GridFilterBind1()
+
+    '            End If
+
+    '        End If
+    '    Catch ex As Exception
+
+    '    End Try
+    'End Sub
+
+    Protected Sub lnkSave_Click(sender As Object, e As System.EventArgs) Handles lnkSave.Click
+        Try
+            Dim tran As String
+
+            If hfImmID.Value = "0" Then
+                tran = "Ins"
+            Else
+                tran = "Upd"
+            End If
+            Dim HourLimit As String
+            HourLimit = ""
+            If rmtHours.Text <> "0000" And rmtHours.Text <> "00" And rmtHours.Text <> "0" And rmtHours.Text <> "000" And rmtHours.Text <> ":" Then
+                HourLimit = rmtHours.TextWithLiterals
+            End If
+
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@Tran_id", Val(hfImmID.Value), SqlDbType.Int)
+            oclsParm.Add("@Cmp_id", Val(Session("cmp_id")), SqlDbType.Int)
+            oclsParm.Add("@Emp_id", Val(Session("Emp_Edit")), SqlDbType.Int)
+            oclsParm.Add("@Country_ID", Val(ddlCOUNTRY_ID.SelectedValue), SqlDbType.Int)
+            oclsParm.Add("@Type", rblImmDetailType.SelectedValue)
+            oclsParm.Add("@No", txtImm_No.Text)
+            oclsParm.Add("@Issue_Date", txtImm_Issue_Date.SelectedDate, SqlDbType.DateTime)
+            oclsParm.Add("@Issue_Status", ddlStatus.SelectedValue)
+            oclsParm.Add("@Expiry_Date", txtImm_Date_of_Expiry.SelectedDate, SqlDbType.DateTime)
+            oclsParm.Add("@Review_Date", txtImm_Review_Date.SelectedDate, SqlDbType.DateTime)
+            oclsParm.Add("@Remarks", txtImm_Comments.Text)
+            oclsParm.Add("@Hours_Limit", HourLimit)
+            oclsParm.Add("@Tran_Type", tran)
+            oClsDataccess.ExecStoredProcedure("P_E_Immigration", oclsParm)
+            If hfImmID.Value = "0" Then
+                Session("SuccessMsg") = "Saved"
+            Else
+                Session("SuccessMsg") = "Updated"
+            End If
+            reset()
+            rgImmigration.Rebind()
+            hfImmID.Value = "0"
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:lnkSave_Click:" + ex.Message)
+        End Try
+    End Sub
+
+
+    Protected Sub rblImmDetailType_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles rblImmDetailType.SelectedIndexChanged
+        Try
+            If rblImmDetailType.SelectedIndex = 2 Then
+
+                rfvCitizen.Visible = False
+                rfvExpiryDate.Visible = False
+                rfvIssueDate.Visible = False
+                rfvReview.Visible = False
+                rfvImmNo.Visible = True
+                rfvImmNo.Visible = True
+            Else
+                rfvCitizen.Visible = True
+                rfvExpiryDate.Visible = True
+                rfvIssueDate.Visible = True
+                rfvReview.Visible = True
+                rfvImmNo.Visible = True
+                rfvImmNo.Visible = True
+            End If
+
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:rblImmDetailType_SelectedIndexChanged:" + ex.Message)
+        End Try
+    End Sub
+
+    Protected Sub txtImm_Date_of_Expiry_SelectedDateChanged(sender As Object, e As Telerik.Web.UI.Calendar.SelectedDateChangedEventArgs) Handles txtImm_Date_of_Expiry.SelectedDateChanged
+        Try
+            Dim dtE As DateTime = txtImm_Date_of_Expiry.SelectedDate
+            txtImm_Review_Date.SelectedDate = dtE.AddMonths(-3)
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:txtImm_Date_of_Expiry_SelectedDateChanged:" + ex.Message)
+        End Try
+    End Sub
+
+    Protected Sub BindGridVal(ByVal id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(Session("cmp_id")), SqlDbType.Int)
+            oclsParm.Add("@tran_id", Val(id), SqlDbType.Int)
+            Dim dt As DataTable = oClsDataccess.GetdataTableSp("Get_E_immigration", oclsParm)
+            'Dim dt As DataTable = oClsDataccess.Getdatatable("select * from E_Immigration where tran_id = " & Val(id).ToString())
+            If dt.Rows.Count > 0 Then
+                'Country_ID, Type, No, Issue_Date, Issue_Status, Expiry_Date, Review_Date, Remarks,Hours_limit
+                hfImmID.Value = Val(id)
+                Try
+                    ddlCOUNTRY_ID.SelectedValue = Val(dt.Rows(0)("Country_ID"))
+                Catch ex As Exception
+
+                End Try
+                Try
+                    rblImmDetailType.SelectedValue = Val(dt.Rows(0)("Type"))
+                Catch ex As Exception
+
+                End Try
+                txtImm_No.Text = dt.Rows(0)("No")
+                txtImm_Issue_Date.SelectedDate = dt.Rows(0)("Issue_Date")
+                Try
+                    ddlStatus.SelectedValue = Val(dt.Rows(0)("Issue_Status"))
+                Catch ex As Exception
+
+                End Try
+                txtImm_Date_of_Expiry.SelectedDate = dt.Rows(0)("Expiry_Date")
+                txtImm_Review_Date.SelectedDate = dt.Rows(0)("Review_Date")
+                txtImm_Comments.Text = dt.Rows(0)("Remarks")
+                rmtHours.TextWithLiterals = dt.Rows(0)("Hours_limit")
+                'oclsParm.Add("@Country_ID", Val(ddlCOUNTRY_ID.SelectedValue), SqlDbType.Int)
+                'oclsParm.Add("@Type", rblImmDetailType.SelectedValue)
+                'oclsParm.Add("@No", txtImm_No.Text)
+                'oclsParm.Add("@Issue_Date", txtImm_Issue_Date.SelectedDate, SqlDbType.DateTime)
+                'oclsParm.Add("@Issue_Status", ddlStatus.SelectedValue)
+                'oclsParm.Add("@Expiry_Date", txtImm_Date_of_Expiry.SelectedDate, SqlDbType.DateTime)
+                'oclsParm.Add("@Review_Date", txtImm_Review_Date.SelectedDate, SqlDbType.DateTime)
+                'oclsParm.Add("@Remarks", txtImm_Comments.Text)
+                'oclsParm.Add("@Hours_Limit", HourLimit)
+
+                'If dt.Rows(0)("is_left") = "1" Then
+                '    ViewState("immIs_left") = "1"
+                '    lnkSave.Visible = False
+                'End If
+            End If
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:BindGridVal:" + ex.Message)
+        End Try
+    End Sub
+
+    Protected Sub RadGrid1_PreRender(sender As Object, e As EventArgs)
+        Try
+            For Each dataItem As GridDataItem In rgImmigration.Items
+                If dataItem.OwnerTableView.Name = "TableName" Then
+                    dataItem.OwnerTableView.CommandItemDisplay = GridCommandItemDisplay.None
+                    dataItem.OwnerTableView.GetColumn("EditColumnUniqueName").Visible = False
+                    dataItem.OwnerTableView.Rebind()
+                End If
+            Next
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:RadGrid1_PreRender:" + ex.Message)
+        End Try
+    End Sub
+
+    Protected Sub rgImmigration_ItemCommand(sender As Object, e As Telerik.Web.UI.GridCommandEventArgs) Handles rgImmigration.ItemCommand
+        Try
+            If e.CommandName = "Del" Then
+                deleteImmigration(e.CommandArgument.ToString())
+                rgImmigration.Rebind()
+                'lblmsg.Text = "Record deleted sucessfully."
+            ElseIf e.CommandName = "Editcol" Then
+                bindImmigration(e.CommandArgument)
+                'bindImmigration(e.CommandArgument.ToString())
+            ElseIf e.CommandName = "Clear" Then
+                For Each column As GridColumn In rgImmigration.MasterTableView.Columns
+                    'column.CurrentFilterFunction = GridKnownFunction.NoFilter
+                    column.CurrentFilterValue = String.Empty
+                Next
+                rgImmigration.MasterTableView.FilterExpression = String.Empty
+                rgImmigration.MasterTableView.Rebind()
+                'oSessionManager.ResetSessionDT(Page_Name.ToString)
+                'bindImmigration(e.CommandArgument.ToString())
+            ElseIf e.CommandName = "Search" Then
+
+                Dim filteringItem As GridFilteringItem = DirectCast(rgImmigration.MasterTableView.GetItems(GridItemType.FilteringItem)(0), GridFilteringItem)
+                Dim filterExpression As String = ""
+
+                Dim tableView = e.Item.OwnerTableView
+                Dim filterItem = DirectCast(tableView.GetItems(GridItemType.FilteringItem)(0), GridFilteringItem)
+                Dim arg = Request("__EVENTARGUMENT")
+
+                'parse the filter expressions to extract column name and filter value
+                Dim filters = New Dictionary(Of String, String)()
+                For Each item As String In arg.Split(New String() {"||"}, StringSplitOptions.RemoveEmptyEntries)
+                    Dim parts = item.Split(New String() {"|?"}, StringSplitOptions.RemoveEmptyEntries)
+                    Dim columnName = parts(0)
+                    Dim functionName = parts(2)
+
+                    filters(columnName) = functionName
+                Next
+
+                For Each column As GridColumn In tableView.RenderColumns
+                    If Not column.SupportsFiltering() Then
+                        Continue For
+                    End If
+
+                    If filters.ContainsKey(column.UniqueName) Then
+                        column.RefreshCurrentFilterValue(filterItem, filters(column.UniqueName))
+                    Else
+                        column.RefreshCurrentFilterValue(filterItem)
+                    End If
+                    Dim a As Integer = 0
+                    Try
+                        Dim txt As TextBox = TryCast(filteringItem(column.UniqueName.ToString()).Controls(0), TextBox)
+                        'Dim filterText = column.EvaluateFilterExpression(filterItem)
+                        If txt.Text = "" Then
+                            column.ResetCurrentFilterValue(filterItem)
+                            'oSessionManager.AddValInSessionDT(Page_Name.ToString, column.UniqueName.ToString(), "")
+                            Continue For
+                        End If
+
+                        If Not [String].IsNullOrEmpty(filterExpression) Then
+                            filterExpression += " AND "
+                        End If
+                        'oSessionManager.AddValInSessionDT(Page_Name.ToString, column.UniqueName.ToString(), txt.Text)
+                        filterExpression += "([" + column.UniqueName.ToString() + "] Like '" + txt.Text + "%')"
+                    Catch ex As Exception
+                        a = 1
+                    End Try
+                    Try
+                        If a = 1 Then
+                            Dim txt As RadComboBox = TryCast(filteringItem(column.UniqueName.ToString()).Controls(1), RadComboBox)
+                            'Dim filterText = column.EvaluateFilterExpression(filterItem)
+                            If txt.SelectedValue = "" Then
+                                column.ResetCurrentFilterValue(filterItem)
+                                Continue For
+                            End If
+
+                            If Not [String].IsNullOrEmpty(filterExpression) Then
+                                filterExpression += " AND "
+                            End If
+
+                            filterExpression += "([" + column.UniqueName.ToString() + "] Like '%" + txt.SelectedValue + "%')"
+                        End If
+                    Catch ex As Exception
+
+                    End Try
+                    Try
+                        If a = 1 Then
+                            Dim txt As RadDatePicker = TryCast(filteringItem(column.UniqueName.ToString()).Controls(1), RadDatePicker)
+                            'Dim filterText = column.EvaluateFilterExpression(filterItem)
+                            If txt.SelectedDate Is Nothing Then
+                                column.ResetCurrentFilterValue(filterItem)
+                                'oSessionManager.AddValInSessionDT(Page_Name.ToString, column.UniqueName.ToString(), "")
+                                Continue For
+                            End If
+
+                            If Not [String].IsNullOrEmpty(filterExpression) Then
+                                filterExpression += " AND "
+                            End If
+                            'oSessionManager.AddValInSessionDT(Page_Name.ToString, column.UniqueName.ToString(), txt.SelectedDate)
+                            filterExpression += "( [" + column.UniqueName.ToString() + "] = '" + txt.SelectedDate + "' )"
+                        End If
+                    Catch ex As Exception
+
+                    End Try
+                Next
+                If filterExpression = "" Then
+                    'RadGridMain.MasterTableView.FilterExpression = String.Empty
+                    'RadGridMain.MasterTableView.Rebind()
+                    'GridFilterBind1()
+                Else
+                    tableView.FilterExpression = filterExpression
+                    tableView.CurrentResetPageIndexAction = GridResetPageIndexAction.SetPageIndexToFirst
+                    tableView.Rebind()
+                    'GridFilterBind1()
+                End If
+            End If
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:rgImmigration_ItemCommand:" + ex.Message)
+        End Try
+    End Sub
+    Public Sub deleteImmigration(ByVal id As Integer)
+        Try
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@Tran_id", id, SqlDbType.Int)
+            oclsParm.Add("@Cmp_id", Val(Session("cmp_id")), SqlDbType.Int)
+            oclsParm.Add("@Emp_id", Val(Session("Emp_Edit")), SqlDbType.Int)
+            oclsParm.Add("@Country_ID", 0, SqlDbType.Int)
+            oclsParm.Add("@Type", "")
+            oclsParm.Add("@No", "")
+            oclsParm.Add("@Issue_Date", System.DateTime.Now, SqlDbType.DateTime)
+            oclsParm.Add("@Issue_Status", "")
+            oclsParm.Add("@Expiry_Date", System.DateTime.Now, SqlDbType.DateTime)
+            oclsParm.Add("@Review_Date", System.DateTime.Now, SqlDbType.DateTime)
+            oclsParm.Add("@Remarks", "")
+            oclsParm.Add("@Hours_Limit", "")
+            oclsParm.Add("@Tran_Type", "D")
+            oClsDataccess.ExecStoredProcedure("P_E_Immigration", oclsParm)
+            Session("SuccessMsg") = "Deleted"
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:deleteImmigration:" + ex.Message)
+        End Try
+    End Sub
+    Public Sub bindImmigration(ByVal id As Integer)
+        Try
+            reset()
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@cmp_id", Val(Session("cmp_id")), SqlDbType.Int)
+            oclsParm.Add("@tran_id", Val(id), SqlDbType.Int)
+            Dim dtimm As DataTable = oClsDataccess.GetdataTableSp("Get_E_immigration", oclsParm)
+            'Dim dtimm As DataTable = oClsDataccess.Getdatatable("select * from E_immigration where tran_id  = " & id)
+
+            If dtimm.Rows.Count > 0 Then
+                hfImmID.Value = id
+
+                ddlCOUNTRY_ID.ClearSelection()
+                ddlCOUNTRY_ID.FindItemByValue(dtimm.Rows(0)("Country_id")).Selected = True
+
+                If dtimm.Rows(0)("type") = "Passport" Then
+                    rblImmDetailType.SelectedIndex = 0
+                ElseIf dtimm.Rows(0)("type") = "Visa" Then
+                    rblImmDetailType.SelectedIndex = 1
+                Else
+                    rblImmDetailType.SelectedIndex = 2
+                End If
+
+                If rblImmDetailType.SelectedIndex = 2 Then
+
+                    rfvCitizen.Visible = False
+                    rfvExpiryDate.Visible = False
+                    rfvIssueDate.Visible = False
+                    rfvReview.Visible = False
+                    rfvImmNo.Visible = True
+                    rfvImmNo.Visible = True
+                Else
+                    rfvCitizen.Visible = True
+                    rfvExpiryDate.Visible = True
+                    rfvIssueDate.Visible = True
+                    rfvReview.Visible = True
+                    rfvImmNo.Visible = True
+                    rfvImmNo.Visible = True
+                End If
+
+                txtImm_No.Text = dtimm.Rows(0)("no")
+                If dtimm.Rows(0)("issue_date").ToString <> "" Then
+                    txtImm_Issue_Date.SelectedDate = dtimm.Rows(0)("issue_date")
+                End If
+
+                ddlStatus.ClearSelection()
+                ddlStatus.FindItemByValue(dtimm.Rows(0)("issue_Status")).Selected = True
+                If dtimm.Rows(0)("expiry_date").ToString <> "" Then
+                    txtImm_Date_of_Expiry.SelectedDate = dtimm.Rows(0)("expiry_date")
+                End If
+
+                If dtimm.Rows(0)("review_date").ToString <> "" Then
+                    txtImm_Review_Date.SelectedDate = dtimm.Rows(0)("review_date")
+                End If
+
+                txtImm_Comments.Text = dtimm.Rows(0)("remarks")
+                rmtHours.Text = dtimm.Rows(0)("Hours_limit")
+            End If
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:bindImmigration:" + ex.Message)
+        End Try
+    End Sub
+
+    Public Sub reset()
+        Try
+            hfImmID.Value = "0"
+            ddlCOUNTRY_ID.ClearSelection()
+            rblImmDetailType.SelectedIndex = 0
+            txtImm_No.Text = ""
+            txtImm_Issue_Date.SelectedDate = Nothing
+            ddlStatus.ClearSelection()
+            txtImm_Date_of_Expiry.SelectedDate = Nothing
+            txtImm_Review_Date.SelectedDate = Nothing
+            txtImm_Comments.Text = ""
+            rmtHours.Text = ""
+            rfvCitizen.Visible = True
+            rfvExpiryDate.Visible = True
+            rfvIssueDate.Visible = True
+            rfvReview.Visible = True
+            rfvImmNo.Visible = True
+            rfvImmNo.Visible = True
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:reset:" + ex.Message)
+        End Try
+
+    End Sub
+
+    Protected Sub lnkClear_Click(sender As Object, e As System.EventArgs) Handles lnkClear.Click
+        Try
+            reset()
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:lnkClear_Click:" + ex.Message)
+        End Try
+
+    End Sub
+
+    Protected Sub GetRole()
+        Try
+            Dim dtAccess As DataTable = oClsGeneral.GetPageAccess("Immigration", Session("roleId"))
+            If dtAccess.Rows.Count > 0 Then
+                ViewState("view") = dtAccess.Rows(0)("is_view")
+                ViewState("add") = dtAccess.Rows(0)("is_add")
+                ViewState("edit") = dtAccess.Rows(0)("is_edit")
+                ViewState("delete") = dtAccess.Rows(0)("is_delete")
+            Else
+                ViewState("view") = "0"
+                ViewState("add") = "0"
+                ViewState("edit") = "0"
+                ViewState("delete") = "0"
+            End If
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:GetRole:" + ex.Message)
+            ScriptManager.RegisterStartupScript(Me, Me.GetType, "ERROR126", "Error('Error in Get Role Process.');", True)
+        End Try
+    End Sub
+    Protected Sub SetRole()
+        Try
+            If ViewState("add") = "0" Then
+                lnkSave.Visible = True
+                lnkClear.Visible = True
+            Else
+                lnkSave.Visible = True
+                lnkClear.Visible = True
+            End If
+
+            If ViewState("view") = "0" Then
+                rgImmigration.Visible = False
+                ScriptManager.RegisterStartupScript(Me, Me.GetType, "ERROR127", "Error('You do not have view rights.');", True)
+            Else
+                rgImmigration.Visible = True
+            End If
+
+
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:SetRole:" + ex.Message)
+            ScriptManager.RegisterStartupScript(Me, Me.GetType, "ERROR12", "Error('Error in Set Role Process..');", True)
+        End Try
+    End Sub
+
+    Protected Sub rgImmigration_ItemDataBound(sender As Object, e As Telerik.Web.UI.GridItemEventArgs) Handles rgImmigration.ItemDataBound
+        Try
+            If e.Item.ItemType = Telerik.Web.UI.GridItemType.AlternatingItem Or e.Item.ItemType = Telerik.Web.UI.GridItemType.Item Then
+                If ViewState("immIs_left") = "1" Then
+                    CType(e.Item.FindControl("IbDelete"), ImageButton).Visible = False
+                End If
+            End If
+
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:rgImmigration_ItemDataBound:" + ex.Message)
+        End Try
+    End Sub
+
+    'Protected Sub GridFilterBind1()
+    '    Try
+    '        For Each item As GridFilteringItem In rgImmigration.MasterTableView.GetItems(GridItemType.FilteringItem)
+
+    '            For Each row As DataRow In HttpContext.Current.Session(DefStr + Page_Name).Rows
+    '                If row("FIN").ToString() <> "" And row("val").ToString() <> "" Then
+    '                    Dim val As Integer = 0
+    '                    Try
+    '                        TryCast(item(row("FIN").ToString()).Controls(0), TextBox).Text = row("VAL").ToString
+    '                    Catch ex As Exception
+    '                        val = 1
+    '                    End Try
+    '                    If val = 1 Then
+    '                        Try
+    '                            If row("VAL") = "" Then
+    '                                TryCast(item(row("FIN").ToString()).Controls(1), RadComboBox).SelectedValue = row("VAL").ToString
+    '                                TryCast(item(row("FIN").ToString()).Controls(1), RadComboBox).Text = "ALL"
+    '                            Else
+    '                                TryCast(item(row("FIN").ToString()).Controls(1), RadComboBox).SelectedValue = row("VAL").ToString
+    '                                TryCast(item(row("FIN").ToString()).Controls(1), RadComboBox).Text = row("VAL").ToString
+    '                            End If
+    '                        Catch ex As Exception
+    '                            val = 2
+    '                        End Try
+    '                    End If
+    '                    If val = 2 Then
+    '                        Try
+    '                            If Not TryCast(item(row("FIN").ToString()).Controls(1), RadDatePicker) Is Nothing And Not TryCast(item(row("FIN").ToString()).Controls(3), RadDatePicker) Is Nothing Then
+
+
+    '                                If row("val").ToString().Contains("01/01/1900") Then
+    '                                    Dim arr As Array = row("val").ToString().Split("#")
+    '                                    If arr(0).ToString.Contains("01/01/1900") = False Then
+    '                                        TryCast(item(row("FIN").ToString()).Controls(1), RadDatePicker).SelectedDate = arr(0).ToString
+    '                                    End If
+    '                                    If arr(1).ToString.Contains("01/01/1900") = False Then
+    '                                        TryCast(item(row("FIN").ToString()).Controls(3), RadDatePicker).SelectedDate = arr(1).ToString
+    '                                    End If
+    '                                ElseIf row("val").ToString().Contains("#") Then
+    '                                    Dim arr As Array = row("val").ToString().Split("#")
+    '                                    TryCast(item(row("FIN").ToString()).Controls(1), RadDatePicker).SelectedDate = arr(0).ToString
+    '                                    TryCast(item(row("FIN").ToString()).Controls(3), RadDatePicker).SelectedDate = arr(1).ToString
+    '                                End If
+    '                            End If
+    '                        Catch ex As Exception
+    '                            val = 3
+    '                        End Try
+    '                    End If
+    '                    If val = 3 Then
+    '                        Try
+    '                            If Not TryCast(item(row("FIN").ToString()).Controls(1), RadDatePicker) Is Nothing Then
+    '                                TryCast(item(row("FIN").ToString()).Controls(1), RadDatePicker).SelectedDate = row("VAL").ToString
+    '                            End If
+    '                        Catch ex As Exception
+
+    '                        End Try
+    '                    End If
+    '                End If
+    '            Next
+    '            'TryCast(item("Branch_Name").Controls(0), TextBox).Text = Session("flt_Branch_Code")
+    '        Next
+    '    Catch ex As Exception
+
+    '    End Try
+    'End Sub
+
+    Protected Sub rgImmigration_NeedDataSource(sender As Object, e As Telerik.Web.UI.GridNeedDataSourceEventArgs) Handles rgImmigration.NeedDataSource
+        Try
+            ReBindGrid()
+        Catch ex As Exception
+            LogHelper.Error("Control:Immigration:rgImmigration_NeedDataSource:" + ex.Message)
+        End Try
+    End Sub
+End Class
+

@@ -1,0 +1,43 @@
+﻿Imports System
+
+Namespace MoonAPNS
+    ''' <summary>
+    ''' Feedback object
+    ''' </summary>
+    Public Class Feedback
+
+        ''' <summary>
+        ''' Constructor
+        ''' </summary>
+        Public Sub New()
+            Me.DeviceToken = String.Empty
+            Me.Timestamp = DateTime.MinValue
+        End Sub
+
+        ''' <summary>
+        ''' Device Token string in hex form without any spaces or dashes
+        ''' </summary>
+        Public Property DeviceToken() As String
+            Get
+                Return m_DeviceToken
+            End Get
+            Set(value As String)
+                m_DeviceToken = Value
+            End Set
+        End Property
+        Private m_DeviceToken As String
+
+        ''' <summary>
+        ''' Timestamp of the Feedback for when Apple received the notice to stop sending notifications to the device
+        ''' </summary>
+        Public Property Timestamp() As DateTime
+            Get
+                Return m_Timestamp
+            End Get
+            Set(value As DateTime)
+                m_Timestamp = Value
+            End Set
+        End Property
+        Private m_Timestamp As DateTime
+    End Class
+End Namespace

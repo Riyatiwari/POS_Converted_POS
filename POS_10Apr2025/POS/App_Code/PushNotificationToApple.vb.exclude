@@ -1,0 +1,363 @@
+﻿Imports Microsoft.VisualBasic
+Imports System.Security.Cryptography.X509Certificates
+Imports System.Net.Sockets
+Imports System
+Imports System.Collections.Generic
+Imports System.Net.Security
+Imports System.Text
+Imports MoonAPNS
+Imports System.Data
+Imports System.Net
+Imports System.IO
+
+Public Class PushNotificationToApple
+    Dim oClsDataccess As New ClsDataccess
+
+    Public Function PushNotificationToApple(Emp_id As Integer, MsgModule As String, Tran As Integer, Id As Integer,
+                                            Type As Integer, Status As String, from_Date As DateTime, to_Date As DateTime,
+                                            Cmp_id As Integer, Current_Emp_id As Integer, Title As String, Action As String) As String
+        Dim message As String = Nothing
+        Try
+
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@Cmp_id", Val(Cmp_id), SqlDbType.Int)
+            oclsParm.Add("@Emp_id", Val(Emp_id), SqlDbType.Int)
+            oclsParm.Add("@MsgModule", MsgModule.ToString())
+            oclsParm.Add("@ID", Id, SqlDbType.Int)
+            oclsParm.Add("@Tran", Val(Tran), SqlDbType.Int)
+            oclsParm.Add("@LeaveType", Type, SqlDbType.Int)
+            oclsParm.Add("@Status_val", Status.ToString())
+            oclsParm.Add("@from_Date", from_Date.ToString(), SqlDbType.DateTime)
+            oclsParm.Add("@to_Date", to_Date.ToString(), SqlDbType.DateTime)
+            Dim dt As DataTable = oClsDataccess.GetdataTableSp("Get_Emp_Manager", oclsParm)
+
+            If dt.Rows.Count > 0 Then
+                For Each rows In dt.Rows
+                    If rows("mac_address").ToString() <> "" Then
+                        Try
+                            Dim deviceToken = rows("mac_address").ToString()
+                            '"Employee 1393 has applied for leave, kindly take action on applicaiton."
+                            Dim payload = New NotificationPayload(deviceToken, rows("Msg").ToString(), "", 1, Title, Action)
+                            Dim notificationList = New List(Of NotificationPayload)() From { _
+                             payload _
+                            }
+                            Dim AppleCertificateName As String = ConfigurationManager.AppSettings("AppleCertificateName")
+                            If AppleCertificateName = "" Then
+                                AppleCertificateName = "Certificates21062016.p12"
+                            End If
+                            Dim certificatePath As String = HttpContext.Current.Server.MapPath("~/Apple Certificate/" + AppleCertificateName.ToString() + "")
+                            Dim push = New PushNotification(True, certificatePath.ToString(), "")
+                            push.SendToApple(notificationList)
+
+                            Try
+                                Dim oclsParm1 As New ColSqlparram
+                                oclsParm1.Add("@Tran_id", 0, SqlDbType.Int)
+                                oclsParm1.Add("@Cmp_id", Val(Cmp_id), SqlDbType.Int)
+                                If MsgModule.ToString = "LeaveApplication" Then
+                                    oclsParm1.Add("@emp_id", Val(Emp_id), SqlDbType.Int)
+                                    oclsParm1.Add("@manager_id", Val(rows("To_")), SqlDbType.Int)
+                                ElseIf MsgModule.ToString = "LeaveApproval" Then
+                                    oclsParm1.Add("@emp_id", Val(Emp_id), SqlDbType.Int)
+                                    oclsParm1.Add("@manager_id", Val(Current_Emp_id), SqlDbType.Int)
+                                Else
+                                    oclsParm1.Add("@emp_id", Val(Current_Emp_id), SqlDbType.Int)
+                                    oclsParm1.Add("@manager_id", Val(Emp_id), SqlDbType.Int)
+                                End If
+                                oclsParm1.Add("@mac_address", rows("mac_address"))
+                                oclsParm1.Add("@module", MsgModule.ToString())
+                                oclsParm1.Add("@description", rows("Msg").ToString())
+                                oclsParm1.Add("@status", 1)
+                                oclsParm1.Add("@Tran_type", "I")
+                                oClsDataccess.ExecStoredProcedure("P_W_Notification_Log", oclsParm1)
+                            Catch ex As Exception
+                                LogHelper.Error("PushNotificationToApple:Save_Log_Success:" + ex.Message)
+                            End Try
+
+                        Catch ex As Exception
+                            Try
+                                LogHelper.Error("PushNotificationToApple:Save_Log_Error1:" + ex.Message)
+                                Dim oclsParm1 As New ColSqlparram
+                                oclsParm1.Add("@Tran_id", 0, SqlDbType.Int)
+                                oclsParm1.Add("@Cmp_id", Val(Cmp_id), SqlDbType.Int)
+                                If MsgModule.ToString = "LeaveApplication" Then
+                                    oclsParm1.Add("@emp_id", Val(Emp_id), SqlDbType.Int)
+                                    oclsParm1.Add("@manager_id", Val(rows("To_")), SqlDbType.Int)
+                                ElseIf MsgModule.ToString = "LeaveApproval" Then
+                                    oclsParm1.Add("@emp_id", Val(Emp_id), SqlDbType.Int)
+                                    oclsParm1.Add("@manager_id", Val(Current_Emp_id), SqlDbType.Int)
+                                Else
+                                    oclsParm1.Add("@emp_id", Val(Emp_id), SqlDbType.Int)
+                                    oclsParm1.Add("@manager_id", Val(Current_Emp_id), SqlDbType.Int)
+                                End If
+                                oclsParm1.Add("@mac_address", rows("mac_address"))
+                                oclsParm1.Add("@module", MsgModule.ToString())
+                                oclsParm1.Add("@description", rows("Msg").ToString())
+                                oclsParm1.Add("@status", 0)
+                                oclsParm1.Add("@Tran_type", "I")
+                                oClsDataccess.ExecStoredProcedure("P_W_Notification_Log", oclsParm1)
+                            Catch ex1 As Exception
+                                LogHelper.Error("PushNotificationToApple:Save_Log_Error:" + ex.Message)
+                            End Try
+                        End Try
+                    End If
+
+                    If rows("mac_address_Android").ToString() <> "" Then
+                        Try
+                            Dim deviceToken = rows("mac_address_Android").ToString()
+
+                            SendAndroidNotification(deviceToken, rows("Msg").ToString(), Title, Action)
+
+                            Try
+                                Dim oclsParm1 As New ColSqlparram
+                                oclsParm1.Add("@Tran_id", 0, SqlDbType.Int)
+                                oclsParm1.Add("@Cmp_id", Val(Cmp_id), SqlDbType.Int)
+                                If MsgModule.ToString = "LeaveApplication" Then
+                                    oclsParm1.Add("@emp_id", Val(Emp_id), SqlDbType.Int)
+                                    oclsParm1.Add("@manager_id", Val(rows("To_")), SqlDbType.Int)
+                                ElseIf MsgModule.ToString = "LeaveApproval" Then
+                                    oclsParm1.Add("@emp_id", Val(Emp_id), SqlDbType.Int)
+                                    oclsParm1.Add("@manager_id", Val(Current_Emp_id), SqlDbType.Int)
+                                Else
+                                    oclsParm1.Add("@emp_id", Val(Current_Emp_id), SqlDbType.Int)
+                                    oclsParm1.Add("@manager_id", Val(Emp_id), SqlDbType.Int)
+                                End If
+                                oclsParm1.Add("@mac_address", "")
+                                oclsParm1.Add("@module", MsgModule.ToString())
+                                oclsParm1.Add("@description", rows("Msg").ToString())
+                                oclsParm1.Add("@status", 1)
+                                oclsParm1.Add("@Tran_type", "I")
+                                oclsParm1.Add("@mac_address_Android", rows("mac_address_Android"))
+                                oClsDataccess.ExecStoredProcedure("P_W_Notification_Log", oclsParm1)
+                            Catch ex As Exception
+                                LogHelper.Error("PushNotificationToApple:Save_Log_Success:" + ex.Message)
+                            End Try
+
+                        Catch ex As Exception
+                            Try
+                                LogHelper.Error("PushNotificationToApple:Save_Log_Error1:" + ex.Message)
+                                Dim oclsParm1 As New ColSqlparram
+                                oclsParm1.Add("@Tran_id", 0, SqlDbType.Int)
+                                oclsParm1.Add("@Cmp_id", Val(Cmp_id), SqlDbType.Int)
+                                If MsgModule.ToString = "LeaveApplication" Then
+                                    oclsParm1.Add("@emp_id", Val(Emp_id), SqlDbType.Int)
+                                    oclsParm1.Add("@manager_id", Val(rows("To_")), SqlDbType.Int)
+                                ElseIf MsgModule.ToString = "LeaveApproval" Then
+                                    oclsParm1.Add("@emp_id", Val(Emp_id), SqlDbType.Int)
+                                    oclsParm1.Add("@manager_id", Val(Current_Emp_id), SqlDbType.Int)
+                                Else
+                                    oclsParm1.Add("@emp_id", Val(Emp_id), SqlDbType.Int)
+                                    oclsParm1.Add("@manager_id", Val(Current_Emp_id), SqlDbType.Int)
+                                End If
+                                oclsParm1.Add("@mac_address", "")
+                                oclsParm1.Add("@module", MsgModule.ToString())
+                                oclsParm1.Add("@description", rows("Msg").ToString())
+                                oclsParm1.Add("@status", 0)
+                                oclsParm1.Add("@Tran_type", "I")
+                                oclsParm1.Add("@mac_address_Android", rows("mac_address_Android"))
+                                oClsDataccess.ExecStoredProcedure("P_W_Notification_Log", oclsParm1)
+                            Catch ex1 As Exception
+                                LogHelper.Error("PushNotificationToApple:Save_Log_Error:" + ex.Message)
+                            End Try
+                        End Try
+                    End If
+                Next
+            End If
+
+            Return "Success"
+
+        Catch ex As Exception
+            LogHelper.Error("PushNotificationToApple:SendToApple:" + ex.Message)
+            Return ex.Message
+        End Try
+    End Function
+
+    Public Function PushNotification_Apple(Emp_id As Integer, MsgModule As String, Tran As Integer, Id As Integer,
+                                            Type As Integer, Status As String, from_Date As DateTime, to_Date As DateTime,
+                                            Cmp_id As Integer, Title As String, Action As String, Optional ByVal Multi_ID As String = "") As String
+        Dim message As String = Nothing
+        Try
+
+            Dim oclsParm As New ColSqlparram
+            oclsParm.Add("@Cmp_id", Val(Cmp_id), SqlDbType.Int)
+            oclsParm.Add("@Emp_id", Val(Emp_id), SqlDbType.Int)
+            oclsParm.Add("@MsgModule", MsgModule.ToString())
+            oclsParm.Add("@ID", Id, SqlDbType.Int)
+            oclsParm.Add("@Tran", Val(Tran), SqlDbType.Int)
+            oclsParm.Add("@LeaveType", Type, SqlDbType.Int)
+            oclsParm.Add("@Status_val", Status.ToString())
+            oclsParm.Add("@from_Date", from_Date.ToString(), SqlDbType.DateTime)
+            oclsParm.Add("@to_Date", to_Date.ToString(), SqlDbType.DateTime)
+            oclsParm.Add("@Multi_ID", Multi_ID.ToString())
+            Dim dt As DataTable = oClsDataccess.GetdataTableSp("Get_Emp_Manager", oclsParm)
+
+            If dt.Rows.Count > 0 Then
+                For Each rows In dt.Rows
+                    If rows("mac_address").ToString() <> "" Then
+                        Try
+                            Dim deviceToken = rows("mac_address").ToString()
+                            Dim payload = New NotificationPayload(deviceToken, rows("Msg").ToString(), "", 1, Title, Action)
+                            Dim notificationList = New List(Of NotificationPayload)() From { _
+                             payload _
+                            }
+                            Dim AppleCertificateName As String = ConfigurationManager.AppSettings("AppleCertificateName")
+                            If AppleCertificateName = "" Then
+                                AppleCertificateName = "Certificates21062016.p12"
+                            End If
+                            Dim certificatePath As String = HttpContext.Current.Server.MapPath("~/Apple Certificate/" + AppleCertificateName.ToString() + "")
+                            Dim push = New PushNotification(True, certificatePath.ToString(), "")
+                            push.SendToApple(notificationList)
+
+                        Catch ex As Exception
+                            LogHelper.Error("Timesheet_PushNotification:Save_Log_Error:" + ex.Message)
+                        End Try
+                    End If
+
+                    If rows("mac_address_Android").ToString() <> "" Then
+                        Try
+                            Dim deviceToken = rows("mac_address_Android").ToString()
+                            SendAndroidNotification(deviceToken, rows("Msg").ToString(), Title, Action)
+
+                        Catch ex As Exception
+                            LogHelper.Error("Timesheet_PushNotification:Save_Log_Error:" + ex.Message)
+                        End Try
+                    End If
+
+                Next
+            End If
+
+            Return "Success"
+
+        Catch ex As Exception
+            LogHelper.Error("Timesheet_PushNotification:SendToApple:" + ex.Message)
+            Return ex.Message
+        End Try
+    End Function
+
+    Public Function SendAndroidNotification(deviceId As String, message As String, Title As String, Action As String) As String
+        Dim SERVER_API_KEY As String = ConfigurationManager.AppSettings("Android_SERVER_API_KEY")
+        Dim SENDER_ID = ConfigurationManager.AppSettings("Android_SENDER_ID")
+        Dim value = message
+        Dim tRequest As WebRequest
+        tRequest = WebRequest.Create("https://android.googleapis.com/gcm/send")
+        tRequest.Method = "post"
+        tRequest.ContentType = " application/x-www-form-urlencoded;charset=UTF-8"
+        tRequest.Headers.Add(String.Format("Authorization: key={0}", SERVER_API_KEY))
+
+        tRequest.Headers.Add(String.Format("Sender: id={0}", SENDER_ID))
+
+        Dim postData As String = "collapse_key=score_update&time_to_live=108&delay_while_idle=1&data.message=" + value + "&data.Contentavailable=1&data.Title=" + Title + "&data.Action=" + Action + "&registration_id=" + deviceId + ""
+        Console.WriteLine(postData)
+        Dim byteArray As [Byte]() = Encoding.UTF8.GetBytes(postData)
+        tRequest.ContentLength = byteArray.Length
+
+        Dim dataStream As Stream = tRequest.GetRequestStream()
+        dataStream.Write(byteArray, 0, byteArray.Length)
+        dataStream.Close()
+
+        Dim tResponse As WebResponse = tRequest.GetResponse()
+
+        dataStream = tResponse.GetResponseStream()
+
+        Dim tReader As New StreamReader(dataStream)
+
+        Dim sResponseFromServer As [String] = tReader.ReadToEnd()
+
+
+        tReader.Close()
+        dataStream.Close()
+        tResponse.Close()
+
+        Return sResponseFromServer
+    End Function
+
+    'Public Function PushNotificationToApple(Emp_id As Integer, MsgModule As String, Msg As String, Tran As Integer) As String
+    '    Dim message As String = Nothing
+    '    Try
+
+    '        Try
+
+    '            'var deviceToken = "10506140a9ea56b7d008ef363a20bf9561a36cc104d0c2d89aaa508026bd5443";
+
+    '            Dim deviceToken = "9b24cf32fb83b1f09e12d91d774ea709c2671f6d9b6acb3d724e95b8f6f0c86b"
+
+    '            Dim payload = New NotificationPayload(deviceToken, "Employee 1393 has applied for leave, kindly take action on applicaiton", 51)
+    '            ' 51 is the badge no
+    '            Dim notificationList = New List(Of NotificationPayload)() From { _
+    '             payload _
+    '            }
+
+    '            Dim certificatePath As String = HttpContext.Current.Server.MapPath("~/Apple Certificate/Certificates_GSC.p12")
+
+    '            Dim push = New PushNotification(True, certificatePath.ToString(), "")
+
+    '            push.SendToApple(notificationList)
+
+    '            Return "Success"
+
+    '            ' You are done!
+
+    '            'Response.Write("Send")
+
+    '        Catch ex As Exception
+
+    '            Return "Error"
+
+    '            'Response.Write(ex.Message)
+
+    '        End Try
+
+
+    '        'Dim payload1 = New NotificationPayload("10506140a9ea56b7d008ef363a20bf9561a36cc104d0c2d89aaa508026bd5443", messageObject.ToString(), 51, "default")
+    '        'payload1.AddCustom("RegionID", "IDQ10150")
+
+    '        'Dim p = New List(Of NotificationPayload)() From { _
+    '        ' payload1 _
+    '        '}
+
+    '        'Dim certificatePath As String = HttpContext.Current.Server.MapPath("~/debug/Certificates_GSC.p12")
+    '        'Dim push = New PushNotification(False, certificatePath, "")
+    '        'Dim rejected = push.SendToApple(p)
+    '        'For Each item In rejected
+    '        '    Console.WriteLine(item)
+    '        'Next
+    '        'Console.ReadLine()
+
+    '        'Dim strDeviceToken As String = "10506140a9ea56b7d008ef363a20bf9561a36cc104d0c2d89aaa508026bd5443"
+    '        'Dim strPushMessage As String = messageObject.ToString()
+    '        'Dim payload1 = New NotificationPayload(strDeviceToken, strPushMessage, 1, "default")
+    '        'payload1.AddCustom("RegionID", "IDQ10150")
+    '        'Dim p = New List(Of NotificationPayload)() From { _
+    '        ' payload1 _
+    '        '}
+    '        'Dim certificatePath As String = HttpContext.Current.Server.MapPath("~/debug/Certificates_GSC.p12")
+    '        'Dim push = New PushNotification(True, certificatePath, "")
+    '        'Dim strfilename As String = push.P12File
+    '        'Dim message1 = push.SendToApple(p)
+    '        'For Each item In message1
+    '        '    result = 1
+    '        'Next
+
+    '        'Dim payload1 = New NotificationPayload("10506140a9ea56b7d008ef363a20bf9561a36cc104d0c2d89aaa508026bd5443", messageObject.ToString(), 1, "default")
+    '        'payload1.AddCustom("RegionID", "IDQ10150")
+
+    '        'Dim p = New List(Of NotificationPayload)() From { _
+    '        ' payload1 _
+    '        '}
+
+    '        'Dim push = New PushNotification(False, HttpContext.Current.Server.MapPath("~/debug/Certificates_GSC.p12").ToString(), "")
+    '        ''Stream.AuthenticateAsClient(Me.appleSettings.Host, Me.certificates, System.Security.Authentication.SslProtocols.Ssl3, False)
+
+    '        'ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
+
+    '        'Dim rejected = push.SendToApple(p)
+    '        'For Each item In rejected
+    '        '    Console.WriteLine(item)
+    '        'Next
+    '        'Console.ReadLine()
+    '        'Return result
+    '    Catch ex As Exception
+    '        Return ex.Message
+    '    End Try
+    'End Function
+
+End Class

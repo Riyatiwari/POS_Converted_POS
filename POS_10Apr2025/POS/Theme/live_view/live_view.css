@@ -1,0 +1,137 @@
+.divmargin
+{
+    margin-left: 2px;
+    margin-right: 2px;
+}
+.divbr
+{
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+.divbr2
+{
+    height: 100px;
+    margin-bottom: 2px;
+}
+.divWhit
+{
+    margin-top: 2px;
+    background-color: White;
+}
+.divmargin2
+{
+    padding-top: 5px;
+    padding-left: 40%;
+    height: 20px;
+}
+body
+{
+    color: #393939;
+    font-size: 15px;
+    font-family: "Open Sans";
+}
+.divShapeVal
+{
+    height: 460px;
+    width: 100%;
+    overflow: auto;
+    background-color: White;
+}
+.draggable
+{
+    border-radius: 25px;
+    float: left;
+    font-size: 0.6em;
+}
+.ui-widget-header p, .ui-widget-content p
+{
+    margin: 0;
+}
+#snaptarget
+{
+    height: 140px;
+}
+#rcorners2
+{
+    border: 2px solid #8AC007;
+    height: 170px;
+}
+.rcorners2
+{
+    border: 2px solid #8AC007;
+    height: 510px;
+}
+.btn-successBlue
+{
+    color: #ffffff;
+    background-color: #3498db;
+    border: solid 0px #ffffff;
+}
+
+.btn-successBlue:hover
+{
+    color: #ffffff;
+    background-color: #47a447;
+    border-color: #3e8f3e;
+}
+.btnflat
+{
+    padding: 8px;
+    font-size: 14px;
+    text-decoration: none;
+    vertical-align: middle;
+    float: right;
+}
+.sizeMenuDiv
+{
+    height: 602px;
+}
+.divBackground
+{
+    height: 598px;
+    width: 100%;
+    overflow: auto;
+    background-color: White;
+}
+.rmLeftImage
+{
+    min-width: 18px;
+    max-width: 18px;
+    min-height: 18px;
+    max-height: 18px;
+}
+.rwCloseButton
+{
+    visibility: hidden !important;
+}
+.btn-CloseRead
+{
+    color: #ffffff;
+    background-color: #E04343;
+    border: solid 0px #ffffff;
+}
+.btnflat
+{
+    padding: 8px;
+    font-size: 14px;
+    text-decoration: none;
+    vertical-align: middle;
+    float: right;
+}
+.lnkbtnNoColor
+{
+    padding: 8px;
+    font-size: 14px;
+    text-decoration: none;
+    vertical-align: middle;
+}
+.rddlItem
+{
+    color: #393939 !important;
+    font-size: 15px !important;
+}
+.RadDropDownList.RadDropDownList_MetroTouch
+{
+    color: #393939 !important;
+    font-size: 15px !important;
+}

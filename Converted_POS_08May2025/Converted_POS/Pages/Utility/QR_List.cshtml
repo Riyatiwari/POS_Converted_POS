@@ -1,0 +1,658 @@
+﻿@page
+@model Converted_POS.Pages.Utility.QR_ListModel
+@{
+    ViewData["Title"] = "QR_List";
+}
+
+@section link {
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Utility/QR_List">QR List</a></li>
+        </ol>
+    </div>
+
+    <link href="~/js/vendor2/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/fonts/nunito.css" rel="stylesheet" />
+    <script src="~/js/vendors/googleapis/jquery.min.js"></script>
+    <script src="~/js/demo/datatables-demo.js"></script>
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            $('#Lsummary thead tr').clone(true).appendTo('#Lsummary thead');
+            Grid();
+        });
+
+        function Grid() {
+            $("#Lsummary tr").not(':first').hover(
+                function () {
+                    $(this).css("background", "#efefef").css("cursor", "Pointer").css("font-weight", "bold").css("box-shadow", "0 4px 2px -3px rgba(0, 0, 0, 0.5) inset").css("-webkit-box-shadow", "0 4px 2px -3px rgba(0, 0, 0, 0.5) inset");
+                },
+                function () {
+                    $(this).css("background", "").css("cursor", "").css("font-weight", "").css("box-shadow", "").css("-webkit-box-shadow", "");
+                }
+            );
+
+            var groupCol = 0;
+
+            var table = $('#Lsummary').DataTable({
+
+                orderCellsTop: true,
+                dom: 'Bfrtip',
+                "buttons": [
+                    'excel'
+                ],
+                "stripeClasses": ['odd-row', 'even-row'],
+                "destroy": true,
+                "columnDefs": [
+                    { "visible": true, "targets": +groupCol },
+                    {
+                        'targets': [1], /* column index */
+                        'orderable': false,
+                    },
+                ],
+                "order": [[groupCol, 'asc']],
+                "displayLength": 50,
+                "drawCallback": function (settings) {
+
+                    var api = this.api();
+                    var rows = api.rows({ page: 'current' }).nodes();
+                    var last = null;
+
+                    api.column(groupCol, { page: 'current' }).data().each(function (group, i) {
+
+                        if (last !== group) {
+                            $(rows).eq(i).before(
+                                //'<tr class="group"><td colspan="8"> Location Group : ' + group + '</td> </tr>'
+                            );
+                            last = group;
+                        }
+                    });
+                }
+            });
+
+            var table1 = $('#Lsummary').DataTable();
+            $('#Lsummary thead tr:eq(1) th').each(function (i) {
+                var title = $(this).text();
+                if (i == 3) {
+                    $(this).html('<input type="text" style="width:98%;visibility: hidden;" placeholder="" />');
+                }
+                else {
+
+                    $(this).html('<input type="text" style="width:98%" placeholder="Search" />');
+                }
+
+                $('input', this).on('keyup', function () {
+
+                    if (table1.column(i).search() !== this.value) {
+                        table1
+
+                            .column($(this).parent().index() + ':visible')
+                            .search(this.value)
+                            .draw()
+                            ;
+
+                    }
+                    else {
+                        table1
+                            .column($(this).parent().index() + ':visible')
+                            .search('')
+                            .draw()
+                            ;
+
+                    }
+                });
+            });
+        }
+    </script>
+
+    <script language="javascript" type="text/javascript">
+
+        $(document).ready(function () {
+            var moveLeft = 10;
+            var moveDown = 10;
+
+            $('td.trigger').hover(function (e) {
+                $('div#pop-up').show();
+            }, function () {
+                $('div#pop-up').hide();
+            });
+
+            $('td.trigger').mousemove(function (e) {
+                $("div#pop-up").css('top', e.pageY + moveDown).css('left', e.pageX + moveLeft);
+            });
+
+        });
+    </script>
+    <style type="text/css">
+        .commonButton {
+            width: 150px;
+            height: 30px;
+        }
+    </style>
+
+
+
+    <script>
+        $(document).ready(function () {
+            // Generate QR Code Button Click Handler
+            $('.generateCodeButton').click(function () {
+                var tillUUID = $(this).data('tilluuid');
+
+                $.ajax({
+                    url:'/QR/GenerateQR',
+                    method: 'POST',
+                    data: { tillUUID: null },
+                           success: function (response) {
+            console.log("Server response:", response);  // Log the full response object to check its structure
+            if (response.success) {
+                console.log("QR code generation successful.");
+                // Update the image with the generated QR code
+                $('#imgQR_' + tillUUID).attr('src', 'data:image/png;base64,' + response.qrCodeBase64);
+                $('#generatedCode_' + tillUUID).html('QR Code Generated');
+                $('#generatedCodeContainer_' + tillUUID).css('display', "block");
+            } else {
+                console.error('Error generating QR code:', response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error in AJAX request:', error);
+            console.error('XHR Response Text:', xhr.responseText);  // Log the response text to get more information about the error
+        }
+
+                });
+            });
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Function to handle the click event
+        function generateCode(tillUUID) {
+            console.log(tillUUID);
+            $.ajax({
+                url: '/Utility/QR_List?handler=OnPostGenerateCode',  // URL to the OnPost handler
+                type: 'POST',
+                data: { tillUUID: tillUUID },  // Send TillUUID to server
+                success: function (response) {
+                    if (response.success) {
+                        // Update the UI with the generated code
+                        console.log("response.tillUUID"+response.tillUUID);
+                        $('#generatedCode_' + tillUUID).html('Generated Code: ' + response.generatedCode);
+                        // Optionally, you can display the validity time too
+                        $('#generatedCode_' + tillUUID).append('<br>Valid until: ' + response.validTime);
+                    } else {
+                        $('#generatedCode_' + tillUUID).html('Error: ' + response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error generating code:', error);
+                }
+            });
+        }
+    </script>
+    <script>
+        $('.generateCodeButton').click(function () {
+            var tillUUID = $(this).data('tilluuid');  // Get TillUUID from the button
+
+            $.ajax({
+                url: '@Url.Action("GenerateQRCode", "QRController")',
+                method: 'POST',
+                data: { tillUUID: tillUUID },
+                success: function (response) {
+                    if (response.success) {
+                        // Update the image with the generated QR code
+                        $('#imgQR_' + tillUUID).attr('src', 'data:image/png;base64,' + response.qrCodeBase64);
+                        $('#generatedCode_' + tillUUID).html('QR Code Generated');
+                        console.log(tillUUID);
+                    } else {
+                        console.error('Error generating QR code:', response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error in AJAX request:', error);
+                }
+            });
+        });</script>
+    <script>
+        $(document).on('click', '.generateCodeButton', function () {
+            var tillUUID = $(this).data('tilluuid');
+            $.ajax({
+                url: '/Utility/GenerateQRCode',
+                type: 'POST',
+                data: { tillUUID: tillUUID },
+                success: function (response) {
+                    // Update the row with the generated QR code and code
+                    $('#generatedCode_' + tillUUID).html(response.GeneratedCode);
+                    $('#imgQR_' + tillUUID).attr('src', 'data:image/png;base64,' + response.QRCodeBytes);
+                }
+            });
+        });</script>
+    <script>
+        // Get the first TillUUID from TempData (assume it's a comma-separated string)
+        var tillUUID = '@TempData["TillUUID"]'.split(',')[0];  // If TempData contains a comma-separated string
+    </script>
+
+    <script>
+        // Set the data-tilluuid attribute for all buttons after page load
+        $(document).ready(function () {
+            $('.generateCodeButton').each(function () {
+                $(this).attr('data-tilluuid', tillUUID); // Set the tillUUID dynamically from TempData
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Attach a click event to all generate QR buttons
+            $('.generateCodeButton').click(function () {
+                var tillUUID = $(this).data('tilluuid');
+                var machineName = $(this).data('machine_name');
+                var machineId = $(this).data('machine_id');
+                var locationId = $(this).data('location_id');
+                var venueId = $(this).data('venue_id');
+                var locationName = $(this).data('location_name');
+                var venueName = $(this).data('venue_name');
+
+                // Set the hidden fields with these values
+                $('#hiddenMachineName_' + tillUUID).val(machineName);
+                $('#hiddenMachineId_' + tillUUID).val(machineId);
+                $('#hiddenLocationId_' + tillUUID).val(locationId);
+                $('#hiddenVenueId_' + tillUUID).val(venueId);
+                $('#hiddenLocationName_' + tillUUID).val(locationName);
+                $('#hiddenVenueName_' + tillUUID).val(venueName);
+
+                // Optionally, you can log this to console for debugging
+                console.log('TillUUID:', tillUUID);
+                console.log('Machine Name:', machineName);
+                console.log('Machine Id:', machineId);
+                console.log('Venue Id:', venueId);
+                console.log('Location Id:', locationId);
+                console.log('Location Name:', locationName);
+                console.log('Venue Name:', venueName);
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Attach a click event to all generate QR buttons
+            $('.generateCodeButton').click(function () {
+                var tillUUID = $(this).data('tilluuid');
+                var machineName = $(this).data('machine_name');
+                var machineId = $(this).data('machine_Id');
+                var locationId = $(this).data('location_Id');
+                var venueId = $(this).data('venue_Id');
+                var locationName = $(this).data('location_name');
+                var venueName = $(this).data('venue_name');
+
+                // Log to console (for debugging purposes)
+                console.log('TillUUID:', tillUUID);
+                console.log('Machine Name:', machineName);
+                console.log('Machine Id:', machineId);
+                console.log('Venue Id:', venueId);
+                console.log('Location Id:', locationId);
+                console.log('Location Name:', locationName);
+                console.log('Venue Name:', venueName);
+
+                // Optionally, you can send this data via AJAX or a form submit
+                // Example: Sending an AJAX request to a controller action
+
+                $.ajax({
+                    url: '/YourController/GenerateQRCode', // Replace with your actual action URL
+                    type: 'POST',
+                    data: {
+                        tillUUID: tillUUID,
+                        machineName: machineName,
+                        machineId: machineId,
+                        venueId: venueId,
+                        locationId: locationId,
+                        locationName: locationName,
+                        venueName: venueName
+                    },
+                    success: function (response) {
+                        // Handle the response from the server (e.g., display QR code)
+                        if (response.success) {
+                            $('#generatedCode_' + tillUUID).html('<strong>Generated Code:</strong> ' + response.generatedCode);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Attach click event to all generate QR buttons
+            $('.generateCodeButton').click(function () {
+                // Get data attributes from the button that was clicked
+                var tillUUID = $(this).data('tilluuid');
+                var machineName = $(this).data('machine_name');
+                var machineId = $(this).data('machine_id');
+                var venueId = $(this).data('venue_id');
+                var locationId = $(this).data('location_id');
+                var locationName = $(this).data('location_name');
+                var venueName = $(this).data('venue_name');
+
+                // Now, you can send this data via AJAX to the server
+                $.ajax({
+                    url: '/QR/GenerateQR', // Replace with your controller's action URL
+                    type: 'POST',
+                    data: {
+                        tillUUID: tillUUID,
+                        machineName: machineName,
+                        machineId: machineId,
+                        venueId: venueId,
+                        locationId: locationId,
+                        locationName: locationName,
+                        venueName: venueName
+                    },
+                    success: function (response) {
+                        // Handle success, you can update the UI with the QR code or generated code
+                        console.log(response);  // or handle the response accordingly
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error: " + error);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Attach click event to all generate QR buttons
+            $('.generateCodeButton').click(function () {
+                // Get data attributes from the button that was clicked
+                var tillUUID = $(this).data('tilluuid');
+                var machineName = $(this).data('machine_name');
+                var machineId = $(this).data('machine_id');
+                var venueId = $(this).data('venue_id');
+                var locationId = $(this).data('location_id');
+                var locationName = $(this).data('location_name');
+                var venueName = $(this).data('venue_name');
+
+                // Now, you can send this data via AJAX to the server
+                $.ajax({
+                    url: '/QR/GenerateQR', // Replace with your controller's action URL
+                    type: 'POST',
+                    data: {
+                        tillUUID: tillUUID,
+                        machineName: machineName,
+                        machineId: machineId,
+                        venueId: venueId,
+                        locationId: locationId,
+                        locationName: locationName,
+                        venueName: venueName
+                    },
+                    success: function (response) {
+                        // Handle success, you can update the UI with the QR code or generated code
+                        console.log(response);  // or handle the response accordingly
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error: " + error);
+                    }
+                });
+            });
+        });</script>
+    <script>
+        $(document).on('click', '.generateCodeButton', function () {
+            var tillUUID = $(this).data('tilluuid');
+            var machineName = $(this).data('machine_name');
+            var machineId = $(this).data('machine_id');
+            var venueId = $(this).data('venue_id');
+            var locationId = $(this).data('location_id');
+            var locationName = $(this).data('location_name');
+            var venueName = $(this).data('venue_name');
+
+            // Now you can pass these values to the server, for example, via an AJAX request:
+            $.post('/QR/GenerateQR', {
+                tillUUID: tillUUID,
+                machineName: machineName,
+                machineId: machineId,
+                venueId: venueId,
+                locationId: locationId,
+                locationName: locationName,
+                venueName: venueName
+            }, function (response) {
+                // Handle the response (e.g., update the page with the generated QR code)
+            });
+        });</script>
+    <script>
+        $(".generateCodeButton").on("click", function (e) {
+            e.preventDefault();
+
+            var form = $(this).closest("form");
+            var formData = form.serialize();  // Serialize the form data
+
+            $.ajax({
+                url: form.attr("action"),
+                method: "POST",
+                data: formData,
+                success: function (response) {
+                    // Handle the response, for example, update the page with the new QR code
+                    alert("QR Code generated successfully!");
+                },
+                error: function (xhr, status, error) {
+                    alert("An error occurred: " + error);
+                }
+            });
+        });</script>
+    <script>
+        $(document).on("click", ".your-button-class", function () {
+            // Use class selector to get the hidden input
+            var machineId = $(this).closest('tr').find(".machine_id").val();
+            var locationId = $(this).closest('tr').find(".location_id").val();
+            var venueId = $(this).closest('tr').find(".venue_id").val();
+
+            console.log("11Machine ID: " + machineId);
+            console.log("11Location ID: " + locationId);
+            console.log("11Venue ID: " + venueId);
+
+            // You can now pass these values to an AJAX call, or use them in any other logic.
+        });</script>
+    <script>
+        $(document).on('click', '.generateCodeButton', function () {
+            // Get the closest row (tr) or parent container
+            var row = $(this).closest('tr');
+
+            // Retrieve the machine_id from the hidden input field within this row
+            var machineId = row.find('input[name="MachineId"]').val(); // or use $(this).closest('tr').find('input[name="MachineId"]').val();
+            var venueId = row.find('input[name="VenueId"]').val(); // or use $(this).closest('tr').find('input[name="MachineId"]').val();
+            var locationId = row.find('input[name="LocationId"]').val(); // or use $(this).closest('tr').find('input[name="MachineId"]').val();
+
+            // Optionally log it to check if it's correct
+            console.log('Machine ID:', machineId);
+
+            // Now you can pass this `machineId` in your AJAX request or any other logic
+            $.ajax({
+                url: '/QR/GenerateQR', // Replace with your actual URL
+                type: 'POST',
+                data: {
+                    machineId: machineId,
+                    venueId: venueId,// Send machineId to the server
+                    locationId: locationId,// Send machineId to the server
+                    // Add other parameters if needed
+                },
+                success: function (response) {
+                    // Handle the response
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });</script>
+
+    <script>
+        function generateCode(tillUUID) {
+                // Set the tillUUID value in the hidden input
+                let test1=document.getElementById("tillUUIDInput").value = tillUUID;
+
+                // Optionally show loading message
+                let test2=document.getElementById('loadingMessage_' + tillUUID).style.display = 'block';
+
+                // Submit the form via AJAX or regular submit
+                document.getElementById("generateForm").submit();
+                console.log("GENERATARE CODE : "+test1,test2);
+            }</script>
+
+}
+<form method="post" id="generateForm">
+    <div class="col-lg-12">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">QR List</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="row">
+                        <!-- New QR Button -->
+
+                    </div>
+                    <br />
+                    <input type="hidden" id="tillUUIDInput" name="tillUUID" />
+                    <div class="row" id="divPGroup" runat="server">
+                        <div class="col-lg-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="Lsummary" width="99%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Till Name</th>
+                                            <th>TillUUID</th>
+                                            <th>Location Name</th>
+                                            <th>Venue Name</th>
+                                            <th>Text QRcode</th>
+                                            <th>Link QRcode</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var item in Model.QR)
+                                        {
+                                            <tr>
+                                                <td ondblclick="window.location = '/Utility/QR_List?ID=@item.machine_id'">
+                                                    &nbsp;@Html.DisplayFor(modelItem => item.machine_name)
+                                                </td>
+                                                <td ondblclick="window.location = '/Utility/QR_List?ID=@item.machine_id'">
+                                                    &nbsp;@Html.DisplayFor(modelItem => item.TillUUID)
+                                                </td>
+                                                <td ondblclick="window.location = '/Utility/QR_List?ID=@item.machine_id'">
+                                                    &nbsp;@Html.DisplayFor(modelItem => item.location_name)
+                                                </td>
+                                                <td ondblclick="window.location = '/Utility/QR_List?ID=@item.machine_id'">
+                                                    &nbsp;@Html.DisplayFor(modelItem => item.venue_name)
+                                                </td>
+                                                <td>
+                                                    @if (item.QRCodeBytes != null && item.QRCodeBytes.Length > 0)
+                                                    {
+                                                        <img id="imgQR_@item.TillUUID"
+                                                             src="data:image/png;base64,@Convert.ToBase64String(item.QRCodeBytes)"
+                                                             alt="QR Code" width="150" height="150" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>No QR Code Available</span> <!-- Handle the case where QR code is not available -->
+                                                    }
+
+                                                </td>
+                                                <td>
+                                                    @if (item.QRCodeLink != null && item.QRCodeLink.Length > 0)
+                                                    {
+                                                        <img id="imgQR_@item.TillUUID"
+                                                             src="data:image/png;base64,@Convert.ToBase64String(item.QRCodeLink)"
+                                                             alt="QR Code" width="150" height="150" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>No QR Code Available</span> <!-- Handle case where no QR code is available -->
+                                                    }
+                                                </td>
+
+                                                <td>
+                                                    @if (string.IsNullOrEmpty(item.TillUUID))
+                                                    {
+                                                        <form method="post" asp-page-handler="GenerateQR">
+                                                            @* <input type="hidden" name="TillUUID" value="@item.TillUUID" /> *@
+                                                            <input type="hidden" name="MachineName" value="@item.machine_name" />
+                                                            <input type="hidden" name="MachineId" value="@item.machine_id" />
+                                                            <input type="hidden" name="locationId" value="@item.location_id" /> <!-- Corrected hidden field for locationId -->
+                                                            <input type="hidden" name="VenueId" value="@item.venue_id" />
+                                                            <input type="hidden" name="LocationName" value="@item.location_name" />
+                                                            <input type="hidden" name="VenueName" value="@item.venue_name" />
+                                                            <button type="submit" class="generateCodeButton">
+                                                                Generate QR
+                                                            </button>
+                                                        </form>
+                                                        <button class="generateCodeButton" name="generateCodeButton" value="@item.TillUUID"
+                                                                data-tilluuid="@item.TillUUID" onclick="generateCode('@item.TillUUID')">
+                                                            Generate Code
+                                                        </button> <!-- Loading message -->
+                                                        <div class="loadingMessage" id="loadingMessage_@item.TillUUID" style="display: none;">
+                                                            Generating code...
+                                                        </div> <!-- Generated code container -->
+
+                                                        @* <div id="generatedCodeContainer_@item.TillUUID" > *@
+                                                        @*     <div><strong>Generated Code: </strong><span id="generatedCode_@item.TillUUID">@item.GeneratedCode</span></div> *@
+                                                        @*     <div><strong>Valid Until: </strong><span id="validTime_@item.TillUUID"></span>@item.ValidTime</div> *@
+                                                        @* </div> *@
+                                                    }
+                                                    else
+                                                    {
+                                                        <form method="post" action="/QR/GenerateQR">
+                                                            <input type="hidden" name="TillUUID" value="@item.TillUUID" />
+                                                            <input type="hidden" name="MachineName" value="@item.machine_name" />
+                                                            <input type="hidden" name="MachineId" value="@item.machine_id" />
+                                                            <input type="hidden" name="locationId" value="@item.location_id" />
+                                                            <input type="hidden" name="VenueId" value="@item.venue_id" />
+                                                            <input type="hidden" name="LocationName" value="@item.location_name" />
+                                                            <input type="hidden" name="VenueName" value="@item.venue_name" />
+                                                        </form>
+                                                        <button class="generateCodeButton" name="generateCodeButton" value="@item.TillUUID"
+                                                                data-tilluuid="@item.TillUUID" onclick="generateCode('@item.TillUUID')">
+                                                            Generate Code
+                                                        </button>
+
+                                                        <div class="loadingMessage" id="loadingMessage_@item.TillUUID" style="display: none;">
+                                                            Generating code...
+                                                        </div>
+                                                        @if (!string.IsNullOrEmpty(item.GeneratedCode))
+                                                        {
+                                                            <div>
+                                                                <strong>Code:</strong> @item.GeneratedCode
+                                                                <br /><br />
+                                                                AllInOne Code:<br />
+                                                                <strong>#@item.GeneratedCode</strong><br />
+                                                                <span>Valid for @item.ValidTime </span><span>minutes</span>
+                                                                @* (Valid for @item.ValidTime?.ToString("MM/dd/yyyy HH:mm")") *@
+                                                            </div>
+                                                        }
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Till Name</th>
+                                            <th>TillUUID</th>
+                                            <th>Location Name</th>
+                                            <th>Venue Name</th>
+                                            <th>Text QRcode</th>
+                                            <th>Link QRcode</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,410 @@
+@model Converted_POS.ViewModels.TransactionReportViewModel
+@using System.Data
+@{
+    ViewData["Title"] = "Transaction Details";
+}
+
+@section Styles {
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="~/vendor/select2/select2.min.css" rel="stylesheet">
+    <style>
+        .table th, .table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+        .table th {
+            background-color: #B8DBFD;
+            font-weight: bold;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        tr.group {
+            background-color: #8fd6fd !important;
+            color: #111111;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .select2-container {
+            width: 100% !important;
+        }
+    </style>
+}
+
+<div class="page-header pull-left">
+    <ol class="breadcrumb page-breadcrumb pull-left">
+        <li><i class="fa fa-home"></i>&nbsp;<a asp-controller="Home" asp-action="Index">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+        <li class="active">Transaction Details</li>
+    </ol>
+</div>
+
+<div class="panel panel-yellow">
+    <div class="panel-heading">Transaction Details</div>
+    <div class="panel-body pan">
+        <div class="form-body pal">
+            @if (!Model.CanView)
+            {
+                <div class="alert alert-danger">
+                    You do not have permission to view this report.
+                </div>
+                return;
+            }
+
+            <!-- Filters -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="fromDate">From Date</label>
+                        <input type="date" class="form-control" id="fromDate" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="toDate">To Date</label>
+                        <input type="date" class="form-control" id="toDate" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="durationType">Duration</label>
+                        <select class="form-control select2" id="durationType">
+                            <option value="Today">Today</option>
+                            <option value="Yesterday">Yesterday</option>
+                            <option value="This Week">This Week</option>
+                            <option value="This Month">This Month</option>
+                            <option value="This Year">This Year</option>
+                            <option value="Last Week">Last Week</option>
+                            <option value="Last Month">Last Month</option>
+                            <option value="Last Year">Last Year</option>
+                            <option value="Custom">Custom</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="locationSelect">Location</label>
+                        <select class="form-control select2" id="locationSelect">
+                            <option value="0">All Locations</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="tillSelect">Till</label>
+                        <select class="form-control select2" id="tillSelect" multiple="multiple">
+                            <option value="0">All Tills</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="paymentType">Payment Type</label>
+                        <select class="form-control select2" id="paymentType">
+                            <option value="ALL">All Types</option>
+                            <option value="CASH">Cash</option>
+                            <option value="CARD">Card</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12">
+                    <button type="button" class="btn btn-primary" id="btnSearch">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button type="button" class="btn btn-success" id="btnExport">
+                        <i class="fas fa-file-excel"></i> Export to Excel
+                    </button>
+                    <button type="button" class="btn btn-info" id="btnPrint">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                </div>
+            </div>
+
+            <!-- Group By Options -->
+            <div class="row mb-4">
+                <div class="col-12 text-right">
+                    <div class="btn-group">
+                        <label class="mr-2"><strong>Group By:</strong></label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="groupBy" id="groupByDate" value="date" checked>
+                            <label class="form-check-label" for="groupByDate">Date</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="groupBy" id="groupByTill" value="till">
+                            <label class="form-check-label" for="groupByTill">Till</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="groupBy" id="groupByOperator" value="operator">
+                            <label class="form-check-label" for="groupByOperator">Operator</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="groupBy" id="groupByPayment" value="payment">
+                            <label class="form-check-label" for="groupByPayment">Payment Type</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Table -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="transactionTable">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Till</th>
+                            <th>Operator</th>
+                            <th>Quantity</th>
+                            <th>Total Amount</th>
+                            <th>Tax</th>
+                            <th>Date</th>
+                            <th>Payment Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Transaction Details Modal -->
+<div class="modal fade" id="transactionDetailsModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Transaction Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Details will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/vendor/select2/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2
+            $('.select2').select2();
+
+            // Initialize DataTable
+            var table = $('#transactionTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '/api/TransactionReport/GetTransactions',
+                    data: function(d) {
+                        return $.extend({}, d, {
+                            fromDate: $('#fromDate').val(),
+                            toDate: $('#toDate').val(),
+                            duration: $('#durationType').val(),
+                            locationId: $('#locationSelect').val(),
+                            tillIds: $('#tillSelect').val().join(','),
+                            paymentType: $('#paymentType').val()
+                        });
+                    }
+                },
+                columns: [
+                    { data: 'productName' },
+                    { data: 'till' },
+                    { data: 'userName' },
+                    { 
+                        data: 'quantity',
+                        render: function(data) {
+                            return parseFloat(data).toFixed(2);
+                        }
+                    },
+                    { 
+                        data: 'totalAmount',
+                        render: function(data) {
+                            return parseFloat(data).toLocaleString('en-US', {
+                                style: 'currency',
+                                currency: 'USD'
+                            });
+                        }
+                    },
+                    { 
+                        data: 'taxAmount',
+                        render: function(data) {
+                            return parseFloat(data).toLocaleString('en-US', {
+                                style: 'currency',
+                                currency: 'USD'
+                            });
+                        }
+                    },
+                    { 
+                        data: 'createdDate',
+                        render: function(data) {
+                            return moment(data).format('DD/MM/YYYY HH:mm');
+                        }
+                    },
+                    { data: 'paymentType' },
+                    {
+                        data: null,
+                        render: function(data) {
+                            return '<button class="btn btn-sm btn-info btn-details" data-id="' + data.id + '"><i class="fas fa-info-circle"></i></button>';
+                        }
+                    }
+                ],
+                order: [[6, 'desc']],
+                pageLength: 25,
+                drawCallback: function(settings) {
+                    var api = this.api();
+                    var groupColumn = $('input[name="groupBy"]:checked').val();
+                    var columnIndex = {
+                        'date': 6,
+                        'till': 1,
+                        'operator': 2,
+                        'payment': 7
+                    }[groupColumn];
+
+                    if (columnIndex !== undefined) {
+                        var rows = api.rows({ page: 'current' }).nodes();
+                        var last = null;
+
+                        api.column(columnIndex, { page: 'current' }).data().each(function(group, i) {
+                            if (last !== group) {
+                                $(rows).eq(i).before(
+                                    '<tr class="group"><td colspan="9">' + group + '</td></tr>'
+                                );
+                                last = group;
+                            }
+                        });
+                    }
+                }
+            });
+
+            // Duration change handler
+            $('#durationType').change(function() {
+                if ($(this).val() === 'Custom') {
+                    $('#fromDate, #toDate').prop('disabled', false);
+                } else {
+                    $('#fromDate, #toDate').prop('disabled', true);
+                    var dates = calculateDateRange($(this).val());
+                    $('#fromDate').val(dates.fromDate);
+                    $('#toDate').val(dates.toDate);
+                }
+            });
+
+            // Search button click
+            $('#btnSearch').click(function() {
+                table.ajax.reload();
+            });
+
+            // Export button click
+            $('#btnExport').click(function() {
+                var params = $.param({
+                    fromDate: $('#fromDate').val(),
+                    toDate: $('#toDate').val(),
+                    duration: $('#durationType').val(),
+                    locationId: $('#locationSelect').val(),
+                    tillIds: $('#tillSelect').val().join(','),
+                    paymentType: $('#paymentType').val()
+                });
+                window.location.href = '/api/TransactionReport/ExportToExcel?' + params;
+            });
+
+            // Print button click
+            $('#btnPrint').click(function() {
+                window.print();
+            });
+
+            // Details button click
+            $('#transactionTable').on('click', '.btn-details', function() {
+                var id = $(this).data('id');
+                $.get('/api/TransactionReport/GetTransactionDetails/' + id, function(data) {
+                    $('#transactionDetailsModal .modal-body').html(data);
+                    $('#transactionDetailsModal').modal('show');
+                });
+            });
+
+            // Group by change
+            $('input[name="groupBy"]').change(function() {
+                table.draw();
+            });
+
+            // Load initial data
+            loadLocations();
+            loadTills();
+            setDefaultDates();
+        });
+
+        function calculateDateRange(durationType) {
+            var today = new Date();
+            var fromDate = new Date();
+            var toDate = new Date();
+
+            switch (durationType) {
+                case 'Today':
+                    break;
+                case 'Yesterday':
+                    fromDate.setDate(today.getDate() - 1);
+                    toDate.setDate(today.getDate() - 1);
+                    break;
+                case 'This Week':
+                    fromDate.setDate(today.getDate() - today.getDay());
+                    break;
+                case 'Last Week':
+                    fromDate.setDate(today.getDate() - today.getDay() - 7);
+                    toDate.setDate(today.getDate() - today.getDay() - 1);
+                    break;
+                case 'This Month':
+                    fromDate.setDate(1);
+                    break;
+                case 'Last Month':
+                    fromDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                    toDate = new Date(today.getFullYear(), today.getMonth(), 0);
+                    break;
+                case 'This Year':
+                    fromDate = new Date(today.getFullYear(), 0, 1);
+                    break;
+                case 'Last Year':
+                    fromDate = new Date(today.getFullYear() - 1, 0, 1);
+                    toDate = new Date(today.getFullYear() - 1, 11, 31);
+                    break;
+            }
+
+            return {
+                fromDate: fromDate.toISOString().split('T')[0],
+                toDate: toDate.toISOString().split('T')[0]
+            };
+        }
+
+        function loadLocations() {
+            $.get('/api/Location/GetAll', function(data) {
+                var select = $('#locationSelect');
+                data.forEach(function(item) {
+                    select.append(new Option(item.name, item.id));
+                });
+            });
+        }
+
+        function loadTills() {
+            $.get('/api/Till/GetAll', function(data) {
+                var select = $('#tillSelect');
+                data.forEach(function(item) {
+                    select.append(new Option(item.name, item.id));
+                });
+            });
+        }
+
+        function setDefaultDates() {
+            var dates = calculateDateRange('Today');
+            $('#fromDate').val(dates.fromDate);
+            $('#toDate').val(dates.toDate);
+            $('#fromDate, #toDate').prop('disabled', true);
+        }
+    </script>
+} 

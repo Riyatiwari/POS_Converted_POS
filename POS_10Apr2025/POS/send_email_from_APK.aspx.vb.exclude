@@ -1,0 +1,223 @@
+﻿Imports System.Data
+Imports System.Data.Common
+Imports System.Data.SqlClient
+Imports System.Reflection
+Imports System.ComponentModel
+Imports System.Web.Configuration
+Imports System.IO
+Partial Class send_email_from_APK
+     Inherits BaseClass
+    Dim oClsDataccess As New ClsDataccess()
+    Dim oclsRole As Controller_clsRole
+    Dim oclsProductGroup As New Controller_clsCategory
+    Dim oclsProduct As New Controller_clsProduct
+    Dim oclsLocation As New Controller_clsLocation
+    Dim oclsSales As New Controller_clsSales
+
+    'Dim strcon As SqlConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("POSControllerConnectionString").ConnectionString)
+
+
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+
+        Try
+            If Not Page.IsPostBack Then
+                send_mail()
+            End If
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Function send_mail()
+        Try
+
+            '--------------------get sales detail----------------------------
+            'oclsSales.Location_id = Val(0)
+            'oclsSales.cmp_id = Val(Session("cmp_id"))
+            Dim dtS As DataTable = oclsSales.Select_sales_email()
+
+            If dtS.Rows.Count > 0 Then
+
+                For sales = 0 To dtS.Rows.Count - 1
+
+
+                    Dim builder As New StringBuilder
+
+                    builder.Append("<html> <head></head><body style='font-family:verdana;font-size:12px;'>")
+                    builder.Append("<div style='width:100%;height:100%; color:#000000; font-family:verdana;border:1px solid " + dtS(0)("BG_Color").ToString() + ";'>")
+                    builder.Append("<div style='width:100%;height:100px;background-color:" + dtS(0)("BG_Color").ToString() + ";color: " + dtS(0)("Font_Color").ToString() + " '>")
+
+
+                    builder.Append("<table style='width:100%;height:100px;  font-family:verdana;background-color:" + dtS(0)("BG_Color").ToString() + ";color: " + dtS(0)("Font_Color").ToString() + "'>")
+                    builder.Append("<tr><td>&nbsp;")
+                    builder.Append("</td></tr>")
+                    builder.Append("<tr><td style='text-Align:center;'>")
+                    builder.Append(dtS(0)("company_name").ToString())
+                    builder.Append("</td></tr>")
+                    builder.Append("<tr><td>")
+                    builder.Append(" Phone : " + dtS(0)("contact").ToString() + " <br/> E-Mail : " + dtS(0)("email").ToString() + "")
+                    builder.Append("</td></tr>")
+                    builder.Append("<tr><td>&nbsp;")
+                    builder.Append("</td></tr>")
+                    builder.Append("</table>")
+
+                    builder.Append(" </div>")
+                    builder.Append("<table style='width:100%;height:200px; color:#000000;margin:5px;font-family:verdana;'>")
+                    builder.Append("<tr><td>")
+                    builder.Append("Dear Customer, ")
+                    builder.Append("</td></tr>")
+                    builder.Append("<tr><td>")
+                    builder.Append("Thank you for placing order with us. ")
+                    builder.Append("</td></tr>")
+                    builder.Append("<tr><td>")
+                    builder.Append("Order Confirmation order# " + dtS(sales)("sales_id").ToString() + " (" + System.DateTime.Now.ToString() + ")")
+                    builder.Append("</td></tr>")
+
+                    builder.Append("<tr><td>")
+                    builder.Append("&nbsp; ")
+                    builder.Append("</td></tr>")
+                    builder.Append("</table>")
+
+                    builder.Append("<table style='width:100%; border:1px solid #000000;font-family:verdana;font-size:12px;' cellpadding='0px' cellspacing='0px'>")
+                    builder.Append("<tr> <td ></td><td ></td> </tr>")
+
+                    builder.Append("<tr style='height: 50px;'><td colspan='2' style='text-align:center;'><b>" + Session("store").ToString() + "</b></td></tr>")  '"<br/>" + dtS.Rows(0)("name").ToString() +
+                    builder.Append("<tr><td colspan='2' style='border-bottom :1px dashed #000000;border-top:1px dashed #000000;'>")
+                    builder.Append("<table width='100%' style='  font-family:verdana;font-size:12px;'><tr>")
+                    builder.Append("<td width='30%'>VAT NUMBER</td>")
+                    builder.Append("<td width='5%'>:</td>")
+                    builder.Append("<td width='65%'>" + dtS.Rows(0)("Vat_No").ToString() + "</td>")
+                    builder.Append(" </tr></table> </tr>")
+                    builder.Append("<tr><td colspan='2'> <table width='100%'>")
+
+                    builder.Append("<tr><td >Till Name </td>")
+                    builder.Append("<td>:</td>")
+                    builder.Append("<td >" + Session("store").ToString() + "</td></tr>")
+
+                    builder.Append("<tr><td >Served By </td>")
+                    builder.Append("<td>:</td>")
+                    builder.Append("<td >" + dtS.Rows(sales)("StaffName").ToString() + "</td></tr>")
+                    builder.Append("<tr><td >Order# </td>")
+                    builder.Append("<td>:</td>")
+                    builder.Append("<td >" + dtS(sales)("sales_id").ToString() + "</td></tr>")
+                    builder.Append("<tr><td >Date & Time</td>")
+                    builder.Append("<td>:</td>")
+                    builder.Append("<td >" + System.DateTime.Now.ToString() + "</td></tr>")
+                    builder.Append("<tr><td >Table </td><td>:</td> <td >" + dtS.Rows(sales)("table_name").ToString() + "</td></tr>")
+
+                    builder.Append("<tr><td>&nbsp;")
+                    builder.Append("</td></tr>")
+
+                    builder.Append("<tr><td Colspan='3' style='text-align:Center'><b>Tax Invoice</b></td></tr>")
+                    builder.Append("</table></td></tr>")
+                    builder.Append("<tr><td colspan='2' style='border-bottom:1px dashed #000000;border-top:1px dashed #000000'>")
+                    builder.Append("<table width='100%' style='  font-family:verdana;font-size:12px;'>")
+
+                    Dim sub_total As Double = 0
+                    Dim group_total As Double = 0
+                    Dim sub_total_tax As Double = 0
+
+
+                    oclsSales.cmp_id = Val(Session("cmp_id"))
+                    oclsSales.sales_id = Val(dtS.Rows(sales)("sales_id").ToString())
+                    Dim dtResult As DataTable = oclsSales.Select_tsales_for_email()
+
+                    If dtResult.Rows.Count > 0 Then
+
+                        Dim last_dept As String = ""
+
+                        For index = 0 To dtResult.Rows.Count - 1
+
+                            If index = 0 Or last_dept <> dtResult(index)("deptName").ToString() Then
+
+                                last_dept = dtResult(index)("deptName").ToString()
+
+                                If index <> 0 Then
+                                    'GROUP SUBTOTAL
+                                    builder.Append("<tr> <td colspan='2' width='70%' style='border-top:1px dashed #000000'><b>Total Balance</b></td>")
+                                    builder.Append("<td width='5%' style='border-top:1px dashed #000000'></td><td width='25%' style ='text-align:right; border-top:1px dashed #000000'><b>" + String.Format("{0:0.00}", group_total) + "</b></td></tr>")
+
+                                    group_total = 0
+                                End If
+
+                                'Department name
+                                builder.Append("<tr><td width='70%'><b>" + last_dept + "</b></td> <td width='5%'> </td> <td width='25%'></td></tr>")
+
+                            End If
+
+                            'product name and price
+                            builder.Append("<tr><td>" + dtResult(index)("ProductName").ToString() + " </td> <td>1</td><td style='text-align:right;'>" + String.Format("{0:0.00}", Convert.ToDouble(dtResult(index)("Price").ToString())) + "</td></tr>")
+                            builder.Append("<tr><td>" + dtResult(index)("condiment").ToString() + " </td> <td></td><td style='text-align:right;'> </td></tr>")
+                            builder.Append("<tr><td>" + dtResult(index)("discount").ToString() + "(" + dtResult(index)("discount_name").ToString() + ") </td> <td></td><td> </td></tr>")
+                            group_total += Convert.ToDouble(dtResult(index)("Price").ToString())
+
+                            sub_total += Convert.ToDouble(dtResult(index)("Price").ToString())
+                            sub_total_tax += Convert.ToDouble(dtResult(index)("tax").ToString())
+                        Next
+                    End If
+
+                    If group_total <> 0 Then
+                        'GROUP SUBTOTAL
+                        builder.Append("<tr><td width='70%' colspan='2' style='border-top:1px dashed #000000'><b>Total Balance</b></td>")
+                        builder.Append("<td  width='5%' style='border-top:1px dashed #000000'></td><td width='25%' style ='text-align:right; border-top:1px dashed #000000'><b>" + String.Format("{0:0.00}", group_total) + "</b></td></tr>")
+
+                        group_total = 0
+                    End If
+
+                    builder.Append("<tr><td>&nbsp;")
+                    builder.Append("</td></tr>")
+                    builder.Append("</table></td></tr>")
+
+                    builder.Append("<tr><td colspan ='2' style='border-bottom:1px dashed #000000;'>")
+                    builder.Append("<table width='100%' style='font-family:verdana;font-size:12px;'><tr><td width='70%'><b>Tax Information</b></td>")
+                    builder.Append("<td width='5%'></td><td width='25%'></td></tr>")
+
+                    builder.Append("<tr><td>&nbsp;")
+                    builder.Append("</td></tr>")
+
+                    builder.Append("<tr><td width='70%'>VAT Total Sales</td><td width='5%'></td>")
+                    builder.Append("<td width='25%' style='text-align:right;'><b>" + String.Format("{0:0.00}", sub_total) + "</b></td></tr>")
+
+                    builder.Append("<tr><td width='70%'>VAT Tax Collection</td><td width='5%'></td>")
+                    builder.Append("<td width='25%' style='text-align:right;'><b>" + String.Format("{0:0.00}", sub_total_tax) + "</b></td></tr>")
+
+                    builder.Append("<tr><td>&nbsp;")
+                    builder.Append("</td></tr>")
+
+                    builder.Append("</table></td></tr>")
+                    builder.Append("<tr style='height: 20px;'><td colspan ='2' style='text-align:center;'> <b>Thanks For visiting us </b> </td></tr><tr><td>&nbsp;</td></tr></table>")
+
+                    'builder.Append("Thanks.")
+                    builder.Append("<div>")
+                    builder.Append("</body> </html>")
+
+                    Dim email As String
+                    Dim Subject As String
+
+                    If Not dtS.Rows(sales)("web_email").ToString() Is Nothing Then
+                        email = dtS.Rows(sales)("web_email").ToString()
+
+                        'madhvanimitesh@gmail.com
+                        Subject = "Order Receipt"
+
+                        MailTo_receipt(Val(Session("cmp_id")), Val(0), email, Subject, builder.ToString, "", "", "")
+
+                        '--------update email flag in m_sales-------------
+                        oclsSales.sales_id = Val(dtS.Rows(sales)("sales_id").ToString())
+                        Dim dt As DataTable = oclsSales.update_email_flag_sales()
+
+
+                    End If
+                Next
+
+
+            End If
+
+        Catch ex As Exception
+            LogHelper.Error("send_email_from_APK: send_mail:" + System.DateTime.Now.ToString() + ": " + ex.Message)
+
+        End Try
+    End Function
+
+End Class

@@ -1,0 +1,79 @@
+﻿@page
+@model Converted_POS.Pages.forms.Allergy_MasterModel
+@{
+    ViewData["Title"] = "Allergy_Master";
+}
+
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a asp-page="/Configuration/Allergy_List">Allergy List</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Configuration/Allergy_Master">Allergy Master</a></li>
+        </ol>
+    </div>
+}
+
+<form method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" id="hfallergy_id" name="allergy_id" asp-for="allergy.allergy_id" />
+    <br />
+    <div class="col-lg-12 ">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Allergy  Master</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="allergy.name">Name <span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="allergy.name" />
+                                <span asp-validation-for="allergy.name" class="text-danger"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <label asp-for="allergy.description">Description</label>
+                                <div class="clearfix"></div>
+                                <textarea class="form-control" asp-for="allergy.description" inputmode="full-width-latin"></textarea>
+                                <span asp-validation-for="allergy.description" class="text-danger"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <label asp-for="allergy.Aimage">
+                                    Upload :<input id="File1" type="file" name="AimageFile" />
+                                    @if (ViewData["Base64Image"] != null)
+                                    {
+                                        <img src="@ViewData["Base64Image"]" alt="Image" height="100px" width="100px" />
+                                    }
+                                    else
+                                    {
+                                    }
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right pal">
+                <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                <input type="submit" value="Cancel" class="btn btn-primary" formnovalidate asp-page-handler="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

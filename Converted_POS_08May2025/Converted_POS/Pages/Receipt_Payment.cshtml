@@ -1,0 +1,320 @@
+﻿@page
+@model Converted_POS.Pages.Receipt_Payment
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Receipt_Payment Page</title>
+    <link rel="stylesheet" href="~/menunew/styles.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+            /*background-color: #f9f9f9;*/
+            background-color: #fff;
+        }
+
+        #container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+             
+            height: 100vh;
+            padding: 20px;
+        }
+
+        #leftContainer, #rightContainer {
+            width: 45%;
+            padding: 20px;
+        }
+
+        #leftContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+           /* background-color: #fff;
+            border: 1px solid #ddd;*/
+            /*border-radius: 15px;*/
+           /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);*/
+        }
+
+
+        #leftCardContainer {
+            /*width: 60%;*/ /* Adjusted width for inner card-like container */
+            /*padding: 20px;
+            background-color: #f1f1f1;*/ /* Background color for inner container */
+            /*border-radius: 10px;*/ /* Rounded corners for inner container */
+            /*margin-bottom: 20px;*/ /* Margin bottom for spacing */
+            /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+
+            width: 60%;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+          /*  border-radius: 10px;*/
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #rightContainer {
+            width: 55%;
+            margin-right: 118px;
+            /*  background-color: #fff;
+            border: 1px solid #ddd;*/
+            /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+        }
+
+        .receipt-header, .receipt-footer {
+            text-align: center;
+            background-color: #f1f1f1;
+            padding: 10px 0;
+        }
+
+            .receipt-header img, .receipt-footer img {
+                max-width: 100%;
+                height: auto;
+            }
+
+        .receipt-content {
+            padding: 20px;
+        }
+
+            .receipt-content h1 {
+                font-size: 24px;
+                margin: 0 0 10px;
+            }
+
+            .receipt-content p {
+                margin: 0 0 10px;
+            }
+
+            .receipt-content table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+            }
+
+            .receipt-content table, .receipt-content th, .receipt-content td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            .receipt-content th {
+                background-color: #f1f1f1;
+                text-align: left;
+            }
+
+        #printButton {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            border: none;
+            color: black;
+            padding: 10px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 138px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+            #printButton:hover {
+                background-color: gray;
+            }
+
+        .no-print {
+            display: none;
+        }
+
+        #payLinkButton {
+            background-color: #0f535a; /*#4CAF50    #0f535a*/
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 20px 0;
+            cursor: pointer;
+            border-radius: 8px;
+            width: 88%;
+        }
+
+            #payLinkButton:hover {
+                background-color: #1a6b75; /*#45a049*/
+            }
+
+        #payTenderPOS {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        #totalAmount {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .circular-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .label-due-today {
+            background-color:lightgray;
+            padding: 5px 10px;
+            margin: 10px 0;
+            display: inline-block;
+            border-radius: 8px; /* Rounded corners for label */
+        }
+
+        .spacer {
+            height: 40px;
+        }
+
+        .instruction-message {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Verdana, sans-serif;
+            font-size: 14px;
+            color: #000000;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+ 
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div id="container">
+            <div id="leftContainer">
+                <div id="leftCardContainer">
+                    @Html.Raw(ViewData["image"])
+                    <div id="payTenderPOS">TENDER POS</div>
+                    <div id="totalAmount">@ViewData["TotalAmount"]</div>
+                    <label>INVOICE-</label>
+                    <div class="spacer"></div>
+                    <label style="background-color:lightgray" class="label-due-today">DUE TODAY</label>
+                    <hr />
+                    @*<a id="payLinkButton" href="@Model.LinkPay" @(ViewData["DisablePayNowButton"] != null && (bool)ViewData["DisablePayNowButton"] ? "disabled" : "") onclick="return !$(this).attr('disabled');">Pay Now</a>*@
+                    <a id="payLinkButton" href="@Model.LinkPay">Pay Now</a>
+                    @*<button id="payLinkButton" onclick="redirectToPayLink()">Pay by Link</button>*@
+                    <div class="spacer"></div>
+                    <lable>We'll take you to your bank's website or app , with all the correct payment details prefeilled</lable>
+
+                </div>
+
+            </div>
+            <div id="rightContainer" class="receipt-container">
+                @if (ViewData["ReceiptContent"] != null)
+                {
+                @Html.Raw(ViewData["ReceiptContent"])
+                }
+                else
+                {
+                <div id="printr" class="instruction-message">
+                    <p>Receipt will be available in a few minutes.</p>
+                </div>
+                }
+
+
+
+                @*@Html.Raw(ViewData["ReceiptContent"])*@
+            </div>
+
+
+        </div>
+    </form>
+
+    <div></div>
+    @*<button id="printButton">Print🖨️</button>*@
+    <!-- Render print button if ShowPrintButton is true -->
+    @if (ViewData["ShowPrintButton"] != null && (bool)ViewData["ShowPrintButton"])
+    {
+    <button id="printButton">Print🖨️</button>
+    }
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     
+    <script>
+        $(document).ready(function () {
+            var printing = false;
+
+
+
+
+
+
+            $("#printButton").click(function () {
+                if (!printing) {
+                    printing = true;
+
+                    var printContents = $("#rightContainer").html();
+
+                    var iframe = $("<iframe>");
+                    iframe.css({ position: "absolute", top: "-99999px" });
+                    $("body").append(iframe);
+
+                    var doc = iframe[0].contentWindow.document;
+                    doc.open();
+                    doc.write('<html><head><title>Print</title>');
+                    doc.write('<style>');
+                    doc.write('body { font-family: Arial, sans-serif; font-size: 14px; }');
+                    doc.write('.receipt-container { padding: 20px; }');
+                    doc.write('.receipt-header, .receipt-footer { text-align: center; background-color: #f1f1f1; padding: 10px 0; }');
+                    doc.write('.receipt-content { padding: 20px; }');
+                    doc.write('.receipt-content h1 { font-size: 24px; margin: 0 0 10px; }');
+                    doc.write('.receipt-content p { margin: 0 0 10px; }');
+                    doc.write('.receipt-content table { width: 100%; border-collapse: collapse; margin: 20px 0; }');
+                    doc.write('.receipt-content table, .receipt-content th, .receipt-content td { border: 1px solid #ddd; padding: 8px; }');
+                    doc.write('.receipt-content th { background-color: #f1f1f1; text-align: left; }');
+                    doc.write('</style>');
+                    doc.write('</head><body>');
+                    doc.write(printContents);
+                    doc.write('</body></html>');
+                    doc.close();
+
+                    iframe[0].contentWindow.focus();
+                    iframe[0].contentWindow.print();
+
+                    setTimeout(function () {
+                        iframe.remove();
+                        printing = false;
+                    }, 1000);
+                }
+            });
+
+            $("#printButton").on("dblclick", function (e) {
+                e.preventDefault();
+            });
+        });
+
+
+    </script>
+    <script>
+        function redirectToPayLink() {
+ 
+            var linkPayUrl = "@Model.LinkPay";
+
+         
+            window.location.href = linkPayUrl;
+        }
+    </script>
+</body>
+</html>

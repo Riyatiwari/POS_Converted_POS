@@ -1,0 +1,278 @@
+﻿<%@ Control Language="VB" AutoEventWireup="false" CodeFile="Immigration.ascx.vb"
+    Inherits="Controls_Immigration" %>
+<link href="../css/RadGrid_style.css" rel="stylesheet" type="text/css" />
+<div class="panel panel-yellow">
+    <div class="panel-heading">
+        <asp:Label ID="lblTitleUc" runat="server" meta:resourcekey="lblTitleResource1" Text="Immigration"> </asp:Label>
+    </div>
+    <style>
+        input[type="radio"], input[type="checkbox"]
+        {
+            margin: 4px !important;
+        }
+        .rgFilterRow > td
+        {
+            background-color: #ffffff !important;
+        }
+        .rgPagerCell.NextPrevAndNumeric
+        {
+            background-color: #ffffff !important;
+        }
+        .RadGrid .rgWrap.rgNumPart > a
+        {
+            padding: 0 !important;
+        }
+        .RadGrid_Default .rgNumPart a:hover span, .RadGrid_Default .rgNumPart a.rgCurrentPage span
+        {
+            background: #dddddd !important;
+        }
+        .rgWrap.rgNumPart span
+        {
+            margin: 3px;
+        }
+        .rgAltRow
+        {
+            background: #ffffff !important;
+        }
+        .RadGrid_Default .rgNumPart a:hover, .RadGrid_Default .rgNumPart a.rgCurrentPage
+        {
+            background: #dddddd !important;
+        }
+        .RadGrid .rgRow td, .RadGrid .rgAltRow td, .RadGrid .rgEditRow td, .RadGrid .rgFooter td, .RadGrid .rgFilterRow td, .RadGrid .rgHeader, .RadGrid .rgResizeCol, .RadGrid .rgGroupHeader td
+        {
+            border: 1px solid #dddddd;
+        }
+    </style>
+    <div class="panel-body pan">
+        <div class="form-body pal">
+            <div class="form-group" style="text-align: right;">
+                <asp:LinkButton ID="btnImmigrationUpload" runat="server" ToolTip="Upload" CssClass="btn btn-xs btn-default"
+                    OnClientClick="return openImport()">
+                    <i class="fa fa-upload"></i>&nbsp;<asp:Label ID="lblUpload" runat="server" Text="Upload"
+                        meta:resourcekey="btnUploadResource1"></asp:Label>
+                </asp:LinkButton>
+            </div>
+            <div class="form-group">
+                <asp:Label ID="lblmsg" runat="server" Text=""></asp:Label>
+                <asp:ValidationSummary ID="ValidationSummary5" runat="server" ValidationGroup="valdImmigrationDetail"
+                    DisplayMode="List" ShowSummary="false" ShowMessageBox="true" CssClass="message error no-margin">
+                </asp:ValidationSummary>
+                <asp:HiddenField ID="hfImmID" runat="server" Value="0" />
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <strong>
+                        <asp:Label ID="lblType" for="inputUsername" class="control-label" runat="server"
+                            meta:resourcekey="lblTypeResource1" Text="Type"></asp:Label></strong>
+                    <div class="input-icon">
+                        <asp:RadioButtonList ID="rblImmDetailType" runat="server" RepeatColumns="5" AutoPostBack="True">
+                            <asp:ListItem Text="Passport" Value="Passport" Selected="True"></asp:ListItem>
+                            <asp:ListItem Text="Visa" Value="Visa"></asp:ListItem>
+                            <asp:ListItem Text="Other" Value="Other"></asp:ListItem>
+                        </asp:RadioButtonList>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <strong>
+                        <asp:Label ID="lblCountry" for="inputUsername" class="control-label" runat="server"
+                            Text="Country" meta:resourcekey="lblCountryResource1"></asp:Label><span class='require'>
+                                *</span></strong>
+                    <div class="input-icon">
+                        <telerik:RadComboBox ID="ddlCOUNTRY_ID" runat="server" AllowCustomText="true" Skin="MetroTouch"
+                            Filter="StartsWith">
+                        </telerik:RadComboBox>
+                        <asp:RequiredFieldValidator ID="rfvCitizen" runat="server" ControlToValidate="ddlCOUNTRY_ID"
+                            Display="None" ValidationGroup="valdImmigrationDetail" ErrorMessage="Country is Required."
+                            InitialValue=""></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rfvCitizen2" runat="server" ControlToValidate="ddlCOUNTRY_ID"
+                            InitialValue="--SELECT--" Display="None" ValidationGroup="valdImmigrationDetail"
+                            ErrorMessage="Country is Required."></asp:RequiredFieldValidator>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <strong>
+                        <asp:Label ID="lblNumber" for="inputUsername" class="control-label" runat="server"
+                            Text="Number" meta:resourcekey="lblNumberResource1"></asp:Label><span class='require'>
+                                *</span></strong>
+                    <div class="input-icon">
+                        <telerik:RadTextBox ID="txtImm_No" runat="server" MaxLength="20" CssClass="form-control"
+                            Skin="">
+                        </telerik:RadTextBox>
+                        <asp:RequiredFieldValidator ID="rfvImmNo" runat="server" ControlToValidate="txtImm_No"
+                            Display="None" ValidationGroup="valdImmigrationDetail" ErrorMessage="Number is Required."></asp:RequiredFieldValidator>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <strong>
+                        <asp:Label ID="lblIssueStatus" for="inputUsername" class="control-label" runat="server"
+                            Text="Issue Status" meta:resourcekey="lblIssueStatusResource1"></asp:Label><span
+                                class='require'> *</span></strong>
+                    <div class="input-icon">
+                        <telerik:RadComboBox ID="ddlStatus" runat="server" AllowCustomText="true" Skin="MetroTouch"
+                            Filter="StartsWith">
+                            <Items>
+                                <telerik:RadComboBoxItem Text="--SELECT--" Value="-1" />
+                                <telerik:RadComboBoxItem Text="Student Visa" Value="Student Visa" />
+                                <telerik:RadComboBoxItem Text="Idefinite Leave to Remain" Value="Idefinite Leave to Remain" />
+                                <telerik:RadComboBoxItem Text="British Citizen" Value="British Citizen" />
+                                <telerik:RadComboBoxItem Text="European Nationals" Value="European Nationals" />
+                                <telerik:RadComboBoxItem Text="Tier 1 Working Visa" Value="Tier 1 Working Visa" />
+                                <telerik:RadComboBoxItem Text="Tier 2 Working Visa" Value="Tier 2 Working Visa" />
+                                <telerik:RadComboBoxItem Text="Tier 3 Working Visa" Value="Tier 3 Working Visa" />
+                                <telerik:RadComboBoxItem Text="Tier 4 Working Visa" Value="Tier 4 Working Visa" />
+                                <telerik:RadComboBoxItem Text="Tier 5 Working Visa" Value="Tier 5 Working Visa" />
+                                <telerik:RadComboBoxItem Text="Birth Certificate" Value="Birth Certificate" />
+                                <telerik:RadComboBoxItem Text="Adoption Certificate" Value="Adoption Certificate" />
+                                <telerik:RadComboBoxItem Text="Spouse Visa" Value="Spouse Visa" />
+                            </Items>
+                        </telerik:RadComboBox>
+                        <asp:RequiredFieldValidator ID="rfvStatus" runat="server" ControlToValidate="ddlStatus"
+                            InitialValue="" Display="None" ValidationGroup="valdImmigrationDetail" ErrorMessage="Status is Required."></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="rfvStatus2" runat="server" ControlToValidate="ddlStatus"
+                            InitialValue="--SELECT--" Display="None" ValidationGroup="valdImmigrationDetail"
+                            ErrorMessage="Status is Required."></asp:RequiredFieldValidator>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <strong>
+                        <asp:Label ID="lblIssueDate" for="inputUsername" class="control-label" runat="server"
+                            Text="Issue Date" meta:resourcekey="lblIssueDateResource1"></asp:Label><span class='require'>
+                                *</span></strong>
+                    <div class="input-icon">
+                        <telerik:RadDatePicker ID="txtImm_Issue_Date" runat="server" Skin="MetroTouch" Width="100%">
+                        </telerik:RadDatePicker>
+                        <asp:RequiredFieldValidator ID="rfvIssueDate" runat="server" ControlToValidate="txtImm_Issue_Date"
+                            Display="None" ValidationGroup="valdImmigrationDetail" ErrorMessage="Issue Date is Required."></asp:RequiredFieldValidator>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <strong>
+                        <asp:Label ID="lblDateofExpiry" for="inputUsername" class="control-label" runat="server"
+                            Text="Date of Expiry" meta:resourcekey="lblDateofExpiryResource1"></asp:Label><span
+                                class='require'> *</span></strong>
+                    <div class="input-icon">
+                        <telerik:RadDatePicker ID="txtImm_Date_of_Expiry" runat="server" AutoPostBack="true"
+                            Skin="MetroTouch" Width="100%">
+                        </telerik:RadDatePicker>
+                        <asp:RequiredFieldValidator ID="rfvExpiryDate" runat="server" ControlToValidate="txtImm_Date_of_Expiry"
+                            Display="None" ValidationGroup="valdImmigrationDetail" ErrorMessage="Date Of Expiry is Required."></asp:RequiredFieldValidator>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <strong>
+                        <asp:Label ID="lblReviewDate" for="inputUsername" class="control-label" runat="server"
+                            Text="Review Date" meta:resourcekey="lblReviewDateResource1"> </asp:Label><span class='require'>
+                                *</span></strong>
+                    <div class="input-icon">
+                        <telerik:RadDatePicker ID="txtImm_Review_Date" runat="server" Skin="MetroTouch" Width="100%">
+                        </telerik:RadDatePicker>
+                        <asp:RequiredFieldValidator ID="rfvReview" runat="server" ControlToValidate="txtImm_Review_Date"
+                            Display="None" ValidationGroup="valdImmigrationDetail" ErrorMessage="Review Date is Required."></asp:RequiredFieldValidator>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <strong>
+                        <asp:Label ID="lblComments" for="inputUsername" class="control-label" runat="server"
+                            Text="Comments" meta:resourcekey="lblCommentsResource1"></asp:Label></strong>
+                    <div class="input-icon">
+                        <telerik:RadTextBox ID="txtImm_Comments" runat="server" MaxLength="250" CssClass="form-control"
+                            Skin="">
+                        </telerik:RadTextBox>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <strong>
+                        <asp:Label ID="lblHoursLimitWeekly" for="inputUsername" class="control-label" runat="server"
+                            Text="Hours Limit (Weekly)" meta:resourcekey="lblHoursLimitWeeklyResource1"></asp:Label></strong>
+                    <div class="input-icon">
+                        <telerik:RadMaskedTextBox ID="rmtHours" runat="server" Mask="##:##" CssClass="form-control"
+                            Skin="">
+                        </telerik:RadMaskedTextBox>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-icon">
+                        <asp:LinkButton ID="lnkSave" runat="server" ToolTip="Save" Text="Save" CssClass="btn btn-info btn-outlined"
+                            ValidationGroup="valdImmigrationDetail" meta:resourcekey="lnkSaveResource1"> 
+                        </asp:LinkButton>
+                        &nbsp;
+                        <asp:LinkButton ID="lnkClear" runat="server" meta:resourcekey="lnkClearResource1"
+                            ToolTip="Cancel" Text="Cancel" CssClass="btn btn-primary btn-outlined"> 
+                        </asp:LinkButton>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <telerik:RadGrid ID="rgImmigration" AutoGenerateColumns="false" AllowPaging="True"
+                    AllowSorting="True" runat="server" ShowGroupPanel="False" PageSize="10" 
+                    EnableEmbeddedSkins="false" EnableLinqExpressions="false">
+                    <PagerStyle Mode="NextPrevAndNumeric" PrevPageText="<<" NextPageText=">>" PageSizeControlType="RadDropDownList"
+                        AlwaysVisible="true" />
+                    <SortingSettings EnableSkinSortStyles="false" />
+                    <GroupingSettings CaseSensitive="false" />
+                    <MasterTableView AutoGenerateColumns="False" DataKeyNames="Tran_id" EnableHeaderContextMenu="false"
+                        AllowFilteringByColumn="true">
+                        <Columns>
+                            <telerik:GridBoundColumn DataField="Type" HeaderText="Type" SortExpression="Type"
+                                ShowFilterIcon="false" CurrentFilterFunction="StartsWith" AllowFiltering="true"
+                                AutoPostBackOnFilter="false">
+                                <ItemStyle Width="20%" />
+                                <FooterStyle Width="20%" />
+                            </telerik:GridBoundColumn>
+                            <telerik:GridBoundColumn DataField="No" HeaderText="No." SortExpression="No" ShowFilterIcon="false"
+                                CurrentFilterFunction="StartsWith" AllowFiltering="true" AutoPostBackOnFilter="false">
+                                <ItemStyle Width="20%" />
+                                <FooterStyle Width="20%" />
+                            </telerik:GridBoundColumn>
+                            <telerik:GridDateTimeColumn DataField="issue_date" HeaderText="Issue Date" SortExpression="issue_date"
+                                DataFormatString="{0:dd/MM/yyyy}" ShowFilterIcon="false" CurrentFilterFunction="StartsWith"
+                                AutoPostBackOnFilter="false">
+                                <FilterTemplate>
+                                    <telerik:RadDatePicker ID="RDPissue_date1" runat="server" EnableTyping="false" Width="100%"
+                                        Height="34px" Skin="MetroTouch" AutoPostBack="false">
+                                        <DateInput ID="DateInput1" runat="server" DisplayDateFormat="dd/MM/yyyy" DateFormat="dd/MM/yyyy">
+                                        </DateInput>
+                                    </telerik:RadDatePicker>
+                                </FilterTemplate>
+                                <ItemStyle Width="20%" />
+                                <FooterStyle Width="20%" />
+                            </telerik:GridDateTimeColumn>
+                            <telerik:GridDateTimeColumn DataField="Expiry_Date" HeaderText="Expiry Date" SortExpression="Expiry_Date"
+                                DataFormatString="{0:dd/MM/yyyy}" ShowFilterIcon="false" CurrentFilterFunction="StartsWith"
+                                AutoPostBackOnFilter="false">
+                                <FilterTemplate>
+                                    <telerik:RadDatePicker ID="RDPissue_date2" runat="server" EnableTyping="false" Width="100%"
+                                        Height="34px" Skin="MetroTouch" AutoPostBack="false">
+                                        <DateInput ID="DateInput1" runat="server" DisplayDateFormat="dd/MM/yyyy" DateFormat="dd/MM/yyyy">
+                                        </DateInput>
+                                    </telerik:RadDatePicker>
+                                </FilterTemplate>
+                                <ItemStyle Width="20%" />
+                                <FooterStyle Width="20%" />
+                            </telerik:GridDateTimeColumn>
+                            <telerik:GridTemplateColumn HeaderText="Action" UniqueName="Action" AllowFiltering="true"
+                                AutoPostBackOnFilter="false">
+                                <ItemTemplate>
+                                    <asp:LinkButton ID="IbEdit" runat="server" CausesValidation="False" ImageUrl="#"
+                                        CssClass="btn btn-default btn-xs" Style="color: #777777;" ToolTip="Edit" CommandArgument='<%#Eval("Tran_id")%>'
+                                        CommandName="Editcol" OnClientClick="return true;"><i class="fa fa-edit fa-lg"></i>&nbsp;Edit</asp:LinkButton>&nbsp;
+                                    <asp:LinkButton ID="IbDelete" Style="color: White;" runat="server" CausesValidation="False"
+                                        CssClass="btn btn-danger btn-xs" ToolTip="Delete" CommandArgument='<%#Eval("Tran_id")%>'
+                                        CommandName="Del" OnClientClick="return confirm('Are you sure you want to Delete this Record ?');"><i class="fa fa-trash-o"></i>&nbsp;Delete</asp:LinkButton>
+                                </ItemTemplate>
+                                <FilterTemplate>
+                                    <asp:LinkButton ID="IbSearch" runat="server" CausesValidation="False" ImageUrl="#"
+                                        CssClass="btn btn-xs btn-success filter-submit" ToolTip="Search" CommandName="Search"><i class="fa fa-search"></i>&nbsp;Search</asp:LinkButton>
+                                    <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" ImageUrl="#"
+                                        CssClass="btn btn-xs btn-info filter-cancel" ToolTip="Reset" CommandName="Clear"><i class="fa fa-times"></i>&nbsp;Reset</asp:LinkButton>
+                                </FilterTemplate>
+                                <ItemStyle Width="20%" />
+                                <FooterStyle Width="20%" />
+                            </telerik:GridTemplateColumn>
+                        </Columns>
+                    </MasterTableView>
+                </telerik:RadGrid>
+            </div>
+        </div>
+    </div>
+</div>

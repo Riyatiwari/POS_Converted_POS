@@ -1,0 +1,23 @@
+﻿using System;
+using System.ServiceModel;
+
+namespace Converted_POS.WebService
+{
+     [ServiceContract]
+    public interface IService : 
+    {
+        [OperationContract]
+        string YourMethod();
+    }
+
+    public class ServiceClient : ClientBase<IService>, IService
+    {
+        public YourServiceClient(string endpointConfigurationName)
+            : base(endpointConfigurationName) { }
+
+        public string YourMethod()
+        {
+            return base.Channel.YourMethod();
+        }
+    }
+}

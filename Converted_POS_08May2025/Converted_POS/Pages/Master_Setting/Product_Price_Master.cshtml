@@ -1,0 +1,64 @@
+﻿@page
+@model Converted_POS.Pages.Master_Setting.Product_Price_MasterModel
+@{
+    ViewData["Title"] = "Product_Price_Master";
+}
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a asp-page="/Master_Setting/Product_Price_Master_List">Price Level List</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Master_Setting/Product_Price_Master">Price Level Master</a></li>
+        </ol>
+    </div>
+}
+<form method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" id="hfProductPrice_id" name="ProductPrice_id" asp-for="price.Product_Price_Id" />
+    <br />
+    <div class="col-lg-12 ">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Price Level Master</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label asp-for="price.PPrice">Price <span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="price.PPrice" />
+                                <span asp-validation-for="price.PPrice" class="text-danger"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                <label asp-for="price.is_active">Active</label>
+                                <input asp-for="price.is_active" type="checkbox" />
+                                <span asp-validation-for="price.is_active" class="text-danger"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions text-right pal">
+                <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                <input type="submit" value="Cancel" class="btn btn-primary" formnovalidate asp-page-handler="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

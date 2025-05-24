@@ -1,0 +1,517 @@
+@{
+    ViewData["Title"] = "Product Report";
+}
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Product Report</h3>
+        </div>
+        <div class="card-body">
+            <!-- Filters -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="fromDate">From Date</label>
+                        <input type="date" class="form-control" id="fromDate" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="toDate">To Date</label>
+                        <input type="date" class="form-control" id="toDate" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="durationType">Duration</label>
+                        <select class="form-control select2" id="durationType">
+                            <option value="Today">Today</option>
+                            <option value="Yesterday">Yesterday</option>
+                            <option value="This Week">This Week</option>
+                            <option value="This Month">This Month</option>
+                            <option value="This Year">This Year</option>
+                            <option value="Last Week">Last Week</option>
+                            <option value="Last Month">Last Month</option>
+                            <option value="Last Year">Last Year</option>
+                            <option value="Custom">Custom</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="locationSelect">Location</label>
+                        <select class="form-control select2" id="locationSelect">
+                            <option value="0">All Locations</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="categorySelect">Product Group</label>
+                        <select class="form-control select2" id="categorySelect">
+                            <option value="0">All Product Groups</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="productSelect">Product</label>
+                        <select class="form-control select2" id="productSelect">
+                            <option value="0">All Products</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="tillSelect">Till</label>
+                        <select class="form-control select2" id="tillSelect" multiple="multiple">
+                            <option value="0">All Tills</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="customerSelect">Customer</label>
+                        <select class="form-control select2" id="customerSelect">
+                            <option value="0">All Customers</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="form-check mt-4">
+                        <input type="checkbox" class="form-check-input" id="includeReturns">
+                        <label class="form-check-label" for="includeReturns">Product Return</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mt-4">
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check" name="reportType" id="typeAll" value="ALL" checked>
+                            <label class="btn btn-outline-primary" for="typeAll">ALL</label>
+
+                            <input type="radio" class="btn-check" name="reportType" id="typeSale" value="SALE">
+                            <label class="btn btn-outline-primary" for="typeSale">SALE</label>
+
+                            <input type="radio" class="btn-check" name="reportType" id="typeReturn" value="RETURN">
+                            <label class="btn btn-outline-primary" for="typeReturn">RETURN</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <button type="button" class="btn btn-primary" id="btnSearch">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button type="button" class="btn btn-success" id="btnExport">
+                        <i class="fas fa-file-excel"></i> Export to Excel
+                    </button>
+                    <button type="button" class="btn btn-info" id="btnPrint">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                </div>
+            </div>
+
+            <!-- Group By Options -->
+            <div class="row mb-4">
+                <div class="col-12 text-right">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-outline-secondary" id="btnToggleLocation">Show Location</button>
+                        <button type="button" class="btn btn-outline-secondary" id="btnToggleSize">Show Size</button>
+                    </div>
+                    <div class="btn-group ml-3">
+                        <label class="mr-2"><strong>Group By:</strong></label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="groupBy" id="groupByPG" value="0" checked>
+                            <label class="form-check-label" for="groupByPG">Product Group</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="groupBy" id="groupByProduct" value="1">
+                            <label class="form-check-label" for="groupByProduct">Product</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="groupBy" id="groupBySize" value="11">
+                            <label class="form-check-label" for="groupBySize">Size</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="groupBy" id="groupByLocation" value="12">
+                            <label class="form-check-label" for="groupByLocation">Location</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Table -->
+            <div class="table-responsive">
+                <table id="productReportTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Product Group</th>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Sales Qty</th>
+                            <th>Sales Qty Other</th>
+                            <th>Return Qty</th>
+                            <th>Total Amount</th>
+                            <th>Discount</th>
+                            <th>Net Amount</th>
+                            <th>Total Tax</th>
+                            <th>Total Volume Sold</th>
+                            <th>Total Qty Sold</th>
+                            <th>Size</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Product Details Modal -->
+<div class="modal fade" id="productDetailsModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Product Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="productDetailsTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Amount</th>
+                            <th>Discount</th>
+                            <th>Tax</th>
+                            <th>Location</th>
+                            <th>Till</th>
+                            <th>Staff</th>
+                            <th>Size</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Initialize Select2
+            $('.select2').select2();
+
+            // Initialize DataTable
+            var table = $('#productReportTable').DataTable({
+                processing: true,
+                serverSide: false,
+                responsive: true,
+                orderCellsTop: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            format: {
+                                body: function (data, row, column, node) {
+                                    return data.replace('£', ' ').replace('$', ' ').replace(/<a[^>]*>|<\/a>/gi, "");
+                                }
+                            }
+                        }
+                    }
+                ],
+                ajax: {
+                    url: '/api/ProductReport/summary',
+                    data: function (d) {
+                        return {
+                            fromDate: $('#fromDate').val(),
+                            toDate: $('#toDate').val(),
+                            productId: $('#productSelect').val(),
+                            categoryId: $('#categorySelect').val(),
+                            duration: $('#durationType').val(),
+                            type: $('input[name="reportType"]:checked').val(),
+                            includeReturns: $('#includeReturns').prop('checked'),
+                            locationId: $('#locationSelect').val(),
+                            tillIds: $('#tillSelect').val().join(','),
+                            customerId: $('#customerSelect').val()
+                        };
+                    }
+                },
+                columns: [
+                    { data: 'productGroup' },
+                    { 
+                        data: 'productName',
+                        render: function(data, type, row) {
+                            return '<a href="/Product/Details/' + row.productId + '" target="_blank">' + data + '</a>';
+                        }
+                    },
+                    { data: 'price' },
+                    { 
+                        data: 'salesQuantity',
+                        render: function(data, type, row) {
+                            return '<a href="/ProductTransaction/Details?type=sale&productId=' + row.productId + '" target="_blank">' + data + '</a>';
+                        }
+                    },
+                    { 
+                        data: 'salesQuantityOther',
+                        render: function(data, type, row) {
+                            return '<a href="/ProductTransaction/Details?type=other&productId=' + row.productId + '" target="_blank">' + data + '</a>';
+                        }
+                    },
+                    { data: 'returnQuantity' },
+                    { data: 'totalAmount' },
+                    { 
+                        data: 'discount',
+                        render: function(data, type, row) {
+                            return '<a href="/ProductTransaction/Details?type=discount&productId=' + row.productId + '" target="_blank">' + data + '</a>';
+                        }
+                    },
+                    { data: 'netAmount' },
+                    { data: 'totalTax' },
+                    { data: 'totalVolumeSold' },
+                    { data: 'totalQuantitySold' },
+                    { data: 'size' },
+                    { data: 'locationName' },
+                    {
+                        data: null,
+                        render: function (data) {
+                            return '<button class="btn btn-sm btn-info btn-details" data-id="' + data.productId + '"><i class="fas fa-info-circle"></i></button>';
+                        }
+                    }
+                ],
+                "drawCallback": function (settings) {
+                    var api = this.api();
+                    var rows = api.rows({ page: 'current' }).nodes();
+                    var groupColumn = $('input[name="groupBy"]:checked').val();
+                    var last = null;
+
+                    api.column(groupColumn, { page: 'current' }).data().each(function (group, i) {
+                        if (last !== group) {
+                            $(rows).eq(i).before(
+                                '<tr class="group"><td colspan="14">' + group + '</td></tr>'
+                            );
+                            last = group;
+                        }
+                    });
+                }
+            });
+
+            // Initialize Details DataTable
+            var detailsTable = $('#productDetailsTable').DataTable({
+                processing: true,
+                serverSide: false,
+                responsive: true,
+                columns: [
+                    { data: 'transactionDate' },
+                    { data: 'transactionType' },
+                    { data: 'quantity' },
+                    { data: 'unitPrice' },
+                    { data: 'amount' },
+                    { data: 'discount' },
+                    { data: 'tax' },
+                    { data: 'locationName' },
+                    { data: 'tillName' },
+                    { data: 'staffName' },
+                    { data: 'size' }
+                ]
+            });
+
+            // Toggle Location/Size columns
+            $('#btnToggleLocation').click(function() {
+                var column = table.column(13);
+                column.visible(!column.visible());
+                $(this).text(column.visible() ? 'Hide Location' : 'Show Location');
+            });
+
+            $('#btnToggleSize').click(function() {
+                var column = table.column(12);
+                column.visible(!column.visible());
+                $(this).text(column.visible() ? 'Hide Size' : 'Show Size');
+            });
+
+            // Search button click
+            $('#btnSearch').click(function () {
+                table.ajax.reload();
+            });
+
+            // Export button click
+            $('#btnExport').click(function () {
+                var params = $.param({
+                    fromDate: $('#fromDate').val(),
+                    toDate: $('#toDate').val(),
+                    productId: $('#productSelect').val(),
+                    categoryId: $('#categorySelect').val(),
+                    duration: $('#durationType').val(),
+                    type: $('input[name="reportType"]:checked').val()
+                });
+                window.location.href = '/api/ProductReport/export?' + params;
+            });
+
+            // Print button click
+            $('#btnPrint').click(function () {
+                window.print();
+            });
+
+            // Details button click
+            $('#productReportTable').on('click', '.btn-details', function () {
+                var productId = $(this).data('id');
+                detailsTable.ajax.url('/api/ProductReport/details?productId=' + productId +
+                    '&fromDate=' + $('#fromDate').val() +
+                    '&toDate=' + $('#toDate').val()).load();
+                $('#productDetailsModal').modal('show');
+            });
+
+            // Duration type change
+            $('#durationType').change(function () {
+                if ($(this).val() === 'Custom') {
+                    $('#fromDate, #toDate').prop('disabled', false);
+                } else {
+                    $('#fromDate, #toDate').prop('disabled', true);
+                    var dates = calculateDateRange($(this).val());
+                    $('#fromDate').val(dates.fromDate);
+                    $('#toDate').val(dates.toDate);
+                }
+            });
+
+            // Group by change
+            $('input[name="groupBy"]').change(function() {
+                table.order([$(this).val(), 'asc']).draw();
+            });
+
+            // Load initial data
+            loadProducts();
+            loadCategories();
+            loadLocations();
+            loadTills();
+            loadCustomers();
+            setDefaultDates();
+        });
+
+        function calculateDateRange(durationType) {
+            var today = new Date();
+            var fromDate = new Date();
+            var toDate = new Date();
+
+            switch (durationType) {
+                case 'Today':
+                    break;
+                case 'Yesterday':
+                    fromDate.setDate(today.getDate() - 1);
+                    toDate.setDate(today.getDate() - 1);
+                    break;
+                case 'This Week':
+                    fromDate.setDate(today.getDate() - today.getDay());
+                    break;
+                case 'Last Week':
+                    fromDate.setDate(today.getDate() - today.getDay() - 7);
+                    toDate.setDate(today.getDate() - today.getDay() - 1);
+                    break;
+                case 'This Month':
+                    fromDate.setDate(1);
+                    break;
+                case 'Last Month':
+                    fromDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                    toDate = new Date(today.getFullYear(), today.getMonth(), 0);
+                    break;
+                case 'This Year':
+                    fromDate = new Date(today.getFullYear(), 0, 1);
+                    break;
+                case 'Last Year':
+                    fromDate = new Date(today.getFullYear() - 1, 0, 1);
+                    toDate = new Date(today.getFullYear() - 1, 11, 31);
+                    break;
+            }
+
+            return {
+                fromDate: fromDate.toISOString().split('T')[0],
+                toDate: toDate.toISOString().split('T')[0]
+            };
+        }
+
+        function loadProducts() {
+            $.get('/api/Product/GetAll', function (data) {
+                var select = $('#productSelect');
+                data.forEach(function (item) {
+                    select.append(new Option(item.name, item.id));
+                });
+            });
+        }
+
+        function loadCategories() {
+            $.get('/api/ProductGroup/GetAll', function (data) {
+                var select = $('#categorySelect');
+                data.forEach(function (item) {
+                    select.append(new Option(item.name, item.id));
+                });
+            });
+        }
+
+        function loadLocations() {
+            $.get('/api/Location/GetAll', function (data) {
+                var select = $('#locationSelect');
+                data.forEach(function (item) {
+                    select.append(new Option(item.name, item.id));
+                });
+            });
+        }
+
+        function loadTills() {
+            $.get('/api/Till/GetAll', function (data) {
+                var select = $('#tillSelect');
+                data.forEach(function (item) {
+                    select.append(new Option(item.name, item.id));
+                });
+            });
+        }
+
+        function loadCustomers() {
+            $.get('/api/Customer/GetAll', function (data) {
+                var select = $('#customerSelect');
+                data.forEach(function (item) {
+                    select.append(new Option(item.name, item.id));
+                });
+            });
+        }
+
+        function setDefaultDates() {
+            var dates = calculateDateRange('Today');
+            $('#fromDate').val(dates.fromDate);
+            $('#toDate').val(dates.toDate);
+        }
+    </script>
+
+    <style>
+        tr.group,
+        tr.group:hover {
+            background-color: #8fd6fd !important;
+            color: #111111;
+            border: #111111 1px solid;
+            font-weight: bold;
+        }
+
+        table.dataTable thead th,
+        table.dataTable thead td {
+            padding: 0px;
+        }
+
+        .btn-group-toggle .btn {
+            margin-right: 5px;
+        }
+
+        .select2-container {
+            width: 100% !important;
+        }
+    </style>
+} 

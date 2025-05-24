@@ -1,0 +1,423 @@
+24-04-2023 16:55:59:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 16:55:59:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 16:56:12:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 16:56:12:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 16:56:27:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 16:56:27:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 16:56:55:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 16:56:55:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:13:08:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:13:08:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:13:08:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 5:13:08 PM:SignIn:btnLogIn_Click:test
+24-04-2023 17:13:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:13:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:14:00:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:14:00:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 5:14:53 PM:Register:email_id:System.Data.SqlClient.SqlException (0x80131904): Could not find stored procedure 'Get_M_Customer_email'.
+   at Register_Register.GetdataTableSp(String SPName, ColSqlparram oColSqlparram, String strTableName, String constr) in D:\Working\POS\Register\Register.aspx.vb:line 183
+   at Register_Register.btnRegister_Click(Object sender, EventArgs e) in D:\Working\POS\Register\Register.aspx.vb:line 61
+ClientConnectionId:69581f77-36f9-4d3e-9865-23cd9585eb86
+Error Number:2812,State:62,Class:16
+24-04-2023 17:15:10:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:15:10:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:15:10:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 5:15:10 PM:SignIn:btnLogIn_Click:test
+24-04-2023 17:15:17:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:15:17:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:15:22:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:15:22:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:15:36:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:15:37:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 5:16:18 PM:Register:email_id:System.Threading.ThreadAbortException: Thread was being aborted.
+   at System.Threading.Thread.AbortInternal()
+   at System.Threading.Thread.Abort(Object stateInfo)
+   at System.Web.HttpResponse.AbortCurrentThread()
+   at System.Web.HttpResponse.End()
+   at System.Web.HttpResponse.Redirect(String url, Boolean endResponse, Boolean permanent)
+   at System.Web.HttpResponse.Redirect(String url)
+   at Register_Register.btnRegister_Click(Object sender, EventArgs e)
+24-04-2023 17:16:34:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:16:34:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 5:18:26 PM:Register:AddAccount:System.Data.SqlClient.SqlException (0x80131904): Procedure or function P_Account has too many arguments specified.
+   at Register_Register.GetdataTableSp(String SPName, ColSqlparram oColSqlparram, String strTableName, String constr) in D:\Working\POS\Register\Register.aspx.vb:line 183
+   at Register_Register.AddAccount() in D:\Working\POS\Register\Register.aspx.vb:line 37
+ClientConnectionId:9b9824c1-de9f-42e4-b166-ef03d3c78b02
+Error Number:8144,State:2,Class:16
+24/04/2023 5:18:35 PM:Register:email_id:System.Threading.ThreadAbortException: Thread was being aborted.
+   at System.Threading.Thread.AbortInternal()
+   at System.Threading.Thread.Abort(Object stateInfo)
+   at System.Web.HttpResponse.AbortCurrentThread()
+   at System.Web.HttpResponse.End()
+   at System.Web.HttpResponse.Redirect(String url, Boolean endResponse, Boolean permanent)
+   at System.Web.HttpResponse.Redirect(String url)
+   at Register_Register.btnRegister_Click(Object sender, EventArgs e) in D:\Working\POS\Register\Register.aspx.vb:line 109
+24-04-2023 17:20:35:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:20:35:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 5:21:44 PM:Register:AddAccount:System.Data.SqlClient.SqlException (0x80131904): Procedure or function P_Account has too many arguments specified.
+   at Register_Register.GetdataTableSp(String SPName, ColSqlparram oColSqlparram, String strTableName, String constr) in D:\Working\POS\Register\Register.aspx.vb:line 183
+   at Register_Register.AddAccount() in D:\Working\POS\Register\Register.aspx.vb:line 37
+ClientConnectionId:51e521d9-aa1e-47c7-97cb-8bd6878686a6
+Error Number:8144,State:2,Class:16
+24-04-2023 17:21:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:21:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 5:21:51 PM:Register:email_id:System.Threading.ThreadAbortException: Thread was being aborted.
+   at System.Threading.Thread.AbortInternal()
+   at System.Threading.Thread.Abort(Object stateInfo)
+   at System.Web.HttpResponse.AbortCurrentThread()
+   at System.Web.HttpResponse.End()
+   at System.Web.HttpResponse.Redirect(String url, Boolean endResponse, Boolean permanent)
+   at System.Web.HttpResponse.Redirect(String url)
+   at Register_Register.btnRegister_Click(Object sender, EventArgs e) in D:\Working\POS\Register\Register.aspx.vb:line 109
+24/04/2023 5:22:04 PM:Register:AddAccount:System.Data.SqlClient.SqlException (0x80131904): Procedure or function P_Account has too many arguments specified.
+   at Register_Register.GetdataTableSp(String SPName, ColSqlparram oColSqlparram, String strTableName, String constr) in D:\Working\POS\Register\Register.aspx.vb:line 183
+   at Register_Register.AddAccount() in D:\Working\POS\Register\Register.aspx.vb:line 37
+ClientConnectionId:51e521d9-aa1e-47c7-97cb-8bd6878686a6
+Error Number:8144,State:2,Class:16
+24/04/2023 5:22:12 PM:Register:email_id:System.Threading.ThreadAbortException: Thread was being aborted.
+   at System.Threading.Thread.AbortInternal()
+   at System.Threading.Thread.Abort(Object stateInfo)
+   at System.Web.HttpResponse.AbortCurrentThread()
+   at System.Web.HttpResponse.End()
+   at System.Web.HttpResponse.Redirect(String url, Boolean endResponse, Boolean permanent)
+   at System.Web.HttpResponse.Redirect(String url)
+   at Register_Register.btnRegister_Click(Object sender, EventArgs e) in D:\Working\POS\Register\Register.aspx.vb:line 109
+24-04-2023 17:22:46:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:22:46:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:22:46:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 5:22:46 PM:SignIn:btnLogIn_Click:test
+24-04-2023 17:41:44:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:41:44:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:41:56:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:41:56:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 5:42:06 PM:Register:AddAccount:System.Data.SqlClient.SqlException (0x80131904): Procedure or function P_Account has too many arguments specified.
+   at Register_Register.GetdataTableSp(String SPName, ColSqlparram oColSqlparram, String strTableName, String constr) in D:\Working\POS\Register\Register.aspx.vb:line 183
+   at Register_Register.AddAccount() in D:\Working\POS\Register\Register.aspx.vb:line 37
+ClientConnectionId:51e521d9-aa1e-47c7-97cb-8bd6878686a6
+Error Number:8144,State:2,Class:16
+24/04/2023 5:42:14 PM:Register:email_id:System.Threading.ThreadAbortException: Thread was being aborted.
+   at System.Threading.Thread.AbortInternal()
+   at System.Threading.Thread.Abort(Object stateInfo)
+   at System.Web.HttpResponse.AbortCurrentThread()
+   at System.Web.HttpResponse.End()
+   at System.Web.HttpResponse.Redirect(String url, Boolean endResponse, Boolean permanent)
+   at System.Web.HttpResponse.Redirect(String url)
+   at Register_Register.btnRegister_Click(Object sender, EventArgs e) in D:\Working\POS\Register\Register.aspx.vb:line 109
+24-04-2023 17:42:36:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 17:42:36:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 5:42:52 PM:Register:email_id:System.Threading.ThreadAbortException: Thread was being aborted.
+   at System.Threading.Thread.AbortInternal()
+   at System.Threading.Thread.Abort(Object stateInfo)
+   at System.Web.HttpResponse.AbortCurrentThread()
+   at System.Web.HttpResponse.End()
+   at System.Web.HttpResponse.Redirect(String url, Boolean endResponse, Boolean permanent)
+   at System.Web.HttpResponse.Redirect(String url)
+   at Register_Register.btnRegister_Click(Object sender, EventArgs e) in D:\Working\POS\Register\Register.aspx.vb:line 109
+24-04-2023 18:26:20:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:26:20:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:26:21:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:26:21:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:26:24:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:26:24:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:26:37:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:26:37:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 6:26:48 PM:Register:email_id:System.Threading.ThreadAbortException: Thread was being aborted.
+   at System.Threading.Thread.AbortInternal()
+   at System.Threading.Thread.Abort(Object stateInfo)
+   at System.Web.HttpResponse.AbortCurrentThread()
+   at System.Web.HttpResponse.End()
+   at System.Web.HttpResponse.Redirect(String url, Boolean endResponse, Boolean permanent)
+   at System.Web.HttpResponse.Redirect(String url)
+   at Register_Register.btnRegister_Click(Object sender, EventArgs e)
+24-04-2023 18:28:03:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:28:03:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:29:25:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:29:25:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:29:27:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:29:27:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:29:34:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:29:34:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:29:36:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:29:36:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:29:58:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:29:58:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:29:59:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:29:59:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:03:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:03:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:04:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:04:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:04:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:04:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:04:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:04:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:13:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:13:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:13:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:13:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:13:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:13:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:13:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:13:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:27:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:27:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:27:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 6:30:27 PM:SignIn:btnLogIn_Click:test
+24-04-2023 18:30:37:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:37:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:42:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:30:42:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:31:14:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:31:14:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:31:18:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:31:18:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:31:19:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:31:19:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:31:29:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:31:29:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:31:34:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:31:34:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:31:37:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:31:37:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:33:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:33:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:33:53:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:33:53:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:33:54:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:33:54:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:33:57:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:33:57:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:33:58:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:33:58:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:33:58:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:33:58:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:26:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:26:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:32:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:32:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:32:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:32:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:33:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:33:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:33:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:33:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:35:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:35:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:40:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:40:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:41:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:41:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:42:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:42:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:42:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:42:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:42:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:42:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:43:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:43:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:43:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:43:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:43:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:43:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:43:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:43:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:43:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:43:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:43:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:43:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:44:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:44:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:45:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:45:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:56:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:56:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:57:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:34:57:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:41:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:41:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:47:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:47:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:48:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:48:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:48:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:48:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:48:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:48:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:35:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:37:23:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:37:23:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:37:28:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:37:28:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:37:28:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:37:28:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:37:29:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:37:29:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:13:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:13:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:18:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:18:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:19:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:19:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:20:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:20:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:20:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:20:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:20:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:20:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:20:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:20:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:20:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:20:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:21:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:21:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:21:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:21:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:45:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:45:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:46:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:46:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:46:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:46:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:46:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:46:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:47:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:47:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:48:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:48:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:49:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:50:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:50:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:50:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:50:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:50:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:50:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:50:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:50:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:50:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:50:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:51:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:38:51:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:39:19:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:39:19:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:39:24:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:39:24:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:39:25:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:39:25:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:39:25:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:39:25:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:39:25:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:39:25:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:02:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:02:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:08:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:08:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:09:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:09:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:10:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:10:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:10:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:10:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:10:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:10:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:10:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:10:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:14:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:14:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:15:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:15:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:15:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:45:15:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:46:35:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:46:35:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:46:36:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:46:36:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:46:42:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:46:42:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:54:23:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:54:23:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:54:26:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:54:26:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:54:31:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:54:31:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:55:06:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:55:06:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:55:06:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:55:06:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:55:17:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:55:17:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:55:18:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:55:18:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:56:28:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:56:28:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:57:24:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:57:24:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:57:25:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:57:25:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:57:33:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:57:33:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:57:34:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:57:34:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:58:16:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:58:16:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:58:18:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:58:18:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:58:46:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:58:46:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:59:21:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:59:22:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:59:22:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 6:59:22 PM:SignIn:btnLogIn_Click:test
+24-04-2023 18:59:35:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:59:35:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:59:45:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:59:45:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:59:47:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 18:59:47:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:01:40:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:01:40:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:01:45:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:01:45:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:01:46:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:01:46:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:16:16:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:16:16:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:17:02:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:17:02:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:17:03:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:17:03:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:17:09:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:17:09:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:17:13:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:17:13:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 7:17:22 PM:Register:email_id:System.Threading.ThreadAbortException: Thread was being aborted.
+   at System.Threading.Thread.AbortInternal()
+   at System.Threading.Thread.Abort(Object stateInfo)
+   at System.Web.HttpResponse.AbortCurrentThread()
+   at System.Web.HttpResponse.End()
+   at System.Web.HttpResponse.Redirect(String url, Boolean endResponse, Boolean permanent)
+   at System.Web.HttpResponse.Redirect(String url)
+   at Register_Register.btnRegister_Click(Object sender, EventArgs e) in D:\Working\POS\Register\Register.aspx.vb:line 112
+24-04-2023 19:18:23:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:18:23:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:18:56:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:18:56:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:19:12:DBManager:connection_data:Object reference not set to an instance of an object.
+24-04-2023 19:19:12:DBManager:connection_data:Object reference not set to an instance of an object.
+24/04/2023 7:19:20 PM:Register:email_id:System.Threading.ThreadAbortException: Thread was being aborted.
+   at System.Threading.Thread.AbortInternal()
+   at System.Threading.Thread.Abort(Object stateInfo)
+   at System.Web.HttpResponse.AbortCurrentThread()
+   at System.Web.HttpResponse.End()
+   at System.Web.HttpResponse.Redirect(String url, Boolean endResponse, Boolean permanent)
+   at System.Web.HttpResponse.Redirect(String url)
+   at Register_Register.btnRegister_Click(Object sender, EventArgs e) in D:\Working\POS\Register\Register.aspx.vb:line 112

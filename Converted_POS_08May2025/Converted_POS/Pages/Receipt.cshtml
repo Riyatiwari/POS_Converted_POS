@@ -1,0 +1,242 @@
+﻿@page
+@model Converted_POS.Pages.Receipt
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Receipt Page</title>
+    <link rel="stylesheet" href="~/menunew/styles.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        #receiptContainer {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .receipt-header, .receipt-footer {
+            text-align: center;
+            background-color: #f1f1f1;
+            padding: 10px 0;
+        }
+
+            .receipt-header img, .receipt-footer img {
+                max-width: 100%;
+                height: auto;
+            }
+
+        .receipt-content {
+            padding: 20px;
+        }
+
+            .receipt-content h1 {
+                font-size: 24px;
+                margin: 0 0 10px;
+            }
+
+            .receipt-content p {
+                margin: 0 0 10px;
+            }
+
+            .receipt-content table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+            }
+
+            .receipt-content table, .receipt-content th, .receipt-content td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            .receipt-content th {
+                background-color: #f1f1f1;
+                text-align: left;
+            }
+
+       /* #printButton {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }*/
+        #printButton {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            /* background-color: gray; Blue */
+            border: none;
+            color: black;
+            padding: 10px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+           /* #printButton:hover {
+                background-color: #45a049;
+            }*/
+
+            #printButton:hover {
+                background-color: gray /* Darker Blue */
+            }
+
+        .receipt-container {
+            font-family: Verdana;
+            font-size: 12px;
+            border: 1px solid #000;
+            padding: 10px;
+            margin: 20px;
+            background-color: #FFF;
+        }
+
+        .no-print {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div id="receiptContainer" class="receipt-container">
+            @Html.Raw(ViewData["ReceiptContent"])
+        </div>
+    </form>
+
+    <button id="printButton">Print🖨️</button>
+   
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>//$(document).ready(function() {
+//            $("#printButton").click(function() {
+//                window.print();
+//            });
+//        });
+
+
+        // $(document).ready(function () {
+        //    $("#printButton").click(function () {
+        //        // Hide elements not to be printed (optional)
+        //        $(".no-print").hide();
+
+        //        // Capture the specific content to print
+        //        var printContents = $("#printr").html();
+
+        //        // Create a new window to print the content
+        //        var originalContents = document.body.innerHTML;
+        //        document.body.innerHTML = printContents;
+
+        //        // Print the content
+        //        window.print();
+
+        //        // Restore the original content
+        //        document.body.innerHTML = originalContents;
+
+        //        // Show elements hidden before printing (optional)
+        //        $(".no-print").show();
+        //    });
+
+        //});
+
+
+        //working
+        //$(document).ready(function () {
+        //    var printing = false; // Flag to prevent multiple printing
+
+        //    $("#printButton").click(function () {
+        //        if (!printing) {
+        //            printing = true; // Set printing flag
+        //            // Hide elements not to be printed (optional)
+        //            $(".no-print").hide();
+
+        //            // Capture the specific content to print
+        //            var printContents = $("#receiptContainer").html();
+
+        //            // Create a new iframe to print the content
+        //            var printWindow = window.open('', '_blank');
+        //            printWindow.document.open();
+        //            printWindow.document.write('<html><head><title>Print</title>');
+        //            printWindow.document.write('</head><body>');
+        //            printWindow.document.write(printContents);
+        //            printWindow.document.write('</body></html>');
+        //            printWindow.document.close();
+
+        //            // Wait for content to load before printing
+        //            printWindow.onload = function () {
+        //                printWindow.focus(); // Ensure window is in focus
+        //                printWindow.print(); // Print the content
+        //                printWindow.close(); // Close the print window
+
+        //                // Restore the original content
+        //                printing = false; // Reset printing flag
+        //                $(".no-print").show(); // Show elements hidden before printing (optional)
+        //            };
+        //        }
+        //    });
+
+        //    // Prevent double click issues
+        //    $("#printButton").on("dblclick", function (e) {
+        //        e.preventDefault();
+        //    });
+        //});
+
+        $(document).ready(function () {
+            var printing = false;  
+
+            $("#printButton").click(function () {
+                if (!printing) {
+                    printing = true;  
+                   
+                    $(".no-print").hide();
+
+                 
+                    var printContents = $("#receiptContainer").html();
+
+                    
+                    var iframe = $("<iframe>");
+                    iframe.css({ position: "absolute", top: "-99999px" });
+                    $("body").append(iframe);
+
+                    var doc = iframe[0].contentWindow.document;
+                    doc.open();
+                    doc.write('<html><head><title>Print</title></head><body>');
+                    doc.write(printContents);
+                    doc.write('</body></html>');
+                    doc.close();
+
+                    iframe[0].contentWindow.focus();  
+                    iframe[0].contentWindow.print();  
+
+                   
+                    setTimeout(function () {
+                        iframe.remove();
+                        printing = false;  
+                        $(".no-print").show(); 
+                    }, 1000);  
+                }
+            });
+ 
+            $("#printButton").on("dblclick", function (e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>

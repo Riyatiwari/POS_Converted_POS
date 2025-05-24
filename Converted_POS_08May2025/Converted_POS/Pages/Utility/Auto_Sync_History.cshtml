@@ -1,0 +1,307 @@
+﻿@page
+@model Converted_POS.Pages.Utility.Auto_Sync_HistoryModel
+@{
+    ViewData["Title"] = "Auto_Sync_History";
+}
+@using Microsoft.AspNetCore.Http;
+@section link {
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Utility/Auto_Sync_Recored">Auto Sync Record</a></li>&nbsp;&nbsp;
+            <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            <li class="active"><a asp-page="/Utility/Auto_Sync_History">Sync History</a></li>
+        </ol>
+    </div>
+
+    <link href="~/js/vendor2/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/fonts/nunito.css" rel="stylesheet" />
+    <script src="~/js/vendors/googleapis/jquery.min.js"></script>
+    <script src="~/js/demo/datatables-demo.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#Psummary thead tr').clone(true).appendTo('#Psummary thead');
+
+            Grid();
+
+        });
+
+        function Grid() {
+
+            $("#Psummary tr").not(':first').hover(
+                function () {
+                    $(this).css("background", "#efefef").css("cursor", "Pointer").css("font-weight", "bold").css("box-shadow", "0 4px 2px -3px rgba(0, 0, 0, 0.5) inset").css("-webkit-box-shadow", "0 4px 2px -3px rgba(0, 0, 0, 0.5) inset");
+                },
+                function () {
+                    $(this).css("background", "").css("cursor", "").css("font-weight", "").css("box-shadow", "").css("-webkit-box-shadow", "");
+                }
+            );
+
+            var groupCol = 0;
+
+            var table = $('#Psummary').DataTable({
+
+
+                orderCellsTop: true,
+                dom: 'Bfrtip',
+                "buttons": [
+                    'excel'
+                ],
+                "stripeClasses": ['odd-row', 'even-row'],
+                "destroy": true,
+                "columnDefs": [
+
+                    { "visible": true, "targets": +groupCol }
+
+                ],
+
+                "displayLength": 25,
+                "searching": true
+            });
+
+
+            var table1 = $('#Psummary').DataTable();
+
+            $('#Psummary thead tr:eq(1) th').each(function (i) {
+
+                var title = $(this).text();
+                $(this).html('<input type="text" style="width:98%" placeholder="Search ' + title + '" />');
+
+                $('input', this).on('keyup', function () {
+
+                    if (table1.column(i).search() !== this.value) {
+                        table1
+
+                            .column($(this).parent().index() + ':visible')
+                            .search(this.value)
+                            .draw()
+                            ;
+
+                    }
+                    else {
+                        table1
+                            .column($(this).parent().index() + ':visible')
+                            .search('')
+                            .draw()
+                            ;
+
+                    }
+                });
+            });
+        }
+    </script>
+    <script>
+        function redirectToLocation() {
+            var selectedVenueId = $('#venueDropdown').val();  // Get selected venue ID
+
+            if (selectedVenueId) {
+                // Make an AJAX call to fetch locations based on the selected venue ID
+                $.ajax({
+                    url: '/AutoSyncRecored/GetLocation',  // Adjust the URL path as needed
+                    type: 'GET',
+                    data: { venueId: selectedVenueId },  // Send the selected venueId to the server
+                    success: function (data) {
+                        // Clear the Location dropdown
+                        $('#locationDropdown').empty();
+
+                        // Add a default "Select Location" option
+                        $('#locationDropdown').append('<option value="">Select Location</option>');
+
+                        // Populate the Location dropdown with new options
+                        $.each(data, function (index, item) {
+                            $('#locationDropdown').append('<option value="' + item.value + '">' + item.text + '</option>');
+                        });
+
+                        // Optionally show the Location dropdown if it was hidden before
+                        $('#locationDropdown').show();
+                    },
+                    error: function (error) {
+                        console.log('Error fetching locations: ' + error);
+                    }
+                });
+            } else {
+                // Hide the Location dropdown if no venue is selected
+                $('#locationDropdown').hide();
+            }
+        }</script>
+    <script>
+        function loadLocations() {
+            var selectedVenueId = $('#venueDropdown').val();
+
+            // If a venue is selected, reload the page with the selected venue_id as a query parameter
+            if (selectedVenueId) {
+                // Reload the page with the venue_id query parameter
+                window.location.href = '@Url.Page("/Utility/Auto_Sync_History")?venue_id=' + selectedVenueId;
+            }
+        }
+    </script>
+    <script>
+            function loadMachines() {
+                var selectedLocationId = $('#Location').val();
+
+            // If a venue is selected, reload the page with the selected venue_id as a query parameter
+            if (selectedLocationId) {
+                // Reload the page with the venue_id query parameter
+                window.location.href = '@Url.Page("/Utility/Auto_Sync_History")?location_id=' + selectedLocationId;
+            }
+        }
+    </script>
+
+}
+
+<form method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" id="hfallergy_id" name="allergy_id" @*asp-for="allergy.allergy_id"*@ />
+    <br />
+    <div class="col-lg-12 ">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Sync History</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label for="fromDate" style="display: inline-block; margin-right: 10px;">From Date:</label>
+                                <input type="datetime-local" style="display: inline-block; width: 250px;" id="fromDate" name="fromDate" class="form-control" value="@Model.FromDate?.ToString("yyyy-MM-ddTHH:mm")" />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="toDate" style="display: inline-block; margin-right: 10px;">To Date:</label>
+                                <input type="datetime-local" style="display: inline-block; width: 250px;" id="toDate" name="toDate" class="form-control" value="@Model.ToDate?.ToString("yyyy-MM-ddTHH:mm")" />
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6">
+                                <label for="duration" style="display: inline-block; margin-right: 10px;">Duration: </label>
+                                <select id="duration" style="display: inline-block; width: 250px;" name="duration" class="form-control" onchange="onDurationChanged()" value="@Model.Duration">
+                                    <option value="Today">Today</option>
+                                    <option value="Yesterday">Yesterday</option>
+                                    <option value="This Week">This Week</option>
+                                    <option value="This Month">This Month</option>
+                                    <option value="This Year">This Year</option>
+                                    <option value="Last Week">Last Week</option>
+                                    <option value="Last Month">Last Month</option>
+                                    <option value="Last Year">Last Year</option>
+                                    <option value="Custom">Custom</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="venueDropdown" style="display: inline-block; margin-right: 10px;">Venue</label>
+
+                                <select id="venueDropdown" style="display: inline-block; width: 250px;" class="form-control" name="venue_id" onchange="loadLocations()" value="@Model.VenueId">
+                                    <option value="">Select Venue</option>
+                                    @if (Model.DTVenue != null)
+                                    {
+                                        @foreach (var item in Model.DTVenue)
+                                        {
+                                            var selectedAttribute = item.Value == Model.autosyncrecored?.Venue_Id.ToString() ? "selected" : "";
+
+                                            var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                            @Html.Raw(optionHtml)
+                                            @*<option value="@item.Value">@item.Text</option>*@
+                                        }
+                                    }
+                                </select>
+                                <input type="hidden" name="venue_id" value="@HttpContext.Session.GetInt32("venue_id")" />
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-lg-6">
+                                <label for="Location" style="display: inline-block; margin-right: 10px;">Location</label>
+                                <select id="Location" style="display: inline-block; width: 250px;" name="Location" class="form-control" onchange="loadMachines()" value="@Model.LocationId">
+                                    <option value="">Select Location</option>
+                                    @if (Model.DTLocation != null)
+                                    {
+                                        @foreach (var location in Model.DTLocation)
+                                        {
+                                            <option value="@location.Value">@location.Text</option>
+                                        }
+                                    }
+                                </select>
+                                <input type="hidden" name="location_id" value="@HttpContext.Session.GetInt32("location_id")" />
+
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="Till" style="display: inline-block; margin-right: 10px;">Till</label>
+                                <select id="Till" style="display: inline-block; width: 250px;" name="machine_id" class="form-control" onchange="BindMachines()" value="@Model.MachineId">
+                                    <option value="">Select Till</option>
+                                    @if (Model.MachineList != null)
+                                    {
+                                        @foreach (var location in Model.MachineList)
+                                        {
+                                            <option value="@location.Value">@location.Text</option>
+                                        }
+                                    }
+                                </select>
+                                <input type="hidden" name="machine_id" value="@HttpContext.Session.GetInt32("machine_id")" />
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <br />
+                            <br />
+                            <div style="text-align: center;">
+                                <form method="post">
+                                    <button type="submit" class="btn btn-primary">View</button>
+                                </form>
+                            </div>
+                            <br />
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="Psummary" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Venue</th>
+                                                    <th>Location</th>
+                                                    <th>Till</th>
+                                                    <th>Master Page</th>
+                                                    <th>Sync Status</th>
+                                                    <th>Sync Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.autosyncrecord != null && Model.autosyncrecord.Any())
+                                                {
+                                                    @foreach (var record in Model.autosyncrecord)
+                                                    {
+                                                        <tr>
+                                                            <td>@record.Venue_Name</td>
+                                                            <td>@record.Location_Name</td>
+                                                            <td>@record.Till_Name</td>
+                                                            <td>@record.Page_name</td>
+                                                            <td>@(record.SyncFlag ? "Yes" : "No")</td>
+                                                            <td>@record.modify_date</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Venue</th>
+                                                    <th>Location</th>
+                                                    <th>Till</th>
+                                                    <th>Master Page</th>
+                                                    <th>Sync Status</th>
+                                                    <th>Sync Date</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>

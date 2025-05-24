@@ -1,0 +1,37 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="TabName">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Tabs" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Currency">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Symbol" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <TabName>
+    <Tabs>Search</Tabs>
+  </TabName>
+  <TabName>
+    <Tabs>Hotel</Tabs>
+  </TabName>
+  <TabName>
+    <Tabs>Location</Tabs> <!--Restaurent-->
+  </TabName>
+  <Currency>
+    <Symbol>£</Symbol>
+  </Currency>
+</NewDataSet>

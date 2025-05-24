@@ -1,0 +1,1645 @@
+﻿@page
+@model Converted_POS.Pages.Master_Setting.Device_MasterModel
+@{
+    ViewData["Title"] = "Device_Master";
+}
+@using Microsoft.AspNetCore.Http
+
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a id="userListButton" asp-page="/Master_Setting/Device_List">Device List</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Master_Setting/Device_Master">Device Master</a></li>
+        </ol>
+    </div>
+    <script>
+        function updateDeviceTypes() {
+            var selectedDeviceCategoryId = $('#deviceCategoryId').val();
+            var selectedDeviceTillId = $('#deviceTillId').val();  // Get the selected deviceTillId
+
+            // Update the URL with the selected device category and till id
+            updateUrlParameter('deviceCategoryId', selectedDeviceCategoryId);
+            updateUrlParameter('deviceTillId', selectedDeviceTillId);  // Pass the selected deviceTillId as well
+
+            // Fetch device types based on the selected device category
+            $.ajax({
+                url: "/Device/GetDeviceType",  // Your endpoint to fetch device types
+                data: {
+                    deviceCategoryId: selectedDeviceCategoryId,
+                    deviceTillId: selectedDeviceTillId  // Pass deviceTillId here as well
+                },
+                success: function (data) {
+                    // Clear and populate the device type dropdown
+                    $('#deviceTypeId').empty();
+                    $('#deviceTypeId').append('<option value="">Select Device Type</option>');
+                    $.each(data, function (index, item) {
+                        $('#deviceTypeId').append($('<option>').val(item.Value).text(item.Text));
+                    });
+
+                    // Show the Device Type dropdown
+                    $('#deviceTypeContainer').show();  // Make sure the dropdown container is shown
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading device types:', status, error);
+                }
+            });
+
+            // Call function to update machine list as well based on deviceTillId
+            updateMachineList(selectedDeviceTillId);
+        }
+
+        function updateMachineList() {
+            var selectedDeviceTillId = $('#deviceTillId').val(); // Get the selected deviceTillId
+
+            $.ajax({
+                url: "/Device/GetMachine",  // Your endpoint to fetch machines
+                data: {
+                    deviceTillId: selectedDeviceTillId  // Pass the deviceTillId to the server
+                },
+                success: function (data) {
+                    // Clear and populate the machine dropdown
+                    $('#machineDropdown').empty();
+                    $('#machineDropdown').append('<option value="">Select Machine</option>');
+                    $.each(data, function (index, item) {
+                        $('#machineDropdown').append($('<option>').val(item.Value).text(item.Text));
+                    });
+
+                    // Show the Machine dropdown
+                    $('#machineContainer').show();  // Make sure the dropdown container is shown
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading machines:', status, error);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            // Call updateMachineList to fetch machine data when the page loads
+            updateMachineList();
+
+            // Or call it when the deviceTillId dropdown value changes
+            $('#deviceTillId').on('change', function () {
+                updateMachineList();
+            });
+        });
+    </script>
+    <script>
+        function updateUrlParameter(param, value) {
+            var url = new URL(window.location.href);
+            url.searchParams.set(param, value);
+            window.history.pushState({}, '', url);
+        }</script>
+    <script>
+        function submitForm() {
+            // Get the selected device category value
+            var selectedDeviceCategoryId = $('#deviceCategoryId').val();
+
+            // If a device category is selected, submit the form
+            if (selectedDeviceCategoryId) {
+                // Update the URL with the selected category id (optional)
+                updateUrlParameter('deviceCategoryId', selectedDeviceCategoryId);
+
+                // Submit the form
+                $('#deviceForm').submit();  // Trigger the form submission to hit the OnPost action
+            }
+
+            var deviceCategoryId = document.getElementById("deviceCategoryId").value;
+        if (deviceCategoryId) {
+            // Use AJAX to submit the form and update the dropdowns dynamically
+            $.ajax({
+                url: '@Url.Action("GetEvoDeviceDetails", "DeviceController")', // Make sure this action returns the updated data
+                type: 'GET',
+                data: { deviceCategoryId: deviceCategoryId },
+                success: function (data) {
+                    // Update the dropdowns with the new data
+                    $("#ddDeviceSubType").html(data.deviceSubTypeDropdown);
+                    $("#ddNetworkType").html(data.networkTypeDropdown);
+                },
+                error: function () {
+                    alert("An error occurred while loading the device details.");
+                }
+            });
+        }
+
+        }
+
+        // Update the URL parameter (if you want to reflect the deviceCategoryId in the URL)
+        function updateUrlParameter(param, value) {
+            var url = new URL(window.location.href);
+            url.searchParams.set(param, value);
+            window.history.pushState({}, '', url);  // Update the browser's URL without reloading
+        }</script>
+    <script>
+        function submitFormForDeviceType() {
+            var selectedDeviceType = document.getElementById("deviceTypeId").value;
+
+            // Get the divs for network type and device subtype dropdowns
+            var deviceSubTypeDiv = document.getElementById("divDeviceSubType");
+            var networkTypeDiv = document.getElementById("divNetworkType");
+
+            // Check if the selected device type is "Printer" (e.g., deviceTypeId 21 for Printer)
+            if (selectedDeviceType == "21") {  // Change "21" to the correct Device Type ID for Printer
+                // Show the dropdowns related to Printer
+                deviceSubTypeDiv.style.display = "block";
+                networkTypeDiv.style.display = "block";
+            } else {
+                // Hide the dropdowns if not Printer
+                deviceSubTypeDiv.style.display = "none";
+                networkTypeDiv.style.display = "none";
+            }
+            // Get the selected device type value
+            //var selectedDeviceType = $('#deviceTypeId').val();
+
+            //// If a device type is selected, submit the form
+            //if (selectedDeviceType) {
+            //    // Update the URL with the selected device type
+            //    updateUrlParameter('deviceType', selectedDeviceType);
+
+            //    // Submit the form
+            //    $('#deviceForm').submit();  // Trigger the form submission to hit the OnPost action
+            //} else {
+            //    alert("Please select a device type.");
+            //}
+            //var selectedDeviceTypeId = document.getElementById('deviceTypeId').value;
+
+            //// If no device type is selected, we return early
+            //if (!selectedDeviceTypeId) {
+            //    return;
+            //}
+
+            //// Find the corresponding device type name for the selected device type ID
+            //var selectedDeviceTypeName = getDeviceTypeName(selectedDeviceTypeId);
+
+            //// Set the value of the hidden input field with the selected device type name
+            //document.getElementById('deviceTypeName').value = selectedDeviceTypeName;
+        }
+        function getDeviceTypeName(deviceTypeId) {
+        // Define the mapping of deviceTypeId to device_type_name.
+        // You can modify this mapping to suit your needs, such as fetching it dynamically via an API or using a predefined array.
+        var deviceTypes = @Html.Raw(Json.Serialize(Model.DTDeviceType));  // Using Razor to serialize the list to JavaScript
+
+        // Find the device type object that matches the selected deviceTypeId
+        var deviceType = deviceTypes.find(function(type) {
+            return type.value == deviceTypeId;
+        });
+
+        // Return the device type name (text), or an empty string if not found
+        return deviceType ? deviceType.text : '';  // Return the device_type_name if found
+    }
+
+        // Update the URL parameter for device type
+        function updateUrlParameter(param, value) {
+            var url = new URL(window.location.href);
+            if (value) {
+                url.searchParams.set(param, value);  // Add or update the URL parameter
+            } else {
+                url.searchParams.delete(param);  // Remove the parameter if value is empty or null
+            }
+            window.history.pushState({}, '', url);  // Update the browser's URL without reloading
+        }
+
+        // Optionally, you can automatically trigger form submission when the device type dropdown changes
+        $('#deviceTypeId').change(submitFormForDeviceType);
+    </script>
+    <script>
+        // When device category is changed, fetch corresponding device types via AJAX
+        $('#deviceCategoryId').change(function () {
+            var selectedCategoryId = $(this).val();
+
+            if (selectedCategoryId) {
+                $.ajax({
+                    url: '/Device/GetDeviceType',
+                    method: 'GET',
+                    data: { deviceCategoryId: selectedCategoryId },
+                    success: function (data) {
+                        // Clear and populate device type dropdown
+                        $('#deviceTypeId').empty();
+                        $('#deviceTypeId').append('<option value="">Select Device Type</option>');
+                        $.each(data, function (index, item) {
+                            $('#deviceTypeId').append($('<option>', {
+                                value: item.Id,
+                                text: item.Name
+                            }));
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+    <script>
+        $('#deviceTypeId').change(function () {
+            var selectedDeviceType = $(this).val();
+
+            if (selectedDeviceType == 'Printer') {
+                $('#printerFields').show();  // Show Printer-related fields
+                $('#otherFields').hide();    // Hide other fields
+            } else {
+                $('#printerFields').hide();
+                $('#otherFields').show();
+            }
+        });</script>
+    <script>
+        $(document).ready(function () {
+            // When the deviceType select changes
+            $('#deviceType').change(function () {
+                // Get the selected value
+                var selectedDevice = $(this).val();
+
+                // Check if 'evo' is selected
+                if (selectedDevice === 'evo') {
+                    // Show the evoFields div
+                    $('#evoFields').show();
+                } else {
+                    // Hide the evoFields div
+                    $('#evoFields').hide();
+                }
+            });
+
+            // Optionally, if the page loads with a selection already made,
+            // you can trigger the change event to check visibility.
+            $('#deviceType').trigger('change');
+        });
+    </script>
+    <script type="text/javascript">
+        function showDeviceDetails(deviceType) {
+            // Get the div that contains the additional fields
+            var deviceDetailsDiv = document.getElementById('deviceDetails');
+
+            // Check if a valid device type is selected
+            if (deviceType !== "") {
+                // Show the fields if device type is selected
+                deviceDetailsDiv.style.display = "block";
+
+                // Optionally, you can add logic to pre-fill the fields based on the selected device type
+                // For example:
+                if (deviceType == "1") { // Replace with actual device type value
+                    document.getElementById('userName').value = "exampleUser";
+                    document.getElementById('password').value = "examplePass";
+                    document.getElementById('bluetoothName').value = "DeviceBluetoothName";
+                    document.getElementById('appProfileId').value = "Profile123";
+                    document.getElementById('serviceKey').value = "ServiceKeyABC";
+                }
+            } else {
+                // Hide the fields if no device type is selected
+                deviceDetailsDiv.style.display = "none";
+            }
+        }
+    </script>
+    <script>
+        function showDeviceDetails(deviceType) {
+            var deviceDetailsDiv = document.getElementById('deviceDetails');
+
+            if (deviceType !== "") {
+                // Show the fields
+                deviceDetailsDiv.style.display = "block";
+
+                // Make AJAX request to get the details for the selected device type
+                $.ajax({
+                    url: '/Device/BindDevice', // Adjust to your controller and action
+                    method: 'GET',
+                    data: { deviceTypeId: deviceType },
+                    success: function (data) {
+                        // Populate the fields with the data
+                        $('#userName').val(data.userName);
+                        $('#password').val(data.password);
+                        $('#bluetoothName').val(data.bluetoothName);
+                        $('#appProfileId').val(data.appProfileId);
+                        $('#serviceKey').val(data.serviceKey);
+                    }
+                });
+            } else {
+                // Hide the fields if no device type is selected
+                deviceDetailsDiv.style.display = "none";
+            }
+        }</script>
+    <script type="text/javascript">
+        function checkDeviceSelection() {
+            var deviceCategory = document.getElementById('deviceCategory').value;
+            var deviceType = document.getElementById('deviceType').value;
+
+            // Check if Device Category is 'Printer' and Device Type is 'Printer'
+            if (deviceCategory === "Printer" && deviceType === "Laser Printer") {
+                // Show Device SubType and Network Type for Printers
+                document.getElementById('printerFields').style.display = "block";
+            } else {
+                // Hide the fields if condition is not met
+                document.getElementById('printerFields').style.display = "none";
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function updateDeviceTypes() {
+            var deviceCategory = document.getElementById('deviceCategory').value;
+            var deviceTypeSelect = document.getElementById('deviceType');
+
+            // Clear existing options
+            deviceTypeSelect.innerHTML = '<option value="">Select Device Type</option>';
+
+            // Populate Device Type options based on selected category
+            if (deviceCategory === "Printer") {
+                var option1 = document.createElement("option");
+                option1.value = "Laser Printer";
+                option1.text = "Laser Printer";
+                deviceTypeSelect.appendChild(option1);
+
+                var option2 = document.createElement("option");
+                option2.value = "Inkjet Printer";
+                option2.text = "Inkjet Printer";
+                deviceTypeSelect.appendChild(option2);
+            } else if (deviceCategory === "Scanner") {
+                var option1 = document.createElement("option");
+                option1.value = "Flatbed Scanner";
+                option1.text = "Flatbed Scanner";
+                deviceTypeSelect.appendChild(option1);
+
+                var option2 = document.createElement("option");
+                option2.value = "Document Scanner";
+                option2.text = "Document Scanner";
+                deviceTypeSelect.appendChild(option2);
+            }
+            // Add more categories and their corresponding types as needed.
+        }
+
+        // Trigger this function when device category changes
+        document.getElementById('deviceCategory').addEventListener('change', updateDeviceTypes);
+    </script>
+    <script type="text/javascript">
+        function checkDeviceSelection() {
+            var deviceCategory = document.getElementById('deviceCategory').value;
+            var deviceType = document.getElementById('deviceType').value;
+
+            if (deviceCategory === "Printer" && deviceType === "Laser Printer") {
+                document.getElementById('printerFields').style.display = "block";
+            } else {
+                document.getElementById('printerFields').style.display = "none";
+            }
+        }
+
+        function updateDeviceTypes() {
+            var deviceCategory = document.getElementById('deviceCategory').value;
+            var deviceTypeSelect = document.getElementById('deviceType');
+            deviceTypeSelect.innerHTML = '<option value="">Select Device Type</option>';
+
+            if (deviceCategory === "Printer") {
+                var option1 = document.createElement("option");
+                option1.value = "Laser Printer";
+                option1.text = "Laser Printer";
+                deviceTypeSelect.appendChild(option1);
+
+                var option2 = document.createElement("option");
+                option2.value = "Inkjet Printer";
+                option2.text = "Inkjet Printer";
+                deviceTypeSelect.appendChild(option2);
+            }
+        }
+
+        document.getElementById('deviceCategory').addEventListener('change', updateDeviceTypes);
+    </script>
+    <script type="text/javascript">
+        function showNewDeviceFields() {
+            // Show the fields when adding a new device
+            document.getElementById('newDeviceFields').style.display = 'block';
+        }
+    </script>
+    <script type="text/javascript">
+        function checkDeviceSelection() {
+            var deviceCategory = document.getElementById('deviceCategory').value;
+            var deviceType = document.getElementById('deviceType').value;
+
+            // Get the divs that contain the fields for Device SubType and Network Type
+            var printerFields = document.getElementById('printerFields');
+            var divPrinter = document.getElementById('divPrinter');
+
+            // Initially hide all the fields
+            printerFields.style.display = 'none';
+            divPrinter.style.display = 'none';
+
+            // Check if Device Category is 'Printer' and Device Type is 'Printer'
+            if (deviceCategory === "Printer" && (deviceType === "Laser Printer" || deviceType === "Inkjet Printer")) {
+                // Show the Device SubType and Network Type fields
+                printerFields.style.display = 'block';
+                divPrinter.style.display = 'block';
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        // Function to show/hide fields based on device category and type
+        function checkDeviceSelection() {
+            var deviceCategory = document.getElementById('deviceCategory').value;
+            var deviceType = document.getElementById('deviceType').value;
+
+            // Get the divs for printer fields and device details
+            var printerFields = document.getElementById('printerFields');
+            var divPrinter = document.getElementById('divPrinter');
+            var deviceDetails = document.getElementById('deviceDetails');
+
+            // Initially hide all fields
+            printerFields.style.display = 'none';
+            divPrinter.style.display = 'none';
+            deviceDetails.style.display = 'none';
+
+            // Show the Printer fields if Printer is selected
+            if (deviceCategory === "Printer" && (deviceType === "Laser Printer" || deviceType === "Inkjet Printer")) {
+                printerFields.style.display = 'block';
+                divPrinter.style.display = 'block';
+            }
+
+            // Show other fields if any other device type is selected
+            else {
+                deviceDetails.style.display = 'block';
+            }
+        }
+    </script>
+    <script>
+        // Function to get URL parameter by name
+        function getUrlParameter(name) {
+            var url = new URL(window.location.href);
+            return url.searchParams.get(name);  // Return the parameter value from URL
+        }
+
+        // This function will run once the page is loaded
+        window.onload = function () {
+            var deviceTypeId = getUrlParameter('deviceTypeId');  // Get deviceTypeId from the URL
+            console.log("Device Type ID: " + deviceTypeId);  // Debugging
+
+            // Check if the deviceTypeId is 10 (EVO) or 11 (another device type)
+            if (deviceTypeId === "10" || deviceTypeId === "11") {
+                console.log("Displaying EVO fields...");  // Debugging
+                document.getElementById("evoFields").style.display = "block";  // Show EVO fields
+            } else {
+                console.log("Hiding EVO fields...");  // Debugging
+                document.getElementById("evoFields").style.display = "none";  // Hide EVO fields if deviceTypeId is not 10 or 11
+            }
+        }
+
+        // Function to update the URL and reload the page
+        function updateUrlAndSubmit(deviceTypeId) {
+            var url = new URL(window.location.href);
+            url.searchParams.set('deviceTypeId', deviceTypeId);  // Add/update the deviceTypeId in the URL
+            window.history.pushState({}, '', url);  // Update the browser's URL
+            location.reload();  // Reload the page to ensure the onload event fires and the fields are shown
+        }
+    </script>
+    <script>
+        function showDeviceDetails(deviceTypeId) {
+            // Show the fields container
+            var deviceDetailsContainer = document.getElementById("deviceDetails");
+            var evoFieldsContainer = document.getElementById("evoFields");
+
+            // If the deviceTypeId is 10 (EVO) or another device type, show the form and populate the fields
+            if (deviceTypeId === 10) { // If EVO device type
+                evoFieldsContainer.style.display = "block"; // Show the EVO fields container
+                deviceDetailsContainer.style.display = "block"; // Show the entire device details container
+
+                // Bind the data to the input fields (these values come from the server-side, e.g., in the controller)
+                document.getElementById("userName").value = userName;          // Set UserName
+                document.getElementById("password").value = password;          // Set Password
+                document.getElementById("bluetoothName").value = bluetoothName; // Set Bluetooth Name
+                document.getElementById("appProfileId").value = api;           // Set Application Profile ID
+                document.getElementById("serviceKey").value = serviceKey;       // Set Service Key
+            }
+            else if (deviceTypeId === 11) { // For another device type, e.g., PAY WORKS
+                evoFieldsContainer.style.display = "block";
+                deviceDetailsContainer.style.display = "block"; // You can change this condition as per your requirement
+
+                // Assuming same fields for PAY WORKS, adjust accordingly
+                document.getElementById("userName").value = userName;
+                document.getElementById("password").value = password;
+                document.getElementById("bluetoothName").value = bluetoothName;
+                document.getElementById("appProfileId").value = api;
+                document.getElementById("serviceKey").value = serviceKey;
+            }
+            // Add other conditions for other device types if needed
+        }</script>
+    <script>
+        window.onload = function () {
+            var deviceTypeId = getUrlParameter('deviceTypeId');  // Get the deviceTypeId from the URL
+            showDeviceDetails(deviceTypeId);  // Call the function to show and bind the details
+        }
+
+        // Function to get URL parameters (if needed)
+        function getUrlParameter(param) {
+            var url = new URL(window.location.href);
+            return url.searchParams.get(param);
+        }</script>
+    <script>
+        window.onload = function () {
+            var deviceTypeId = getUrlParameter('deviceTypeId');  // Assume you have a function to get URL params
+            if (deviceTypeId == "10") {
+                document.getElementById("userName").value = "EVOUserName";  // Set User Name for EVO
+                document.getElementById("password").value = "EVOPassword";  // Set Password for EVO
+                document.getElementById("bluetoothName").value = "EVO-BT";
+                document.getElementById("appProfileId").value = "EVO-AppID";
+                document.getElementById("serviceKey").value = "EVO-ServiceKey";
+            } else if (deviceTypeId == "11") {
+                document.getElementById("userName").value = "PayWorksUserName";  // Set User Name for PayWorks
+                document.getElementById("password").value = "PayWorksPassword";  // Set Password for PayWorks
+                document.getElementById("bluetoothName").value = "PayWorks-BT";
+                document.getElementById("appProfileId").value = "PayWorks-AppID";
+                document.getElementById("serviceKey").value = "PayWorks-ServiceKey";
+            }
+        };</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Check the device selection and show/hide evoFields
+            var selectedDeviceType = $('#deviceTypeId').val();
+            if (selectedDeviceType == 'EVO' || selectedDeviceType == 'PAY WORKS') {
+                $('#evoFields').show();
+            } else {
+                $('#evoFields').hide();
+            }
+
+            // Bind event to device type select dropdown
+            $('#deviceTypeId').change(function () {
+                var deviceType = $(this).val();
+                if (deviceType == 'EVO' || deviceType == 'PAY WORKS') {
+                    $('#evoFields').show();
+                } else {
+                    $('#evoFields').hide();
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // On page load, check the current selected device type
+            toggleEvoFields();
+
+            // Bind event to device type select dropdown
+            $('#deviceTypeId').change(function () {
+                toggleEvoFields();
+            });
+        });
+
+        // Function to toggle evoFields visibility based on the selected device type
+        function toggleEvoFields() {
+            var selectedDeviceType = $('#deviceTypeId').val();  // Get the selected value of device type dropdown
+            if (selectedDeviceType == 'EVO' || selectedDeviceType == 'PAY WORKS') {
+                $('#evoFields').show();  // Show evoFields if device type is EVO or PAY WORKS
+            } else {
+                $('#evoFields').hide();  // Hide evoFields for other device types
+            }
+        }
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the values from the Razor view and assign them to JS variables
+        var isEvoOrPayWorks = '@ViewData["IsEvoOrPayWorks"]'.toLowerCase() === 'true';
+        var isPaxCommunicator = '@ViewData["IsPaxCommunicator"]'.toLowerCase() === 'true';
+
+        if (isPaxCommunicator) {
+            // Show Pax Communicator fields
+            document.getElementById('paxFields').style.display = 'block';
+        }
+        else if (isEvoOrPayWorks) {
+            // Show Evo-related fields, if needed (these are already displayed, so you don't need extra JS)
+        }
+    });
+    </script>
+    <script>
+    $(document).ready(function() {
+        var isCashCamera = @((bool?)ViewData["IsCashCamera"] ?? false).ToString().ToLower();
+        if (isCashCamera === "true") {
+            $('#divPrinter').show();  // Show the div if true
+            console.log("Network Types:", @Html.Raw(Json.Serialize(ViewData["NetWorkType"])));
+        } else {
+            $('#divPrinter').hide();  // Hide the div if false
+        }
+    });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Function to handle showing/hiding fields based on network type selection
+            function handleNetworkTypeSelection() {
+                var networkType = $('#ddNetworkType').val();  // Get the selected network type
+                console.log("Selected Network Type:", networkType);  // Debugging: log the value
+
+                // Hide all fields initially
+                $('#ipAddressFields').hide();
+                $('#baudrateDeviceNameFields').hide();
+
+                // Show/hide based on network type selected
+                if (networkType === 'LAN' || networkType === 'ADD PAY' || networkType === 'SUNMI' || networkType === 'iMin D1' || networkType === 'iMin D4' || networkType === 'Falcon') {
+                    console.log("Showing IP Address and Port fields");
+                    $('#ipPortFields').show();  // Show IP Address and Port
+                } else if (networkType === 'MINIPOS') {
+                    console.log("Showing IP Address and Port fields for MINIPOS");
+                    $('#ipPortFields').show();  // Show IP Address and Port for MINIPOS
+                } else if (networkType === 'Serial Port') {
+                    console.log("Showing Baud Rate and Device Name fields");
+                    $('#baudrateDeviceNameFields').show();  // Show Baud Rate and Device Name
+                }
+            }
+
+            // Trigger the function when the page loads to set the initial state
+
+
+            // Bind the change event to the dropdown
+            $('#ddNetworkType').change(function () {
+                handleNetworkTypeSelection();  // Run the function whenever the dropdown value changes
+            });
+            handleNetworkTypeSelection();
+        });</script>
+    <script>
+        function submitFormForTill() {
+            // Get the selected till value
+            var selectedTillId = $('#TillId').val();
+
+            // If a till is selected, submit the form
+            if (selectedTillId) {
+                // Update the URL with the selected till id (optional)
+                updateUrlParameter('TillId', selectedTillId);
+
+                // Submit the form
+                $('#deviceForm').submit();  // Trigger the form submission to hit the OnPost action
+            }
+            if (selectedTillId) {
+        $.ajax({
+            url: '@Url.Action("GetEvoDeviceDetails", "DeviceController")', // Make sure this action returns the updated data
+            type: 'GET',
+            data: { selectedTillId: selectedTillId },
+            success: function (data) {
+                // Update the dropdowns with the new data (optional, if needed)
+                $("#ddDeviceSubType").html(data.deviceSubTypeDropdown);
+                $("#ddNetworkType").html(data.networkTypeDropdown);
+            },
+            error: function () {
+                alert("An error occurred while loading the device details.");
+            }
+        });
+    }
+        }
+
+        // Automatically trigger form submission when the Till dropdown changes
+        $('#deviceTillId').change(submitFormForTill);</script>
+    <script>
+        function submitForm() {
+            // Get the selected device category value
+            var selectedDeviceCategoryId = $('#deviceCategoryId').val();
+
+            // If a device category is selected, submit the form
+            if (selectedDeviceCategoryId) {
+                // Update the URL with the selected category id (optional)
+                updateUrlParameter('deviceCategoryId', selectedDeviceCategoryId);
+
+                // Submit the form
+                $('#deviceForm').submit();  // Trigger the form submission to hit the OnPost action
+            }
+        }
+
+        function submitFormForDeviceType() {
+            // Get the selected device type value
+            var selectedDeviceType = $('#deviceTypeId').val();
+
+            // If a device type is selected, submit the form
+            if (selectedDeviceType) {
+                // Update the URL with the selected device type
+                updateUrlParameter('deviceType', selectedDeviceType);
+
+                // Submit the form
+                $('#deviceForm').submit();  // Trigger the form submission to hit the OnPost action
+            } else {
+                alert("Please select a device type.");
+            }
+        }
+
+        // Update the URL parameter for device type or device category
+        function updateUrlParameter(param, value) {
+            var url = new URL(window.location.href);
+            if (value) {
+                url.searchParams.set(param, value);  // Add or update the URL parameter
+            } else {
+                url.searchParams.delete(param);  // Remove the parameter if value is empty or null
+            }
+            window.history.pushState({}, '', url);  // Update the browser's URL without reloading
+        }
+
+        // Submit form when the Till dropdown changes
+        function submitFormForTill() {
+            // Get the selected till value
+            var selectedTillId = $('#deviceTillId').val();
+
+            // If a till is selected, submit the form
+            if (selectedTillId) {
+                // Update the URL with the selected till id (optional)
+                updateUrlParameter('deviceTillId', selectedTillId);
+
+                // Submit the form
+                $('#deviceForm').submit();  // Trigger the form submission to hit the OnPost action
+            }
+        }
+
+
+        $('#deviceTillId').change(submitFormForTill);
+
+        // Automatically trigger form submission when the Device Type dropdown changes
+        $('#deviceTypeId').change(submitFormForDeviceType);
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Function to handle showing/hiding fields based on network type selection
+            function handleNetworkTypeSelection() {
+                var networkType = $('#ddNetworkType').val();  // Get the selected network type
+                console.log("Selected Network Type:", networkType);  // Debugging: log the value
+
+                // Hide the IP Address and Port fields by default
+                $('#ipPortFields').hide();
+
+                // Show IP Address and Port fields only when "LAN" is selected
+                if (networkType === 'LAN') {
+                    $('#ipPortFields').show();  // Show the fields
+                }
+            }
+
+            // Trigger the function on page load to set the initial state
+            handleNetworkTypeSelection();
+
+            // Bind the change event to the dropdown to handle selection changes
+            $('#ddNetworkType').change(function () {
+                handleNetworkTypeSelection();  // Call the function whenever the dropdown value changes
+            });
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Initially check the network type selection to show/hide fields
+            toggleFields();
+
+            // Listen for changes on the dropdown (Network Type)
+            $('#ddNetworkType').change(function () {
+                toggleFields();  // Call function on selection change
+            });
+
+            // Function to show/hide the IP Port and Baud Rate & Device Name fields
+            function toggleFields() {
+                var selectedNetworkType = $('#ddNetworkType').val();  // Get selected network type
+
+                // Show or hide IP and Port fields based on the selected network type
+                if (selectedNetworkType === "LAN" || selectedNetworkType === "MINIPOS" || selectedNetworkType === "ADD PAY" || selectedNetworkType === "SUNMI" || selectedNetworkType === "iMin D1" || selectedNetworkType === "iMin D4" || selectedNetworkType === "Falcon") {
+                    $('#ipPortFields').show();  // Show IP/Port fields if LAN is selected
+                } else {
+                    $('#ipPortFields').hide();  // Hide IP/Port fields for other network types
+                }
+
+                // Show or hide Baud Rate and Device Name fields based on the selected network type
+                if (selectedNetworkType === "Serial Port") {
+                    $('#baudrateDeviceNameFields').show();  // Show Baud Rate and Device Name if Serial Port is selected
+                } else {
+                    $('#baudrateDeviceNameFields').hide();  // Hide Baud Rate and Device Name fields for other network types
+                }
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Initially check if the "Cash Camera" is selected and show Network Type
+            toggleNetworkTypeField();
+
+            // Listen for changes on the Device Type dropdown
+            $('#ddDeviceType').change(function () {
+                toggleNetworkTypeField();  // Call function whenever the device type changes
+            });
+
+            // Function to show or hide the Network Type dropdown based on Device Type
+            function toggleNetworkTypeField() {
+                var selectedDeviceType = $('#ddDeviceType').val();  // Get the selected device type
+
+                // Check if the selected device type is "Cash Camera"
+                if (selectedDeviceType === "Cash Camera") {
+                    $('#divNetworkType').show();  // Show the Network Type dropdown
+                } else {
+                    $('#divNetworkType').hide();  // Hide the Network Type dropdown
+                }
+            }
+        });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var deviceTypeId = @ViewData["Device_Type_id"];  // Get the device type from the Razor model
+
+        if (deviceTypeId == 21) {
+            // Show additional fields if Device_Type_id is 21
+            document.getElementById('user_name').parentElement.style.display = 'block';
+            document.getElementById('password').parentElement.style.display = 'block';
+            document.getElementById('bluetooth_name').parentElement.style.display = 'block';
+            document.getElementById('application_profile_id').parentElement.style.display = 'block';
+            document.getElementById('service_key').parentElement.style.display = 'block';
+        } else {
+            // Hide these fields if Device_Type_id is not 21
+            document.getElementById('user_name').parentElement.style.display = 'none';
+            document.getElementById('password').parentElement.style.display = 'none';
+            document.getElementById('bluetooth_name').parentElement.style.display = 'none';
+            document.getElementById('application_profile_id').parentElement.style.display = 'none';
+            document.getElementById('service_key').parentElement.style.display = 'none';
+        }
+    });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // When device till is changed, update the URL and trigger the form submission
+        $('#deviceTillId').change(function () {
+            var selectedDeviceTillId = $(this).val();
+
+            // Update the URL with the selected device till
+            updateUrlParameter('deviceTillId', selectedDeviceTillId);
+
+            // You can optionally trigger the form submission if needed
+            submitFormForTill();
+        });
+
+        // On page load, check if 'deviceTillId' exists in the URL and select it
+        $(document).ready(function () {
+            // Check if 'deviceTillId' exists in the URL
+            var deviceTillId = new URLSearchParams(window.location.search).get('deviceTillId');
+
+            // If 'deviceTillId' exists, set it as selected in the dropdown
+            if (deviceTillId) {
+                $('#deviceTillId').val(deviceTillId);  // This will select the value in the dropdown
+            }
+        });
+
+        // Function to update the URL without reloading the page
+        function updateUrlParameter(param, value) {
+            var url = new URL(window.location.href);
+            url.searchParams.set(param, value);
+            window.history.pushState({}, '', url);  // Update the browser's URL without reloading
+        }
+
+        // Your existing submitFormForTill function
+        function submitFormForTill() {
+            // You can add form submission logic here if needed, or do it via AJAX
+            $('#deviceForm').submit();  // Trigger the form submission if you want to
+        }
+    </script>
+    @*<script>
+                // When device Till is changed, fetch corresponding device types via AJAX
+                function updateDeviceTill() {
+                    var selectedDeviceTillId = $('#deviceTillId').val();
+
+                    // Update the URL with the selected device till
+                    updateUrlParameter('deviceTillId', selectedDeviceTillId);
+
+                    // Fetch device types based on the selected device till
+                    $.ajax({
+                        url: "/Device/GetMachine",  // Your endpoint to fetch device types
+                        data: { deviceTillId: selectedDeviceTillId },
+                        success: function (data) {
+                            // Clear and populate the device type dropdown
+                            $('#deviceTypeId').empty();
+                            $('#deviceTypeId').append('<option value="">Select Device Type</option>');
+                            $.each(data, function (index, item) {
+                                $('#deviceTypeId').append($('<option>').val(item.Value).text(item.Text));
+                            });
+
+                            // Show the Device Type dropdown
+                            $('#deviceTypeContainer').show();  // Make sure the dropdown container is shown
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error loading device types:', status, error);
+                        }
+                    });
+                }
+            </script>
+
+            <script>
+                // Update the URL parameter (if you want to reflect the deviceTillId in the URL)
+                function updateUrlParameter(param, value) {
+                    var url = new URL(window.location.href);
+                    url.searchParams.set(param, value);
+                    window.history.pushState({}, '', url);  // Update the browser's URL without reloading
+                }
+            </script>
+
+            <script>
+            function submitForm() {
+                // Get the selected device till value
+                var selectedDeviceTillId = $('#deviceTillId').val();
+
+                // If a device till is selected, submit the form
+                if (selectedDeviceTillId) {
+                    // Update the URL with the selected till id (optional)
+                    updateUrlParameter('deviceTillId', selectedDeviceTillId);
+
+                    // Submit the form
+                    $('#deviceForm').submit();  // Trigger the form submission to hit the OnPost action
+                }
+
+                var deviceTillId = document.getElementById("deviceTillId").value;
+                if (deviceTillId) {
+                    // Use AJAX to submit the form and update the dropdowns dynamically
+                    $.ajax({
+                        url: '@Url.Action("GetEvoDeviceDetails", "DeviceController")', // Make sure this action returns the updated data
+                        type: 'GET',
+                        data: { deviceTillId: deviceTillId },
+                        success: function (data) {
+                            // Update the dropdowns with the new data
+                            $("#ddDeviceSubType").html(data.deviceSubTypeDropdown);
+                            $("#ddNetworkType").html(data.networkTypeDropdown);
+                        },
+                        error: function () {
+                            alert("An error occurred while loading the device details.");
+                        }
+                    });
+                }
+            }
+            </script>
+
+            <script>
+                // When device till is changed, fetch corresponding device types via AJAX
+                $('#deviceTillId').change(function () {
+                    var selectedTillId = $(this).val();
+
+                    if (selectedTillId) {
+                        $.ajax({
+                            url: '/Device/GetMachine',  // Change the URL endpoint accordingly
+                            method: 'GET',
+                            data: { deviceTillId: selectedTillId },  // Send deviceTillId in the request
+                            success: function (data) {
+                                // Clear and populate device type dropdown
+                                $('#deviceTypeId').empty();
+                                $('#deviceTypeId').append('<option value="">Select Device Type</option>');
+                                $.each(data, function (index, item) {
+                                    $('#deviceTypeId').append($('<option>', {
+                                        value: item.Id,
+                                        text: item.Name
+                                    }));
+                                });
+                            },
+                            error: function () {
+                                alert("An error occurred while loading device types.");
+                            }
+                        });
+                    }
+                });
+            </script>
+        <script>$(document).ready(function () {
+                // Check if 'deviceTillId' exists in the URL
+                var deviceTillId = new URLSearchParams(window.location.search).get('deviceTillId');
+
+                // If 'deviceTillId' exists, set it as selected in the dropdown
+                if (deviceTillId) {
+                    $('#deviceTillId').val(deviceTillId);
+                }
+            });</script>*@
+    @*@{ var networkTypeList = ViewData["NetWorkType"] as List<SelectListItem>;
+        // Check if the 'SelectedNetworkType' is already defined elsewhere or passed in ViewData
+        var selectedNetworkType = ViewData["SelectedNetworkType"] as string; }*@
+    @*@{ var selectedDeviceTypeId = ViewData["SelectedDeviceTypeId"] as int? ?? 0;
+        var isCashCamera = selectedDeviceTypeId == 12;
+        ViewData["IsCashCamera"] = isCashCamera; }*@
+    @*@{ var isCashCamera = ViewData["IsCashCamera"] as bool? ?? false; }*@
+
+    @*<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Directly use the Razor value for isCashCamera
+            if (@isCashCamera.ToString().ToLower() === 'true') {
+                // Show the printer configuration section (divPrinter) if device type is Cash Camera
+                document.getElementById('divPrinter').style.display = 'block';
+            }
+        });
+        </script>*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Listen for the change event on the deviceTillId dropdown
+            $("#deviceTillId").change(function () {
+                // Get the selected value
+                var selectedTillId = $(this).val();
+
+                // If a value is selected, update the URL with the selected deviceTillId
+                if (selectedTillId) {
+                    updateUrlParameter('deviceTillId', selectedTillId);
+                } else {
+                    // If no value is selected, remove the deviceTillId parameter from the URL
+                    updateUrlParameter('deviceTillId', '');
+                }
+            });
+        });
+
+        // Function to update the URL query string with the selected deviceTillId
+        function updateUrlParameter(param, value) {
+            var url = new URL(window.location.href);
+
+            // If value is an empty string, remove the parameter
+            if (value) {
+                url.searchParams.set(param, value); // Add or update the parameter
+            } else {
+                url.searchParams.delete(param); // Remove the parameter if value is empty
+            }
+
+            // Update the browser's URL without reloading the page
+            window.history.pushState({}, '', url);
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Get the deviceTillId from the URL
+            var selectedDeviceTillId = new URLSearchParams(window.location.search).get('deviceTillId');
+
+            // If deviceTillId is available in the URL, set it as selected in the dropdown
+            if (selectedDeviceTillId) {
+                $("#deviceTillId").val(selectedDeviceTillId); // Set the value in the dropdown
+            }
+
+            // When deviceCategoryId is changed, retain the deviceTillId in the URL
+            $("#deviceCategoryId").change(function () {
+                var selectedDeviceCategoryId = $(this).val();
+                var selectedDeviceTillId = $("#deviceTillId").val(); // Get the selected deviceTillId
+
+                // If a device category is selected, update the URL with both deviceCategoryId and deviceTillId
+                if (selectedDeviceCategoryId) {
+                    updateUrlParameter('deviceCategoryId', selectedDeviceCategoryId);
+                }
+
+                // Ensure deviceTillId stays in the URL
+                if (selectedDeviceTillId) {
+                    updateUrlParameter('deviceTillId', selectedDeviceTillId);
+                }
+            });
+
+            // Function to update the URL query string with the selected value
+            function updateUrlParameter(param, value) {
+                var url = new URL(window.location.href);
+                if (value) {
+                    url.searchParams.set(param, value); // Set the parameter
+                } else {
+                    url.searchParams.delete(param); // Remove the parameter if value is empty
+                }
+                // Update the URL in the browser without reloading the page
+                window.history.pushState({}, '', url);
+            }
+        });
+    </script>
+    @{ // Declare variables in Razor
+        var isEvoOrPayWorksValue = ViewData["IsEvoOrPayWorks"] as bool? ?? false;
+        var userName = ViewData["UserName"] as string ?? string.Empty;
+        var password = ViewData["Password"] as string ?? string.Empty;
+        var bluetoothName = ViewData["BluetoothName"] as string ?? string.Empty;
+        var api = ViewData["API"] as string ?? string.Empty;
+        var serviceKey = ViewData["ServiceKey"] as string ?? string.Empty;
+    }
+}@{ var isPaxCommunicatorValue = ViewData["IsPaxCommunicator"] as bool? ?? false;
+    //var userName = ViewData["UserName"] as string ?? string.Empty;
+    //var password = ViewData["Password"] as string ?? string.Empty;
+    var ipAddress = ViewData["IpAddress"] as string ?? string.Empty;
+    var port = ViewData["Port"] as string ?? string.Empty;
+}
+
+
+<form id="deviceForm" method="post" asp-page-handler="Save">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="DTDevice.device_id" />
+    <br />
+
+    <div class="col-lg-12 ">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Device Master</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="DTDevice.name">Name<span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="DTDevice.name" />
+                                <span asp-validation-for="DTDevice.name" class="text-danger"></span>
+                                <div class="clearfix"></div>
+                                <br />
+                                @{ var isReadOnly = Request.Query["ID"].Any();}
+                                <label asp-for="DTDevice.code">Code</label>
+                                <div class="clearfix"></div>
+
+                                @if (isReadOnly)
+                                {
+                                    <input class="form-control" asp-for="DTDevice.code" disabled /> }
+                                else
+                                {
+                                    <input class="form-control" asp-for="DTDevice.code" />}
+                                <span asp-validation-for="DTDevice.code" class="text-danger"></span>
+                                <div class="clearfix"></div>
+                                <br />
+                                <label asp-for="DTDevice.serial_no">Serial No</label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="DTDevice.serial_no" />
+                                <span asp-validation-for="DTDevice.serial_no" class="text-danger"></span>
+                                <div class="clearfix"></div>
+                                <br />
+
+                                <div class="col-md-6" style="margin-top: 20px;">
+                                    <label for="deviceTillId">Till<span class="text-danger">*</span></label>
+
+                                    <select asp-for="SelectedTillId" id="deviceTillId" class="form-control" name="deviceTillId">
+                                        @*// onchange="submitFormForTill()"*@
+                                        @*id="deviceTillId"*@
+                                        <option value="">Select Till</option>
+                                        @if (Model.MachineList != null && Model.MachineList.Any())
+                                        {
+                                            @foreach (var item in Model.MachineList)@*ViewData["Machines"] as List<SelectListItem>*@
+                                            {
+                                                var selectedMachineName = ViewData["SelectedDeviceTillIdName"] as string;
+                                                var selectedAttribute = (item.Value == (Model.SelectedTillId?.ToString() ?? ViewData["SelectedTillId"]?.ToString())) ? "selected" : "";
+
+                                                var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                                @Html.Raw(optionHtml)
+
+                                                @*<option value="@item.Value">@item.Text</option>*@
+                                            }
+                                        }
+
+                                    </select>
+
+                                </div>
+
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-6" style="margin-top: 20px;">
+                                    <label for="deviceCategoryId">Device Category<span class="text-danger">*</span></label>
+
+                                    <select asp-for="deviceCategoryId" class="form-control" name="deviceCategoryId" id="deviceCategoryId" onchange="submitForm()">
+                                        @*onchange="submitForm()"*@
+                                        <option value="">Select Device Category</option>
+                                        @if (Model.DTDeviceCategory != null && Model.DTDeviceCategory.Any())
+                                        {
+                                            @foreach (var item in Model.DTDeviceCategory)
+                                            {
+                                                var selectedAttribute = (item.Value == (Model.SelectedDeviceCategoryId?.ToString() ?? ViewData["SelectedDeviceCategoryId"]?.ToString())) ? "selected" : "";
+
+                                                var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                                @Html.Raw(optionHtml)
+                                                @*<option value="@item.Value">@item.Text</option>*@
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-6" style="margin-top: 20px;">
+                                    <input type="hidden" id="deviceTypeName" name="deviceTypeName" value="" />
+                                    <label for="deviceTypeId">Device Type<span class="text-danger">*</span></label>
+
+                                    <select asp-for="deviceTypeId" class="form-control" name="deviceTypeId" id="deviceTypeId" name="deviceTypeId" onchange="submitFormForDeviceType()">
+                                        <option value="">Select Device Type</option>
+                                        @if (Model.DTDeviceType != null && Model.DTDeviceType.Any())
+                                        {
+                                            @foreach (var item in Model.DTDeviceType)
+                                            {
+                                                var selectedAttribute = (item.Value == (Model.SelectedDeviceTypeId?.ToString() ?? ViewData["SelectedDeviceTypeId"]?.ToString())) ? "selected" : "";
+
+                                                var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                                @Html.Raw(optionHtml)
+                                                @*<option value="@item.Value">@item.Text</option>*@
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                @*<div class="col-md-12">
+            <label asp-for="DTDevice.Device_SubTypeName">Device SubType</label>
+            <div class="clearfix"></div>
+            <select asp-for="DTDevice.Device_SubTypeName" class="form-control" onchange="this.form.submit()">
+                <option value="SELECT">SELECT</option>
+                <option value="Star TSP650">Star TSP650</option>
+                <option value="Kinetic Saturn">Kinetic Saturn</option>
+                <option value="Sunmi">Sunmi</option>
+                <option value="Dualscreen">Dualscreen</option>
+                <option value="iMin D1">iMin D1</option>
+                <option value="iMin D4">iMin D4</option>
+                <option value="Falcon">Falcon</option>
+            </select>
+            <span asp-validation-for="DTDevice.Device_SubTypeName" class="text-danger"></span>
+        </div>
+        <div class="col-md-12">
+            <label asp-for="DTDevice.network_type">Network Type</label>
+            <div class="clearfix"></div>
+            <select asp-for="DTDevice.network_type" class="form-control" onchange="this.form.submit()">
+                <option value="SELECT">SELECT</option>
+                <option value="Star TSP650">Serial Port</option>
+                <option value="Kinetic Saturn">USB</option>
+                <option value="Sunmi">LAN</option>
+                <option value="Dualscreen">MINIPOS</option>
+                <option value="iMin D1">ADD PAY</option>
+                <option value="iMin D4">SUNMI</option>
+                <option value="iMin D4">iMin D1</option>
+                <option value="iMin D4">iMin D4</option>
+                <option value="Falcon">Falcon</option>
+            </select>
+            <span asp-validation-for="DTDevice.network_type" class="text-danger"></span>
+        </div>*@
+                                @{ var isPrinter = ViewData["IsPrinter"] as bool? ?? false || (Model.DTDevice != null && (Model.DTDevice.Device_Type_id == 21));
+                                    var networkTypes = new List<SelectListItem>
+{
+    new SelectListItem { Text = "SELECT", Value = "SELECT" },
+    new SelectListItem { Text = "Serial Port", Value = "Serial Port" },
+    new SelectListItem { Text = "USB", Value = "USB" },
+    new SelectListItem { Text = "LAN", Value = "LAN" },
+    new SelectListItem { Text = "MINIPOS", Value = "MINIPOS" },
+    new SelectListItem { Text = "ADD PAY", Value = "ADD PAY" },
+    new SelectListItem { Text = "SUNMI", Value = "SUNMI" },
+    new SelectListItem { Text = "iMin D1", Value = "iMin D1" },
+    new SelectListItem { Text = "iMin D4", Value = "iMin D4" },
+    new SelectListItem { Text = "Falcon", Value = "Falcon" }
+};
+                                    var devicesubtype = new List<SelectListItem>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    { new SelectListItem { Text = "SELECT", Value = "0" },
+        new SelectListItem { Text = "Star TSP650", Value = "1" },
+        new SelectListItem { Text = "Kinetic Saturn", Value = "2" },
+        new SelectListItem { Text = "Sunmi", Value = "3" },
+        new SelectListItem { Text = "Dualscreen", Value = "4" },
+        new SelectListItem { Text = "iMin D1", Value = "5" },
+        new SelectListItem { Text = "iMin D4", Value = "6" },
+        new SelectListItem { Text = "Falcon", Value = "7" }
+                                    };
+
+                                    var deviceTypeName = Model.DTDevice?.Device_SubTypeName ?? "Unknown";
+                                    var network = Model.DTDevice?.network_type ?? "Unknown";
+                                    //var devicesubtypee = Model.DTDevice?.Device_SubType ?? -1;
+                                    //ViewData["DeviceSubType"] = Model.DTDevice?.Device_SubType ?? -1;
+                                    //ViewData["NetWorkType"] = Model.DTDevice?.network_type ?? "Unknown";
+
+                                    //var devicesubtype = ViewData["DeviceSubType"] as List<SelectListItem>;
+                                    //var networkTypes = ViewData["NetWorkType"] as List<SelectListItem>;
+
+                                    //var selectedDeviceSubType = ViewData["SelectedDeviceSubType"] as string;
+                                    //var selectedNetworkType = ViewData["SelectedNetworkType"] as string;
+                                    //var devicesubtypee = Model.DTDevice?.Device_SubType ?? -1;
+                                    //var networkTypess = Model.DTDevice?.network_type ?? "Unknown";
+                                    var devicesub = Model.DTDevice?.Device_SubType ?? -1;
+
+                                    // Retrieve the list of possible device subtypes from ViewData
+                                    //var devicesubtype = ViewData["DeviceSubType"] as List<SelectListItem>;
+                                    //var networkTypes = ViewData["NetWorkType"] as List<SelectListItem>;
+                                    foreach (var item in networkTypes)
+                                    {
+                                        if (item.Value == network) // Compare network value
+                                        {
+                                            item.Selected = true;
+                                            ViewData["NetworkTypes"] = networkTypes;
+                                            break; // Exit the loop once the match is found
+                                        }
+                                    }
+                                    foreach (var item in devicesubtype)
+                                    {
+                                        if (item.Value == devicesub.ToString()) // Compare device subtype value
+                                        {
+                                            item.Selected = true;
+                                            ViewData["DeviceSubTypes"] = devicesubtype;
+                                            break; // Exit the loop once the match is found
+                                        }
+                                    }
+                                    ViewData["NetworkTypes"] = networkTypes;
+                                    ViewData["DeviceSubTypes"] = devicesubtype;
+                                }
+
+
+                                @if (isPrinter)
+                                {
+                                    // Show device subtype dropdown if there are options available
+                                    if (devicesubtype != null && devicesubtype.Any())
+                                    {
+                                        <div id="divPrinter">
+                                            <div class="col-md-12">
+                                                <label for="deviceSubType">Device SubType</label>
+                                                <div class="clearfix"></div>
+                                                <select asp-items="@(ViewData["DeviceSubTypes"] as IEnumerable<SelectListItem>)" id="ddDeviceSubType" name="selectedDeviceSubType" class="form-control">
+                                                    @foreach (var item in devicesubtype)
+                                                    {
+                                                        <option value="@item.Value">@item.Text</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    // Show network type dropdown if there are options available
+                                    if (networkTypes != null && networkTypes.Any())
+                                    {
+                                        <div id="divPrinter">
+                                            <div class="col-md-12">
+                                                <label for="networkType">Network Type<span class="text-danger">*</span></label>
+                                                <div class="clearfix"></div>
+                                                <select asp-items="@(ViewData["NetworkTypes"] as IEnumerable<SelectListItem>)" id="ddNetworkType" name="network_type" class="form-control">
+                                                    @foreach (var item in networkTypes)
+                                                    {
+                                                        <option value="@item.Value">@item.Text</option>
+                                                    }
+                                                </select>
+                                                <span asp-validation-for="DTDevice.network_type" class="text-danger"></span>
+                                            </div>
+                                        </div>}
+                                }
+                                @{var isCashCamera = ViewData["IsCashCamera"] as bool? ?? false || (Model.DTDevice != null && (Model.DTDevice.Device_Type_id == 12));
+                                    //var printernetworkTypeList = ViewData["NetWorkType"] as List<SelectListItem>;
+
+                                    var networkType = new List<SelectListItem>
+{
+    new SelectListItem { Text = "SELECT", Value = "SELECT" },
+    new SelectListItem { Text = "Serial Port", Value = "Serial Port" },
+    new SelectListItem { Text = "USB", Value = "USB" },
+    new SelectListItem { Text = "LAN", Value = "LAN" },
+    new SelectListItem { Text = "MINIPOS", Value = "MINIPOS" },
+    new SelectListItem { Text = "ADD PAY", Value = "ADD PAY" },
+    new SelectListItem { Text = "SUNMI", Value = "SUNMI" },
+    new SelectListItem { Text = "iMin D1", Value = "iMin D1" },
+    new SelectListItem { Text = "iMin D4", Value = "iMin D4" },
+    new SelectListItem { Text = "Falcon", Value = "Falcon" }
+};
+                                    var net = Model.DTDevice?.network_type ?? "Unknown";
+                                    foreach (var item in networkTypes)
+                                    {
+                                        if (item.Value == network) // Compare network value
+                                        {
+                                            item.Selected = true;
+                                            ViewData["NetworkTypes"] = networkTypes;
+                                            break; // Exit the loop once the match is found
+                                        }
+                                    }
+                                    ViewData["NetworkTypes"] = networkTypes;
+                                }
+                                @if (isCashCamera)
+                                {
+                                    @*<div id="divPrinter">
+                <div class="col-md-12">
+                    <label for="networkType">Network Type<span class="text-danger">*</span></label>
+                    <div class="clearfix"></div>
+                    <select asp-items="@(ViewData["NetWorkType"] as IEnumerable<SelectListItem>)" id="ddNetworkType" name="NetworkType" class="form-control">
+                        @foreach (var item in networkTypes)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="DTDevice.network_type" class="text-danger"></span>
+                </div>
+            </div>*@
+                                    if (networkTypes != null && networkTypes.Any())
+                                    {
+                                        <div id="divPrinter">
+                                            <div class="col-md-12">
+                                                <label for="networkType">Network Type<span class="text-danger">*</span></label>
+                                                <div class="clearfix"></div>
+                                                <select asp-items="@(ViewData["NetworkTypes"] as IEnumerable<SelectListItem>)" id="ddNetworkType" name="network_type" class="form-control">
+                                                    @foreach (var item in networkTypes)
+                                                    {
+                                                        <option value="@item.Value">@item.Text</option>
+                                                    }
+                                                </select>
+                                                <span asp-validation-for="DTDevice.network_type" class="text-danger"></span>
+                                            </div>
+                                        </div>}
+                                }
+                                <div class="row" id="ipPortFields" style="display:none;">
+                                    <label asp-for="DTDevice.printer_ip_address">Ip Address<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" asp-for="DTDevice.printer_ip_address" />
+                                    <span asp-validation-for="DTDevice.printer_ip_address" class="text-danger"></span>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <label asp-for="DTDevice.port">Port<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" asp-for="DTDevice.port" />
+                                    <span asp-validation-for="DTDevice.port" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="row" id="baudrateDeviceNameFields" style="display:none;">
+                                    <label asp-for="DTDevice.budrate">Budrate<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" asp-for="DTDevice.budrate" />
+                                    <span asp-validation-for="DTDevice.budrate" class="text-danger"></span>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <label asp-for="DTDevice.device_name">Device Name<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" asp-for="DTDevice.device_name" />
+                                    <span asp-validation-for="DTDevice.device_name" class="text-danger"></span>
+                                </div>
+                                @*</div>*@
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+
+                            @{
+                                var isEvoOrPayWorks = (ViewData["IsEvoOrPayWorks"] as bool? ?? false) ||
+                                                      (Model.DTDevice != null && (Model.DTDevice.Device_Type_id == 10 || Model.DTDevice.Device_Type_id == 11));
+                                //    var isPaxCommunicator = (ViewData["IsPaxCommunicator"] as bool? ?? false) ||
+                                //(Model.DTDevice != null && Model.DTDevice.Device_Type_id == 20);
+                            }
+                            @if (isEvoOrPayWorks)
+                            {
+                                <div class="form-group">
+                                    <label for="userName">User Name</label>
+                                    <input type="text" class="form-control" id="userName" name="UserName" value="@Model.DTDevice.user_name" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" id="password" name="Password" value="@Model.DTDevice.password" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="bluetoothName">Bluetooth Name</label>
+                                    <input type="text" class="form-control" id="bluetoothName" name="BluetoothName" value="@Model.DTDevice.bluetooth_name" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="api">Application Profile ID</label>
+                                    <input type="text" class="form-control" id="api" name="API" value="@Model.DTDevice.application_profile_id" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="serviceKey">Service Key</label>
+                                    <input type="text" class="form-control" id="serviceKey" name="ServiceKey" value="@Model.DTDevice.service_key" />
+                                </div>}
+                            @*@{var isPaxCommunicator = (ViewData["IsPaxCommunicator"] as bool? ?? false) ||
+                                        (Model.DTDevice != null && Model.DTDevice.Device_Type_id == 20); }
+
+                                @if (isPaxCommunicator)
+                                {
+                                    <div class="form-group" id="paxFields" style="display: none;">
+                                        <label for="userName">User Name</label>
+                                        <input type="text" class="form-control" id="userName" name="UserName" value="@ViewData[" UserName"]" />
+
+                                        <label for="password">Password</label>
+                                        <input type="password" class="form-control" id="password" name="Password" value="@ViewData[" Password"]" />
+
+                                        <label for="ipAddress">IP Address</label>
+                                        <input type="text" class="form-control" id="ipAddress" name="IpAddress" value="@ViewData[" IpAddress"]" />
+
+                                        <label for="port">Port</label>
+                                        <input type="text" class="form-control" id="port" name="Port" value="@ViewData[" Port"]" />
+                                    </div>}*@
+                            @{ var isPaxCommunicator = (ViewData["IsPaxCommunicator"] as bool? ?? false) ||
+                                                                                (Model.DTDevice != null && Model.DTDevice.Device_Type_id == 18); }
+
+                            @if (isPaxCommunicator)
+                            {
+                                <div class="form-group" id="paxFields" style="display: none;">
+                                    <label for="userName">User Name</label>
+                                    <input type="text" class="form-control" id="userName" name="UserName" value="@Model.DTDevice.user_name" />
+
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" id="password" name="Password" value="@Model.DTDevice.password" />
+
+                                    <label for="ipAddress">IP Address</label>
+                                    <input type="text" class="form-control" id="ipAddress" name="IpAddress" value="@Model.DTDevice.printer_ip_address" />
+
+                                    <label for="port">Port</label>
+                                    <input type="text" class="form-control" id="port" name="Port" value="@Model.DTDevice.port" />
+                                </div>}
+                            <div class="clearfix"></div>
+                            <br />
+                            <label asp-for="DTDevice.width">Width<span class="text-danger">*</span></label>
+                            <div class="clearfix"></div>
+                            <input class="form-control" asp-for="DTDevice.width" />
+                            <span asp-validation-for="DTDevice.width" class="text-danger"></span>
+                            <div class="clearfix"></div>
+                            <br />
+                            <label asp-for="DTDevice.is_active">Active</label> &nbsp;
+                            <input asp-for="DTDevice.is_active" type="checkbox" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions text-right pal">
+                <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                <input type="submit" value="Cancel" class="btn btn-primary" formnovalidate asp-page-handler="Cancel" />
+            </div>
+        </div>
+    </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            // Initially hide fields
+            /*$('#ipPortFields').hide();*/
+            //$('#baudrateDeviceNameFields').hide();
+            $('#divDeviceSubType').hide();  // Hide device subtype by default
+            //$('#divNetworkType').hide();  // Hide network type by default
+            showDeviceFields();  // Show/hide fields based on the device type
+
+            $('#deviceTypeDropdown').change(function () {
+                showDeviceFields();  // Re-evaluate the device type
+
+                var selectedDeviceType = $(this).val();
+                if (selectedDeviceType === 'Printer') {
+                    $('#divDeviceSubType').show();  // Show Device SubType dropdown
+                    $('#divNetworkType').show();  // Show Network Type dropdown
+                } else {
+                    $('#divDeviceSubType').hide();
+                    $('#divNetworkType').hide();
+                }
+            });
+
+            function handleNetworkTypeSelection() {
+                var networkType = $('#ddNetworkType').val();  // Get the selected network type
+                console.log("Selected Network Type:", networkType);  // Debugging: log the value
+
+                // Hide all fields initially
+                $('#ipPortFields').hide();
+                $('#baudrateDeviceNameFields').hide();  // Hide Budrate and Device Name fields
+
+                // Show/hide based on network type selected
+                if (networkType === 'LAN' || networkType === 'ADD PAY' || networkType === 'SUNMI' || networkType === 'iMin D1' || networkType === 'iMin D4' || networkType === 'Falcon') {
+                    console.log("Showing IP Address and Port fields");
+                    $('#ipPortFields').show();  // Show IP Address and Port
+                } else if (networkType === 'MINIPOS') {
+                    console.log("Showing IP Address and Port fields for MINIPOS");
+                    $('#ipPortFields').show();  // Show IP Address and Port for MINIPOS
+                } else if (networkType === 'Serial Port') {
+                    console.log("Showing Baud Rate and Device Name fields for Serial Port");
+                    $('#baudrateDeviceNameFields').show();  // Show Baud Rate and Device Name for Serial Port
+                }
+            }
+            handleNetworkTypeSelection();
+
+            // Bind the change event to the dropdown to handle selection changes
+            $('#ddNetworkType').change(function () {
+                handleNetworkTypeSelection();  // Run the function whenever the dropdown value changes
+            });
+            $('#yourFormId').submit(function (e) {
+                var selectedNetworkType = $('#ddNetworkType').val();
+                var selectedDeviceSubType = $('#ddDeviceSubType').val();
+
+                // Ensure both network type and device subtype are selected before submitting
+                if (selectedNetworkType === 'SELECT' || selectedDeviceSubType === '0') {
+                    e.preventDefault();  // Prevent form submission
+                    alert('Please select both Device SubType and Network Type.');
+                }
+            });
+        /*});*/
+            // Prevent form submission if required fields are not filled
+            $('#yourFormId').submit(function (e) {
+                var selectedNetworkType = $('#ddNetworkType').val();
+                var selectedDeviceSubType = $('#ddDeviceSubType').val();
+
+                // Ensure both network type and device subtype are selected before submitting
+                if (selectedNetworkType === 'SELECT' || selectedDeviceSubType === '0') {
+                    e.preventDefault();  // Prevent form submission
+                    alert('Please select both Device SubType and Network Type.');
+                }
+            });
+        });
+
+        // Function to handle device fields based on device type selection
+        function showDeviceFields() {
+            var selectedDeviceType = $('#deviceTypeDropdown').val();
+            $('#evoFields').hide();
+            $('#passwordField').hide();
+            $('#bluetoothField').hide();
+            $('#appProfileField').hide();
+            $('#serviceKeyField').hide();
+
+            if (selectedDeviceType === 'EVO' || selectedDeviceType === 'PAY WORKS') {
+                $('#evoFields').show();
+                $('#passwordField').show();
+                $('#bluetoothField').show();
+                $('#appProfileField').show();
+                $('#serviceKeyField').show();
+            }
+        }
+
+        // AJAX function to fetch device details (subtypes, network types) dynamically
+        function fetchDeviceDetails(deviceType) {
+            $.ajax({
+                url: '@Url.Action("GetEvoDeviceDetails", "DeviceController")', // Your controller action to return device details
+                type: 'GET',
+                data: { deviceTypeId: deviceType },  // Send the selected device type
+                success: function (data) {
+                    // Update Device SubType dropdown if data is returned
+                    if (data.deviceSubTypeDropdown) {
+                        $('#ddDeviceSubType').html(data.deviceSubTypeDropdown); // Populate the dropdown
+                        $('#ddDeviceSubType').closest('div').show(); // Show the Device SubType section
+                    } else {
+                        $('#ddDeviceSubType').closest('div').hide(); // Hide if no data
+                    }
+
+                    // Update Network Type dropdown if data is returned
+                    if (data.networkTypeDropdown) {
+                        $('#ddNetworkType').html(data.networkTypeDropdown); // Populate the dropdown
+                        $('#ddNetworkType').closest('div').show(); // Show the Network Type section
+                    } else {
+                        $('#ddNetworkType').closest('div').hide(); // Hide if no data
+                    }
+                },
+                error: function () {
+                    alert("Error fetching device details.");
+                }
+            });
+        }
+    </script>
+}

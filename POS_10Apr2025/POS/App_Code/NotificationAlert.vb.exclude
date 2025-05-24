@@ -1,0 +1,87 @@
+﻿Imports System.Collections.Generic
+
+Namespace MoonAPNS
+    ''' <summary>
+    ''' Alert Portion of the Notification Payload
+    ''' </summary>
+    Public Class NotificationAlert
+        ''' <summary>
+        ''' Constructor
+        ''' </summary>
+        Public Sub New()
+            Body = Nothing
+            ActionLocalizedKey = Nothing
+            LocalizedKey = Nothing
+            LocalizedArgs = New List(Of Object)()
+        End Sub
+
+        ''' <summary>
+        ''' Body Text of the Notification's Alert
+        ''' </summary>
+        Public Property Body() As String
+            Get
+                Return m_Body
+            End Get
+            Set(value As String)
+                m_Body = Value
+            End Set
+        End Property
+        Private m_Body As String
+
+        ''' <summary>
+        ''' Action Button's Localized Key
+        ''' </summary>
+        Public Property ActionLocalizedKey() As String
+            Get
+                Return m_ActionLocalizedKey
+            End Get
+            Set(value As String)
+                m_ActionLocalizedKey = Value
+            End Set
+        End Property
+        Private m_ActionLocalizedKey As String
+
+        ''' <summary>
+        ''' Localized Key
+        ''' </summary>
+        Public Property LocalizedKey() As String
+            Get
+                Return m_LocalizedKey
+            End Get
+            Set(value As String)
+                m_LocalizedKey = Value
+            End Set
+        End Property
+        Private m_LocalizedKey As String
+
+        ''' <summary>
+        ''' Localized Argument List
+        ''' </summary>
+        Public Property LocalizedArgs() As List(Of Object)
+            Get
+                Return m_LocalizedArgs
+            End Get
+            Set(value As List(Of Object))
+                m_LocalizedArgs = Value
+            End Set
+        End Property
+        Private m_LocalizedArgs As List(Of Object)
+
+        Public Sub AddLocalizedArgs(ParamArray values As Object())
+            Me.LocalizedArgs.AddRange(values)
+        End Sub
+
+        ''' <summary>
+        ''' Determines if the Alert is empty and should be excluded from the Notification Payload
+        ''' </summary>
+        Public ReadOnly Property IsEmpty() As Boolean
+            Get
+                If Not String.IsNullOrEmpty(Body) OrElse Not String.IsNullOrEmpty(ActionLocalizedKey) OrElse Not String.IsNullOrEmpty(LocalizedKey) OrElse (LocalizedArgs IsNot Nothing AndAlso LocalizedArgs.Count > 0) Then
+                    Return False
+                Else
+                    Return True
+                End If
+            End Get
+        End Property
+    End Class
+End Namespace

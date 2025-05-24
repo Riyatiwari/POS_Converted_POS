@@ -1,0 +1,606 @@
+﻿@page
+@model Converted_POS.Pages.Reports.SalesReportModel
+@{
+}
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a id="userListButton" asp-page="/Reports/SalesReport">Transaction Report</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+        </ol>
+    </div>
+
+    <link href="vendor2/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="js2/demo/datatables-demo.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#Psummary thead tr').clone(true).appendTo('#Psummary thead');
+
+            Grid();
+
+        });
+
+
+        function Grid() {
+
+            $("#Psummary tr").not(':first').hover(
+                function () {
+                    $(this).css("background", "#efefef").css("cursor", "Pointer").css("font-weight", "bold").css("box-shadow", "0 4px 2px -3px rgba(0, 0, 0, 0.5) inset").css("-webkit-box-shadow", "0 4px 2px -3px rgba(0, 0, 0, 0.5) inset");
+                },
+                function () {
+                    $(this).css("background", "").css("cursor", "").css("font-weight", "").css("box-shadow", "").css("-webkit-box-shadow", "");
+                }
+            );
+
+            var groupCol = 0;
+
+            var table = $('#Psummary').DataTable({
+
+                orderCellsTop: true,
+                dom: 'Bfrtip',
+                "buttons": [
+                    'excel'
+                ],
+
+                excel: [{
+                    filterable: true,
+                    columns: ':visible'
+                }],
+
+                "stripeClasses": ['odd-row', 'even-row'],
+                "destroy": true,
+                "columnDefs": [
+
+                    { "visible": false, "targets": +groupCol }
+
+                ],
+
+                "displayLength": 50,
+                "searching": true
+            });
+
+
+            var table1 = $('#Psummary').DataTable();
+
+            $('#Psummary thead tr:eq(1) th').each(function (i) {
+
+                var title = $(this).text();
+
+                $(this).html('<input type="text" style="width:98%" placeholder="Search ' + title + '" />');
+
+                $('input', this).on('keyup change', function () {
+
+                    if (table1.column(i).search() !== this.value) {
+                        table1
+
+                            .column($(this).parent().index() + ':visible')
+                            .search(this.value)
+                            .draw()
+                            ;
+
+                    }
+                    else {
+                        table1
+                            .column($(this).parent().index() + ':visible')
+                            .search('')
+                            .draw()
+                            ;
+
+                    }
+                });
+            });
+        }
+    </script>
+
+    <script lang="javascript" type="text/javascript">
+
+        function openNewWin(url) {
+            var x = window.open(url, 'Transaction Report Detail', 'width=600,height=600,toolbar=1');
+            x.focus();
+        }
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            // Initialize Datepicker for From Date and To Date fields
+            $("#txtForDate, #txtToDate").datepicker({
+                dateFormat: 'mm/dd/yy',  // Customize the date format (e.g., mm/dd/yy)
+                changeMonth: true,  // Enable month dropdown
+                changeYear: true,   // Enable year dropdown
+                showAnim: 'fadeIn',  // Animation when the calendar shows up
+                minDate: 0,  // Disable past dates (optional)
+            });
+        });
+        $('#radDuration').change(function () {
+            if ($(this).val() === 'Custom') {
+                $('#divcustom').show();  // Show the datepicker div
+            } else {
+                $('#divcustom').hide();  // Hide the datepicker div
+            }
+        });
+});</script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var durationDropdown = document.getElementById("radDuration");
+            var divCustom = document.getElementById("divcustom");
+
+            // Show/hide custom date fields when the dropdown changes
+            durationDropdown.addEventListener("change", function () {
+                var selectedDuration = this.value;
+
+                if (selectedDuration === "Custom") {
+                    divCustom.style.display = "block";  // Show the custom date fields
+                } else {
+                    divCustom.style.display = "none";   // Hide the custom date fields
+                }
+            });
+
+            // Check if "Custom" is selected on page load
+            if (durationDropdown.value === "Custom") {
+                divCustom.style.display = "block";  // Make sure divcustom is visible if "Custom" is already selected
+            }
+        });</script>
+    <script type="text/javascript">
+        function ondurationChange() {
+            var duration = document.getElementById("radDuration").value;
+            var divCustom = document.getElementById("divcustom");
+
+            // Show "Custom" date fields when the "Custom" option is selected
+            if (duration === "Custom") {
+                divCustom.style.display = "block";
+            } else {
+                divCustom.style.display = "none";
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Initialize Datepicker for From Date and To Date fields
+            $("#txtForDate, #txtToDate").datepicker({
+                dateFormat: 'mm/dd/yy',  // Customize the date format (e.g., mm/dd/yy)
+                changeMonth: true,  // Enable month dropdown
+                changeYear: true,   // Enable year dropdown
+                showAnim: 'fadeIn',  // Animation when the calendar shows up
+                minDate: 0,  // Disable past dates (optional)
+            });
+
+            // Handle Duration change event
+            $('#radDuration').change(function () {
+                var selectedDuration = $(this).val();
+                if (selectedDuration === 'Custom') {
+                    $('#divcustom').show();  // Show the custom date fields
+                } else {
+                    $('#divcustom').hide();  // Hide the custom date fields
+                }
+            });
+
+            // Ensure the form correctly sends the custom date values on form submission
+            $("#FormId").submit(function () {
+                // If "Custom" is selected, make sure the values for From and To dates are passed
+                if ($('#radDuration').val() === 'Custom') {
+                    var fromDate = $('#txtForDate').val();
+                    var toDate = $('#txtToDate').val();
+
+                    // Set hidden fields with selected dates if custom is selected
+                    $('#hiddenFromDate').val(fromDate);
+                    $('#hiddenToDate').val(toDate);
+                }
+            });
+        });</script>
+
+    <script>
+        $(document).ready(function () {
+            // This will capture when the duration is changed
+            $('#radDuration').change(function () {
+                // Get the selected value from the dropdown
+                var selectedDuration = $(this).val();
+
+                // Update the hidden input field with the selected value
+                $('#selectedDuration').val(selectedDuration);
+            });
+
+            // Ensure that on form submit the value in hidden input is updated
+            $('#FormId').submit(function () {
+                // In case the user has manually selected a duration, we update the hidden field.
+                var selectedDuration = $('#radDuration').val();
+                $('#selectedDuration').val(selectedDuration);
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the duration dropdown and the hidden input field
+            var durationDropdown = document.getElementById('radDuration');
+            var selectedDurationInput = document.getElementById('selectedDuration');
+
+            // This function is called when the dropdown selection changes
+            durationDropdown.addEventListener('change', function () {
+                var selectedDuration = durationDropdown.value;
+
+                // Update the hidden input field with the selected value
+                selectedDurationInput.value = selectedDuration;
+            });
+
+            // When the form is submitted, ensure the selected value is passed
+            var form = document.getElementById('FormId');
+            form.addEventListener('submit', function () {
+                var selectedDuration = durationDropdown.value;
+                selectedDurationInput.value = selectedDuration;  // Update hidden input before submit
+            });
+        });
+    </script>
+
+    <script>
+ $.ajax({
+    type: 'POST',
+     url: '/reports/TableTransactionDetail',  // Make sure to specify the exact route here
+    contentType: 'application/json',
+    data: JSON.stringify({ Argument: commandArgument }),
+    success: function (response) {
+        console.log("Response: ", response);
+        if (response.success) {
+            alert("Transaction Detail Loaded Successfully!");
+        } else {
+            alert(response.message);
+        }
+    },
+    error: function (xhr, status, error) {
+        console.error("AJAX Error: ", status, error);
+        alert("An error occurred while loading transaction details.");
+    }
+});
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Event handler for the "View" link
+            $(".view-detail").on("click", function () {
+                var id = $(this).data("id");  // Get the transaction ID from the data attribute
+                var till = $(this).data("till");  // Get the Till value from the data attribute
+
+                // Send a POST request to the server to fetch the transaction details
+                $.ajax({
+                    type: 'POST',
+                    url: '/reports/TableTransactionDetail', // Ensure this matches the route in your controller
+                    data: { id: id, till: till },  // Send the ID and Till as form data
+                    success: function (response) {
+                        console.log("Response: ", response);
+
+                        if (response.success) {
+                            var transaction = response.data;
+                            var detailsHtml = `
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Till</th>
+                                        <th>Operator</th>
+                                        <th>Quantity</th>
+                                        <th>Total Amount</th>
+                                        <th>Tax</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>${transaction.Name}</td>
+                                        <td>${transaction.Till}</td>
+                                        <td>${transaction.Operator}</td>
+                                        <td>${transaction.Quantity}</td>
+                                        <td>${transaction.TotalAmount}</td>
+                                        <td>${transaction.Tax}</td>
+                                        <td>${transaction.Date}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        `;
+
+                            // Insert the details into the modal body
+                            $("#transactionDetails").html(detailsHtml);
+
+                            // Show the modal
+                            $('#transactionModal').modal('show');
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("AJAX Error: ", status, error);
+                        alert("An error occurred while loading transaction details.");
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Event handler for the "View" link
+            $(".view-detail").on("click", function () {
+                var id = $(this).data("id");  // Get the transaction ID from the data attribute
+                var till = $(this).data("till");  // Get the Till value from the data attribute
+                var username = $(this).data("username");  // Get the Username value from the data attribute
+                var formattedTotalAmount = $(this).data("formattedtotalamount");  // Get the Formatted Total Amount value from the data attribute
+
+                // Construct the URL with all the parameters
+                var url = '/reports/TableTransactionDetail?id=' + id +
+                    '&till=' + till +
+                    '&username=' + username +
+                    '&formattedTotalAmount=' + formattedTotalAmount;
+
+                // Redirect to the TableTransactionDetail page with the constructed URL
+                window.location.href = url;
+            });
+        });
+    </script>
+<script>
+    $(document).ready(function () {
+        // Event handler for the "View" link
+        $(".view-detail").on("click", function () {
+            var id = $(this).data("id"); // Get the transaction ID from the data attribute
+
+            // Redirect to the TableTransactionDetail page with the id as a query string
+            window.location.href = '/reports/TableTransactionDetail?id=' + id;
+        });
+    });
+</script>
+    <script>function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        $(document).ready(function () {
+            // Extract 'till' parameter from URL
+            var till = getQueryParam('till');
+
+            // Now use this `till` value as needed
+            console.log("Till Parameter: " + till);
+
+            // You can now use this value in your table or elsewhere in the script.
+            // For example, you can insert it into a table dynamically
+            $('#Psummary tbody tr').each(function () {
+                // Assuming you're adding the 'Till' value dynamically to the table
+                $(this).find('.till-column').text(till);
+            });
+        });</script>
+    <script type="text/javascript">
+    function viewDetail(salesId, tranUuid, saleType) {
+        // You can show a loading spinner or disable the button to indicate a process is running
+        $.ajax({
+            url: '@Url.Action("SalesReport", "ViewDetail")', // Adjust this to the correct controller and action
+            type: 'GET',
+            data: {
+                salesId: salesId,
+                tranUuid: tranUuid,
+                saleType: saleType
+            },
+            success: function (response) {
+                // Handle the response if needed, like showing details in a modal or redirecting
+                console.log(response);
+                // You can redirect to another view or display results in a modal
+                // window.location.href = response.redirectUrl;  // if you want to redirect
+            },
+            error: function (xhr, status, error) {
+                // Handle error
+                alert('An error occurred: ' + error);
+            }
+        });
+    }
+    </script>
+}
+
+<form id="FormId">
+    <link href="css/Telerik_Report_Style.css" rel="stylesheet" type="text/css" />
+    <br />
+    <div class="col-lg-12" id="divFunction">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Transaction Report</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+
+                    <div class="row" id="divcustom" style="display:none;">
+                        <div class="col-lg-6">
+                            <label for="txtForDate">From Date:</label>
+                            <input id="txtForDate" type="date" class="form-control" name="fromDate" />
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="txtToDate">To Date:</label>
+                            <input id="txtToDate" type="date" class="form-control" name="toDate" />
+                        </div>
+                        <input type="hidden" id="selectedDuration" name="selectedDuration" value="Today">
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="radDuration">Duration:</label>
+                            <select id="radDuration" class="form-control" name="duration" onchange="ondurationChange()">
+                                <option value="Today">Today</option>
+                                <option value="Yesterday">Yesterday</option>
+                                <option value="This Week">This Week</option>
+                                <option value="This Month">This Month</option>
+                                <option value="This Year">This Year</option>
+                                <option value="Last Week">Last Week</option>
+                                <option value="Last Month">Last Month</option>
+                                <option value="Last Year">Last Year</option>
+                                <option value="Custom">Custom</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-6">
+                            <div style="margin-left:-27px; margin-left:2px;">
+                                <div class="dropdown-checkboxes">
+                                    <label for="radVenue">Venue :</label>
+                                    <select id="radVenue" class="form-control">
+                                        <option value="">Select</option>
+                                        @if (Model.DTVenue != null && Model.DTVenue.Any())
+                                        {
+                                            @foreach (var item in Model.DTVenue)
+                                            {
+                                                var selectedAttribute = item.Value == Model.salesreport?.venue_id.ToString() ? "selected" : "";
+
+                                                var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                                @Html.Raw(optionHtml)
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div style="margin-left:-27px; margin-left:2px;">
+                                <div class="dropdown-checkboxes">
+                                    <label>Location :</label>
+                                    <select class="form-control" name="location">
+                                        <option value="">Select</option>
+                                        @if (Model.DTLocation != null && Model.DTLocation.Any())
+                                        {
+                                            @foreach (var item in Model.DTLocation)
+                                            {
+                                                var selectedAttribute = item.Value == Model.salesreport?.location_id.ToString() ? "selected" : "";
+
+                                                var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                                @Html.Raw(optionHtml)
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary">View Report</button>
+                        @*<button class="btn btn-primary" id="viewReportBtn" type="button" onclick="viewReport()">View</button>*@
+                    </div>
+
+                </div>
+
+                <br />
+                <div id="transactionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="transactionModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="transactionModalLabel">Transaction Details</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="transactionDetails">
+                                    <!-- Transaction details will be dynamically loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive" style="overflow-y: auto;">
+                    <table class="table table-bordered" id="Psummary">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Date</th>
+                                <th>Till</th>
+                                <th>Operator</th>
+                                <th>Table Name</th>
+                                <th>Total Amount</th>
+                                <th>Total Discount</th>
+                                <th>Net Amount</th>
+                                <th>Payment</th>
+                                <th>Payment Type</th>
+                                <th>Reference</th>
+                                <th>Table UUID</th>
+                                <th>Transaction ID</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.DTBindTable.Any())
+                            {
+                                @foreach (var item in Model.DTBindTable)
+                                {
+                                    <tr>
+                                        <td></td>
+                                        <td>@item.Date.ToString("MM/dd/yyyy")</td>
+                                        <td>@item.Till</td>
+                                        <td>@item.UserName</td>
+                                        <td>@item.TableName</td>
+                                        <td>@item.FormattedTotalAmount</td>
+                                        <td>@item.FormattedTotalDiscount</td>
+                                        <td>@item.FormattedNetAmount</td>
+                                        <td>@item.Payment</td>
+                                        <td>@item.SaleType</td>
+                                        <td>@item.Srno</td>
+                                        <td>@item.TableUuid</td>
+                                        <td>@item.TranUuid</td>
+
+                                        @*<a href="@Url.Action("Details", "TransactionReport", new { id = item.SalesId })">View</a>*@
+                                        <td>
+                                            @*<a class="view-detail" data-arguments="@item.SalesId#@item.TranUuid#@item.SaleType#@item.PayType" href="javascript:void(0);" title="View Detail">
+                                        <i class="fa fa-search" style="cursor: pointer" aria-hidden="true"></i>
+                                    </a>*@
+                                            <a href="@Url.Action("TableTransactionDetail", "TableTransactionDetail", new { id = item.SalesId, till = item.Till, username = item.UserName, formattedTotalAmount = item.FormattedTotalAmount, date = item.Date })" onclick="viewDetail(@item.SalesId, '@item.TranUuid', '@item.SaleType');">View</a>
+                                            &nbsp;&nbsp;
+                                            @*<a href="javascript:void(0);" class="send-mail" data-arguments="@item.SalesId#@item.TranUuid#@item.SaleType" title="Send Mail">
+                                        <i class="fa fa-send" style="cursor: pointer" aria-hidden="true"></i>
+                                    </a>*@
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th>Date</th>
+                                <th>Till</th>
+                                <th>Operator</th>
+                                <th>Table Name</th>
+                                <th>Total Amount</th>
+                                <th>Total Discount</th>
+                                <th>Net Amount</th>
+                                <th>Payment</th>
+                                <th>Payment Type</th>
+                                <th>Reference</th>
+                                <th>Table UUID</th>
+                                <th>Transaction ID</th>
+                                <th>Details</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<style>
+    /* Add your custom styles here */
+    .panel {
+        border: 1px solid #f1f1f1;
+        padding: 15px;
+    }
+
+    .form-body {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        margin-bottom: 10px;
+    }
+</style>

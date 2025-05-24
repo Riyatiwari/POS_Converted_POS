@@ -1,0 +1,257 @@
+﻿@page
+@model Converted_POS.Pages.SignInModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>SignIn</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="Thu, 19 Nov 1900 08:52:00 GMT" />
+    <link type="text/css" rel="stylesheet" href="~/js/vendors/font-awesome/css/font-awesome.min.css" />
+    <link type="text/css" rel="stylesheet" href="~/js/vendors/bootstrap/css/bootstrap.min.css" />
+    <!--Loading style vendors-->
+    <link type="text/css" rel="stylesheet" href="~/js/vendors/animate.css/animate.css" />
+    <link type="text/css" rel="stylesheet" href="~/js/vendors/iCheck/skins/all.css" />
+    <!--Loading style-->
+    <link type="text/css" rel="stylesheet" href="~/css/themes/style1/yellow-green.css" class="default-style" />
+    <link type="text/css" rel="stylesheet" href="~/css/themes/style1/yellow-green.css" id="theme-change"
+          class="style-change color-change" />
+    <link type="text/css" rel="stylesheet" href="~/css/style-responsive.css" />
+    @*<link rel="shortcut icon" href="~/images/favicon.ico" />*@
+    <style>
+        .page-form input[type='text'],
+        .page-form input[type='password'],
+        .page-form input[type='email'],
+        .page-form select {
+            height: 40px;
+            box-sizing: inherit;
+            border: 1px solid #a6a9b0;
+            align-content: center
+        }
+
+        .page-form {
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .header-content {
+            background-color: #fff;
+            align-content: center;
+            text-align: center;
+            padding-top: 12px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            /*font-family: Arial, sans-serif;*/
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            background: #fff;
+            opacity: 0.9;
+            overflow-y: hidden;
+            box-sizing: border-box;
+            min-height: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-top: 150px;
+        }
+
+            .header img {
+                width: 300px;
+            }
+
+
+        .form-group {
+            margin-bottom: 0px;
+        }
+
+        .input-icon input {
+            padding-left: 10px !important;
+        }
+
+        .form-control::placeholder {
+            color: #000000;
+        }
+
+        .page-form .body-content p a {
+            color: #166DB1;
+        }
+
+        .form-control {
+            font-size: 13px;
+        }
+        /* .input-icon {
+            position: relative;
+        }*/
+        /*  .input-icon i {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                right: 10px;
+                color: #888;
+            }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+            .form-control:focus {
+                outline: none;
+                border-color: #1D4E89;
+            }*/
+        .btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #0078c8;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+            .btn:hover {
+                background-color: #13335A;
+            }
+
+        .forget-password {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+            .forget-password a {
+                color: #0078c8;
+                text-decoration: none;
+            }
+
+                .forget-password a:hover {
+                    text-decoration: underline;
+                }
+
+        .clearfix {
+            clear: both;
+        }
+
+        .version {
+            text-align: center;
+            margin-top: 20px;
+            color: red;
+            font-size: 14px;
+        }
+
+        .xui-bodywrapper {
+            font-size: .9375rem;
+            line-height: 1.5rem;
+            color: #000a1e;
+            font-family: "HelveticaNeue",Helvetica,Arial,sans-serif;
+            align-content: center;
+        }
+
+        .xui-padding-top-small {
+            padding-top: 12px;
+        }
+    </style>
+</head>
+<body style=" opacity: 0.9;">
+
+
+    <div class="xui-bodywrapper">
+
+        <div class="header">
+
+            <img src="~/images/bg/logo_dark-1.png" alt="TenderPOS Logo" />
+        </div>
+
+
+
+        @*<div class="header-content">
+                <h2 class="xui-padding-top-small">Log In</h2>
+            </div>*@
+
+    </div>
+
+
+    <form class="page-form" method="post" style="width: 350px; margin-left: auto; margin-right: auto;">
+
+        <div class="body-content">
+            <div class="row mbm text-center">
+                <label ID="lblMsg" runat="server" Text="" class="require"></label>
+            </div>
+
+            <div id="divLogin" runat="server">
+                <div class="form-group">
+                    <div class="input-icon">
+                        <input asp-for="signIn.UserName" placeholder="UserName" tabindex="1" class="form-control" />
+                        @*<i class="fa fa-home"></i>*@
+                    </div>
+                </div>
+                <!--<div class="form-group">
+                    <div class="input-icon">
+                        <input asp-for="signIn.UserName" placeholder="TillCode" tabindex="1" class="form-control" />-->
+                        @*<i class="fa fa-user"></i>*@
+                    <!--</div>
+                </div>-->
+                <div class="form-group">
+                    <div class="input-icon">
+                        <input asp-for="signIn.Password" type="password" placeholder="Password" tabindex="2" class="form-control" />
+                        @*<i class="fa fa-key"></i>*@
+                    </div>
+                </div>
+                <div style="margin-top:15px;">
+                    <div class="form-group">
+                        <input type="submit" value="Log In" class="btn" asp-page-handler="Login" />
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+                <br />
+                <div class="forget-password">
+                    @*<h4>Forgotten your Password?</h4>*@
+                    <div style="float:left"><a asp-page="/BackOffice/Reset_Password">Forgot Password?</a></div>
+                    <div style="float:right"><a asp-page="/Login">Back To Login</a></div>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+    <div class="version" style="">
+        <label ID="lblVersion" runat="server" style="color: #0078c8; text-decoration: none;" Text="Version 1.0.3.0.0.0"></label>
+    </div>
+
+
+
+    @*<div class="addons">
+            <button class="button button"><a style="color: white; font-family: 'PT Sans',sans-serif; font-weight: 400;" href="https://www.tenderpos.com">Sign Up</a> </button>
+            <button class="button button"><a style="color: white; font-family: 'PT Sans',sans-serif; font-weight: 400;" href="https://www.tenderpos.com/pay/">TenderPay</a> </button>
+            <button class="button button"><a style="color: white; font-family: 'PT Sans',sans-serif; font-weight: 400;" href="https://www.tenderpos.com/connect">TenderConnect</a> </button>
+        </div>*@
+
+    <script src="~/js/jquery-1.10.2.min.js"></script>
+    <script src="~/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/js/jquery-ui.js"></script>
+    <!--loading bootstrap js-->
+    <script src="~/js/vendors/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/js/vendors/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js"></script>
+    <script src="~/js/html5shiv.js"></script>
+    <script src="~/js/respond.min.js"></script>
+    <script src="~/js/vendors/iCheck/icheck.min.js"></script>
+    <script src="~/js/vendors/iCheck/custom.min.js"></script>
+
+</body>
+</html>

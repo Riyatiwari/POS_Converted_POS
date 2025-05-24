@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report DataSourceName="sqlDataSource2" Width="15.2083333333333in" Name="Product_Report" xmlns="http://schemas.telerik.com/reporting/2012/4.2">
+  <DataSources>
+    <SqlDataSource QueryDesignerState="null" SelectCommand="dbo.P_R_M_Product" SelectCommandType="StoredProcedure" Name="sqlDataSource2" ParameterValues="{&quot;@cmp_id&quot;:&quot;1039&quot;}">
+      <Parameters>
+        <SqlDataSourceParameter DbType="Decimal" Name="@cmp_id">
+          <Value>
+            <String>= Parameters.cmpid.Value</String>
+          </Value>
+        </SqlDataSourceParameter>
+      </Parameters>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <PageHeaderSection Height="0.700000047683716in" Name="pageHeaderSection1">
+      <Items>
+        <TextBox Width="29.395079340033cm" Height="0.70000022649765cm" Left="0.00010012308478125cm" Top="0.926041640908355cm" Value="Product Report" Name="ReportNameTextBox">
+          <Style TextAlign="Center">
+            <Font Name="Segoe UI" Size="14pt" Bold="True" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageHeaderSection>
+    <DetailSection Height="0.0520833333333333in" Name="detailSection1" />
+    <PageFooterSection Height="1in" Name="pageFooterSection1">
+      <Items>
+        <TextBox Width="29.395079340033cm" Height="0.600000202655792cm" Left="0.00010012308478125cm" Top="0.978958306103118cm" Value="Page: {PageNumber} " Name="ReportPageNumberTextBox">
+          <Style TextAlign="Center">
+            <Font Name="Segoe UI" />
+          </Style>
+        </TextBox>
+      </Items>
+    </PageFooterSection>
+    <ReportHeaderSection Height="1.05204391479492in" Name="reportHeaderSection1">
+      <Items>
+        <Table DataSourceName="sqlDataSource2" Width="14.5729175922646in" Height="0.452083328572039in" Left="0in" Top="0.400000015894572in" Name="table1" StyleName="Corporate.TableNormal">
+          <Body>
+            <Cells>
+              <TableCell RowIndex="0" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.104166669072552in" Height="0.199999995917968in" Left="0in" Top="0in" Value="" Name="textBox2" StyleName="Corporate.TableBody">
+                    <Style Visible="False" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+            </Cells>
+            <Columns>
+              <Column Width="0.104166603419057in" />
+            </Columns>
+            <Rows>
+              <Row Height="0.199999997707356in" />
+            </Rows>
+          </Body>
+          <Corner>
+            <Cells>
+              <TableCell RowIndex="0" ColumnIndex="0" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.999999859773277in" Height="0.252083322648889in" Left="0in" Top="0in" Value="Product" Name="textBox34" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="1" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.625000029499621in" Height="0.25208334208244in" Left="0in" Top="0in" Value="Code" Name="textBox6" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="2" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="1.02083345885022in" Height="0.252083342082476in" Left="0in" Top="0in" Value="Product Group" Name="textBox7" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="3" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.583332596590098in" Height="0.252083322648841in" Left="0in" Top="0in" Value="Tax" Name="textBox9" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="4" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.656249599017793in" Height="0.25208332264884in" Left="0in" Top="0in" Value="Base" Name="textBox11" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="5" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.427083823104009in" Height="0.252083334569768in" Left="0in" Top="0in" Value="Unit" Name="textBox13" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="6" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.708333500519113in" Height="0.252083334569767in" Left="0in" Top="0in" Value="Other Size" Name="textBox15" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="7" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.739583542315567in" Height="0.252083322648889in" Left="0in" Top="0in" Value="Other Id" Name="textBox17" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="8" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.552083487676139in" Height="0.252083322648889in" Left="0in" Top="0in" Value="Active" Name="textBox19" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="9" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.760416865348816in" Height="0.252083331346512in" Left="0in" Top="0in" Value="Ingredient" Name="textBox21" StyleName="Corporate.TableHeader">
+                    <Style Visible="False" TextAlign="Center">
+                      <BorderStyle Default="None" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="10" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.145833463028516in" Height="0.252083318277839in" Left="0in" Top="0in" Value="Condiment" Name="textBox23" StyleName="Corporate.TableHeader">
+                    <Style Visible="False" TextAlign="Center">
+                      <BorderStyle Default="None" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="11" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.885416483840429in" Height="0.252083334569766in" Left="0in" Top="0in" Value="Printer" Name="textBox25" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center">
+                      <BorderStyle Left="None" />
+                    </Style>
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="12" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.85416704416275in" Height="0.252083331346512in" Left="0in" Top="0in" Value="Condiments" Name="textBox47" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="13" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.843750357627869in" Height="0.252083331346512in" Left="0in" Top="0in" Value="Ingredients" Name="textBox27" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="14" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.791666672809312in" Height="0.252083322648862in" Left="0in" Top="0in" Value="Size Name" Name="textBox29" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="15" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.666666634046279in" Height="0.252083342082456in" Left="0in" Top="0in" Value="Size" Name="textBox31" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="16" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.458333308765441in" Height="0.252083342082452in" Left="0in" Top="0in" Value="Unit" Name="textBox33" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="17" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.749999941596391in" Height="0.252083342082449in" Left="0in" Top="0in" Value="Size Active" Name="textBox35" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="18" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.999999859773277in" Height="0.252083322648889in" Left="0in" Top="0in" Value="Location" Name="textBox37" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+              <TableCell RowIndex="0" ColumnIndex="19" RowSpan="1" ColumnSpan="1">
+                <ReportItem>
+                  <TextBox Width="0.999999859773277in" Height="0.252083322648889in" Left="0in" Top="0in" Value="Price" Name="textBox39" StyleName="Corporate.TableHeader">
+                    <Style TextAlign="Center" />
+                  </TextBox>
+                </ReportItem>
+              </TableCell>
+            </Cells>
+          </Corner>
+          <RowGroups>
+            <TableGroup Name="product1">
+              <ReportItem>
+                <TextBox Width="1in" Height="0.2in" Left="0in" Top="0in" Value="= Fields.product" Name="textBox4" StyleName="">
+                  <Style>
+                    <BorderStyle Default="Solid" />
+                  </Style>
+                </TextBox>
+              </ReportItem>
+              <ChildGroups>
+                <TableGroup Name="code">
+                  <ReportItem>
+                    <TextBox Width="0.625000029499621in" Height="0.199999995917968in" Left="0in" Top="0in" Value="= Fields.code" Name="textBox5" StyleName="">
+                      <Style>
+                        <BorderStyle Default="Solid" />
+                      </Style>
+                    </TextBox>
+                  </ReportItem>
+                  <ChildGroups>
+                    <TableGroup Name="category">
+                      <ReportItem>
+                        <TextBox Width="1.02083345885022in" Height="0.200000009391129in" Left="0in" Top="0in" Value="= Fields.Category" Name="textBox8" StyleName="">
+                          <Style>
+                            <BorderStyle Default="Solid" />
+                          </Style>
+                        </TextBox>
+                      </ReportItem>
+                      <ChildGroups>
+                        <TableGroup Name="tax_name">
+                          <ReportItem>
+                            <TextBox Width="0.583332596590098in" Height="0.199999988405298in" Left="0in" Top="0in" Value="= Fields.tax_name" Name="textBox10" StyleName="">
+                              <Style>
+                                <BorderStyle Default="Solid" />
+                              </Style>
+                            </TextBox>
+                          </ReportItem>
+                          <ChildGroups>
+                            <TableGroup Name="base">
+                              <ReportItem>
+                                <TextBox Width="0.656249599017793in" Height="0.199999988405297in" Left="0in" Top="0in" Value="= Fields.Base" Name="textBox12" StyleName="">
+                                  <Style TextAlign="Right">
+                                    <BorderStyle Default="Solid" />
+                                  </Style>
+                                </TextBox>
+                              </ReportItem>
+                              <ChildGroups>
+                                <TableGroup Name="product_Unit">
+                                  <ReportItem>
+                                    <TextBox Width="0.427083823104009in" Height="0.199999989957501in" Left="0in" Top="0in" Value="= Fields.Product_Unit" Name="textBox14" StyleName="">
+                                      <Style>
+                                        <BorderStyle Default="Solid" />
+                                      </Style>
+                                    </TextBox>
+                                  </ReportItem>
+                                  <ChildGroups>
+                                    <TableGroup Name="other_size">
+                                      <ReportItem>
+                                        <TextBox Width="0.708333500519113in" Height="0.1999999899575in" Left="0in" Top="0in" Value="= Fields.other_size" Name="textBox16" StyleName="">
+                                          <Style>
+                                            <BorderStyle Default="Solid" />
+                                          </Style>
+                                        </TextBox>
+                                      </ReportItem>
+                                      <ChildGroups>
+                                        <TableGroup Name="other_id">
+                                          <ReportItem>
+                                            <TextBox Width="0.739583671085534in" Height="0.200000000000091in" Left="0in" Top="0in" Value="= Fields.other_id" Name="textBox18" StyleName="">
+                                              <Style>
+                                                <BorderStyle Default="Solid" />
+                                              </Style>
+                                            </TextBox>
+                                          </ReportItem>
+                                          <ChildGroups>
+                                            <TableGroup Name="product_Active">
+                                              <ReportItem>
+                                                <TextBox Width="0.55208353815256in" Height="0.200000000000091in" Left="0in" Top="0in" Value="= Fields.Product_Active" Name="textBox20" StyleName="">
+                                                  <Style>
+                                                    <BorderStyle Default="Solid" />
+                                                  </Style>
+                                                </TextBox>
+                                              </ReportItem>
+                                              <ChildGroups>
+                                                <TableGroup Name="is_Condiment">
+                                                  <ReportItem>
+                                                    <TextBox Width="0.760416865348816in" Height="0.200000002980232in" Left="0in" Top="0in" Value="= Fields.Is_Condiment" Name="textBox22" StyleName="">
+                                                      <Style Visible="False">
+                                                        <BorderStyle Default="None" />
+                                                      </Style>
+                                                    </TextBox>
+                                                  </ReportItem>
+                                                  <ChildGroups>
+                                                    <TableGroup Name="is_Ingredient">
+                                                      <ReportItem>
+                                                        <TextBox Width="0.145833463028516in" Height="0.199999984937395in" Left="0in" Top="0in" Value="= Fields.Is_Ingredient" Name="textBox24" StyleName="">
+                                                          <Style Visible="False">
+                                                            <BorderStyle Default="None" />
+                                                          </Style>
+                                                        </TextBox>
+                                                      </ReportItem>
+                                                      <ChildGroups>
+                                                        <TableGroup Name="printer">
+                                                          <ReportItem>
+                                                            <TextBox Width="0.885416483840429in" Height="0.199999989957499in" Left="0in" Top="0in" Value="= Fields.Printer" Name="textBox26" StyleName="">
+                                                              <Style>
+                                                                <BorderStyle Default="Solid" Left="None" />
+                                                              </Style>
+                                                            </TextBox>
+                                                          </ReportItem>
+                                                          <ChildGroups>
+                                                            <TableGroup Name="condiment">
+                                                              <ReportItem>
+                                                                <TextBox Width="0.85416704416275in" Height="0.200000002980232in" Left="0in" Top="0in" Value="= Fields.Condiment" Name="textBox28" StyleName="">
+                                                                  <Style>
+                                                                    <BorderStyle Default="Solid" />
+                                                                  </Style>
+                                                                </TextBox>
+                                                              </ReportItem>
+                                                              <ChildGroups>
+                                                                <TableGroup Name="ingredient">
+                                                                  <ReportItem>
+                                                                    <TextBox Width="0.843750357627869in" Height="0.200000002980232in" Left="0in" Top="0in" Value="= Fields.Ingredient" Name="textBox30" StyleName="">
+                                                                      <Style>
+                                                                        <BorderStyle Default="Solid" />
+                                                                      </Style>
+                                                                    </TextBox>
+                                                                  </ReportItem>
+                                                                  <ChildGroups>
+                                                                    <TableGroup Name="size_name">
+                                                                      <ReportItem>
+                                                                        <TextBox Width="0.791666672809312in" Height="0.200000001878448in" Left="0in" Top="0in" Value="= Fields.size_name" Name="textBox32" StyleName="">
+                                                                          <Style>
+                                                                            <BorderStyle Default="Solid" />
+                                                                          </Style>
+                                                                        </TextBox>
+                                                                      </ReportItem>
+                                                                      <ChildGroups>
+                                                                        <TableGroup Name="size">
+                                                                          <ReportItem>
+                                                                            <TextBox Width="0.666666634046279in" Height="0.200000009391114in" Left="0cm" Top="0.00010012308484875cm" Value="= Fields.Size" Name="textBox3" StyleName="">
+                                                                              <Style TextAlign="Right">
+                                                                                <BorderStyle Default="Solid" />
+                                                                              </Style>
+                                                                            </TextBox>
+                                                                          </ReportItem>
+                                                                          <ChildGroups>
+                                                                            <TableGroup Name="size_unit">
+                                                                              <ReportItem>
+                                                                                <TextBox Width="0.458333308765441in" Height="0.199999995917977in" Left="0in" Top="0in" Value="= Fields.size_unit" Name="textBox36" StyleName="">
+                                                                                  <Style>
+                                                                                    <BorderStyle Default="Solid" />
+                                                                                  </Style>
+                                                                                </TextBox>
+                                                                              </ReportItem>
+                                                                              <ChildGroups>
+                                                                                <TableGroup Name="size_active">
+                                                                                  <ReportItem>
+                                                                                    <TextBox Width="0.749999941596391in" Height="0.199999995917975in" Left="0in" Top="0in" Value="= Fields.size_active" Name="textBox38" StyleName="">
+                                                                                      <Style>
+                                                                                        <BorderStyle Default="Solid" />
+                                                                                      </Style>
+                                                                                    </TextBox>
+                                                                                  </ReportItem>
+                                                                                  <ChildGroups>
+                                                                                    <TableGroup Name="location">
+                                                                                      <ReportItem>
+                                                                                        <TextBox Width="1in" Height="0.2in" Left="0in" Top="0in" Value="= Fields.location" Name="textBox40" StyleName="">
+                                                                                          <Style>
+                                                                                            <BorderStyle Default="Solid" />
+                                                                                          </Style>
+                                                                                        </TextBox>
+                                                                                      </ReportItem>
+                                                                                      <ChildGroups>
+                                                                                        <TableGroup Name="price">
+                                                                                          <ReportItem>
+                                                                                            <TextBox Width="1in" Height="0.2in" Left="0in" Top="0in" Value="= Fields.price" Name="textBox42" StyleName="">
+                                                                                              <Style TextAlign="Right">
+                                                                                                <BorderStyle Default="Solid" />
+                                                                                              </Style>
+                                                                                            </TextBox>
+                                                                                          </ReportItem>
+                                                                                          <ChildGroups>
+                                                                                            <TableGroup Name="detail">
+                                                                                              <Groupings>
+                                                                                                <Grouping />
+                                                                                              </Groupings>
+                                                                                            </TableGroup>
+                                                                                          </ChildGroups>
+                                                                                          <Groupings>
+                                                                                            <Grouping Expression="= Fields.price" />
+                                                                                          </Groupings>
+                                                                                          <Sortings>
+                                                                                            <Sorting Expression="= Fields.price" Direction="Asc" />
+                                                                                          </Sortings>
+                                                                                        </TableGroup>
+                                                                                      </ChildGroups>
+                                                                                      <Groupings>
+                                                                                        <Grouping Expression="= Fields.location" />
+                                                                                      </Groupings>
+                                                                                      <Sortings>
+                                                                                        <Sorting Expression="= Fields.location" Direction="Asc" />
+                                                                                      </Sortings>
+                                                                                    </TableGroup>
+                                                                                  </ChildGroups>
+                                                                                  <Groupings>
+                                                                                    <Grouping Expression="= Fields.size_active" />
+                                                                                  </Groupings>
+                                                                                  <Sortings>
+                                                                                    <Sorting Expression="= Fields.size_active" Direction="Asc" />
+                                                                                  </Sortings>
+                                                                                </TableGroup>
+                                                                              </ChildGroups>
+                                                                              <Groupings>
+                                                                                <Grouping Expression="= Fields.size_unit" />
+                                                                              </Groupings>
+                                                                              <Sortings>
+                                                                                <Sorting Expression="= Fields.size_unit" Direction="Asc" />
+                                                                              </Sortings>
+                                                                            </TableGroup>
+                                                                          </ChildGroups>
+                                                                          <Groupings>
+                                                                            <Grouping Expression="= Fields.Size" />
+                                                                          </Groupings>
+                                                                          <Sortings>
+                                                                            <Sorting Expression="= Fields.Size" Direction="Asc" />
+                                                                          </Sortings>
+                                                                        </TableGroup>
+                                                                      </ChildGroups>
+                                                                      <Groupings>
+                                                                        <Grouping Expression="= Fields.size_name" />
+                                                                      </Groupings>
+                                                                      <Sortings>
+                                                                        <Sorting Expression="= Fields.size_name" Direction="Asc" />
+                                                                      </Sortings>
+                                                                    </TableGroup>
+                                                                  </ChildGroups>
+                                                                  <Groupings>
+                                                                    <Grouping Expression="= Fields.Ingredient" />
+                                                                  </Groupings>
+                                                                  <Sortings>
+                                                                    <Sorting Expression="= Fields.Ingredient" Direction="Asc" />
+                                                                  </Sortings>
+                                                                </TableGroup>
+                                                              </ChildGroups>
+                                                              <Groupings>
+                                                                <Grouping Expression="= Fields.Condiment" />
+                                                              </Groupings>
+                                                              <Sortings>
+                                                                <Sorting Expression="= Fields.Condiment" Direction="Asc" />
+                                                              </Sortings>
+                                                            </TableGroup>
+                                                          </ChildGroups>
+                                                          <Groupings>
+                                                            <Grouping Expression="= Fields.Printer" />
+                                                          </Groupings>
+                                                          <Sortings>
+                                                            <Sorting Expression="= Fields.Printer" Direction="Asc" />
+                                                          </Sortings>
+                                                        </TableGroup>
+                                                      </ChildGroups>
+                                                      <Groupings>
+                                                        <Grouping Expression="= Fields.Is_Ingredient" />
+                                                      </Groupings>
+                                                      <Sortings>
+                                                        <Sorting Expression="= Fields.Is_Ingredient" Direction="Asc" />
+                                                      </Sortings>
+                                                    </TableGroup>
+                                                  </ChildGroups>
+                                                  <Groupings>
+                                                    <Grouping Expression="= Fields.Is_Condiment" />
+                                                  </Groupings>
+                                                  <Sortings>
+                                                    <Sorting Expression="= Fields.Is_Condiment" Direction="Asc" />
+                                                  </Sortings>
+                                                </TableGroup>
+                                              </ChildGroups>
+                                              <Groupings>
+                                                <Grouping Expression="= Fields.Product_Active" />
+                                              </Groupings>
+                                              <Sortings>
+                                                <Sorting Expression="= Fields.Product_Active" Direction="Asc" />
+                                              </Sortings>
+                                            </TableGroup>
+                                          </ChildGroups>
+                                          <Groupings>
+                                            <Grouping Expression="= Fields.other_id" />
+                                          </Groupings>
+                                          <Sortings>
+                                            <Sorting Expression="= Fields.other_id" Direction="Asc" />
+                                          </Sortings>
+                                        </TableGroup>
+                                      </ChildGroups>
+                                      <Groupings>
+                                        <Grouping Expression="= Fields.other_size" />
+                                      </Groupings>
+                                      <Sortings>
+                                        <Sorting Expression="= Fields.other_size" Direction="Asc" />
+                                      </Sortings>
+                                    </TableGroup>
+                                  </ChildGroups>
+                                  <Groupings>
+                                    <Grouping Expression="= Fields.Product_Unit" />
+                                  </Groupings>
+                                  <Sortings>
+                                    <Sorting Expression="= Fields.Product_Unit" Direction="Asc" />
+                                  </Sortings>
+                                </TableGroup>
+                              </ChildGroups>
+                              <Groupings>
+                                <Grouping Expression="= Fields.Base" />
+                              </Groupings>
+                              <Sortings>
+                                <Sorting Expression="= Fields.Base" Direction="Asc" />
+                              </Sortings>
+                            </TableGroup>
+                          </ChildGroups>
+                          <Groupings>
+                            <Grouping Expression="= Fields.tax_name" />
+                          </Groupings>
+                          <Sortings>
+                            <Sorting Expression="= Fields.tax_name" Direction="Asc" />
+                          </Sortings>
+                        </TableGroup>
+                      </ChildGroups>
+                      <Groupings>
+                        <Grouping Expression="= Fields.Category" />
+                      </Groupings>
+                      <Sortings>
+                        <Sorting Expression="= Fields.Category" Direction="Asc" />
+                      </Sortings>
+                    </TableGroup>
+                  </ChildGroups>
+                  <Groupings>
+                    <Grouping Expression="= Fields.code" />
+                  </Groupings>
+                  <Sortings>
+                    <Sorting Expression="= Fields.code" Direction="Asc" />
+                  </Sortings>
+                </TableGroup>
+              </ChildGroups>
+              <Groupings>
+                <Grouping Expression="= Fields.product" />
+              </Groupings>
+              <Sortings>
+                <Sorting Expression="= Fields.product" Direction="Asc" />
+              </Sortings>
+            </TableGroup>
+          </RowGroups>
+          <ColumnGroups>
+            <TableGroup Name="product">
+              <ReportItem>
+                <TextBox Width="0.104166669072552in" Height="0.252083342082441in" Left="0in" Top="0in" Name="textBox1" StyleName="Corporate.TableHeader">
+                  <Style Visible="False" BackgroundColor="White" />
+                </TextBox>
+              </ReportItem>
+            </TableGroup>
+          </ColumnGroups>
+        </Table>
+        <TextBox Width="29.3951816558838cm" Height="0.600000083446503cm" Left="0cm" Top="0.253999750701593cm" Value="= Fields.Receipt_Header" Name="textBox41">
+          <Style TextAlign="Center" />
+        </TextBox>
+      </Items>
+    </ReportHeaderSection>
+  </Items>
+  <PageSettings PaperKind="A4" Landscape="True">
+    <Margins>
+      <MarginsU Left="10px" Right="10px" Top="10px" Bottom="10px" />
+    </Margins>
+  </PageSettings>
+  <StyleSheet>
+    <StyleRule>
+      <Style>
+        <Padding Left="2pt" Right="2pt" />
+      </Style>
+      <Selectors>
+        <TypeSelector Type="TextItemBase" />
+        <TypeSelector Type="HtmlTextBox" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style Color="Black">
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <StyleSelector Type="Table" StyleName="Corporate.TableNormal" />
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style>
+        <Font Name="Tahoma" Size="9pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Corporate.TableBody" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+    <StyleRule>
+      <Style BackgroundColor="28, 58, 112" Color="White" VerticalAlign="Middle">
+        <Font Name="Tahoma" Size="10pt" />
+        <BorderStyle Default="Solid" />
+        <BorderColor Default="Black" />
+        <BorderWidth Default="1px" />
+      </Style>
+      <Selectors>
+        <DescendantSelector>
+          <Selectors>
+            <TypeSelector Type="Table" />
+            <StyleSelector Type="ReportItem" StyleName="Corporate.TableHeader" />
+          </Selectors>
+        </DescendantSelector>
+      </Selectors>
+    </StyleRule>
+  </StyleSheet>
+  <ReportParameters>
+    <ReportParameter Name="cmpid" Type="Float" Text="cmpid" />
+  </ReportParameters>
+</Report>

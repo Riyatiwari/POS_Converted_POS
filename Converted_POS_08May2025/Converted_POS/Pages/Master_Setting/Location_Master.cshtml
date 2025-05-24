@@ -1,0 +1,1756 @@
+﻿@page
+@model Converted_POS.Pages.Master_Setting.Location_MasterModel
+@{
+    ViewData["Title"] = "Location_Master";
+}
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a asp-page="/Master_Setting/Location_list">Location list</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Master_Setting/Location_master">Location Master</a></li>
+        </ol>
+    </div>
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .tab-content {
+            border: 2px solid #eceaea;
+            /*  box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.2);*/
+            /* padding: 20px; */ /* Padding for inner content */
+            /* border-radius: 8px;  Optional: rounded corners */
+            /*  height: 617px;*/
+            width: 100%;
+            /*margin-left: 22px;*/
+            margin-top: -3px;
+            /*height: auto;*/
+            min-height: 380px;
+        }
+
+        .main-wrapper img {
+            width: 50%;
+            display: block;
+        }
+
+        #formTabs {
+            border-radius: 5px 5px 0 0; /* Optional: Rounded top corners */
+            margin-bottom: 15px; /* Space between the tabs and content */
+        }
+
+        /* Add a solid black border around each tab item */
+        /*.nav-item {
+            border-right: 1px solid black;*/ /* Border between each tab */
+        /*}*/
+
+        /* Optional: Remove the last tab's right border */
+        /*.nav-item:last-child {
+                border-right: none;
+            }*/
+
+        /* Style the active tab (optional: change background color to indicate active tab) */
+        .nav-tabs .nav-link.active {
+            border-color: black; /* Ensures the active tab has a black border */
+            /*background-color: #fff;*/ /* Optional: Change background color */
+            color: black; /* Optional: Change text color */
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @*<script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+        <script>
+            //// Replace 'txtmessage_delivery' and 'txtmessage_order_table' with CKEditor
+            //CKEDITOR.replace('txtmessage_delivery', {
+            //    height: 200,
+            //    removePlugins: 'elementspath',
+            //    resize_enabled: false
+            //});
+
+            //CKEDITOR.replace('txtmessage_order_table', {
+            //    height: 200,
+            //    removePlugins: 'elementspath',
+            //    resize_enabled: false
+            //});
+
+            document.addEventListener('DOMContentLoaded', function () {
+                var editorConfig = {
+                    height: 200,
+                    removePlugins: 'elementspath',
+                    resize_enabled: false,
+                    toolbar: [
+                        { name: 'document', items: ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates'] },
+                        { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
+                        { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll'] },
+                        { name: 'forms', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'] },
+                        '/',
+                        { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'] },
+                        { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'] },
+                        { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                        { name: 'insert', items: ['Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe'] },
+                        '/',
+                        { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+                        { name: 'colors', items: ['TextColor', 'BGColor'] },
+                        { name: 'tools', items: ['Maximize', 'ShowBlocks'] }
+                    ],
+                    menubar: false,
+                    toolbar_mode: 'floating'
+                };
+
+                CKEDITOR.replace('txtmessage_delivery', editorConfig);
+                CKEDITOR.replace('txtmessage_order_table', editorConfig);
+            });
+           
+        </script>*@
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            tinymce.init({
+                selector: '#editor, #editor1, #editor2',
+                plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                toolbar: 'undo redo | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+                toolbar_mode: 'floating',
+                height: 200,
+                menubar: false,
+                setup: function (editor) {
+                    editor.on('init', function () {
+                        // Enable the editor explicitly in case it is disabled
+                        editor.getBody().setAttribute('contenteditable', true);
+                    });
+                    editor.on('change', function () {
+                        editor.save();
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Function to update URL parameters
+            function updateUrlParameter(param, value) {
+                //var url = new URL(window.location.href);
+                //url.searchParams.set(param, value);
+                //window.history.pushState({}, '', url);
+                var url = new URL(window.location.href);
+                if (value !== undefined && value !== null && value !== '') {
+                    url.searchParams.set(param, value);
+                } else {
+                    url.searchParams.delete(param);
+                }
+                window.history.pushState({}, '', url);
+            }
+
+            // Event handler for country dropdown change
+            $('#countryDropdown').change(function () {
+                var selectedCountryId = $(this).val();
+
+                // Update the URL with the selected country ID
+                updateUrlParameter('country_id', selectedCountryId);
+
+                // Fetch states based on the selected country
+                $.ajax({
+                    url: '/Location/GetState', // Endpoint to get states
+                    type: 'GET',
+                    data: { country_id: selectedCountryId },
+                    success: function (data) {
+                        $('#stateDropdown').empty().append('<option value="">Select State</option>');
+                        $.each(data, function (index, item) {
+                            $('#stateDropdown').append($('<option>').val(item.Value).text(item.Text));
+                        });
+
+                        // Clear the city dropdown
+                        $('#cityDropdown').empty().append('<option value="">Select City</option>');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching states:', status, error);
+                    }
+                });
+            });
+
+            // Optionally, initialize state dropdown if country_id is in URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCountryId = urlParams.get('country_id');
+            if (selectedCountryId) {
+                $('#countryDropdown').val(selectedCountryId).trigger('change');
+            }
+        });
+        $(document).ready(function () {
+            // Fetch states if country_id is available in the URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCountryId = urlParams.get('country_id');
+            if (selectedCountryId) {
+                $('#countryDropdown').val(selectedCountryId).trigger('change');
+            }
+        });
+        function redirectToCountry() {
+            var selectedCountryId = $('#countryDropdown').val();
+            var location_id = $('#hfLocation_id').val(); // Assuming this is a hidden input field that holds the staff ID
+
+            // Update the URL parameter without reloading the page
+            updateUrlParameter('country_id', selectedCountryId);
+
+            // Load states based on the selected country
+            loadStates(selectedCountryId);
+        }
+
+        function redirectToState() {
+            /*var selectedCityId = $('#cityDropdown').val();*/
+            var selectedStateId = $('#stateDropdown').val();
+            var selectedCountryId = $('#countryDropdown').val();
+            var location_id = $('#hfLocation_id').val(); // Assuming this is a hidden input field that holds the staff ID
+
+            // Update the URL parameter without reloading the page
+            updateUrlParameter('state_id', selectedStateId);
+
+            // Optionally, you could load cities here based on the selected state
+        }
+        function redirect2City() {
+            var selectedCityId = $('#cityDropdown').val();
+            var selectedStateId = $('#stateDropdown').val();
+            var selectedCountryId = $('#countryDropdown').val();
+            //alert("33")
+            // Update the URL parameters
+            updateUrlParameter('city_id', selectedCityId);
+            updateUrlParameter('state_id', selectedStateId);
+            updateUrlParameter('country_id', selectedCountryId);
+            //alert(selectedCityId)
+            // Update the hidden input fields
+            $('#hfcity_id').val(selectedCityId);
+            $('#hfstate_id').val(selectedStateId);
+            $('#hfcountry_id').val(selectedCountryId);
+           // alert("Value in #hfcity_id: " + $('#hfcity_id').val());
+        }
+        function updateUrlParameter(param, value) {
+            var url = new URL(window.location.href);
+            if (value) {
+                url.searchParams.set(param, value);
+            } else {
+                url.searchParams.delete(param);
+            }
+            window.history.pushState({}, '', url);
+        }
+
+        function loadStates(selectedCountryId) {
+            $.ajax({
+                url: "/Location/GetState", // Replace with your endpoint to fetch states
+                data: { country_id: countryId },
+                success: function (data) {
+                    $('#stateDropdown').empty(); // Clear existing options
+                    $('#stateDropdown').append('<option value="">Select State</option>'); // Add default option
+
+                    $.each(data, function (key, value) {
+                        $('#stateDropdown').append($('<option>').text(value.Text).attr('value', value.Value));
+                    });
+
+                    // Clear the city dropdown
+                    $('#cityDropdown').empty().append('<option value="">Select City</option>');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading states:', status, error);
+                }
+            });
+        }
+
+        // Ensure this function is called when the country dropdown changes
+        $('#countryDropdown').change(function () {
+            redirectToCountry();
+        });
+
+        // Ensure this function is called when the state dropdown changes
+        $('#stateDropdown').change(function () {
+            redirectToState();
+            // Optionally load cities here
+        });
+        //$('#cityDropdown').change(function () {
+        //    redirectToCity();
+        //    // Optionally load cities here
+        //});
+
+
+        $('#cityDropdown').change(function () {
+            //var selectedCityId = $(this).val();
+            //updateUrlParameter('city_id', selectedCityId);
+            var selectedCityId = $(this).val();
+            var selectedStateId = $('#stateDropdown').val();
+            var selectedCountryId = $('#countryDropdown').val();
+
+            // Update the URL with the selected city ID
+            updateUrlParameter('city_id', selectedCityId);
+            $('#hfcity_id').val(selectedCityId);
+            $('#hfstate_id').val(selectedStateId);
+            $('#hfcountry_id').val(selectedCountryId);
+            // Optionally, you could make an AJAX call here if needed
+            // Example: loadCityDetails(selectedCityId);
+
+            // Perform any additional actions you need
+            console.log('City changed to:', selectedCityId);
+        });
+        $(function () {
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCityId = urlParams.get('city_id');
+
+            if (selectedCityId) {
+                $('#cityDropdown').val(selectedCityId);
+            }
+            if (selectedStateId) {
+                $('#stateDropdown').val(selectedStateId).trigger('change');
+            }
+            if (selectedCityId) {
+                $('#cityDropdown').val(selectedCityId);
+            }
+        });
+        function loadCityDetails(cityId) {
+            $.ajax({
+                url: '/YourEndpoint/LoadCityDetails', // Replace with your endpoint
+                type: 'GET',
+                data: { city_id: cityId },
+                success: function (data) {
+                    // Handle the response data here
+                    console.log('City details loaded:', data);
+                    // For example, update other parts of the page with the data
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading city details:', status, error);
+                }
+            });
+        }
+        // On page load, check URL parameters and initialize dropdowns
+        $(document).ready(function () {
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCountryId = urlParams.get('country_id');
+            var selectedStateId = urlParams.get('state_id');
+            var selectedCityId = urlParams.get('city_id');
+            if (selectedCountryId) {
+                $('#countryDropdown').val(selectedCountryId);
+                loadStates(selectedCountryId);
+
+                if (selectedStateId) {
+                    $('#stateDropdown').val(selectedStateId);
+                    // Optionally, load cities here
+                }
+                
+                if (selectedCityId) {
+                    $('#cityDropdown').val(selectedCityId);
+                }
+            }
+        });
+        function updateUrlAndRefresh() {
+            // Get the selected country ID
+            var selectedCountryId = document.getElementById('countryDropdown').value;
+            var id = getIdFromUrl(); // Assuming the ID is static. Adjust if needed.
+
+            // Build the new URL
+            var newUrl = `/Master_Setting/Location_Master?ID=${id}&country_id=${selectedCountryId}`;
+
+            // Update the URL without reloading the page
+            window.history.pushState({}, '', newUrl);
+
+            // Reload the page to apply the new URL parameters
+            window.location.href = newUrl;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('countryDropdown').addEventListener('change', updateUrlAndRefresh);
+        });
+        function getIdFromUrl() {
+            // Extract ID from the URL
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('ID');
+        }
+
+        function updateUrlAndRefresh() {
+            // Get the selected country ID and state ID
+            var selectedCountryId = document.getElementById('countryDropdown').value;
+            var selectedStateId = document.getElementById('stateDropdown') ? document.getElementById('stateDropdown').value : '';
+            var selectedCityId = document.getElementById('cityDropdown') ? document.getElementById('cityDropdown').value : '';
+
+            var id = getIdFromUrl();  // Assuming the ID is static. Adjust if needed.
+
+            // Build the new URL
+            var newUrl = `/Master_Setting/Location_Master?ID=${id}`;
+            if (selectedCountryId) {
+                newUrl += `&country_id=${selectedCountryId}`;
+            }
+            if (selectedStateId) {
+                newUrl += `&state_id=${selectedStateId}`;
+            }
+            if (selectedCityId) {
+                newUrl += `&city_id=${selectedCityId}`;
+            }
+            // Update the URL and reload the page
+            window.history.pushState({}, '', newUrl);
+            window.location.href = newUrl;
+        }
+
+        function setupEventListeners() {
+            document.getElementById('countryDropdown').addEventListener('change', updateUrlAndRefresh);
+            var stateDropdown = document.getElementById('stateDropdown');
+            if (stateDropdown) {
+                stateDropdown.addEventListener('change', updateUrlAndRefresh);
+            }
+        }
+
+        function populateDropdowns() {
+            // Extract URL parameters
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCountryId = urlParams.get('country_id');
+            var selectedStateId = urlParams.get('state_id');
+           // var selectedCityId = urlParams.get('city_id');
+
+            if (selectedCountryId) {
+                // Set the selected country
+                var countryDropdown = document.getElementById('countryDropdown');
+                countryDropdown.value = selectedCountryId;
+
+                // Load states based on the selected country
+                loadStates(selectedCountryId, selectedStateId);
+            }
+
+            if (selectedStateId) {
+                var stateDropdown = document.getElementById('stateDropdown');
+                if (stateDropdown) {
+                    stateDropdown.value = selectedStateId;
+                }
+            }
+
+            if (selectedCityId) {
+                var cityDropdown = document.getElementById('cityDropdown');
+                if (cityDropdown) {
+                    cityDropdown.value = selectedCityId;
+                }
+            }
+        }
+
+        function loadStates(countryId, selectedStateId) {
+            // Use AJAX to fetch states for the selected country and update the state dropdown
+            $.ajax({
+                url: "/Location/GetState", // Replace with your endpoint to fetch states
+                data: { country_id: countryId },
+                success: function (data) {
+                    var stateDropdown = $('#stateDropdown');
+                    stateDropdown.empty(); // Clear existing options
+                    stateDropdown.append('<option value="">Select State</option>');
+                    $.each(data, function (key, value) {
+                        var option = $('<option>').text(value.Text).attr('value', value.Value);
+                        if (value.Value === selectedStateId) {
+                            option.prop('selected', true);
+                        }
+                        stateDropdown.append(option);
+                    });
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            setupEventListeners();
+            populateDropdowns(); // Ensure dropdowns are populated on page load
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            const fields = ['name', 'code', 'address', 'countryDropdown', 'stateDropdown', 'cityDropdown',
+                'Email', 'Contact', 'venue_id', 'delivery_charges', 'min_amount',
+                'clientid', 'clientsecret', 'redirect_uri', 'BG_Color', 'Font_Color', 'Body_Color', 'Theme', 'starttime', 'endtime', 'bookingdays'
+                , 'tipas', 'lblCashback'];
+
+            // Retrieve location_id from a hidden field or session
+            const locationId = parseInt($('#hfLocation_id').val() || 0);
+
+            // Function to save form values to localStorage
+            function saveFormValues() {
+                if (locationId > 0) return; // Prevent saving values if location_id > 0
+                fields.forEach(field => {
+                    const value = $(`#${field}`).val();
+                    if (value !== null) {
+                        localStorage.setItem(field, value);
+                    }
+                });
+            }
+
+            // Function to restore form values from localStorage
+            function restoreFormValues() {
+                if (locationId > 0) return; // Prevent restoring values if location_id > 0
+                fields.forEach(field => {
+                    const value = localStorage.getItem(field);
+                    if (value !== null) {
+                        $(`#${field}`).val(value);
+                    }
+                });
+            }
+            function clearFormValues() {
+                fields.forEach(field => {
+                    $(`#${field}`).val(''); // Clear the field value
+                    localStorage.removeItem(field); // Remove the saved value
+                });
+                // Reset dropdowns
+                $('#stateDropdown, #cityDropdown').empty().append('<option value="">Select</option>');
+            }
+
+            // Function to update states dynamically
+            function updateStates(countryId) {
+                const selectedState = $('#stateDropdown').val();
+                if (locationId > 0) return; // Prevent updates if location_id > 0
+                $.ajax({
+                    url: '/Location/GetState', // Replace with your actual endpoint
+                    type: 'GET',
+                    data: { country_id: countryId },
+                    success: function (data) {
+                        const stateDropdown = $('#stateDropdown');
+                        stateDropdown.empty().append('<option value="">Select State</option>');
+                        $.each(data, function (index, item) {
+                            stateDropdown.append($('<option>').val(item.Value).text(item.Text));
+                        });
+                        stateDropdown.val(selectedState);
+                        // Clear city dropdown when states are updated
+                        $('#cityDropdown').empty().append('<option value="">Select City</option>');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error loading states:', status, error);
+                    }
+                });
+            }
+
+            // Function to update cities dynamically
+            function updateCities(stateId) {
+                const selectedCity = $('#cityDropdown').val();
+                if (locationId > 0) return; // Prevent updates if location_id > 0
+                $.ajax({
+                    url: '/Location/GetCity', // Replace with your actual endpoint
+                    type: 'GET',
+                    data: { state_id: stateId },
+                    success: function (data) {
+                        const cityDropdown = $('#cityDropdown');
+                        cityDropdown.empty().append('<option value="">Select City</option>');
+                        $.each(data, function (index, item) {
+                            cityDropdown.append($('<option>').val(item.Value).text(item.Text));
+                        });
+                        cityDropdown.val(selectedCity);
+                    },
+
+                    error: function (xhr, status, error) {
+                        console.error('Error loading cities:', status, error);
+                    }
+                });
+            }
+
+            // Event handlers for dropdowns
+            $('#countryDropdown').change(function () {
+                const countryId = $(this).val();
+                if (countryId) {
+                    saveFormValues(); // Save current form values
+                    updateStates(countryId); // Update states dynamically
+                }
+            });
+
+            $('#stateDropdown').change(function () {
+                const stateId = $(this).val();
+                if (stateId) {
+                    saveFormValues(); // Save current form values
+                    updateCities(stateId); // Update cities dynamically
+                    // Fetch cities based on the selected state
+                    $.ajax({
+                        url: '/Location/GetCity', // Endpoint to get cities
+                        type: 'GET',
+                        data: { state_id: selectedStateId },
+                        success: function (data) {
+                            $('#cityDropdown').empty().append('<option value="">Select City</option>');
+                            $.each(data, function (index, item) {
+                                $('#cityDropdown').append($('<option>').val(item.Value).text(item.Text));
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error fetching cities:', status, error);
+                        }
+                    });
+                
+                }
+            });
+
+
+            restoreFormValues();
+
+
+            fields.forEach(field => {
+                $(`#${field}`).on('change input', saveFormValues);
+            });
+            //if (locationId === 0) {
+            //    clearFormValues();
+            //}
+
+            //// Clear form when clicking the "Add New Location" button (if applicable)
+            //$('#btnAddNewLocation').click(function () {
+            //    $('#hfLocation_id').val(0); // Set location_id to 0 for new entry
+            //    clearFormValues(); // Clear form values
+            //});
+
+            // Disable dropdowns and inputs if location_id > 0
+            if (locationId > 0) {
+                fields.forEach(field => {
+                    $(`#${'code'}`).prop('abled', true);
+                });
+            }
+
+            //// Function to reset all fields
+            //function resetFormFields() {
+            //    fields.forEach(field => {
+            //        const element = $(`#${field}`);
+            //        if (element.is('select')) {
+            //            element.val('').change(); // Reset dropdowns only when needed
+            //        } else if (element.is(':checkbox')) {
+            //            element.prop('checked', false); // Reset checkboxes only when needed
+            //        } else {
+            //            element.val(''); // Reset input fields only when needed
+            //        }
+            //    });
+            //}
+            //console.log('Saving field:', field, 'Value:', $(`#${field}`).val());
+            // Attach event to the save button (only after successful server response)
+            //$('form').on('submit', function (e) {
+            //    const form = $(this);
+
+            //    // Wait for server response before clearing fields
+            //    setTimeout(function () {
+            //        // Only reset fields if the save process was successful
+            //        const saveSuccessful = true; // Replace with a server-side flag if needed
+            //        if (saveSuccessful) {
+            //            resetFormFields();
+            //        }
+            //    }, 500); // Adjust timeout to match server response time
+            //});
+
+            // Attach reset logic after successful save
+            //$('form').on('submit', function (e) {
+            //    const form = $(this);
+
+            //    // Wait for server response (simulate save process completion)
+            //    setTimeout(function () {
+            //        resetFormFields(); // Reset fields after save is complete
+            //    }, 500); // Adjust the timeout based on server response time
+            //});
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            function updateUrlParameter(param, value) {
+                var url = new URL(window.location.href);
+                if (value !== undefined && value !== null && value !== '') {
+                    url.searchParams.set(param, value);
+                } else {
+                    url.searchParams.delete(param);
+                }
+                window.history.pushState({}, '', url);
+            }
+    </script>
+
+
+    @*<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            tinymce.init({
+                selector: '#editor, #editor1, #editor2',
+                plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                toolbar: 'undo redo | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+                toolbar_mode: 'floating',
+                height: 200,
+                menubar: false,
+                setup: function (editor) {
+                    editor.on('init', function (e) {
+                        editor.setMode('design');
+                    });
+                    editor.on('change', function () {
+                        editor.save();
+                    });
+                }
+            });
+        });
+    </script>*@
+
+    <script>
+        function togglePaymentFields() {
+            var selectedPayment = document.getElementById("ddljudo").value;
+
+            // Hide all sections by default
+            document.getElementById("divJudoPayid").style.display = "none";
+            document.getElementById("divJudoTokenid").style.display = "none";
+            document.getElementById("divJudoSecretid").style.display = "none";
+            document.getElementById("divCashflowId").style.display = "none";
+            document.getElementById("divCashflowUrl").style.display = "none";
+            document.getElementById("divCashflowAPIKey").style.display = "none";
+            document.getElementById("divCustomPayId").style.display = "none";
+            document.getElementById("divCustomPayToken").style.display = "none";
+            document.getElementById("divCustomPaySecret").style.display = "none";
+            document.getElementById("divCustomPayBase64").style.display = "none";
+            document.getElementById("divCustomPayUrl").style.display = "none";
+            document.getElementById("divCardUrl").style.display = "none";
+            document.getElementById("divCardKey").style.display = "none";
+            document.getElementById("divCardId").style.display = "none";
+
+            // Show the relevant fields based on the selection
+            if (selectedPayment == "1") { // Judo
+                document.getElementById("divJudoPayid").style.display = "block";
+                document.getElementById("divJudoTokenid").style.display = "block";
+                document.getElementById("divJudoSecretid").style.display = "block";
+            } else if (selectedPayment == "2") { // Cashflow
+                document.getElementById("divCashflowId").style.display = "block";
+                document.getElementById("divCashflowUrl").style.display = "block";
+                document.getElementById("divCashflowAPIKey").style.display = "block";
+            } else if (selectedPayment == "3") { // CustomPay
+                document.getElementById("divCustomPayId").style.display = "block";
+                document.getElementById("divCustomPayToken").style.display = "block";
+                document.getElementById("divCustomPaySecret").style.display = "block";
+                document.getElementById("divCustomPayBase64").style.display = "block";
+                document.getElementById("divCustomPayUrl").style.display = "block";
+            }
+            else if (selectedPayment == "4") { // Cardsteam Pay
+                document.getElementById("divCardId").style.display = "block";
+                document.getElementById("divCardUrl").style.display = "block";
+                document.getElementById("divCardKey").style.display = "block";
+            }
+
+        }
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            togglePaymentFields();
+        });
+
+    </script>
+    <script>
+        function togglePaymentFields() {
+            var selectedPayment = document.getElementById("ddljudo").value;
+
+            // List of all field groups to be hidden by default
+            const paymentFieldGroups = {
+                "1": ["divJudoPayid", "divJudoTokenid", "divJudoSecretid"], // Judo
+                "2": ["divCashflowId", "divCashflowUrl", "divCashflowAPIKey"], // Cashflow
+                "3": ["divCustomPayId", "divCustomPayToken", "divCustomPaySecret", "divCustomPayBase64", "divCustomPayUrl"], // CustomPay
+                "4": ["divCardId", "divCardUrl", "divCardKey"], // CardStream
+                // Add more mappings for other payment options here
+            };
+
+            // Hide all field groups by default
+            const allFields = [
+                "divJudoPayid", "divJudoTokenid", "divJudoSecretid",
+                "divCashflowId", "divCashflowUrl", "divCashflowAPIKey",
+                "divCustomPayId", "divCustomPayToken", "divCustomPaySecret",
+                "divCustomPayBase64", "divCustomPayUrl",
+                "divCardId", "divCardUrl", "divCardKey"
+            ];
+            allFields.forEach(field => {
+                const element = document.getElementById(field);
+                if (element) {
+                    element.style.display = "none";
+                    const input = element.querySelector('input');
+                    if (input) input.disabled = true; // Disable inputs for hidden fields
+                }
+            });
+
+            // Show and enable fields for the selected payment option
+            if (paymentFieldGroups[selectedPayment]) {
+                paymentFieldGroups[selectedPayment].forEach(field => {
+                    const element = document.getElementById(field);
+                    if (element) {
+                        element.style.display = "block";
+                        const input = element.querySelector('input');
+                        if (input) input.disabled = false; // Enable inputs for visible fields
+                    }
+                });
+            }
+        }
+
+        // Ensure the function runs on page load to initialize the fields
+        document.addEventListener("DOMContentLoaded", togglePaymentFields);
+    </script>
+    <script>
+        function validateForm() {
+            // Example validation logic
+            const requiredFields = ['name', 'address', 'Email', 'Venue']; // Add your required field IDs
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                const value = $(`#${field}`).val().trim();
+                if (!value) {
+                    isValid = false;
+                    $(`#${field}`).addClass('is-invalid'); // Add Bootstrap's invalid style
+                    console.error(`${field} is required.`);
+                } else {
+                    $(`#${field}`).removeClass('is-invalid');
+                }
+            });
+
+            if (!isValid) {
+                alert('Please fill in all required fields.');
+            }
+
+            return isValid; // Return false to prevent form submission if validation fails
+        }
+    </script>
+    <script>
+  document.addEventListener('DOMContentLoaded', function () {
+        const tipas = document.getElementById('tipas');
+        const lblCashback = document.getElementById('lblCashback');
+        const cashback = document.getElementById('cashback');
+
+        // Function to handle dropdown change
+        window.tipasChanged = function () {
+            if (tipas.value === "Cashback") {
+                lblCashback.style.display = 'block';
+            } else {
+                lblCashback.style.display = 'none';
+                cashback.checked = false; // Uncheck if not "Cashback"
+            }
+        };
+
+        // Fetch preselected values from the server-side (via Razor)
+        const preselectedTipas = "@Model.location.TipAS"; // Replace with server-side value
+        const cashbackValue = "@Model.location.cashback"; // Replace with server-side value (1 or 0)
+
+        // Preselect dropdown and display the checkbox if necessary
+        if (preselectedTipas) {
+            tipas.value = preselectedTipas;
+            if (tipas.value === "Cashback") {
+                lblCashback.style.display = 'block';
+            }
+        } else {
+            tipas.value = ""; // Default to "Select"
+        }
+
+        // Set checkbox state based on cashback value
+      if (cashbackValue === Yes) {
+            cashback.checked = true;
+        } else {
+            cashback.checked = false;
+        }
+    });
+    </script>
+    <style>
+        .col-md-6 {
+            display: block !important;
+            visibility: visible !important;
+        }
+
+            .col-md-6.d-none {
+                display: block !important;
+            }
+
+        .panel-body {
+            min-height: 100px; /* Adjust based on your needs */
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('submitButton').addEventListener('click', function () {
+            const urlInput = document.getElementById('till_url');
+            const urlError = document.getElementById('urlError');
+            const urlValue = urlInput.value;
+
+            // Check if the URL field is empty or invalid
+            if (!urlValue) {
+                urlError.textContent = "URL cannot be empty.";
+                urlError.style.display = "block";
+            } else if (!isValidURL(urlValue)) {
+                urlError.textContent = "Invalid URL format. Please enter a valid URL.";
+                urlError.style.display = "block";
+            } else {
+                // Hide error if the URL is valid
+                urlError.style.display = "none";
+                // Proceed with form submission or further logic
+                alert("URL is valid! Submitting the form...");
+            }
+        });
+
+        // Function to validate URL format
+        function isValidURL(url) {
+            const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})(:[0-9]{1,5})?(\/.*)?$/;
+            return urlPattern.test(url);
+        }
+    </script>
+</head>
+<script>
+    function Expand() {
+        var divPref = document.getElementById("divPref");
+        if (divPref.style.display === "none") {
+            divPref.style.display = "block";
+        } else {
+            divPref.style.display = "none";
+        }
+        return false;
+    }
+
+    function OnClientFileSize() {
+        alert('Image size is more than 10kb. Compress the image file size and try again.');
+    }
+
+    function OnClientFileSelectedHandler(inputId, imgId) {
+        var input = document.getElementById(inputId);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = document.getElementById(imgId);
+                img.src = e.target.result;
+                img.width = 150;
+                img.height = 50;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function allowOnlyNumber(evt) {
+        var charCode = evt.which ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+
+    function OnTextKeyPress(objEvent) {
+        var input = document.getElementById(objEvent.id);
+        input.value = input.value.replace(/[^a-zA-Z0-9\s\_]/g, '');
+    }
+</script>
+<body>
+    <form method="post" onsubmit="return validateForm();" enctype="multipart/form-data">
+ 
+        @*<input type="hidden" name="country_id" value="@Request.Query["country_id"]" />
+        <input type="hidden" name="state_id" value="@Request.Query["state_id"]" />
+        <input type="hidden" name="city_id" value="@Request.Query["city_id"]" />*@
+        <input type="hidden" id="hfLocation_id" name="location_id" asp-for="location.location_id" />
+        @*<input type="hidden" asp-for="DType.department_category_id" />*@
+        <br />
+        <div class="col-lg-12">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">Location Master</div>
+                <div class="panel-body pan">
+                    <div class="form-body pal">
+                        <div class="row">
+
+                            <div class="clearfix"></div>
+                            <br />
+                            @*<div class="tab-content">*@
+                            <!-- Basic Details Content -->
+                            <div class="tab-pane show active" id="basic-details" role="tabpanel" aria-labelledby="basic-details-tab">
+                                <div class="col-md-6">
+                                    <label asp-for="location.name">Name<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input id="name" class="form-control" asp-for="location.name" placeholder="Name" />
+                                    <span asp-validation-for="location.name" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="location.code">Code</label>
+                                    <div class="clearfix"></div>
+                                    <input id="code" class="form-control" asp-for="location.code" placeholder="Location Code" />
+                                    <span asp-validation-for="location.code" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-12">
+                                    <label asp-for="location.address">Address</label>
+                                    <div class="clearfix"></div>
+                                    <input id="address" class="form-control" asp-for="location.address" placeholder="Address" />
+                                    <span asp-validation-for="location.address" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6" style="margin-top: 20px;">
+                                    <label for="countryDropdown">Country</label>
+
+                                    <select id="countryDropdown" asp-for="SelectedCountryId" class="form-control" name="CountryId" onchange="redirectToCountry()">
+                                        <option value="">Select</option>
+
+                                        @foreach (var country in Model.DTCountry)
+                                        {
+                                            var SelectedCountryId = country.Value == Model.location?.country_id.ToString() ? "selected" : "";
+
+                                            var optionHtml = $"<option value=\"{country.Value}\" {SelectedCountryId}>{country.Text}</option>";
+                                             
+
+                                            @Html.Raw(optionHtml)
+                                            @*<option value="@country.Value">@country.Text</option>*@
+
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6" style="margin-top: 20px;">
+                                    <label for="stateDropdown">State</label>
+
+                                    <select id="stateDropdown" asp-for="SelectedStateId" class="form-control" name="StateId" onchange="redirectToState()">
+                                        <option value="">Select</option>
+
+                                        @if (Model.DTState != null)
+                                        {
+                                            @foreach (var state in Model.DTState)
+                                            {
+                                                <option value="@state.Value">@state.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6" style="margin-top: 20px;">
+                                    <input type="hidden" id="hfcity_id" name="city_id" value="@Model.SelectedCityId" />
+                                    <label for="cityDropdown">City</label>
+
+                                    <select id="cityDropdown" asp-for="SelectedCityId" class="form-control" name="CityId" onchange="redirect2City()">
+                                        <option value="">Select</option>
+
+                                        @if (Model.DTCity != null)
+                                        {
+                                            @foreach (var city in Model.DTCity)
+                                            {
+                                                <option value="@city.Value">@city.Text</option>
+                                            }}
+                                    </select>
+                                </div>
+                                <div class="col-md-6" style="margin-top: 20px;">
+                                    <label asp-for="location.venue_id">Venue<span class="text-danger">*</span></label>
+
+                                    <select asp-for="location.venue_id" class="form-control">
+                                        <option value="">Select</option>
+                                        @*@foreach (var venue in Model.DTVenue)
+                                        {
+                                            <option value="@venue.Value">@venue.Text</option>
+
+                                        }*@
+                                        @foreach (var item in Model.DTVenue)
+                                        {
+                                            var selectedAttribute = item.Value == Model.location?.venue_id.ToString() ? "selected" : "";
+
+                                            var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                            @Html.Raw(optionHtml)
+                                        }
+
+                                    </select>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="col-md-6">
+                                    <label asp-for="location.Email">Email</label>
+                                    <div class="clearfix"></div>
+                                    <input id="Email" class="form-control" asp-for="location.Email" placeholder="Email" />
+                                    <span asp-validation-for="location.Email" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="location.Contact">Contact</label>
+                                    <div class="clearfix"></div>
+                                    <input id="Contact" class="form-control" asp-for="location.Contact" placeholder="Contact" />
+                                    <span asp-validation-for="location.Contact" class="text-danger"></span>
+                                </div>
+                            </div>
+                            @*<ul>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="payment-details-tab" data-bs-toggle="tab" href="#payment-details" role="tab" aria-controls="payment-details" aria-selected="false">Payment Details</a>
+                                </li>
+                            </ul>*@
+                            <br /><br /><br /><br /><br /><br />
+                            <ul class="nav nav-tabs tab" id="formTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="tab tab-primary" id="payment-details-tab" data-bs-toggle="tab" href="#payment-details" role="tab" aria-controls="payment-details" aria-selected="false"><h4>Payment Details</h4></a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="tab tab-primary" id="setting-details-tab" data-bs-toggle="tab" href="#setting-details" role="tab" aria-controls="setting-details" aria-selected="false"><h4>Setting Details</h4></a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="tab tab-primary" id="booking-details-tab" data-bs-toggle="tab" href="#booking-details" role="tab" aria-controls="booking-details" aria-selected="false"><h4>Booking Details</h4></a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="tab tab-primary" id="image-details-tab" data-bs-toggle="tab" href="#image-details" role="tab" aria-controls="image-details" aria-selected="false"><h4>Image Details</h4></a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div class="tab-pane" id="payment-details" role="tabpanel" aria-labelledby="payment-details-tab">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3 form-group">
+                                            <label>Online Payment</label>
+                                            <select id="ddljudo" asp-for="location.onlinepayment" class="form-control" onchange="togglePaymentFields()">
+                                                <option value="0">Select</option>
+                                                <option value="1">Judo</option>
+                                                <option value="2">Cashflow</option>
+                                                <option value="3">CustomPay</option>
+                                                <option value="4">CardStream</option>
+                                                <option value="5">Positive Payment</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="col-md-12" id="divJudoPayid" style="display:none;">
+                                                <label>JudoPay ID</label>
+                                                <input type="text" asp-for="location.judo_id" class="form-control" value="@Model.location.judo_id" placeholder="JudoPay ID" />
+                                            </div>
+                                            <div class="col-md-12" id="divJudoTokenid" style="display:none;">
+                                                <label>JudoPay Token</label>
+                                                <input type="text" asp-for="location.judo_token" class="form-control" value="@Model.location.judo_token" placeholder="JudoPay Token" />
+                                            </div>
+                                            <div class="col-md-12" id="divJudoSecretid" style="display:none;">
+                                                <label>JudoPay Secret</label>
+                                                <input type="text" asp-for="location.judo_secret" class="form-control" value="@Model.location.judo_secret" placeholder="JudoPay Secret" />
+                                            </div>
+
+                                            <!-- Cashflow Fields -->
+                                            <div class="col-md-12" id="divCashflowId" style="display:none;">
+                                                <label>Cashflow ID</label>
+                                                <input type="text" asp-for="location.CashflowId" class="form-control" value="@Model.location.CashflowId" placeholder="Cashflow ID" />
+                                            </div>
+                                            <div class="col-md-12" id="divCashflowUrl" style="display:none;">
+                                                <label>Cashflow URL</label>
+                                                <input type="text" asp-for="location.CashflowUrl" class="form-control" value="@Model.location.CashflowUrl" placeholder="Cashflow URL" />
+                                            </div>
+                                            <div class="col-md-12" id="divCashflowAPIKey" style="display:none;">
+                                                <label>Cashflow API Key</label>
+                                                <input type="text" asp-for="location.CashflowApiKey" class="form-control" value="@Model.location.CashflowApiKey" placeholder="Cashflow API Key" />
+                                            </div>
+
+                                            <!-- CustomPay Fields -->
+                                            <div class="col-md-12" id="divCustomPayId" style="display:none;">
+                                                <label>CustomPay ID</label>
+                                                <input type="text" asp-for="location.CustomPay_Id" class="form-control" value="@Model.location.CustomPay_Id" placeholder="CustomPay ID" />
+                                            </div>
+                                            <div class="col-md-12" id="divCustomPayToken" style="display:none;">
+                                                <label>CustomPay Token</label>
+                                                <input type="text" asp-for="location.CustomPay_Token" class="form-control" value="@Model.location.CustomPay_Token" placeholder="CustomPay Token" />
+                                            </div>
+                                            <div class="col-md-12" id="divCustomPaySecret" style="display:none;">
+                                                <label>CustomPay Secret</label>
+                                                <input type="text" asp-for="location.CustomPay_Secret" class="form-control" value="@Model.location.CustomPay_Secret" placeholder="CustomPay Secret" />
+                                            </div>
+                                            <div class="col-md-12" id="divCustomPayBase64" style="display:none;">
+                                                <label>CustomPay Base64</label>
+                                                <input type="text" asp-for="location.CustomPay_Base64" class="form-control" value="@Model.location.CustomPay_Base64" placeholder="CustomPay Base64" />
+                                            </div>
+                                            <div class="col-md-12" id="divCustomPayUrl" style="display:none;">
+                                                <label>CustomPay URL</label>
+                                                <input type="text" asp-for="location.CustomPay_url" class="form-control" value="@Model.location.CustomPay_url" placeholder="CustomPay URL" />
+                                            </div>
+
+                                            <!-- Cardstream Fields -->
+                                            <div class="col-md-12" id="divCardId" style="display:none;">
+                                                <label>ID</label>
+                                                <input type="text" asp-for="location.CashflowId" class="form-control" name="CashflowId" value="@Model.location.CashflowId" placeholder="ID" />
+                                            </div>
+                                            <div class="col-md-12" id="divCardUrl" style="display:none;">
+                                                <label>URL</label>
+                                                <input type="text" asp-for="location.CashflowUrl" class="form-control" name="CashflowUrl" value="@Model.location.CashflowUrl" placeholder="URL" />
+                                            </div>
+                                            <div class="col-md-12" id="divCardKey" style="display:none;">
+                                                <label>API Key</label>
+                                                <input type="text" asp-for="location.CashflowApiKey" class="form-control" name="CashflowApiKey" value="@Model.location.CashflowApiKey" placeholder="API Key" />
+                                            </div>
+
+                                        </div>
+                                        <!-- Additional Fields -->
+                                        <!--<div class="col-md-6">
+                                        <label>Client Id</label>
+                                        <input type="text" class="form-control" name="ClientId" value="@Model.location.clientid" placeholder="Client Id" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Client Secret</label>
+                                        <input type="text" class="form-control" name="ClientSecret" value="@Model.location.clientsecret" placeholder="Client Secret" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Redirect URI</label>
+                                        <input type="text" class="form-control" name="RedirectUri" value="@Model.location.redirect_uri" placeholder="Redirect URI" />
+                                    </div>-->
+
+
+
+                                        <div class="col-md-6">
+                                            <label asp-for="location.clientid">Client Id</label>
+                                            <div class="clearfix"></div>
+                                            <input class="form-control" asp-for="location.clientid" placeholder="Client Id" />
+                                            <span asp-validation-for="location.clientid" class="text-danger"></span>
+                                        </div>
+                                        @*</div>
+                                        <div class="clearfix"></div>
+                                        <br />*@
+                                        @*<div class="col-md-12">*@
+                                        <br /><br /><br /><br />
+                                        <div class="col-md-6">
+                                            <label asp-for="location.clientsecret">Client Secret</label>
+                                            <div class="clearfix"></div>
+                                            <input class="form-control" asp-for="location.clientsecret" placeholder="Client Secret" />
+                                            <span asp-validation-for="location.clientsecret" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label asp-for="location.redirect_uri">Redirect URI</label>
+                                            <div class="clearfix"></div>
+                                            <input class="form-control" asp-for="location.redirect_uri" placeholder="Redirect URI" />
+                                            <span asp-validation-for="location.redirect_uri" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>
+                                                Tip As
+                                                <br />
+                                                <select asp-for="location.TipAS" class="form-control" id="tipas" onchange="tipasChanged()">
+                                                    <option value="">Select</option>
+                                                    <option value="Tip">Tip</option>
+                                                    <option value="Cashback">Cashback</option>
+                                                </select>
+                                                <br />
+
+                                                <label id="lblCashback" style="display:none;">
+                                                    <input id="lblCashback" asp-for="location.cashback" type="checkbox" /> Cashback Only On Tables
+                                                </label>
+                                            </label>
+                                        </div>
+                                        @*</div>*@<br /><br /><br />
+                                        <div class="col-md-12">
+                                            <label class="col-md-4">
+                                                <a id="aCLick" href="@ViewData["aCLick"]" runat="server" style="cursor: pointer" title="Link" target="_blank">Click & Collect</a>
+                                            </label>
+                                            <div class="clearfix"></div>
+                                            <br />
+                                            <label class="col-md-4">
+                                                <a id="aDelivery" runat="server" href="@ViewData["aDelivery"]" style="cursor: pointer" title="Link" target="_blank">Delivery</a>
+                                            </label>
+                                            <div class="clearfix"></div>
+                                            <br />
+                                            <label class="col-md-4">
+                                                <a id="aOrder" runat="server" href="@ViewData["aOrder"]" style="cursor: pointer" title="Link" target="_blank">Order At Table</a>
+                                            </label>
+                                            <div class="clearfix"></div>
+                                            <br />
+                                            <label class="col-md-4">
+                                                <a id="akiosk" runat="server" href="@ViewData["akiosk"]" style="cursor: pointer" title="Link" target="_blank">Kiosk</a>
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<ul class="nav nav-tabs" id="formTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="btn btn-primary" id="setting-details-tab" data-bs-toggle="tab" href="#setting-details" role="tab" aria-controls="setting-details" aria-selected="false">Setting Details</a>
+                                    </li>
+                                </ul>*@
+                                <br />
+                                <div class="tab-pane" id="setting-details" role="tabpanel" aria-labelledby="setting-details-tab">
+                                    <div class="col-md-6">
+                                        <label asp-for="location.till_auto_log_off">Till Auto Log Off</label>
+                                        <input asp-for="location.till_auto_log_off" type="checkbox" />
+                                        <span asp-validation-for="location.till_auto_log_off" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="location.is_active">Active</label>
+                                        <input asp-for="location.is_active" type="checkbox" />
+                                        <span asp-validation-for="location.is_active" class="text-danger"></span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="col-md-6">
+                                        <label asp-for="location.is_delivery">Delivery Available</label>
+                                        <input asp-for="location.is_delivery" type="checkbox" />
+                                        <span asp-validation-for="location.is_delivery" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="location.is_GetCovers">Is GetCovers</label>
+                                        <input asp-for="location.is_GetCovers" type="checkbox" />
+                                        <span asp-validation-for="location.is_GetCovers" class="text-danger"></span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="col-md-6">
+                                        <label asp-for="location.is_skippay">Skip Payment</label>
+                                        <input asp-for="location.is_skippay" type="checkbox" />
+                                        <span asp-validation-for="location.is_skippay" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="location.is_email">Email Receipt</label>
+                                        <input asp-for="location.is_email" type="checkbox" />
+                                        <span asp-validation-for="location.is_email" class="text-danger"></span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="col-md-6">
+                                        <label asp-for="location.click_and_collect">Click and Collect</label>
+                                        <input asp-for="location.click_and_collect" type="checkbox" />
+                                        <span asp-validation-for="location.click_and_collect" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="location.Order_table">Order table</label>
+                                        <input asp-for="location.Order_table" type="checkbox" />
+                                        <span asp-validation-for="location.Order_table" class="text-danger"></span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="col-md-6">
+                                        <label asp-for="location.srv_charge_delivery">Delivery</label>
+                                        <input asp-for="location.srv_charge_delivery" type="checkbox" />
+                                        <span asp-validation-for="location.srv_charge_delivery" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="location.srv_charge_kiosk">Kiosk</label>
+                                        <input asp-for="location.srv_charge_kiosk" type="checkbox" />
+                                        <span asp-validation-for="location.srv_charge_kiosk" class="text-danger"></span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="col-md-6">
+                                        <label asp-for="location.delivery_charges">Delivery Charges</label>
+                                        <div class="clearfix"></div>
+                                        <input id="delivery_charges" class="form-control" asp-for="location.delivery_charges" placeholder="Delivery Charges" />
+                                        <span asp-validation-for="location.delivery_charges" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="location.service_charges">Service Charges</label>
+                                        <div class="clearfix"></div>
+                                        <input id="service_charges" class="form-control" asp-for="location.service_charges" placeholder="Service Charges" />
+                                        <span asp-validation-for="location.service_charges" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="location.Is_Email_APK">Email Receipt from APK</label>
+                                        <input asp-for="location.Is_Email_APK" type="checkbox" />
+                                        <span asp-validation-for="location.Is_Email_APK" class="text-danger"></span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="col-md-6">
+                                        <label asp-for="location.min_amount">Min Amount for Delivery</label>
+                                        <div class="clearfix"></div>
+                                        <input id="min_amount" class="form-control" asp-for="location.min_amount" placeholder="Minimum Amount" />
+                                        <span asp-validation-for="location.min_amount" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label asp-for="location.theme">Theme</label>
+                                        <select class="form-control" id="Theme" asp-for="location.theme">
+                                            <option value="0">Select</option>
+                                            <option value="1">With Images</option>
+                                            <option value="2">With No Images</option>
+                                            <option value="3">Menu & Images</option>
+                                        </select>
+                                        <!--<select id="countryDropdown" class="form-control" name="CountryId" onchange="redirectToCountry()">
+                                    <option value="">Select</option>
+                                    <option></option>-->
+                                        @*@foreach (var country in Model.DTCountry)
+                                        {
+                                            <option value="@country.Value">@country.Text</option>
+
+                                        }*@
+                                        <!--</select>-->
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="location.websales_check_schedule">Web sales Check Schedule</label>
+                                        <input asp-for="location.websales_check_schedule" type="checkbox" />
+                                        <span asp-validation-for="location.websales_check_schedule" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="location.schedule_required">Schedule Required </label>
+                                        <input asp-for="location.schedule_required" type="checkbox" />
+                                        <span asp-validation-for="location.schedule_required" class="text-danger"></span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="col-md-6">
+                                        <label asp-for="location.schedule_cnc">Schedule For Click And Collect</label>
+                                        <input asp-for="location.schedule_cnc" type="checkbox" />
+                                        <span asp-validation-for="location.schedule_cnc" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="location.betweenSlot">Hourly Slot</label>
+                                        <input asp-for="location.betweenSlot" type="checkbox" />
+                                        <span asp-validation-for="location.HourlySlot" class="text-danger"></span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <label class="col-md-6">
+                                        Start Time
+                                        <input id="starttime" type="time" asp-for="location.start_date" class="form-control" />
+                                    </label>
+                                    <label class="col-md-6">
+                                        End Time
+                                        <input id="endtime" type="time" asp-for="location.end_date" class="form-control" />
+                                    </label>
+                                </div>
+
+                                <br />
+                                <div class="tab-pane" id="booking-details" role="tabpanel" aria-labelledby="booking-details-tab">
+                                    <div class="col-md-12">
+                                        <label asp-for="location.future_booking_days">Future Booking Days</label>
+                                        <div class="clearfix"></div>
+                                        <input id="bookingdays" class="form-control" asp-for="location.future_booking_days" placeholder="Future Booking Days" />
+                                        <span asp-validation-for="location.future_booking_days" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <br /><br />
+
+                                <br />
+                                <div class="tab-pane" id="image-details" role="tabpanel" aria-labelledby="image-details-tab">
+                                    <div class="col-md-12">
+                                        <label asp-for="location.Click_Collect_image" class="col-md-6">
+                                            Click And Collect Image  Upload :
+                                            <div class="clearfix"></div>
+                                            <br />
+                                            <input id="File2" type="file" name="CACFile" />
+                                            @if (ViewData["Base64CACImage"] != null)
+                                            {
+                                                <img src="@ViewData["Base64CACImage"]" alt="Image" height="100px" width="100px" />}
+                                            else
+                                            {
+                                            }
+                                        </label>
+                                        <span class="col-md-6">Select file to upload(.jpg, .jpeg, .gif, .png) File size should not exceed 10Kb</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="col-md-12">
+                                        <label asp-for="location.Delivery_image" class="col-md-6">
+                                            Delivery Image Upload :
+                                            <div class="clearfix"></div>
+                                            <br />
+                                            <input id="File3" type="file" name="DeliveryimageFile" />
+                                            @if (ViewData["Base64DeliveryImage"] != null)
+                                            {
+                                                <img src="@ViewData["Base64DeliveryImage"]" alt="Image" height="100px" width="100px" />}
+                                            else
+                                            {
+                                            }
+                                        </label>
+                                        <span class="col-md-6">Select file to upload(.jpg, .jpeg, .gif, .png) File size should not exceed 10Kb</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="col-md-12">
+                                        <label asp-for="location.Click_Collect_image" class="col-md-6">
+                                            Order At Table Image Upload :
+                                            <div class="clearfix"></div>
+                                            <br />
+                                            <input id="File4" type="file" name="OATimageFile" />
+                                            @if (ViewData["Base64OATImage"] != null)
+                                            {
+                                                <img src="@ViewData["Base64OATImage"]" alt="Image" height="100px" width="100px" />}
+                                            else
+                                            {
+                                            }
+                                        </label>
+                                        <span class="col-md-6">Select file to upload(.jpg, .jpeg, .gif, .png) File size should not exceed 10Kb</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="col-md-12">
+                                        <label class="col-md-6">
+                                            Upload :
+                                            <div class="clearfix"></div>
+                                            <br />
+                                            <input id="File5" type="file" name="ULDimageFile" />
+                                            @if (ViewData["Base64ULDImage"] != null)
+                                            {
+                                                <img src="@ViewData["Base64ULDImage"]" alt="Image" height="100px" width="100px" />}
+                                            else
+                                            {
+                                            }
+                                        </label>
+                                        <span class="col-md-6">Select file to upload(.jpg, .jpeg, .gif, .png) File size should not exceed 10Kb</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="col-md-12">
+                                        <label class="col-md-6">
+                                            Upload Graphic View Background :
+                                            <div class="clearfix"></div>
+                                            <br />
+                                            <input id="File6" type="file" name="ULDGBimageFile" />
+                                            @if (ViewData["Base64ULDBImage"] != null)
+                                            {
+                                                <img src="@ViewData["Base64ULDBImage"]" alt="Image" height="100px" width="100px" />}
+                                            else
+                                            {
+                                            }
+                                        </label>
+                                        <span class="col-md-6">Select file to upload(.jpg, .jpeg, .gif, .png) File size should not exceed 10Kb</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="col-md-12">
+                                        <label class="col-md-6">
+                                            Upload Graphic View Table :
+                                            <div class="clearfix"></div>
+                                            <br />
+                                            <input id="File7" type="file" name="ULDGimageFile" />
+                                            @if (ViewData["Base64ULDImage"] != null)
+                                            {
+                                                <img src="@ViewData["Base64ULDImage"]" alt="Image" height="100px" width="150px" />}
+                                            else
+                                            {
+                                            }
+                                        </label>
+                                        <span class="col-md-6">Select file to upload(.jpg, .jpeg, .gif, .png) File size should not exceed 10Kb</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="termsCondition">Terms & Condition</label>
+                                        <div class="clearfix"></div>
+                                        <textarea id="editor" name="termsCondition" asp-for="location.header_reciept" class="form-control span12" style="width: 100%; height: 200px;"></textarea>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="col-md-12">
+                                        <label for="termsCondition">Delivery</label>
+                                        <div class="clearfix"></div>
+                                        <textarea id="editor1" name="termsCondition" asp-for="location.message_delivery" class="form-control span12" style="width: 100%; height: 200px;"></textarea>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="col-md-12">
+                                        <label for="termsCondition">Ordet Table</label>
+                                        <div class="clearfix"></div>
+                                        <textarea id="editor2" asp-for="location.message_order_table" name="termsCondition" class="form-control span12" style="width: 100%; height: 200px;"></textarea>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <label asp-for="location.BG_Color" for="backgroundColor">Background Color</label>
+                                        <input id="BG_Color" type="color" asp-for="location.BG_Color" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="location.Font_Color" for="backgroundColor">Font Color</label>
+                                        <input id="Font_Color" type="color" asp-for="location.Font_Color" class="form-control" />
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br />
+                                    <div class="col-md-6">
+                                        <label asp-for="location.Body_Color" for="backgroundColor">Body Color</label>
+                                        <input id="Body_Color" type="color" asp-for="location.Body_Color" class="form-control" />
+                                    </div>
+                                    <div class="clesrfix"></div>
+                                    <div class="clesrfix"></div>
+                                    </br>
+                                    </br>
+                                    <div class="col-md-12">
+                                        <button id="btnPref" class="btn" style="width: 90%;" onclick="return Expand()" title="Button/Color Preferences">
+                                            Style Settings
+                                        </button>
+                                    </div>
+                                    <div class="clesrfix"></div>
+                                    <div class="clesrfix"></div>
+
+                                    <div class="col-md-12" id="divPref" style="display: none; padding: 5px;">
+                                        <label>Group Category&nbsp;</label>
+                                        <div class="col-md-12" style="border: 1px solid #efefef; padding: 3px;">
+                                            <div class="col-md-6" style="float: left">
+                                                <label asp-for="location.GC_Btn_txt_clr">Text Colour </label>
+                                                <div class="clearfix"></div>
+                                                <input class="form-control" type="color" id="txt_clr_GC" asp-for="location.GC_Btn_txt_clr" style="width: 100%;">
+                                            </div>
+                                            <div class="col-md-6" style="float: left">
+                                                <label>Background Color </label>
+                                                <div class="clearfix"></div>
+                                                <input class="form-control" type="color" id="GC_Btn_bkgd_clr" asp-for="location.GC_Btn_bkgd_clr" style="width: 100%;">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Button Style </label>
+                                                <div class="clearfix"></div>
+                                                <select class="form-control" id="btnStyle_GC" asp-for="location.GC_Btn_stl" style="width: 100%;">
+                                                    <option value="Flat">Flat</option>
+                                                    <option value="Shadow">Shadow</option>
+                                                    <option value="Full Shadow">Full Shadow</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label asp-for="location.GC_Btn_img_typ">Image Type</label>
+                                                <select class="form-control" asp-for="location.GC_Btn_img_typ" id="imageTypeGC">
+                                                    <option value="None">None</option>
+                                                    <option value="Round Image">Round Image</option>
+                                                    <option value="Square Image">Square Image</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Font Size</label>
+                                                <select class="form-control" asp-for="location.GC_Btn_fnt_size">
+                                                    <option value="1">Regular</option>
+                                                    <option value="2">Small</option>
+                                                    <option value="3">Medium</option>
+                                                    <option value="4">Large</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Image Option</label>
+                                                <select class="form-control" asp-for="location.GC_Btn_img_typ_pos">
+                                                    <option value="Left">Left</option>
+                                                    <option value="Right">Right</option>
+                                                    <option value="Top">Top</option>
+                                                    <option value="Bottom">Bottom</option>
+                                                    <option value="Background">Background</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <label>Category&nbsp;</label>
+                                        <div class="col-md-12" style="border: 1px solid #efefef; padding: 3px;">
+                                            <div class="col-md-6" style="float: left">
+                                                <label asp-for="location.C_Btn_bkgd_clr">Background Color</label>
+                                                <div class="clearfix"></div>
+                                                <input class="form-control" type="color" asp-for="location.C_Btn_bkgd_clr" style="width: 100%;">
+                                            </div>
+                                            <div class="col-md-6" style="float: left">
+                                                <label>Text Colour</label>
+                                                <div class="clearfix"></div>
+                                                <input class="form-control" type="color" id="C_Btn_txt_clr" asp-for="location.C_Btn_txt_clr" style="width: 100%;">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Button Style </label>
+                                                <div class="clearfix"></div>
+                                                <select class="form-control" asp-for="location.C_Btn_stl" style="width: 100%;">
+                                                    <option value="Flat">Flat</option>
+                                                    <option value="Shadow">Shadow</option>
+                                                    <option value="Full Shadow">Full Shadow</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label asp-for="location.C_Btn_img_typ">Image Type</label>
+                                                <select class="form-control" asp-for="location.C_Btn_img_typ">
+                                                    <option value="None">None</option>
+                                                    <option value="Round Image">Round Image</option>
+                                                    <option value="Square Image">Square Image</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Font Size</label>
+                                                <select class="form-control" asp-for="location.C_Btn_fnt_size">
+                                                    <option value="1">Regular</option>
+                                                    <option value="2">Small</option>
+                                                    <option value="3">Medium</option>
+                                                    <option value="4">Large</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Image Option</label>
+                                                <select class="form-control" asp-for="location.C_Btn_img_typ_pos">
+                                                    <option value="Left">Left</option>
+                                                    <option value="Right">Right</option>
+                                                    <option value="Top">Top</option>
+                                                    <option value="Bottom">Bottom</option>
+                                                    <option value="Background">Background</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="clearfix"></div>
+                                        <label>Product&nbsp;</label>
+                                        <div class="col-md-12" style="border: 1px solid #efefef; padding: 3px;">
+                                            <div class="col-md-6" style="float: left">
+                                                <label asp-for="location.P_Btn_txt_clr">Text Colour </label>
+                                                <div class="clearfix"></div>
+                                                <input class="form-control" type="color" asp-for="location.P_Btn_txt_clr" style="width: 100%;">
+                                            </div>
+                                            <div class="col-md-6" style="float: left">
+                                                <label>Background Color </label>
+                                                <div class="clearfix"></div>
+                                                <input class="form-control" type="color" id="P_Btn_bkgd_clr" asp-for="location.P_Btn_bkgd_clr" style="width: 100%;">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label asp-for="location.P_Btn_stl">Button Style </label>
+                                                <div class="clearfix"></div>
+                                                <select class="form-control" asp-for="location.P_Btn_stl" style="width: 100%;">
+                                                    <option value="Flat">Flat</option>
+                                                    <option value="Shadow">Shadow</option>
+                                                    <option value="Full Shadow">Full Shadow</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label asp-for="location.P_Btn_img_typ">Image Type</label>
+                                                <select class="form-control" asp-for="location.P_Btn_img_typ">
+                                                    <option value="None">None</option>
+                                                    <option value="Round Image">Round Image</option>
+                                                    <option value="Square Image">Square Image</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Font Size</label>
+                                                <select class="form-control" asp-for="location.P_Btn_fnt_size">
+                                                    <option value="1">Regular</option>
+                                                    <option value="2">Small</option>
+                                                    <option value="3">Medium</option>
+                                                    <option value="4">Large</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Image Option</label>
+                                                <select class="form-control" asp-for="location.P_Btn_img_typ_pos">
+                                                    <option value="Left">Left</option>
+                                                    <option value="Right">Right</option>
+                                                    <option value="Top">Top</option>
+                                                    <option value="Bottom">Bottom</option>
+                                                    <option value="Background">Background</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <br />
+                                        <label>Till</label>
+                                        <div class="col-md-12" style="border: 1px solid #efefef; padding: 3px;">
+                                            <div class="col-md-6">
+                                                <label>Login Screen BG Color</label>
+                                                <input type="color" class="form-control" id="login_src_bkgd_clr" asp-for="location.login_src_bkgd_clr" />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>
+                                                    Login Screen Login button
+                                                </label>
+                                                <input type="color" class="form-control" id="login_src_login_btn" asp-for="location.login_src_login_btn" />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Display Phone No.</label>
+                                                <input type="text" class="form-control" id="Till_phn_no" asp-for="location.Till_Phn_no" placeholder="Display Phone No." />
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Display URL</label>
+                                                <input type="url" class="form-control" asp-for="location.Till_url" id="till_url" placeholder="Display URL" />
+                                                <span id="urlError" style="color: red; display: none;">Invalid URL format. Please enter a valid URL.</span>
+                                            </div>
+                                            </br>
+                                            <div class="col-md-6">
+                                                <label asp-for="location.POS_logo">
+                                                    Upload :<input id="File1" type="file" name="POSlogoFile" />
+                                                    @if (ViewData["Base64POSImage"] != null)
+                                                    {
+                                                        <img src="@ViewData["Base64POSImage"]" alt="Image" height="100px" width="100px" />}
+                                                    else
+                                                    {
+                                                    }
+                                                </label>
+                                                @*<input type="file" class="form-control" id="posLogo" accept=".jpg, .jpeg, .png, .gif" onchange="previewImage(this, 'posLogoPreview')" />*@
+                                                @*<img id="posLogoPreview" asp-for="location.POS_logo" alt="POS Logo Preview" style="display: block; margin-top: 10px;" />*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                            </div>
+                            <div class="form-actions text-right pal">
+                                <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                                <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                                <input type="submit" value="Cancel" class="btn btn-primary" formnovalidate asp-page-handler="Cancel" />
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

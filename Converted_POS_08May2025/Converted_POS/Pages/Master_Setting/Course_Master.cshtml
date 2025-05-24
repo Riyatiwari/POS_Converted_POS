@@ -1,0 +1,94 @@
+﻿@page
+@model Converted_POS.Pages.Master_Setting.Course_MasterModel
+@{
+    ViewData["Title"] = "Course_Master";
+}
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a asp-page="/Master_Setting/Course_List">Course List</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Master_Setting/Course_Master">Course Master</a></li>
+        </ol>
+    </div>
+    <script>
+    $("#coursesCategory").change(function () {
+            var selectedValue = $(this).val();
+            console.log("Selected Course Category ID: " + selectedValue);
+        });</script>
+}
+
+<form method="post" asp-page-handler="Save">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" id="hfcourse_id" name="course_id" asp-for="course.Course_id" />
+    <br />
+    <div class="col-lg-12 ">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Course Master</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label asp-for="course.Name">Name <span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="course.Name" />
+                                <span asp-validation-for="course.Name" class="text-danger"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6" style="margin-top: 20px;" style="display: none;">
+                                <label>Course Category</label>
+                                <select id="coursesCategory" class="form-control" name="courses_category_id">
+                                    <option value="">Select Course Category</option>
+                                    @foreach (var item in Model.DTCourseCategory)
+                                    {
+                                        var selectedAttribute = item.Value == Model.course?.courses_category_id.ToString() ? "selected" : "";
+
+                                        var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                        @Html.Raw(optionHtml)
+                                        @*<option value="@item.Value">@item.Text</option>*@
+                                    }
+                                </select>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6">
+                                <label asp-for="course.Value">Value <span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="course.Value" />
+                                <span asp-validation-for="course.Value" class="text-danger"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-6">
+                                <label asp-for="course.is_CheckSlot">Check Slot Cover Limit<span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <input class="form-control" asp-for="course.is_CheckSlot" inputmode="full-width-latin" type="checkbox" />
+                                <span asp-validation-for="course.is_CheckSlot" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions text-right pal">
+                <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                <input type="submit" value="Cancel" class="btn btn-primary" formnovalidate asp-page-handler="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

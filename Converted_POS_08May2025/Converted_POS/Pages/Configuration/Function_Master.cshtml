@@ -1,0 +1,2689 @@
+﻿@page
+@using System.Data
+@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+@using Converted_POS.Models;
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+
+
+@model Converted_POS.Pages.forms.Function_MasterModel
+@{
+    ViewData["Title"] = "Function_Master";
+    DataTable dataJson = ViewData["Data_dt"] as DataTable;
+    DataTable dt = new DataTable();
+    var dataCheck = ViewData["Data_dt"];
+    <p>@dataCheck</p>
+    if (dataJson != null)
+    {
+        // Deserialize the JSON string back into DataTable
+        dt = dataJson;
+    }
+
+
+    var functionInfo = ViewData["Function"] as clsFunction;
+    if (functionInfo != null && (functionInfo.mainfunction_id == null || functionInfo.mainfunction_id == 0))
+    {
+
+
+
+        dt = functionInfo.dt;
+
+
+    }
+}
+@section link {
+    <style>
+        .dropdown-checkboxes {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+            .dropdown-checkboxes .dropdown-button {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #ccc;
+                background-color: #f9f9f9;
+                cursor: pointer;
+                text-align: left;
+            }
+
+            .dropdown-checkboxes .dropdown-menu {
+                display: none;
+                position: absolute;
+                background-color: white;
+                min-width: 100%;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+                padding: 12px 16px;
+                list-style: none;
+                max-height: 200px;
+                overflow-y: auto;
+                border: 1px solid #ccc;
+            }
+
+            .dropdown-checkboxes.show .dropdown-menu {
+                display: block;
+            }
+
+            .dropdown-checkboxes .dropdown-menu li {
+                align-items: center;
+                padding: 5px 0;
+            }
+
+            .dropdown-checkboxes .dropdown-menu input[type="checkbox"] {
+                margin-right: 10px;
+                width: auto;
+            }
+    </style>
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a id="userListButton" asp-page="/Configuration/Function_List">Function Map List</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Configuration/Function_Master">Function Map Master</a></li>
+        </ol>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        #div_7by7 {
+            /*overflow-x: auto; */ /* Allow horizontal scrolling */
+        }
+
+            #div_7by7 table {
+                width: 100%;
+            }
+
+                #div_7by7 table td {
+                    text-align: center;
+                }
+
+                #div_7by7 table th, #div_7by7 table td {
+                    padding: 5px;
+                }
+
+
+        @@media (max-width: 768px) {
+            #div_7by7 table th, #div_7by7 table td {
+                width: 10%;
+            }
+
+            #div_7by7 table button {
+                font-size: 8px;
+                height: 40px;
+            }
+        }
+    </style>
+    <script type="text/javascript">
+        // Assuming 'names' array is populated from the DataTable
+        names.forEach(function (name) {
+            var listItem = document.createElement('li');
+            listItem.textContent = name;
+            document.getElementById('nameList').appendChild(listItem);
+        });
+    </script>
+    <script type="text/javascript">
+    // Pass the ViewData from the server-side to the JavaScript side
+    var namesDataTable = @Html.Raw(Json.Serialize(ViewData["NamesDataTable"]));
+
+    // Function to generate the table dynamically
+    function generateTable() {
+        var table = document.querySelector("#div_7by7 table");
+        var rowCount = 2; // Total rows (2 rows)
+        var colCount = 14; // 14 buttons per row
+
+        // Iterate over the table data and create rows & buttons
+        for (var row = 0; row < rowCount; row++) {
+            var tr = document.createElement("tr");
+
+            for (var col = 0; col < colCount; col++) {
+                var index = row * colCount + col;
+
+                // If we have enough data to generate the button, create it
+                if (index < namesDataTable.length) {
+                    var name = namesDataTable[index]["name"];
+                    var code = namesDataTable[index]["code"];
+                    var backColor = namesDataTable[index]["back_color"];
+                    var foreColor = namesDataTable[index]["for_color"];
+
+                    var td = document.createElement("td");
+                    td.style.width = "7%";
+
+                    // Check visibility for the buttons F29 and F30
+                    var isVisible = (code !== "F29" && code !== "F30");
+
+                    // Create the button element
+                    var button = document.createElement("button");
+                    button.id = "btn_" + code;
+                    button.classList.add("btn", "btn-primary");
+                    button.setAttribute("onclick", "handleClick('" + code + "')");
+                    button.style.marginTop = "10px";
+                    button.style.marginBottom = "10px";
+                    button.style.width = "80%";
+                    button.style.fontSize = "10px";
+                    button.style.height = "50px";
+                    button.style.marginRight = "1%";
+                    button.style.marginLeft = "1%";
+                    button.style.backgroundColor = backColor;
+                    button.style.color = foreColor;
+                    button.style.display = isVisible ? "inline-block" : "none";
+
+                    // Add text inside the button
+                    button.innerText = name ? name : code;
+
+                    // Append the button to the td
+                    td.appendChild(button);
+                    tr.appendChild(td);
+                }
+            }
+
+            // Append the row to the table
+            table.appendChild(tr);
+        }
+    }
+
+    // Generate the table once the page is loaded
+    window.onload = generateTable;
+    </script>
+    <script type="text/javascript">
+    // This function will be called when the dropdown selection changes
+    @*function loadPanelData() {
+        var selectedPanelId = document.getElementById('ddlPanel').value;
+
+        if (selectedPanelId) {
+            // Make an AJAX request to the server to get the data for the selected panel
+            $.ajax({
+                url: '@Url.Action("GetPanelData", "Function")',  // Adjust this to your actual controller/action
+                type: 'GET',
+                data: { panelId: selectedPanelId },
+                success: function (data) {
+                    // After receiving the data, update the table
+                    if (data && data.namesDataTable) {
+                        updateTable(data.namesDataTable);
+                    }
+                },
+                error: function (err) {
+                    console.log("Error fetching panel data: ", err);
+                }
+            });
+        }*@
+    /*}*/
+
+    // This function will update the table dynamically with the fetched data
+    function updateTable(namesDataTable) {
+        var table = document.querySelector("#div_7by7 table");
+        table.innerHTML = ''; // Clear the previous table content
+
+        var rowCount = 2; // Total rows (2 rows)
+        var colCount = 14; // 14 buttons per row
+
+        for (var row = 0; row < rowCount; row++) {
+            var tr = document.createElement("tr");
+
+            for (var col = 0; col < colCount; col++) {
+                var index = row * colCount + col;
+
+                // Ensure that we don't exceed the available data
+                if (index < namesDataTable.length) {
+                    var name = namesDataTable[index].name;
+                    var code = namesDataTable[index].code;
+                    var backColor = namesDataTable[index].back_color;
+                    var foreColor = namesDataTable[index].for_color;
+
+                    var td = document.createElement("td");
+                    td.style.width = "7%";
+
+                    // Hide buttons F29 and F30
+                    var isVisible = (code !== "F29" && code !== "F30");
+
+                    var button = document.createElement("button");
+                    button.id = "btn_" + code;
+                    button.classList.add("btn", "btn-primary");
+                    button.setAttribute("onclick", "handleClick('" + code + "')");
+                    button.style.marginTop = "10px";
+                    button.style.marginBottom = "10px";
+                    button.style.width = "80%";
+                    button.style.fontSize = "10px";
+                    button.style.height = "50px";
+                    button.style.marginRight = "1%";
+                    button.style.marginLeft = "1%";
+                    button.style.backgroundColor = backColor;
+                    button.style.color = foreColor;
+                    button.style.display = isVisible ? "inline-block" : "none";
+
+                    button.innerText = name || code; // Show name if available, otherwise show code
+                    td.appendChild(button);
+                    tr.appendChild(td);
+                }
+            }
+
+            table.appendChild(tr);
+        }
+    }
+
+    // This function can be used to handle button clicks if needed
+        document.addEventListener('DOMContentLoaded', function () {
+            // This function is triggered when the button is clicked
+            function handleClick(buttonCode) {
+                console.log("Selected Button Code: " + buttonCode); // Log the buttonCode to verify
+
+                // Update the HTML element with the selected button code
+                var displayElement = document.getElementById('selectedButtonCodeDisplay');
+                if (displayElement) {
+                    displayElement.innerText = 'Selected Button Code: ' + buttonCode;
+                } else {
+                    console.error('Element with ID "selectedButtonCodeDisplay" not found.');
+                }
+
+                // Make AJAX call to backend
+                $.ajax({
+                    type: 'POST',  // POST method because you are sending data to the backend
+                    url: '/Function/HandleButtonClick',  // Correct URL path of the controller action
+                    contentType: 'application/json',     // Sending data as JSON
+                    data: JSON.stringify({ buttonId: buttonCode }), // Send buttonCode as JSON in the request body
+                    success: function (response) {
+                        console.log('Backend response:', response);  // Log the response from backend
+
+                        // Alert the buttonCode returned by backend
+                        alert('Backend received code: ' + response.buttonCode);
+
+                        // Optionally, display it on the page
+                        var displayElement = document.getElementById('selectedButtonCodeDisplay');
+                        if (displayElement) {
+                            displayElement.innerText = 'Backend Button Code: ' + response.buttonCode; // Display backend response
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                        console.error('Status:', status);
+                        console.error('Response Text:', xhr.responseText); // Inspect the response body from the server
+                       // alert('An error occurred while sending the button code1.');
+                    }
+                });
+            }
+
+            // Add click event listener to the button
+            document.getElementById('buttonF1').addEventListener('click', function () {
+                handleClick('F1');  // Call handleClick with 'F1' button code
+            });
+        });
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        function deleteItem(message) {
+            var result = confirm(message);
+            if (result === true) {
+                document.getElementById("hfSwapStatus").value = "1";
+
+            } else {
+                document.getElementById("hfSwapStatus").value = "0";
+            }
+        }
+    </script>
+    <script>
+        // Parse the serialized JSON string to JavaScript object
+        var data = @Html.Raw(dataJson); // This will inject the JSON string as JavaScript array
+
+        if (data && data.length > 0) {
+            // Loop through the data to add rows to the table
+            data.forEach(function (row) {
+                var tableRow = "<tr>";
+                tableRow += "<td>" + row.code + "</td>";
+                tableRow += "<td>" + row.name + "</td>";
+                tableRow += "<td>" + row.is_active + "</td>";
+                tableRow += "<td>" + row.pay_type + "</td>";
+                tableRow += "</tr>";
+
+                // Append the row to the table (assuming the table has an id of 'yourTableId')
+                $("#yourTableId tbody").append(tableRow);
+            });
+        } else {
+            console.log("No data available.");
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+            integrity="sha256-8wC1pMlyVTFw2yGEXuW76pWb4f7Vpt+1xvLWsnBsZHE="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"
+            integrity="sha256-4j18CF8HBukrGxDdr4S5WhYrF4OevctJsvKVRs5UgYI="
+            crossorigin="anonymous"></script>
+    <script>
+        function deleteItem(message) {
+            var result = confirm(message);
+            if (result === true) {
+                document.getElementById("hfSwapStatus").value = "1";
+
+                // Example AJAX call to a backend endpoint
+                fetch('/Function/BindFunctionSwap', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ swapStatus: "1" })
+                }).then(response => {
+                    if (response.ok) {
+                        console.log("Function executed successfully");
+                        // Optionally, perform any additional actions, like refreshing the page
+                    } else {
+                        console.error("Error in backend execution");
+                        // Optionally, show error message to user
+                    }
+                });
+            }
+            else {
+                document.getElementById("hfSwapStatus").value = "0";
+            }
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ddCaption = document.getElementById('ddCaption');
+            const ddlCardType = document.getElementById('ddlCardType');
+            const ddlCardSubType = document.getElementById('ddlCardSubType');
+
+            // Debugging output to verify if the event listeners are added correctly
+            console.log('Event listeners are being set up.');
+
+            if (ddCaption) {
+                ddCaption.addEventListener('change', function () {
+                    const selectedValue = ddCaption.value;
+                    console.log('Function Type Changed: ' + selectedValue);
+                    handleFunctionTypeChange(selectedValue);
+                });
+            }
+
+            if (ddlCardType) {
+                ddlCardType.addEventListener('change', function () {
+                    const selectedValue = ddlCardType.value;
+                    handleCardTypeChange(selectedValue);
+                });
+            }
+
+            if (ddlCardSubType) {
+                ddlCardSubType.addEventListener('change', function () {
+                    const selectedValue = ddlCardSubType.value;
+                    handleCardSubTypeChange(selectedValue);
+                });
+            }
+
+            // Initial call to set visibility based on existing selection
+            handleFunctionTypeChange(ddCaption ? ddCaption.value : '');
+            handleCardTypeChange(ddlCardType ? ddlCardType.value : '');
+            handleCardSubTypeChange(ddlCardSubType ? ddlCardSubType.value : '');
+
+
+            function handleFunctionTypeChange(selectedValue) {
+                console.log('Function Type Changed: ' + selectedValue);
+
+
+                const divsToHide = [
+                    'divItem', 'divLauncher', 'divAmount', 'divPayment', 'divPayType',
+                    'divCardSale', 'divCardSub', 'divSurchargeAmount', 'divEOHO',
+                    'divTaxAmount', 'divSalesHandlingFee', 'divTotalValue',
+                    'divPaymentHandlingFee', 'divAccountCreate', 'divPriceLevel',
+                    'divZReport', 'divCourse', 'divDept', 'chkgroupbycourse', 'chkgroupbydept'
+                ];
+
+                divsToHide.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = 'none';
+                });
+
+
+                const ddlPayType = document.getElementById('ddlPayType');
+                if (ddlPayType) ddlPayType.selectedIndex = 0;
+
+
+                const divCardSub = document.getElementById('divCardSub');
+                if (divCardSub) divCardSub.style.display = 'none';
+                const divRoomDetails = document.getElementById('divRoomDetails');
+                if (divRoomDetails) divRoomDetails.style.display = 'none';
+
+                switch (selectedValue) {
+                    case "Discount On Item": showElements(['divItem', 'chkgroupbycourse', 'chkgroupbydept']);
+                        break;
+                    case "Discount On Percentage": showElements(['divItem', 'chkgroupbycourse', 'chkgroupbydept']);
+                        break;
+                    case "Discount Amount": showElements(['divItem', 'chkgroupbycourse', 'chkgroupbydept']);
+                        break;
+                    case "Discount Amount In Item":
+                        showElements(['divItem', 'chkgroupbycourse', 'chkgroupbydept']);
+                        break;
+                    case "Surcharge":
+                        showElements(['divSurchargeAmount']);
+                        break;
+                    case "Eat out to help out":
+                        showElements(['divEOHO']);
+                        break;
+                    case "Cash Sale":
+                        showElements(['divAmount']);
+                        break;
+                    case "Integrated Pay":
+                        showElements(['divPayment', 'divPayType']);
+                        break;
+                    case "Card Sale":
+                        showElements(['divCardSale', 'divPayType']);
+                        break;
+                    case "Dance Voucher":
+                        showElements(['divTaxAmount', 'divSalesHandlingFee', 'divTotalValue']);
+                        break;
+                    case "Dance Voucher Redeem":
+                        showElements(['divTotalValue', 'divPaymentHandlingFee']);
+                        break;
+                    case "Account Search":
+                        showElements(['divAccountCreate']);
+                        break;
+                    case "Change Price Level":
+                    case "Price Level Transaction":
+                        showElements(['divPriceLevel']);
+                        break;
+                    case "Z-Report BO":
+                        showElements(['divZReport']);
+                        break;
+                    case "Launcher":
+                        showElements(['divLauncher', 'chkgroupbycourse', 'chkgroupbydept']);
+                        break;
+                    case "Stripe Payment":
+                        showElements(['showStripePaymentFields']);
+                        break;
+                    default:
+                        // No action needed; all divs are already hidden
+                        break;
+                }
+            }
+
+            function showElements(ids) {
+                ids.forEach(id => {
+                    const el = document.getElementById(id);
+                    console.log('Showing element: ' + id);
+                    if (el) el.style.display = 'block';
+                });
+            }
+
+            function showStripePaymentFields() {
+                const divLauncher = document.getElementById('divLauncher');
+                if (divLauncher) {
+                    divLauncher.style.display = 'block';
+                }
+
+                const txtAccountID = document.getElementById('txtAccountID');
+                const lblAccountID = document.getElementById('lblAccountID');
+                if (txtAccountID) txtAccountID.style.display = 'block';
+                if (lblAccountID) lblAccountID.style.display = 'block';
+
+                const txtLauncher = document.getElementById('txtLauncher');
+                const lbllauncher = document.getElementById('lbllauncher');
+                if (txtLauncher) txtLauncher.placeholder = "Secret Key";
+                if (lbllauncher) lbllauncher.innerText = "Secret Key";
+
+                if (txtAccountID) txtAccountID.setAttribute("placeholder", "Account ID");
+                const lblAccount = document.getElementById('lblAccountID');
+                if (lblAccount) lblAccount.innerText = "Account ID";
+            }
+
+            function handleCardTypeChange(selectedValue) {
+                const divCardSub = document.getElementById('divCardSub');
+                if (selectedValue === "1") {
+                    if (divCardSub) divCardSub.style.display = 'block';
+                } else {
+                    if (divCardSub) divCardSub.style.display = 'none';
+                }
+            }
+
+            function handleCardSubTypeChange(selectedValue) {
+                const divRoomDetails = document.getElementById('divRoomDetails');
+                if (selectedValue === "Room Payment") {
+                    if (divRoomDetails) divRoomDetails.style.display = 'block';
+                } else {
+                    if (divRoomDetails) divRoomDetails.style.display = 'none';
+                }
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ddlCardType = document.getElementById('ddlCardType');
+            const ddlCardSubType = document.getElementById('ddlCardSubType');
+            const divCardSub = document.getElementById('divCardSub');
+
+            // Event listener for Payment Type dropdown
+            if (ddlCardType) {
+                ddlCardType.addEventListener('change', function () {
+                    const selectedValue = ddlCardType.value;
+                    if (selectedValue === "0") {
+                        // Hide the Payment Subtype section for Credit Card
+                        divCardSub.style.display = 'none';
+                    } else {
+                        // Show the Payment Subtype section for Integrated Payment
+                        divCardSub.style.display = 'block';
+                        // Default value for Payment Subtype
+                        ddlCardSubType.value = "EVO";
+                    }
+                });
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Clear localStorage when the page loads (for testing)
+            localStorage.clear();
+
+            const chkGroupByDept = document.querySelector('#chkgroupbydept input[type="checkbox"]');
+            const chkGroupByCourse = document.querySelector('#chkgroupbycourse input[type="checkbox"]');
+            const divDept = document.getElementById('divDept');
+            const divCourse = document.getElementById('divCourse');
+
+            // Function to get the checkbox state from localStorage
+            function getCheckboxState(name) {
+                const state = localStorage.getItem(name);
+                console.log(`${name} state retrieved:`, state);
+                return state === 'true'; // Convert the stored string to boolean
+            }
+
+            // Function to set the checkbox state in localStorage
+            function setCheckboxState(name, state) {
+                localStorage.setItem(name, state);
+                console.log(`${name} state saved:`, state);
+            }
+
+            // Initialize the state of checkboxes from localStorage (on page load)
+            chkGroupByDept.checked = getCheckboxState('chkGroupByDept');
+            chkGroupByCourse.checked = getCheckboxState('chkGroupByCourse');
+
+            // Initial state setup for div visibility based on checkbox values
+            toggleElement(divDept, chkGroupByDept.checked);
+            toggleElement(divCourse, chkGroupByCourse.checked);
+
+            // Attach event listeners to checkboxes to save state on change
+            chkGroupByDept?.addEventListener('change', function () {
+                toggleElement(divDept, chkGroupByDept.checked);
+                setCheckboxState('chkGroupByDept', chkGroupByDept.checked);
+            });
+
+            chkGroupByCourse?.addEventListener('change', function () {
+                toggleElement(divCourse, chkGroupByCourse.checked);
+                setCheckboxState('chkGroupByCourse', chkGroupByCourse.checked);
+            });
+
+            // Reusable function to toggle the visibility of elements
+            function toggleElement(element, isVisible) {
+                if (element) {
+                    element.style.display = isVisible ? 'block' : 'none';
+                }
+            }
+        });
+    </script>
+    <script>
+        document.getElementById('clearStorageBtn').addEventListener('click', function () {
+            localStorage.clear(); // Clears all data in localStorage
+            console.log('localStorage has been cleared.');
+            // Optionally, you can reload the page to reset the state
+            location.reload();  // Reloads the page to apply the changes
+        });
+    </script>
+    @*<script>
+            document.getElementById('clearStorageBtn').addEventListener('click', function () {
+                localStorage.clear(); // Clears all data in localStorage
+                console.log('localStorage has been cleared.');
+                // Optionally, you can reload the page to reset the state
+                location.reload();  // Reloads the page to apply the changes
+            });
+        </script>*@
+    @*<script>
+        $(document).ready(function () {
+            // Handle Radeditpanel selection change
+            $('#ddlPanel').change(function () {
+                var selectedPanelId = $(this).val();
+
+                $.ajax({
+                    type: "POST",
+                    url: '/api/Function/SelectedPanelChanged',
+                data: JSON.stringify({ selectedPanelId: selectedPanelId }),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+
+                            response.buttons.forEach(function (button) {
+                                var btn = $('#' + button.Id);
+                                if (button.Visible) {
+                                    btn.show();
+                                    btn.text(button.Name);
+                                    btn.css('background-color', button.BackColor);
+                                    btn.css('color', button.ForColor);
+                                    btn.attr('style', button.Style);
+                                } else {
+                                    btn.hide();
+                                }
+                            });
+
+                            // Additional logic based on selectedPanelId
+                            if (selectedPanelId > 0) {
+                                $('#divParentFunction').hide();
+                            } else {
+                                $('#divParentFunction').show();
+                            }
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred while processing your request.');
+                    }
+                });
+            });
+
+            // Example: Handle Pay Type selection to show/hide Payment Subtype
+            $('#ddlCardType').change(function () {
+                var selectedPayType = $(this).val();
+                if (selectedPayType == '0') { // Credit Card
+                    $('#divCardSub').show();
+                    $('#divRoomDetails').hide();
+                } else if (selectedPayType == '1') { // Integrated Payment
+                    $('#divCardSub').show();
+                    // Optionally show Room Details based on subtype
+                } else {
+                    $('#divCardSub').hide();
+                    $('#divRoomDetails').hide();
+                }
+            });
+
+            // Example: Handle Payment Subtype selection to show/hide Room Details
+            $('#ddlCardSubType').change(function () {
+                var selectedSubType = $(this).val();
+                if (selectedSubType == 'Room Payment') {
+                    $('#divRoomDetails').show();
+                } else {
+                    $('#divRoomDetails').hide();
+                }
+            });
+
+            // Initialize button styles on page load based on initial data
+            function initializeButtons() {
+                $('.function-button').each(function () {
+                    var btn = $(this);
+                    btn.css('background-color', btn.data('backcolor') || '#1B7BBD');
+                    btn.css('color', btn.data('forcolor') || '#FFFFFF');
+                });
+            }
+
+            initializeButtons();
+        });
+        </script>*@
+    <script>
+        // When the value of the dropdown changes
+        document.getElementById("ddlCardSubType").addEventListener("change", function () {
+            var selectedValue = this.value; // Get the selected value
+
+            // Check if the selected value is "Room Payment"
+            if (selectedValue === "Room Payment") {
+                // Show the divRoomDetails
+                document.getElementById("divRoomDetails").style.display = "block";
+            } else {
+                // Hide the divRoomDetails
+                document.getElementById("divRoomDetails").style.display = "none";
+            }
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        function changePanel(selectedPanelId) {
+            // Constructing the data to send to the backend
+            var requestData = {
+                selectedPanelId: selectedPanelId
+            };
+
+            // Sending the AJAX POST request
+            $.ajax({
+                url: '/api/Function/SelectedPanelChanged', // Your API endpoint
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                success: function (response) {
+                    if (response.success) {
+                        console.log('Panel changed successfully', response);
+                        alert(response.message);  // Show a success message or do other UI updates
+
+                        // Optionally, update the UI elements based on the response, like buttons, colors, etc.
+                        response.buttons.forEach(function (button) {
+                            $("#" + button.Id).css({
+                                "background-color": button.BackColor,
+                                "color": button.ForColor,
+                                "font-weight": button.Style.includes("bold") ? "bold" : "normal",
+                                "font-style": button.Style.includes("italic") ? "italic" : "normal"
+                            });
+                        });
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error occurred:", error);
+                    alert('An error occurred while changing the panel. Please try again.');
+                }
+            });
+        }
+
+        // Bind the change event on the dropdown
+        $(document).ready(function () {
+            $('#ddlPanel').change(function () {
+                var selectedPanelId = $(this).val(); // Get the selected panel ID from the dropdown
+
+                // If "Select" is chosen (value == ""), reset the dropdown to 0
+                if (selectedPanelId === "") {
+                    $(this).val("0"); // Reset the dropdown to 0 if "Select" is chosen
+                    console.log("Selected 'Select' option. Value reset to 0.");
+                    return;  // Exit the function without making an AJAX request
+                }
+
+                // Only make the AJAX call if the value is NOT empty or "Select"
+                changePanel(selectedPanelId); // Call the changePanel function with the selected ID
+            });
+        });
+    </script>
+    <script>
+    $(document).ready(function () {
+        // Handle RadSwapMachine selection change
+        $('#RadSwapMachine').change(function () {
+            var selectedMachineId = $(this).val();
+            if (selectedMachineId) {
+                // Make AJAX POST request to BindFunctionSwap
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("BindFunctionSwap", "Function")',
+                    data: JSON.stringify({ SwapStatus: 1, SelectedMachineId: parseInt(selectedMachineId) }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success) {
+                            // Update Main Function TextBox
+                            // Assuming main function name is part of the response. Modify accordingly.
+                            // $('#txtMainFun').val(response.mainFunctionName);
+
+                            // Iterate through each button and update its state
+                            response.buttons.forEach(function (button) {
+                                var btn = $('#' + button.Id);
+                                if (button.Visible) {
+                                    btn.show();
+                                    btn.text(button.Name);
+                                    btn.css('background-color', button.BackColor);
+                                    btn.css('color', button.ForColor);
+                                    btn.attr('style', button.Style);
+                                } else {
+                                    btn.hide();
+                                }
+                            });
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('An error occurred while pro..');
+                    }
+                });
+            } else {
+                // Reset buttons if no machine is selected
+                $('.function-button').each(function () {
+                    var btn = $(this);
+                    btn.show();
+                    btn.text(btn.attr('id').replace('btn_', ''));
+                    btn.css('background-color', '#1B7BBD');
+                    btn.css('color', '#FFFFFF');
+                    btn.attr('style', 'margin-top: 10px; width: 80%; font-size: 10px; height: 50px; margin-right: 1%; margin-left: 3%;');
+                });
+            }
+        });
+
+        // DeleteItem Function
+        function DeleteItem(message) {
+            var r = confirm(message);
+            if (r == true) {
+                $('#hf_swapstatus').val('1');
+                var selectedMachineId = $('#RadSwapMachine').val();
+                if (selectedMachineId) {
+                    // Trigger the change event to execute BindFunctionSwap
+                    $('#RadSwapMachine').trigger('change');
+                } else {
+                    alert('Please select a machine before deleting.');
+                }
+            }
+            else {
+                $('#hf_swapstatus').val('0');
+            }
+        }
+
+        // Example usage of DeleteItem
+        // Replace this with actual event triggers as needed
+        // Example: Attach to a delete button
+        $('#deleteButton').click(function () {
+            DeleteItem('Are you sure you want to delete this item?');
+        });
+    });
+    </script>
+    <script>
+        $(document).ready(function () {
+        // Handle RadSwapMachine selection change
+        $('#RadSwapMachine').change(function () {
+            var selectedMachineId = $(this).val();
+            if (selectedMachineId) {
+                // Make AJAX POST request to BindFunctionSwap
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("BindFunctionSwap", "Function")',
+                    data: JSON.stringify({ SwapStatus: 1, SelectedMachineId: parseInt(selectedMachineId) }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success) {
+                            // Update Main Function TextBox
+                            // Assuming main function name is part of the response. Modify accordingly.
+                            // $('#txtMainFun').val(response.mainFunctionName);
+
+                            // Iterate through each button and update its state
+                            response.buttons.forEach(function (button) {
+                                var btn = $('#' + button.Id);
+                                if (button.Visible) {
+                                    btn.show();
+                                    btn.text(button.Name);
+                                    btn.css('background-color', button.BackColor);
+                                    btn.css('color', button.ForColor);
+                                    btn.attr('style', button.Style);
+                                } else {
+                                    btn.hide();
+                                }
+                            });
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('error occurred');
+                    }
+                });
+            } else {
+                // Reset buttons if no machine is selected
+                $('.function-button').each(function () {
+                    var btn = $(this);
+                    btn.show();
+                    btn.text(btn.attr('id').replace('btn_', ''));
+                    btn.css('background-color', '#1B7BBD');
+                    btn.css('color', '#FFFFFF');
+                    btn.attr('style', 'margin-top: 10px; width: 80%; font-size: 10px; height: 50px; margin-right: 1%; margin-left: 3%;');
+                });
+            }
+        });
+
+        // DeleteItem Function
+        function DeleteItem(message) {
+            var r = confirm(message);
+            if (r == true) {
+                $('#hf_swapstatus').val('1');
+                var selectedMachineId = $('#RadSwapMachine').val();
+                if (selectedMachineId) {
+                    // Trigger the change event to execute BindFunctionSwap
+                    $('#RadSwapMachine').trigger('change');
+                } else {
+                    alert('Please select a machine before deleting.');
+                }
+            }
+            else {
+                $('#hf_swapstatus').val('0');
+            }
+        }
+
+        // Example usage of DeleteItem
+        // Replace this with actual event triggers as needed
+        // Example: Attach to a delete button
+        $('#deleteButton').click(function () {
+            DeleteItem('Are you sure you want to delete this item?');
+        });
+        });
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Make sure you have jQuery loaded -->
+    @*<script>
+        // Generate the token pair (cookie + request token)
+        var tokens = @Antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
+
+        function handleClick(buttonId) {
+            $.ajax({
+                type: "POST",
+                url: "/Function/HandleButtonClick",
+                data: {
+                    buttonId: buttonId,
+                    __RequestVerificationToken: tokens
+                },
+                success: function(response) {
+                    alert(response.Message);
+                },
+                error: function() {
+                    alert("Error in AJAX request.");
+                }
+            });
+        }*@
+    @*</script>*@
+
+    <script>
+        //function handleClick(buttonId) {
+        //    // Show a simple alert
+        //    alert("Button " + buttonId + " clicked!");
+
+        //    // Then do the AJAX
+        //    $.ajax({
+        //        type: "POST",
+        //        url: '/Function/HandleButtonClick',
+        //        data: { buttonId: buttonId },
+        //        success: function (response) {
+        //            alert(response.Message);
+        //        },
+        //        error: function () {
+        //            alert("Error in AJAX request.");
+        //        }
+        //    });
+        //}
+
+
+
+
+        //function validateForm() {
+        //    // Add form validation logic here
+        //    alert("Form is validated!");
+        //    return true; // or false if validation fails
+        //}
+        //// Function to toggle visibility of divRoomDetails based on PaySubType
+        //function toggleRoomDetails() {
+        //    // Get the selected value from the dropdown
+        //    var selectedValue = document.getElementById('ddlCardSubType').value;
+
+        //    // Show or hide divRoomDetails based on selection
+        //    if (selectedValue === "Room Payment") {
+        //        document.getElementById('divRoomDetails').style.display = 'block';
+        //    } else {
+        //        document.getElementById('divRoomDetails').style.display = 'none';
+        //    }
+        //}
+
+        //// Call toggleRoomDetails on page load to ensure the correct visibility
+        //window.onload = function () {
+        //    toggleRoomDetails(); // Ensure the divRoomDetails is shown/hidden based on initial dropdown selection
+        //};
+
+        //// Call toggleRoomDetails when the dropdown selection changes
+        //document.getElementById('ddlCardSubType').addEventListener('change', function () {
+        //    toggleRoomDetails();
+        //});
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Handle the change event for the dropdown
+            $('#parentIdDropdown').change(function () {
+                var selectedValue = $(this).val(); // Get the selected value
+
+                // Send the value to the controller method via AJAX
+                $.ajax({
+                    url: '@Url.Action("SelectedPanelChanged", "Function")', // URL of your method
+                    type: 'GET', // Use POST if you want to send data via POST
+                    data: { parentId: selectedValue }, // Pass selected value as a parameter
+                    success: function (response) {
+                        // Handle the response from the server
+                        // For example, you can update a part of the page with the response
+                        console.log(response); // Or any other logic you need to implement
+                    },
+
+                    error: function (xhr, status, error) {
+                        console.log("Error: " + error);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+    $(document).ready(function () {
+        // Handle the change event for the dropdown
+        $('#parentIdDropdown').change(function () {
+            var selectedValue = $(this).val(); // Get the selected value
+
+            // Send the value to the controller method via AJAX
+            $.ajax({
+                url: '@Url.Action("SelectedPanelChanged", "Function")', // URL of your method
+                type: 'POST', // Use POST to send data
+                data: JSON.stringify({ selectedPanelId: selectedValue }), // Send selected value as JSON
+                contentType: 'application/json', // Set content type to JSON
+                success: function (response) {
+                    // Handle the response from the server
+                    if (response.success) {
+                        // Store the namesDataTable received from the server
+                        var namesDataTable = response.namesDataTable;
+
+                        // Example: Iterate over the namesDataTable and display it
+                        console.log(namesDataTable); // You can log it or use it as needed
+
+                        // For example, populate the dropdown with the names
+                        $('#ddlPanel').empty(); // Clear previous options
+                        $('#ddlPanel').append('<option value="">Select</option>'); // Add default option
+                        namesDataTable.forEach(function (item) {
+                            $('#ddlPanel').append($('<option>', {
+                                value: item.name, // Or you can use other fields depending on your need
+                                text: item.name
+                            }));
+                        });
+                    } else {
+                        console.log("Error: " + response.message);
+                    }
+                },
+
+                error: function (xhr, status, error) {
+                    console.log("Error: " + error);
+                }
+            });
+        });
+    });
+    </script>
+    <script>
+    function loadPanelData() {
+        var selectedPanelId = document.getElementById('ddlPanel').value;
+
+        if (selectedPanelId === "Select") {
+            location.reload(); // Refresh the page to reset everything
+            return; // Exit the function to prevent further execution
+        }
+        /*if (!selectedPanelId) return;*/
+
+        $.ajax({
+            url: '@Url.Action("SelectedPanelChanged", "Function")',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ selectedPanelId: selectedPanelId }),
+            success: function(response) {
+                if (response.success) {
+                    // Update table with buttons dynamically
+                    updateButtons(response.dataDt);
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function() {
+                alert('Error while changing the panel');
+            }
+        });
+    }
+
+    function updateButtons(dataDt) {
+        var buttonContainer = document.getElementById('div_7by7');
+        buttonContainer.innerHTML = ''; // Clear existing content
+
+        // Create table structure dynamically
+        var tableHtml = '<table style="border: 1px solid black; padding: 5%; width: 100%;">';
+
+        // Loop through the data to create buttons (2 rows, 14 columns)
+        for (var row = 0; row < 2; row++) {
+            tableHtml += '<tr>';
+            for (var col = 0; col < 14; col++) {
+                var index = row * 14 + col;
+                if (index >= dataDt.length) break;
+
+                var rowData = dataDt[index];
+                var code = rowData.code;
+                var name = rowData.name || code; // If name is empty, use the code
+                var backColor = rowData.back_color;
+                var foreColor = rowData.for_color;
+                var isVisible = !(code === "F29" || code === "F30"); // Hide F29 and F30
+
+                tableHtml += `
+                    <td width="7%">
+                        <button id="btn_${code}"
+                                class="btn btn-primary"
+                                onclick="handleClick('${code}')"
+                                style="margin-top: 10px; margin-bottom: 10px; width: 80%; font-size: 10px; height: 50px; margin-right: 1%; margin-left: 1%; background-color: ${backColor}; color: ${foreColor}; display: ${isVisible ? 'inline-block' : 'none'};">
+                            ${name}
+                        </button>
+                    </td>`;
+            }
+            tableHtml += '</tr>';
+        }
+
+        tableHtml += '</table>';
+        buttonContainer.innerHTML = tableHtml; // Insert the generated HTML
+        }
+        $(document).ready(function () {
+            $('#ddlPanel').change(function () {
+                var selectedPanelId = $(this).val(); // Get the selected panel ID from the dropdown
+
+                // If "Select" is chosen (value == ""), reload the page
+                if (selectedPanelId === "") {
+                    location.reload(); // Reload the page to reset everything
+                    console.log("Selected 'Select' option. Page reloading.");
+                    return;  // Exit the function
+                }
+
+                // Only make the AJAX call if the value is NOT empty or "Select"
+                loadPanelData(); // Call the loadPanelData function to handle the panel change
+            });
+        });
+    </script>
+    <script>
+       //document.addEventListener('DOMContentLoaded', function () {
+        function handleClick(event, buttonCode, buttonName, buttonBackColor, buttonForeColor, buttonIsActive, buttonBigButton, Function_Id, Panel_Id, caption_type, item, PlatformAdd, Dept_Id, Couse_Id, IsGroupByCourse, IsGroupByDept, ProfileId, DefaultDateTime, parentId) {
+            if (event) event.preventDefault(); // Prevent form submission
+            event.stopPropagation();
+            console.log("Selected Button Code: " + buttonCode);
+    console.log("Selected Button Code: " + buttonCode);
+    console.log("Button Name: " + buttonName);
+    console.log("Button BackColor: " + buttonBackColor);
+    console.log("Button ForeColor: " + buttonForeColor);
+    console.log("Button IsActive: " + buttonIsActive);
+    console.log("Button BigButton: " + buttonBigButton);
+    console.log("Function ID: " + Function_Id);
+    console.log("Panel_Id: " + Panel_Id);
+    console.log("Caption Type: " + caption_type);
+    console.log("Amount: " + item);
+    console.log("PlatformAdd: " + PlatformAdd);
+            console.log("Dept_Id: " + Dept_Id);
+            console.log("Couse_Id: " + Couse_Id);
+            console.log("parentId: " + parentId);
+            console.log("IsGroupByCourse: " + IsGroupByCourse);
+            console.log("IsGroupByDept: " + IsGroupByDept);
+
+    // Make AJAX call to backend
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("HandleButtonClick", "Function")',  // Resolve the URL correctly
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    buttonId: buttonCode,
+                    name: buttonName,
+                    back_color: buttonBackColor,
+                    for_color: buttonForeColor,
+                    is_active: buttonIsActive,  // Send is_active
+                    big_button: buttonBigButton,
+                    Function_Id: Function_Id,
+                    Panel_Id: Panel_Id,
+                    caption_type: caption_type,
+                    item: item,
+                    PlatformAdd: PlatformAdd,
+                    Dept_Id: Dept_Id,
+                    Couse_Id: Couse_Id,
+                    IsGroupByCourse: (IsGroupByCourse === "1" || IsGroupByCourse === true),
+                    IsGroupByDept: (IsGroupByDept === "1" || IsGroupByDept === true),
+                    ProfileId: ProfileId,
+                    DefaultDateTime: DefaultDateTime,
+                    parentId: parentId
+                }),
+                success: function (response) {
+                    console.log('Backend response:', response);
+                    alert('Backend received code33: ' + response.buttonCode +
+                        ', Name: ' + response.name +
+                        ', Panel_Id: ' + response.Panel_Id +
+                        ', BackColor: ' + response.back_color +
+                        ', ForeColor: ' + response.for_color +
+                        ', IsActive: ' + response.is_active +
+                        ', BigButton: ' + response.big_button +
+                        ', FunctionId: ' + response.Function_Id +
+                        ', caption_type: ' + response.caption_type +
+                        ', Amount: ' + response.item +
+                        ', PlatformAdd: ' + response.PlatformAdd +
+                        ', Dept_Id: ' + response.Dept_Id) ;
+                        
+
+
+            // Bind the text fields and other inputs
+            $('#txtFName').val(response.name);
+            $('#ddParentId').val(response.Panel_Id);
+            $('#radBackcolorpicker').val(response.back_color);
+            $('#radForcolorpicker').val(response.for_color);
+            $('#ddCaption').val(response.caption_type);
+            $('#amount').val(response.item);
+            $('#PlatformAdd').val(response.PlatformAdd);
+            $('#Dept_Id').val(response.Dept_Id);
+            $('#Couse_Id').val(response.Couse_Id);
+            $('#IsGroupByCourse').val(response.IsGroupByCourse);
+            $('#IsGroupByDept').val(response.IsGroupByDept);
+            $('#ProfileId').val(response.ProfileId);
+            $('#DefaultDateTime').val(response.DefaultDateTime);
+            $('#parentId').val(response.parentId);
+
+
+            var defaultDateTimeValue = response.DefaultDateTime; // expecting "4_MM"
+            //alert('DefaultDateTime raw value: ' + defaultDateTimeValue);  // Log raw value
+
+            if (defaultDateTimeValue) {
+                var parts = defaultDateTimeValue.split('_');  // Split at the underscore
+                if (parts.length === 2) {
+                    $('#Function_DefaultDateTime').val(parts[0]);  // Set the "4" in DefaultDateTime field
+                    $('#rdExpTime').val(parts[1]);  // Set "MM" in ExpireDateTime dropdown
+                }
+            } else {
+                //alert('DefaultDateTime is empty or malformed');
+            }
+            if (response.DTProfile) {
+                var profileOptions = '<option value="">Select</option>';
+                $.each(response.DTProfile, function (index, item) {
+                    profileOptions += `<option value="${item.Value}">${item.Text}</option>`;
+                });
+                $('#rdProfileType').html(profileOptions);
+                    }
+                    
+
+            $('#rdProfileType').val(response.ProfileId);
+                  
+            if (response.DTFunction) {
+                var options = '<option value="">Select</option>'; // Default "Select" option
+                $.each(response.DTFunction, function (index, item) {
+                    // Add 'selected' attribute if item.Value matches response.Function_Id
+                    var selected = item.Value == response.Function_Id ? 'selected' : '';
+                    options += `<option value="${item.Value}" ${selected}>${item.Text}</option>`;
+                });
+                if (response.DTProfile) {
+                    var profileOptions = '<option value="">Select</option>';
+                    $.each(response.DTProfile, function (index, item) {
+                        profileOptions += `<option value="${item.Value}">${item.Text}</option>`;
+                    });
+                    $('#rdProfileType').html(profileOptions);
+                }
+                // Replace the options in the dropdown with the new options
+                $('#ddCaption').html(options);
+
+                // Ensure the dropdown value is set after the options are populated
+                $('#ddCaption').val(response.Function_Id); // Set the selected Function_Id from response
+            }
+
+            // Handle checkbox states
+            $('#chkActive').prop('checked', response.is_active == '1' || response.is_active === true);
+            $('#chkbigbutton').prop('checked', response.big_button == '1' || response.big_button === true);
+            $('#ddCaption').trigger('change');
+
+            const selectedFunctionType = $('#ddCaption').val(); // Get the selected value of ddCaption
+            handleFunctionTypeChange(selectedFunctionType); // Call the function with the selected value
+
+            // Assuming selectedFunctionType affects the ddlCardType and ddlCardSubType
+            if (selectedFunctionType === 'Stripe Payment') {
+                $('#ddlCardType').val('1'); // Integrated Payment
+            } else {
+                $('#ddlCardType').val('0'); // Credit Card
+            }
+
+            // Trigger change event on ddlCardType to handle changes for ddlCardSubType
+            $('#ddlCardType').trigger('change');
+        },
+        error: function (xhr, status, error) {
+            console.error('Status:', status);
+            console.error('Response Text:', xhr.responseText);
+           // alert('An error occurred while sending the button code.');
+        }
+    });
+            $.ajax({
+        type: 'POST',
+        url: '@Url.Action("SelectedPanelChanged", "Function")',  // Adjust your endpoint here
+        contentType: 'application/json',
+        data: JSON.stringify({
+            selectedPanelId: $('#ddlPanel').val()  // Passing the selected panel id
+        }),
+        success: function(response) {
+            console.log('Backend response:', response);
+
+            // Assuming response.namesDataTable contains the name you're looking for
+            var selectedButtonData = response.dataDt.find(button => button.code === buttonCode);
+
+            // Update form fields with data from the clicked button
+            $('#txtFName').val(selectedButtonData.name);
+            $('#ddParentId').val(response.Panel_Id);
+            $('#radBackcolorpicker').val(selectedButtonData.back_color);
+            $('#radForcolorpicker').val(selectedButtonData.for_color);
+            $('#ddCaption').val(selectedButtonData.caption_type);
+            $('#amount').val(selectedButtonData.item);
+            $('#PlatformAdd').val(selectedButtonData.PlatformAdd);
+            $('#Dept_Id').val(selectedButtonData.Dept_Id);
+            $('#Couse_Id').val(selectedButtonData.Couse_Id);
+            $('#IsGroupByCourse').val(selectedButtonData.IsGroupByCourse);
+            $('#IsGroupByDept').val(selectedButtonData.IsGroupByDept);
+            $('#ProfileId').val(selectedButtonData.ProfileId);
+            $('#DefaultDateTime').val(selectedButtonData.DefaultDateTime);
+            $('#parentId').val(selectedButtonData.parentId);
+            updateDropdownCheckboxes('#divDept', response.Dept_Id);
+            updateDropdownCheckboxes('#divCourse', response.Course_Id);
+            //updateDropdownCheckboxes('#DefaultDateTime', response.DefaultDateTime);
+            //updateDropdownCheckboxes('#ProfileId', response.ProfileId);
+            //updateDropdownCheckboxes('#parentId', response.parentId);
+            var defaultDateTimeValue = response.DefaultDateTime; // assuming value like "4_MM"
+            if (defaultDateTimeValue) {
+                var parts = defaultDateTimeValue.split('_');  // Split at the underscore
+                if (parts.length === 2) {
+                    $('#Function_DefaultDateTime').val(parts[0]);  // Set "4" in DefaultDateTime field (input)
+                    $('#rdExpTime').val(parts[1]);  // Set "MM" in ExpireDateTime field (select dropdown)
+                }
+            }
+            alert("i'm here")
+            if (response.DTProfile) {
+                var profileOptions = '<option value="">Select</option>';
+                $.each(response.DTProfile, function (index, item) {
+                    profileOptions += `<option value="${item.Value}">${item.Text}</option>`;
+                });
+                $('#rdProfileType').html(profileOptions);
+            }
+            $('#rdProfileType').val(response.ProfileId);
+            
+
+            if (selectedButtonData.DTFunction) {
+                var options = '<option value="">Select</option>';
+                $.each(selectedButtonData.DTFunction, function(index, item) {
+                    var selected = item.Value == selectedButtonData.Function_Id ? 'selected' : '';
+                    options += `<option value="${item.Value}" ${selected}>${item.Text}</option>`;
+                });
+                $('#ddCaption').html(options);
+                $('#ddCaption').val(selectedButtonData.Function_Id);
+            }
+
+            // Update checkbox states
+            $('#chkActive').prop('checked', selectedButtonData.is_active == '1' || selectedButtonData.is_active === true);
+            $('#chkbigbutton').prop('checked', selectedButtonData.big_button == '1' || selectedButtonData.big_button === true);
+            $('#ddCaption').trigger('change');
+
+            const selectedFunctionType = $('#ddCaption').val();
+            handleFunctionTypeChange(selectedFunctionType); // Call the function with the selected value
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Status:', status);
+            console.error('Response Text:', xhr.responseText);
+            //alert('An error occurred while sending the button code.');
+        }
+    });
+}
+//});
+        $('#ddCaption').on('change', function () {
+            console.log('Dropdown value changed to:', $(this).val());
+            handleFunctionTypeChange($(this).val()); // Call handleFunctionTypeChange with the new value
+        });
+
+        // handleFunctionTypeChange function definition
+        function handleFunctionTypeChange(selectedValue) {
+            console.log('Function Type Changed: ' + selectedValue);
+
+            const divsToHide = [
+                'divItem', 'divLauncher', 'divAmount', 'divPayment', 'divPayType',
+                'divCardSale', 'divCardSub', 'divSurchargeAmount', 'divEOHO',
+                'divTaxAmount', 'divSalesHandlingFee', 'divTotalValue',
+                'divPaymentHandlingFee', 'divAccountCreate', 'divPriceLevel',
+                'divZReport', 'divCourse', 'divDept', 'chkgroupbycourse', 'chkgroupbydept'
+            ];
+
+            divsToHide.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+
+            const ddlPayType = document.getElementById('ddlPayType');
+            if (ddlPayType) ddlPayType.selectedIndex = 0;
+
+            const divCardSub = document.getElementById('divCardSub');
+            if (divCardSub) divCardSub.style.display = 'none';
+            const divRoomDetails = document.getElementById('divRoomDetails');
+            if (divRoomDetails) divRoomDetails.style.display = 'none';
+
+            switch (selectedValue) {
+                case "Discount On Item":
+                    showElements(['divItem', 'chkgroupbycourse', 'chkgroupbydept']);
+                    break;
+                case "Discount On Percentage":
+                    showElements(['divItem', 'chkgroupbycourse', 'chkgroupbydept']);
+                    break;
+                case "Discount Amount":
+                    showElements(['divItem', 'chkgroupbycourse', 'chkgroupbydept']);
+                    break;
+                case "Discount Amount In Item":
+                    showElements(['divItem', 'chkgroupbycourse', 'chkgroupbydept']);
+                    break;
+                case "Surcharge":
+                    showElements(['divSurchargeAmount']);
+                    break;
+                case "Eat out to help out":
+                    showElements(['divEOHO']);
+                    break;
+                case "Cash Sale":
+                    showElements(['divAmount']);
+                    break;
+                case "Integrated Pay":
+                    showElements(['divPayment', 'divPayType']);
+                    break;
+                case "Card Sale":
+                    showElements(['divCardSale', 'divPayType']);
+                    break;
+                case "Dance Voucher":
+                    showElements(['divTaxAmount', 'divSalesHandlingFee', 'divTotalValue']);
+                    break;
+                case "Dance Voucher Redeem":
+                    showElements(['divTotalValue', 'divPaymentHandlingFee']);
+                    break;
+                case "Account Search":
+                    showElements(['divAccountCreate']);
+                    break;
+                case "Change Price Level":
+                case "Price Level Transaction":
+                    showElements(['divPriceLevel']);
+                    break;
+                case "Z-Report BO":
+                    showElements(['divZReport']);
+                    break;
+                case "Launcher":
+                    showElements(['divLauncher', 'chkgroupbycourse', 'chkgroupbydept']);
+                    break;
+                case "Stripe Payment":
+                    showElements(['showStripePaymentFields']);
+                    break;
+                default:
+                    // No action needed; all divs are already hidden
+                    break;
+            }
+        }
+
+        // Function to show elements
+        function showElements(ids) {
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                console.log('Showing element: ' + id);
+                if (el) el.style.display = 'block';
+            });
+        }
+        function updateDropdownCheckboxes(selector, selectedValues) {
+            let selectedArray = selectedValues.split('#');
+            $(`${selector} .item-checkbox`).each(function () {
+                $(this).prop('checked', selectedArray.includes($(this).val()));
+            });
+            // Update the button text as well
+            updateButtonText($(selector));
+        }
+    </script>
+    <script>
+        // Listen for change on the Edit Panel dropdown
+        $('#ddlPanel').on('change', function () {
+            const selectedPanel = $(this).val();  // Get the selected value from the dropdown
+
+            // If "Select" is chosen (empty value), reload the page
+            if (selectedPanel === "") {
+                location.reload();  // This will refresh the page
+            } else {
+                // If another option is selected, call loadPanelData (or any other logic)
+                loadPanelData();
+            }
+        });
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Initialize for Department
+            $('#DeptIdSelect').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true,
+                buttonWidth: '100%',
+                maxHeight: 300,
+                onChange: function (option, checked, select) {
+                    updateDeptHiddenField();
+                },
+                onSelectAll: function () {
+                    updateDeptHiddenField();
+                },
+                onDeselectAll: function () {
+                    updateDeptHiddenField();
+                }
+            });
+
+            // Initialize for Course
+            $('#CourseIdSelect').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true,
+                buttonWidth: '100%',
+                maxHeight: 300,
+                onChange: function (option, checked, select) {
+                    updateCourseHiddenField();
+                },
+                onSelectAll: function () {
+                    updateCourseHiddenField();
+                },
+                onDeselectAll: function () {
+                    updateCourseHiddenField();
+                }
+            });
+
+            // Trigger them once on load, so the hidden fields match any initial selection
+            updateDeptHiddenField();
+            updateCourseHiddenField();
+
+            function updateDeptHiddenField() {
+                var selectedValues = $('#DeptIdSelect').val() || [];
+                // Join with "#"
+                var joined = selectedValues.join('#');
+                $('#DeptId').val(joined);
+            }
+
+            function updateCourseHiddenField() {
+                var selectedValues = $('#CourseIdSelect').val() || [];
+                var joined = selectedValues.join('#');
+                $('#CourseId').val(joined);
+            }
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"
+            integrity="sha256-8wC1pMlyVTFw2yGEXuW76pWb4f7Vpt+1xvLWsnBsZHE="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"
+            integrity="sha256-4j18CF8HBukrGxDdr4S5WhYrF4OevctJsvKVRs5UgYI="
+            crossorigin="anonymous"></script>
+
+
+    @*<script>
+            let temporaryItems = {}; // Object to store temporary button data by ID
+            let buttonHistory = []; // List to store changes for all buttons
+            const TOTAL_BUTTONS = 28; // Total number of buttons in grid
+
+            // Function to validate form before submission
+            function validateForm(event) {
+                if (event) {
+                    event.preventDefault(); // Prevent form from submitting
+                }
+                console.log('Form validation triggered');
+                return false; // Prevent default submission
+            }
+
+            // Function to save data temporarily for the clicked button
+            function saveTemporaryData(buttonId, buttonCode) {
+                let itemName = document.getElementById('txtFName').value.trim();
+                let backgroundColor = document.getElementById('radBackcolorpicker').value;
+                let foregroundColor = document.getElementById('radForcolorpicker').value;
+
+                if (!itemName) {
+                    alert('Please enter a name before saving.');
+                    return;
+                }
+
+                // Store the data for the specific button temporarily
+                temporaryItems[buttonId] = {
+                    code: buttonCode,
+                    name: itemName,
+                    backgroundColor: backgroundColor,
+                    foregroundColor: foregroundColor
+                };
+
+                // Add to button history list
+                buttonHistory.push({
+                    buttonId: buttonId,
+                    code: buttonCode,
+                    name: itemName,
+                    backgroundColor: backgroundColor,
+                    foregroundColor: foregroundColor,
+                    timestamp: new Date().toISOString()
+                });
+
+                console.log(`Temporary data saved for button ${buttonId}:`, temporaryItems[buttonId]);
+            }
+
+            // Function to update only the modified button after saving
+            function updateSingleButton(buttonId) {
+                let button = document.getElementById(`btn_${buttonId}`);
+                if (!button) return;
+
+                let buttonData = temporaryItems[buttonId];
+                if (!buttonData) return;
+
+                button.textContent = `${buttonData.code} - ${buttonData.name}`;
+                button.style.backgroundColor = buttonData.backgroundColor;
+                button.style.color = buttonData.foregroundColor;
+                console.log(`Updated button ${buttonId} with temp data`);
+            }
+
+            // Function to initialize buttons based on existing structure
+            function initializeButtons() {
+                let buttonContainer = document.getElementById('div_7by7');
+                if (!buttonContainer) return;
+
+                let existingButtons = buttonContainer.querySelectorAll('button');
+                existingButtons.forEach(button => {
+                    let buttonId = button.id.replace('btn_', '');
+                    let buttonCode = button.getAttribute('data-code') || buttonId; // Fetch button code if available
+
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault(); // Prevent default form submission or unwanted POST request
+                        console.log('Selected Button Code:', buttonCode);
+
+                        // Load stored temporary data if exists
+                        if (temporaryItems[buttonId]) {
+                            let tempData = temporaryItems[buttonId];
+                            document.getElementById('txtFName').value = tempData.name || '';
+                            document.getElementById('radBackcolorpicker').value = tempData.backgroundColor || '#000000';
+                            document.getElementById('radForcolorpicker').value = tempData.foregroundColor || '#FFFFFF';
+                        } else {
+                            document.getElementById('txtFName').value = button.textContent.replace(`${buttonCode} - `, '').trim() || '';
+                            document.getElementById('radBackcolorpicker').value = button.style.backgroundColor || '#000000';
+                            document.getElementById('radForcolorpicker').value = button.style.color || '#FFFFFF';
+                        }
+                    });
+                });
+            }
+
+            // Function to apply temporary data only after clicking Save
+            function saveAllData(event) {
+                if (event) {
+                    event.preventDefault(); // Prevent unintended form submission
+                }
+                console.log('Applying saved changes...');
+                Object.keys(temporaryItems).forEach(buttonId => {
+                    updateSingleButton(buttonId);
+                });
+                console.log('Final temporary items:', temporaryItems);
+                console.log('Button History:', buttonHistory);
+                alert('Data saved temporarily.');
+            }
+
+            // Attach save event listener
+            document.addEventListener('DOMContentLoaded', function () {
+                let saveButton = document.getElementById('saveButton');
+                if (saveButton) {
+                    saveButton.addEventListener('click', function (event) {
+                        event.preventDefault(); // Prevent default form submission
+                        saveAllData(event);
+                    });
+                }
+                initializeButtons();
+            });
+
+        </script>*@
+    <script>
+        document.querySelector("form").addEventListener("submit", function (event) {
+            console.log("Form submitted!"); // Check if this runs
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded1", function () {
+            function checkGeneralFields() {
+                let allFilled = true;
+                let requiredFields = document.querySelectorAll("#General input, #General select");
+
+                requiredFields.forEach(function (field) {
+                    if (field.value.trim() === "") {
+                        allFilled = false;
+                    }
+                });
+
+                // Enable or Disable Save Button
+                document.getElementById("saveButton").disabled = !allFilled;
+            }
+
+            function enableFunctionButton() {
+
+                document.getElementById("FunctionButton").style.pointerEvents = "auto";
+                document.getElementById("FunctionButton").style.opacity = "1";
+            }
+
+            // Monitor changes in General fields
+            document.querySelectorAll("#General input, #General select").forEach(function (field) {
+                field.addEventListener("input", checkGeneralFields);
+                field.addEventListener("change", checkGeneralFields);
+            });
+
+            // Save Button Click Event - Enables FunctionButton
+            document.getElementById("saveButton").addEventListener("click", function () {
+                enableFunctionButton();
+            });
+
+            // Initial Check
+            checkGeneralFields();
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded1", function () {
+            function enableFunctionButton() {
+                document.getElementById("FunctionButton").style.pointerEvents = "auto";
+                document.getElementById("FunctionButton").style.opacity = "1";
+            }
+
+            // Check if mainfunction_id exists in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has("id") && urlParams.get("id") !== "0") {
+                enableFunctionButton(); // Enable FunctionButton if mainfunction_id exists
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded1", function () {
+            function toggleFunctionButton() {
+                let functionIdElement = document.querySelector("#hffunction_id");
+                let functionButtonDiv = document.getElementById("FunctionButton");
+
+                if (functionIdElement) {
+                    let functionId = functionIdElement.value.trim();
+                    if (functionId !== "0" && functionId !== "") {
+                        functionButtonDiv.style.display = "block"; //Show when function exists
+                    } else {
+                        functionButtonDiv.style.display = "none"; // Hide when adding a new function
+                    }
+                }
+            }
+
+            // Run on page load
+            toggleFunctionButton();
+
+            // Ensure FunctionButton is enabled if mainfunction_id exists in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has("id") && urlParams.get("id") !== "0") {
+                document.getElementById("FunctionButton").style.display = "block";
+            }
+
+            // Save Button Click Event - Ensures FunctionButton is visible
+            document.getElementById("saveButton").addEventListener("click", function () {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded1", function () {
+            let functionIdElement = document.querySelector("#hffunction_id");
+            if (functionIdElement) {
+                console.log("Function ID in hidden field:", functionIdElement.value);
+            } else {
+                console.log(" Hidden field #hffunction_id is NOT found!");
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded1", function () {
+            function toggleFunctionButton() {
+                let functionIdElement = document.querySelector("#hffunction_id");
+                let functionButtonDiv = document.getElementById("FunctionButton");
+
+                if (functionIdElement) {
+                    let functionId = functionIdElement.value.trim();
+                    console.log("Function ID Found:", functionId); // Debugging Line
+
+                    if (functionId !== "0" && functionId !== "" && functionId !== "null") {
+                        functionButtonDiv.style.display = "block"; //  Show when function exists
+                        console.log(" FunctionButton is now VISIBLE");
+                    } else {
+                        functionButtonDiv.style.display = "none"; // Hide when adding a new function
+                        console.log(" FunctionButton remains HIDDEN");
+                    }
+                }
+            }
+
+            //  Run on page load
+            toggleFunctionButton();
+
+            //  Check if `mainfunction_id` exists in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has("id") && urlParams.get("id") !== "0") {
+                document.getElementById("FunctionButton").style.display = "block";
+            }
+
+            //  Ensure FunctionButton is visible after form submission
+            document.querySelector("form").addEventListener("submit", function () {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+            });
+        });
+    </script>
+
+    @*<script>
+            let funcData = {
+                FunctionId: parseInt($("#functionId").val()),
+                CmpId: parseInt($("#cmpId").val()),
+                Name: $("#name").val(),
+                Code: $("#code").val(),
+                CaptionType: $("#captionType").val(),
+                is_active1: $("#isActive").is(":checked"),
+                ShortingNo: parseInt($("#shortingNo").val()),
+                IpAddress: $("#ipAddress").val(),
+                Item: $("#item").val(),
+                BackColor: $("#backColor").val(),
+                ForColor: $("#forColor").val(),
+                TMachineId: parseInt($("#machineId").val()),
+                BigButton: $("#bigButton").is(":checked"),
+                PaymentId: parseInt($("#paymentId").val()),
+                PayType: $("#payType").val(),
+                PaySubType: $("#paySubType").val(),
+                IsGroupByDept: $("#isGroupByDept").is(":checked"),
+                IsGroupByCourse: $("#isGroupByCourse").is(":checked"),
+                DeptId: parseInt($("#deptId").val()),
+                CourseId: parseInt($("#courseId").val()),
+                selectedPanelId: parseInt($("#selectedPanelId").val()),
+                ParentId: parseInt($("#parentId").val()),
+                mainfunction_id: parseInt($("#mainFunctionId").val()),
+                PlatformAdd: $("#platformAdd").val(),
+                ClientToken: $("#clientToken").val(),
+                AccessToken: $("#accessToken").val(),
+                ServiceId: parseInt($("#serviceId").val()),
+                TaxId: parseInt($("#taxId").val()),
+                EOHelpOutMaxAmountEach: parseFloat($("#eoHelpOutMaxAmountEach").val()),
+                PaymentHandlingFee: parseFloat($("#paymentHandlingFee").val()),
+                SalesHandlingFee: parseFloat($("#salesHandlingFee").val()),
+                TaxAmount: parseFloat($("#taxAmount").val()),
+                TotalValue: parseFloat($("#totalValue").val()),
+                ProfileId: parseInt($("#profileId").val()),
+                DefaultDateTime: new Date($("#defaultDateTime").val()),
+                ZrVenueId: parseInt($("#zrVenueId").val()),
+                ZrLocationId: parseInt($("#zrLocationId").val()),
+                ZrTillId: parseInt($("#zrTillId").val()),
+                CardPayType: $("#cardPayType").val()
+            };
+
+            $.ajax({
+                url: '/FunctionController/SaveUpdatedData',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(funcData),
+                success: function (response) {
+                    alert("Data saved successfully!");
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error saving data:", error);
+                }
+        </script>*@
+    <script>
+   $('#saveButton').on('click', function (e) {
+    e.preventDefault();
+    var formData = {
+        buttonId: $('#btnIdField').val(),  // Ensure this field exists
+        name: $('#txtFName').val(),
+        back_color: $('#radBackcolorpicker').val(),
+        for_color: $('#radForcolorpicker').val(),
+        caption_type: $('#ddCaption').val()  // Check that this returns a valid, expected value
+    };
+    console.log("Form Data:", formData);  // Check output in the browser console
+
+    $.ajax({
+        type: 'POST',
+        url: '@Url.Action("SaveFunction", "Function")',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        success: function (response) {
+            alert('Data saved successfully.');
+        },
+        error: function (xhr, status, error) {
+            console.error('Error saving data:', error);
+            console.error("Response Text:", xhr.responseText);
+        }
+    });
+});
+
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="path/to/your/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/mvc/3.0/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+    <script>
+        $(document).ready(function () {
+            // Function to update dropdown button text
+            function updateButtonText(dropdown) {
+                let selected = [];
+                dropdown.find('.item-checkbox:checked').each(function () {
+                    selected.push($(this).next('label').text().trim());
+                });
+
+                const buttonText = selected.length ? selected.join(', ') : 'Select';
+                dropdown.find('.dropdown-button').html(`${buttonText}`);
+            }
+
+            $('.dropdown-button').click(function (event) {
+                event.stopPropagation();
+                const currentDropdown = $(this).closest('.dropdown-checkboxes');
+                currentDropdown.find('.dropdown-menu').toggleClass('show');
+                $('.dropdown-checkboxes').not(currentDropdown).find('.dropdown-menu').removeClass('show');
+            });
+
+            $('.check-all').click(function () {
+                const isChecked = $(this).prop('checked');
+                const dropdown = $(this).closest('.dropdown-checkboxes');
+                dropdown.find('.item-checkbox').prop('checked', isChecked);
+                updateButtonText(dropdown);
+            });
+
+            $('.item-checkbox').click(function () {
+                const dropdown = $(this).closest('.dropdown-checkboxes');
+                const allChecked = dropdown.find('.item-checkbox').length === dropdown.find('.item-checkbox:checked').length;
+                dropdown.find('.check-all').prop('checked', allChecked);
+                updateButtonText(dropdown);
+            });
+
+            $(document).click(function (event) {
+                if (!$(event.target).closest('.dropdown-checkboxes').length) {
+                    $('.dropdown-menu').removeClass('show');
+                }
+            });
+
+            $('.dropdown-checkboxes').each(function () {
+                updateButtonText($(this));
+            });
+
+            // Handle form submission
+            $('#yourForm').submit(function () {
+                var deptIds = $('#divDept .item-checkbox:checked').map(function () { return $(this).val(); }).get().join('#');
+                $('#DeptId').val(deptIds);
+
+                var courseIds = $('#divCourse .item-checkbox:checked').map(function () { return $(this).val(); }).get().join('#');
+                $('#CourseId').val(courseIds);
+            });
+        });
+
+    </script>
+
+
+}
+
+<form id="yourForm" method="post" onsubmit="return validateForm();">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" id="hffunction_id" name="Function.mainfunction_id" asp-for="Function.mainfunction_id" />
+    <input type="hidden" id="hffunction_id1" name="Function.Function_Id" asp-for="Function.Function_Id" />
+    <input type="hidden" id="hfSwapStatus" name="hfSwapStatus" value="0" />
+    <br />
+
+
+    <div class="col-lg-12">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">Function Map Master</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="form-group">
+                        <!-- Left Column -->
+                        <div class="col-md-12">
+
+                            <!-- Swap Till -->
+
+
+                            <div class="col-md-12" id="General">
+
+                                <label asp-for="Function.MachineId">Swap Till</label>
+
+                                <select asp-for="Function.MachineId" class="form-control">
+                                    <option value="">Select</option>
+                                    @*@if (Model.Function.Id != 0)
+                                        {*@
+                                    @foreach (var item in Model.DTMachine)
+                                    {
+                                        var selectedAttribute = item.Value == Model.Function?.MachineId.ToString() ? "selected" : "";
+
+                                        var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                    @Html.Raw(optionHtml)
+                                    }
+                                    @*}*@
+                                </select>
+                                <input type="hidden" id="hfSwapStatus" name="hfSwapStatus" value="0" />
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+
+
+                            <div class="col-md-12">
+                                <label asp-for="Function.Fname">Name <span class="text-danger">*</span></label>
+                                <input asp-for="Function.Fname" type="text" class="form-control" placeholder="Name" />
+                                <span asp-validation-for="Function.Fname" class="text-danger"></span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+
+                            <!-- Till Selection -->
+                            <div class="col-md-12">
+
+                                <label>Till <span class="text-danger">*</span></label>
+                                <div class="clearfix"></div>
+                                <select asp-for="Function.TMachineId" class="form-control">
+                                    <option value="">Select</option>
+
+                                    @foreach (var item in Model.DTTill)
+                                    {
+                                        var selectedAttribute = (item.Value.Trim() == (Model.Function?.TMachineId?.ToString() ?? "")) ? "selected" : "";
+
+                                        var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                    @Html.Raw(optionHtml)
+                                    }
+                                </select>
+
+
+                                @*@if (ViewData.ModelState["Till"]?.Errors.Count > 0)
+                                    {
+                                        <span class="text-danger">@ViewData.ModelState["Till"]?.Errors[0]?.ErrorMessage</span>}*@
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+
+                            <!-- Active Checkbox -->
+                            <div class="col-md-12">
+                                <!-- Active Checkbox -->
+                                <label for="ChkmainActive">
+                                    Active &nbsp;
+                                    <input asp-for="Function.is_active" type="checkbox" />
+                                    @*<input type="checkbox" id="ChkmainActive" name="ChkMainActive" asp-for="Function.is_active" checked="checked" />*@
+                                </label>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+
+
+
+                            <div class="form-actions text-right pal">
+                                <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                                <input type="reset" id="clearStorageBtn" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                                <input type="submit" value="Cancel" class="btn btn-primary" formnovalidate asp-page-handler="Cancel" />
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+
+                        <!-- Right Column -->
+                        <div class="col-md-12" id="FunctionButton" style="@(Model.Function.mainfunction_id == null || Model.Function.mainfunction_id == 0 ? "display:none;" : "display:block;")">
+
+                            <div class="col-md-12">
+                                <!-- Edit Panel -->
+                                <div class="col-md-12">
+
+                                    <label asp-for="Function.ParentId">Edit Panel<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <select asp-for="Function.ParentId" id="ddlPanel" class="form-control" onchange="loadPanelData()">
+                                        <option value="Select">Select</option>
+                                        @foreach (var item in Model.DTPanel)
+                                        {
+                                            var selectedAttribute = item.Value == Model.Function?.ParentId.ToString() ? "selected" : "";
+                                            var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                        @Html.Raw(optionHtml)}
+                                    </select>
+
+                                </div>
+                                <div id="selectedButtonCodeDisplay"></div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Name Field with Required Validation -->
+                                <div class="col-md-12">
+                                    <label>Name <span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input asp-for="Function.Name" type="text" id="txtFName" class="form-control" value="@Model.Name" placeholder="Name" />
+                                    @*<span class="text-danger" id="nameError">Name is required</span>*@
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Parent Function -->
+                                <div class="col-md-12">
+                                    <label class="ddParentId" asp-for="Function.Panel_Id">Parent Function<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <select asp-for="Function.Panel_Id" class="form-control">
+                                        <option value="0">Select</option>
+
+                                        @foreach (var item in Model.DTParent)
+                                        {
+                                            var selectedAttribute = item.Value == Model.Function?.Panel_Id.ToString() ? "selected" : "";
+
+                                            var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                        @Html.Raw(optionHtml)
+                                        }
+
+                                    </select>
+                                    @*<span class="text-danger" id="functionTypeError">Function type is required</span>*@
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Function Type -->
+                                <div class="col-md-12" id="divParentFunction">
+                                    <label asp-for="Function.CaptionType">Function Type<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <select id="ddCaption" asp-for="Function.CaptionType" class="form-control">
+                                        <option value="">Select</option>
+
+                                        @foreach (var item in Model.DTFunction)
+                                        {
+                                            var selectedAttribute = item.Value == (Model.Function?.CaptionType?.ToString() ?? "") ? "selected" : "";
+
+                                            var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                        @Html.Raw(optionHtml)}
+
+                                    </select>
+                                    @*<span asp-validation-for="Function.FunctionId" class="text-danger"></span>*@
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Pay Type -->
+                                <div class="col-md-12" id="divPayType" style="display: none;">
+                                    <label asp-for="Function.CardPayType">Card Payment Type <span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    @* <select asp-for="Function.CardPayType" class="form-control" id="ddlPayType">
+                                            <option value="">Select</option>
+                                           @foreach (var payType in Model.DTPayType)
+                                            {
+                                                <option value="@payType.Value" @(payType.Value= =Model.Function?.PayType ? "selected" : "" )>@payType.Text</option>
+                                            }
+                                        </select>*@
+                                    <select asp-for="Function.CardPayType" class="form-control" id="ddlPayType">
+                                        @foreach (var item in Model.DTPamentType)
+                                        {
+                                            var selectedAttribute = item.Value == Model.Function?.CardPayType.ToString() ? "selected" : "";
+
+                                            var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                        @Html.Raw(optionHtml)
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Function.CardPayType" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Z-Report BO -->
+                                <div class="col-md-12" id="divZReport" style="display: none;">
+                                    <br />
+                                    <label asp-for="Function.ZrVenueId">Venue</label>
+                                    <select asp-for="Function.ZrVenueId" class="form-control" id="radVenue">
+                                        <option value="">Select</option>
+                                        @foreach (var venue in Model.DTVenue)
+                                        {
+                                        <option value="@venue.Value">@venue.Text</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Function.ZrVenueId" class="text-danger"></span>
+
+
+
+
+                                    <label>Location</label>
+                                    @*<select   class="form-control" id="radLocation">
+                                            <option value="">Select</option>
+                                            @foreach (var location in Model.DTLocation)
+                                            {
+                                                <option value="@location.Value">@location.Text</option>
+                                            }
+                                        </select>*@
+                                    <span asp-validation-for="Function.ZrLocationId" class="text-danger"></span>
+
+
+
+
+                                    <label asp-for="Function.ZrTillId">Till</label>
+                                    <select asp-for="Function.ZrTillId" class="form-control" id="radTill" multiple>
+                                        @foreach (var till in Model.DTTill)
+                                        {
+                                        <option value="@till.Value">@till.Text</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Function.ZrTillId" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Price Level -->
+                                <div class="col-md-12" id="divPriceLevel" style="display: none;">
+                                    <br />
+                                    <label asp-for="Function.Product_Price_ID">Price Level</label>
+                                    <select asp-for="Function.Product_Price_ID" class="form-control" id="rdPriceLevel">
+                                        <option value="">Select</option>
+                                        @foreach (var priceLevel in Model.DTPricelevel)
+                                        {
+                                        <option value="@priceLevel.Value">@priceLevel.Text</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Function.Product_Price_ID" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Account Create -->
+                                <div class="col-md-12" id="divAccountCreate" style="display: none;">
+                                    <br />
+                                    <label asp-for="Function.ProfileId">Profile Type</label>
+                                    <select asp-for="Function.ProfileId" class="form-control" id="rdProfileType">
+                                        <option value="">Select</option>
+                                        @foreach (var profileType in Model.DTProfile)
+                                        {
+                                        <option value="@profileType.Value">@profileType.Text</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Function.ProfileId" class="text-danger"></span>
+
+                                    <br />
+
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <label for="Function_DefaultDateTime">Default Expiry Time (Days)</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input asp-for="Function.DefaultDateTime" type="number" class="form-control" placeholder="Days" maxlength="3" id="Function_DefaultDateTime" />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <select asp-for="Function.ExpireDateTime" id="rdExpTime" class="form-control">
+                                                <option value="DD">DD</option>
+                                                <option value="MM">MM</option>
+                                                <option value="YY">YY</option>
+                                            </select>
+                                        </div>
+
+                                        <span asp-validation-for="Function.DefaultDateTime" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Surcharge Percentage -->
+                                <div class="col-md-12" id="divSurchargeAmount" style="display: none;">
+                                    <br />
+                                    <label asp-for="Function.Item1">Surcharge Percentage (%)</label>
+                                    <input asp-for="Function.Item1" type="number" class="form-control" placeholder="Surcharge" min="0" max="100" step="0.01" />
+                                    <span asp-validation-for="Function.Item1" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Eat Out to Help Out (EOHO) -->
+                                <div class="col-md-12" id="divEOHO" style="display: none;">
+                                    <br />
+                                    <label asp-for="Function.Item2">Percentage (%)</label>
+                                    <input asp-for="Function.Item2" type="number" class="form-control" placeholder="Percentage" value="50" min="0" max="100" step="0.01" />
+                                    <span asp-validation-for="Function.Item2" class="text-danger"></span>
+
+                                    <br />
+                                    <label asp-for="Function.EOHelpOutMaxAmountEach">Max Amount Per Person (%)</label>
+                                    <input asp-for="Function.EOHelpOutMaxAmountEach" type="number" class="form-control" value="10" min="0" step="0.01" />
+
+                                    <label asp-for="Function.TaxId">Max Amount Per Person (%)<span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <select id="" asp-for="Function.TaxId" class="form-control">
+                                        @*<select id="ddCaption" asp-for="Function.TaxId" class="form-control">*@
+                                        <option value="">Select</option>
+
+                                        @foreach (var item in Model.DTTax)
+                                            {
+                                                var selectedAttribute = item.Value == Model.Function?.TaxId.ToString() ? "selected" : "";
+
+                                                var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                        @Html.Raw(optionHtml)
+                                            }
+
+                                    </select>
+                                    <span asp-validation-for="Function.EOHelpOutMaxAmountEach" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Item Discount -->
+                                <div class="col-md-12" id="divItem" style="display: none;">
+                                    <br />
+                                    <label asp-for="Function.Amount">Discount (%)</label>
+                                    <input asp-for="Function.Amount" type="number" class="form-control" placeholder="Discount" min="0" max="100" step="0.01" />
+                                    <span asp-validation-for="Function.Amount" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+
+                                <!-- Amount -->
+                                <div class="col-md-12" id="divAmount" style="display: none;">
+                                    <br />
+                                    <label asp-for="Function.Amount">Amount</label>
+                                    <input asp-for="Function.Amount" type="number" id="amount" class="form-control" placeholder="Amount" step="0.01" max="99999999" />
+                                    <span asp-validation-for="Function.Amount" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Payment Type -->
+                                <div class="col-md-12" id="divPayment" style="display: none;">
+                                    <br />
+                                    <label asp-for="Function.PaymentId">Payment Type</label>
+                                    <select asp-for="Function.PaymentId" class="form-control" id="ddPayment">
+                                        <option value="">Select</option>
+                                        @foreach (var payment in Model.DTPayment)
+                                        {
+                                        <option value="@payment.Value">@payment.Text</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Function.PaymentId" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Card Sale -->
+                                <div class="col-md-12" id="divCardSale" style="display: none;">
+                                    <br />
+                                    <label asp-for="Function.PayType">Payment Type</label>
+                                    <select asp-for="Function.PayType" class="form-control" id="ddlCardType">
+                                        <option value="">Select</option>
+                                        <option value="0">Credit Card</option>
+                                        <option value="1">Integrated Payment</option>
+                                    </select>
+                                    <span asp-validation-for="Function.PayType" class="text-danger"></span>
+
+
+                                    <!-- Payment Subtype -->
+                                    <div id="divCardSub" style="display: none;">
+                                        <br />
+                                        <label asp-for="Function.PaySubType">Payment Subtype</label>
+                                        <select asp-for="Function.PaySubType" class="form-control" id="ddlCardSubType">
+                                            <option value="">Select</option>
+                                            <option value="EVO">EVO</option>
+                                            <option value="PAY WORKS">PAY WORKS</option>
+                                            <option value="Kinetic">Kinetic</option>
+                                            <option value="Kinetic Saturn">Kinetic Saturn</option>
+                                            <option value="Room Payment">Room Payment</option>
+                                            <option value="Add pay">Add pay</option>
+                                            <option value="Elina">Elina</option>
+                                        </select>
+                                        <span asp-validation-for="Function.PaySubType" class="text-danger"></span>
+
+
+
+                                        <!-- Room Details -->
+                                        <div class="col-md-12" id="divRoomDetails" style="display: none;">
+                                            <br />
+                                            <label asp-for="Function.PlatformAdd">URL (Platform Address/URL)</label>
+                                            <input asp-for="Function.PlatformAdd" type="text" class="form-control" placeholder="URL" />
+                                            <span asp-validation-for="Function.PlatformAdd" class="text-danger"></span>
+
+                                            <br />
+                                            <label asp-for="Function.ClientToken">UserName (Client Token/UserName)</label>
+                                            <input asp-for="Function.ClientToken" type="text" class="form-control" placeholder="Client Token" />
+                                            <span asp-validation-for="Function.ClientToken" class="text-danger"></span>
+
+                                            <br />
+                                            <label asp-for="Function.AccessToken">Password (Access Token/Authorization)</label>
+                                            <input asp-for="Function.AccessToken" type="text" class="form-control" placeholder="Access Token" />
+                                            <span asp-validation-for="Function.AccessToken" class="text-danger"></span>
+
+                                            <br />
+                                            <label asp-for="Function.ServiceId">Service Id</label>
+                                            <input asp-for="Function.ServiceId" type="text" class="form-control" placeholder="Service Id" />
+                                            <span asp-validation-for="Function.ServiceId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+
+                                <!-- Stripe Payment Fields -->
+                                <div id="divStripePaymentFields" style="display: none;">
+                                    <div class="col-md-12">
+                                        <label asp-for="Function.PlatformAdd">Stripe Secret Key</label>
+                                        <input asp-for="Function.PlatformAdd" type="text" class="form-control" id="txtLauncher" placeholder="Secret Key" />
+                                        <span asp-validation-for="Function.PlatformAdd" class="text-danger"></span>
+                                    </div>
+                                    <div class="clearfix"></div>
+
+                                    <div class="col-md-12">
+                                        <label asp-for="Function.ClientToken">Stripe Account ID</label>
+                                        <input asp-for="Function.ClientToken" type="text" class="form-control" id="txtAccountID" placeholder="Account ID" />
+                                        <span asp-validation-for="Function.ClientToken" class="text-danger"></span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <!-- Launcher -->
+                                <div id="divLauncher" style="display: none;">
+                                    <div class="col-md-12">
+                                        <label asp-for="Function.PlatformAdd">Launcher</label>
+                                        <input asp-for="Function.PlatformAdd" type="text" class="form-control" id="txtLauncher" placeholder="Launcher" />
+                                        <span asp-validation-for="Function.PlatformAdd" class="text-danger"></span>
+                                    </div>
+                                    @*<div class="col-md-12">
+                                            <div class="col-md-12">
+                                                <label asp-for="Function.ClientToken">Account ID</label>
+                                                <input asp-for="Function.ClientToken" type="text" class="form-control" id="txtAccountID" placeholder="Account ID" />
+                                                <span asp-validation-for="Function.ClientToken" class="text-danger"></span>
+                                            </div>
+                                        </div>*@
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+
+                                <!-- Group By Department and Course -->
+                                <div class="col-md-6" id="chkgroupbydept" style="display: none;">
+                                    <label>Group By Department</label>
+                                    <input asp-for="Function.IsGroupByDept" type="checkbox" id="chkgroupbydept" />
+                                    <span asp-validation-for="Function.IsGroupByDept" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6" id="chkgroupbycourse" style="display: none;">
+                                    <label>Group By Course</label>
+                                    <input asp-for="Function.IsGroupByCourse" type="checkbox" id="chkgroupbycourse" />
+                                    <span asp-validation-for="Function.IsGroupByCourse" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div class="clearfix"></div>
+
+
+                                <!-- Department and Course Dropdowns -->
+                                <div class="col-md-6" style="display: none;" id="divDept">
+                                    <div class="dropdown-checkboxes" data-dropdown="department">
+                                        <label>Department</label>
+                                        <div class="dropdown-button">Select </div>
+                                        <ul class="dropdown-menu">
+                                            <li><input type="checkbox" class="check-all"> <label>Check All</label></li>
+                                            @foreach (var item in Model.DTdepartment)
+                                            {
+                                                <li>
+                                                    <input type="checkbox" class="item-checkbox" value="@item.Value" @(Model.Function?.DeptId?.Contains(item.Value) == true ? "checked" : "")>
+                                                    <label>@item.Text</label>
+                                                </li>
+                                            }
+                                        
+                                        </ul>
+                                    </div>
+                                   
+                                    <input type="hidden" id="DeptId" asp-for="Function.DeptId" />
+
+                                    <span asp-validation-for="Function.DeptId" class="text-danger"></span>
+                                </div>
+
+                                <!-- Course Multiselect -->
+                                <div class="col-md-6" style="display: none;" id="divCourse">
+
+
+                                    <div class="dropdown-checkboxes" data-dropdown="course">
+                                        <label>Course</label>
+                                        <div class="dropdown-button">Select</div>
+                                        <ul class="dropdown-menu">
+                                            <li><input type="checkbox" class="check-all"> <label>Check All</label></li>
+                                            @foreach (var course in Model.DTCourse)
+                                            {
+                                                <li>
+                                                    <input type="checkbox" class="item-checkbox" value="@course.Value" @(Model.Function?.CourseId?.Contains(course.Value) == true ? "checked" : "")>
+                                                    <label>@course.Text</label>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    <input type="hidden" id="CourseId" asp-for="Function.CourseId" />
+                                    <span asp-validation-for="Function.CourseId" class="text-danger"></span>
+                                </div>
+                             
+                                <div class="clearfix"></div>
+
+
+                                <!-- Total Value -->
+                                <div class="col-md-12" id="divTotalValue" style="display: none;">
+                                    <br />
+                                    <label asp-for="Function.TotalValue">Total Value</label>
+                                    <input asp-for="Function.TotalValue" type="number" class="form-control" placeholder="Total Value" step="0.01" />
+                                    <span asp-validation-for="Function.TotalValue" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Sales Handling Fee -->
+                                <div class="col-md-12" id="divSalesHandlingFee" style="display: none;">
+                                    <br />
+                                    <label asp-for="Function.SalesHandlingFee">Sales Handling Product Id</label>
+                                    <input asp-for="Function.SalesHandlingFee" type="number" class="form-control" placeholder="Sales Handling Product Id" step="0.01" />
+                                    <span asp-validation-for="Function.SalesHandlingFee" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Payment Handling Fee -->
+                                <div class="col-md-12" id="divPaymentHandlingFee" style="display: none;">
+                                    <br />
+                                    <label asp-for="Function.PaymentHandlingFee">Payment Handling Product Id</label>
+                                    <input asp-for="Function.PaymentHandlingFee" type="number" class="form-control" placeholder="Payment Handling Product Id" step="0.01" value="0" />
+                                    <span asp-validation-for="Function.PaymentHandlingFee" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+
+
+                                <!-- Tax Amount -->
+                                <div class="col-md-12" id="divTaxAmount" style="display: none;">
+                                    <br />
+                                    <label asp-for="Function.TaxAmount">Tax Amount</label>
+                                    <input asp-for="Function.TaxAmount" type="number" class="form-control" placeholder="Tax Amount" step="0.01" />
+                                    <span asp-validation-for="Function.TaxAmount" class="text-danger"></span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <br />
+
+                                <!-- Color Pickers and Checkboxes -->
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <label asp-for="Function.BackColor">Background Color</label>
+                                        <input asp-for="Function.BackColor" type="color" class="form-control" id="radBackcolorpicker" />
+                                        <span asp-validation-for="Function.BackColor" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label asp-for="Function.ForColor">For Color</label>
+                                        <input asp-for="Function.ForColor" type="color" class="form-control" id="radForcolorpicker" />
+                                        <span asp-validation-for="Function.ForColor" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label asp-for="Function.is_active1">Active</label>
+                                        <input asp-for="Function.is_active1" type="checkbox" class="form-control" id="chkActive" />
+                                        <span asp-validation-for="Function.is_active1" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label asp-for="Function.BigButton">Big Button</label>
+                                        <input asp-for="Function.BigButton" type="checkbox" class="form-control" id="chkbigbutton" />
+                                        <span asp-validation-for="Function.BigButton" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+                                <br />
+                                <!-- Submit and Reset Buttons -->
+
+                                <br />
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <br />
+                            <br />
+                            <br />
+                            <!-- Function Buttons Table -->
+                            <div id="div_7by7">
+                                <table style="border: 1px solid black; padding: 5%; width: 100%;">
+                                    @if (ViewData["Data_dt"] != null)
+                                    {
+                                        var dtData = (DataTable)ViewData["Data_dt"];
+                                        if (dtData.Rows.Count > 0)
+                                        {
+                                    @for (int row = 0; row < 2; row++)  // Only two rows (2 rows of 14 buttons)
+                                            {
+                                    <tr>
+                                        @for (int col = 0; col < 14; col++)  // 14 buttons per row
+                                                    {
+                                                        var index = row * 14 + col;
+                                                        //var dtData = (DataTable)ViewData["Data_dt"]; // Get the DataTable from ViewData
+
+                                                        if (index >= dtData.Rows.Count) break;
+
+                                                        var rowData = dtData.Rows[index];
+                                                        string code = rowData["code"].ToString();
+                                                        string name = rowData["name"].ToString();
+                                                        string back_color = rowData["back_color"].ToString();
+                                                        string for_color = rowData["for_color"].ToString();
+                                                        string is_active = rowData["is_active"].ToString();
+                                                        string big_button = rowData["big_button"].ToString();
+                                                        bool isVisible = !(code == "F29" || code == "F30"); // Hide F29 and F30 buttons
+                                                        string Function_Id = rowData["Function_Id"].ToString();
+                                                        string Panel_Id = rowData["Panel_Id"].ToString();
+                                                        string caption_type = rowData["caption_type"].ToString();
+                                                        string item = rowData["item"].ToString();
+                                                        string PlatformAdd = rowData["platformAdd"].ToString();
+                                                        string Dept_Id = rowData["Dept_Id"].ToString();
+                                                        string Couse_Id = rowData["course_id"].ToString();
+                                                        var IsGroupByCourse = rowData["is_groupby_course"].ToString();
+                                                        var IsGroupByDept = rowData["is_groupby_dept"].ToString();
+                                                        var ProfileId = rowData["profile_id"].ToString();
+                                                        var parentId = rowData["Parent_id"].ToString();
+                                                        var DefaultDateTime = rowData["DefaultDateTime"].ToString();
+                                        <td width="7%">
+                                            <button id="btn_@code"
+                                                    class="btn btn-primary"
+                                                    onclick="handleClick(event,'@code', '@name', '@back_color', '@for_color', '@is_active', '@big_button', '@Function_Id','@Panel_Id', '@caption_type', '@item','@PlatformAdd','@Dept_Id','@Couse_Id','@IsGroupByCourse','@IsGroupByDept','@ProfileId','@DefaultDateTime','@parentId')"
+                                                    style="margin-top: 10px; margin-bottom: 10px; width: 80%; font-size: 10px; height: 50px; margin-right: 1%; margin-left: 1%; background-color: @back_color; color: @for_color; display: @(isVisible ? "inline-block" : "none");">
+                                                @if (string.IsNullOrEmpty(name))
+                                                                {
+                                                @code }
+                                                                else
+                                                                {
+                                                @name}
+                                            </button>
+                                        </td>
+                                                    }
+                                    </tr>
+                                            }
+                                        }
+                                    }
+                                </table>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div class="col-md-12">
+                                @*<button type="submit" onclick="saveAllData()" class="btn btn-primary" style="margin-left: 220px;">Save</button>*@
+                                <button id="saveButton" class="btn btn-primary" style="margin-left: 220px;">Save</button>
+                                <button type="reset" id="clearStorageBtn" class="btn btn-secondary">Clear</button>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br />
+                        </div>
+
+
+                        <!-- Optionally, you can display the names stored in ViewData["NamesDataTable"] -->
+                        @*@if (ViewData["NamesDataTable"] != null)
+                            {
+                                var namesDataTable = (DataTable)ViewData["NamesDataTable"];
+                                <ul>
+                                    @foreach (DataRow row in namesDataTable.Rows)
+                                    {
+                                        <li>@row["name"]</li>
+                                        }
+                                </ul>}*@
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

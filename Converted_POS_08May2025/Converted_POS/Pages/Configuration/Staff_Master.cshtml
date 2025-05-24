@@ -1,0 +1,1826 @@
+﻿@page
+@model Converted_POS.Pages.forms.Staff_MasterModel
+@{
+    ViewData["Title"] = "Staff_Master";
+}
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a id="userListButton" asp-page="/Configuration/Staff_List">User List</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Configuration/Staff_Master">User Master</a></li>
+        </ol>
+    </div>
+
+    <style>
+        .dropdown-checkboxes {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+            .dropdown-checkboxes .dropdown-button {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #ccc;
+                background-color: #f9f9f9;
+                cursor: pointer;
+                text-align: left;
+            }
+
+            .dropdown-checkboxes .dropdown-menu {
+                display: none;
+                position: absolute;
+                background-color: white;
+                min-width: 100%;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+                padding: 12px 16px;
+                list-style: none;
+                max-height: 200px;
+                overflow-y: auto;
+                border: 1px solid #ccc;
+            }
+
+            .dropdown-checkboxes.show .dropdown-menu {
+                display: block;
+            }
+
+            .dropdown-checkboxes .dropdown-menu li {
+                align-items: center;
+                padding: 5px 0;
+            }
+
+            .dropdown-checkboxes .dropdown-menu input[type="checkbox"] {
+                margin-right: 10px;
+                width: auto;
+            }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @*<script>
+                $(document).ready(function () {
+            // Populate state dropdown based on the selected country
+                    var initialCountryId = $('#countryDropdown').val();
+            if (initialCountryId) {
+                $.getJSON('@Url.Page("/forms/Staff_Master", "OnGetStates")', { countryId: initialCountryId }, function (data) {
+                    $('#stateDropdown').empty().append('<option value="">Select</option>');
+                    $.each(data, function (index, item) {
+                        $('#stateDropdown').append($('<option></option>').val(item.value).text(item.text));
+                    });
+                    $('#citySelect').empty().append('<option value="">Select</option>'); // Clear city dropdown
+                });
+            }
+
+
+
+            $('#countryDropdown').change(function () {
+                var selectedCountryId = $(this).val();
+                $.ajax({
+                    url: '@Url.Page("/Configuration/Staff_Master", "OnGetStates")',
+                    type: 'GET',
+                    data: { countryId: selectedCountryId },
+                    success: function (data) {
+                        var $stateDropdown = $('#stateDropdown');
+                        $stateDropdown.empty();
+                        $stateDropdown.append('<option value="">Select State</option>');
+                        $.each(data, function (index, state) {
+                            $stateDropdown.append('<option value="' + state.value + '">' + state.text + '</option>');
+                        });
+                    }
+                });
+            });
+
+            // Handle country change
+                    $('#countryDropdown').change(function () {
+                var countryId = $(this).val();
+                if (countryId) {
+                    $.getJSON('@Url.Page("/forms/Staff_Master", "OnGetStates")', { countryId: countryId }, function (data) {
+                        $('#stateDropdown').empty().append('<option value="">Select</option>');
+                        $.each(data, function (index, item) {
+                            $('#stateDropdown').append($('<option></option>').val(item.value).text(item.text));
+                        });
+                        $('#citySelect').empty().append('<option value="">Select</option>'); // Clear city dropdown
+                    });
+                } else {
+                    $('#stateDropdown').empty().append('<option value="">Select</option>');
+                    $('#citySelect').empty().append('<option value="">Select</option>');
+                }
+            });
+
+            // Handle state change
+                    $('#stateDropdown').change(function () {
+                var stateId = $(this).val();
+                if (stateId) {
+                    $.getJSON('@Url.Page("/forms/Staff_Master", "OnGetCities")', { stateId: stateId }, function (data) {
+                        $('#citySelect').empty().append('<option value="">Select</option>');
+                        $.each(data, function (index, item) {
+                            $('#citySelect').append($('<option></option>').val(item.value).text(item.text));
+                        });
+                    });
+                } else {
+                    $('#citySelect').empty().append('<option value="">Select</option>');
+                }
+            });
+
+            // Trigger the change event on page load if there are values
+            var initialStateId = '@Model.SelectedStateId';
+            if (initialStateId) {
+                $('#stateDropdown').val(initialStateId).trigger('change');
+            }
+        });
+            </script>*@
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            function updateDropdownButtonText() {
+                var selected = [];
+                $('.venue-checkbox:checked').each(function () {
+                    selected.push($(this).next('label').text());
+                });
+
+                //var buttonText = selected.length > 0 ? selected.join(', ') : 'Select Venue';
+                //$('#dropdownMenuButton').text(buttonText);
+            }
+
+            // Initialize button text based on pre-selected checkboxes
+            updateDropdownButtonText();
+
+            $('#dropdownMenuButton').click(function () {
+                $('.dropdown-menu').toggleClass('show');
+            });
+
+            $('#checkAll').click(function () {
+                var checked = this.checked;
+                $('.venue-checkbox').each(function () {
+                    this.checked = checked;
+                });
+                updateDropdownButtonText();
+            });
+
+            $('.venue-checkbox').click(function () {
+                if ($('.venue-checkbox:checked').length === $('.venue-checkbox').length) {
+                    $('#checkAll').prop('checked', true);
+                } else {
+                    $('#checkAll').prop('checked', false);
+                }
+                updateDropdownButtonText();
+            });
+
+            $(document).click(function (event) {
+                if (!$(event.target).closest('.custom-dropdown').length) {
+                    if ($('.dropdown-menu').hasClass('show')) {
+                        $('.dropdown-menu').removeClass('show');
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            function updateDropdownButtonText() {
+                var selected = [];
+                $('.printer-checkbox:checked').each(function () {
+                    selected.push($(this).next('label').text());
+                });
+
+                var buttonText = selected.length > 0 ? selected.join(', ') : 'Select';
+                $('#dropdownMenuButton').text(buttonText);
+            }
+
+            // Initialize button text based on pre-selected checkboxes
+            updateDropdownButtonText();
+
+            $('#dropdownMenuButton').click(function () {
+                $('.dropdown-checkboxes').toggleClass('show');
+            });
+
+            $('#checkAll').click(function () {
+                var checked = this.checked;
+                $('.printer-checkbox').each(function () {
+                    this.checked = checked;
+                });
+                updateDropdownButtonText();
+            });
+
+            $('.printer-checkbox').click(function () {
+                if ($('.printer-checkbox:checked').length === $('.printer-checkbox').length) {
+                    $('#checkAll').prop('checked', true);
+                } else {
+                    $('#checkAll').prop('checked', false);
+                }
+                updateDropdownButtonText();
+            });
+
+            $(document).click(function (event) {
+                if (!$(event.target).closest('.dropdown-checkboxes').length) {
+                    if ($('.dropdown-checkboxes').hasClass('show')) {
+                        $('.dropdown-checkboxes').removeClass('show');
+                    }
+                }
+            });
+        });
+    </script>
+
+    @*<script>
+            $(document).ready(function () {
+            // Populate state dropdown based on the selected country
+            function populateStates(countryId) {
+                $.getJSON('@Url.Page("/forms/Staff_Master", "OnGetStates")', { countryId: countryId }, function (data) {
+                    $('#stateDropdown').empty().append('<option value="">Select State</option>');
+                    $.each(data, function (index, item) {
+                        $('#stateDropdown').append($('<option></option>').val(item.value).text(item.text));
+                    });
+                    $('#citySelect').empty().append('<option value="">Select</option>'); // Clear city dropdown
+                });
+            }
+
+            // Handle country change
+            $('#countryDropdown').change(function () {
+                var countryId = $(this).val();
+                if (countryId) {
+                    populateStates(countryId);
+                } else {
+                    $('#stateDropdown').empty().append('<option value="">Select State</option>');
+                    $('#citySelect').empty().append('<option value="">Select</option>');
+                }
+            });
+
+            // Handle state change
+            $('#stateDropdown').change(function () {
+                var stateId = $(this).val();
+                if (stateId) {
+                    $.getJSON('@Url.Page("/forms/Staff_Master", "OnGetCities")', { stateId: stateId }, function (data) {
+                        $('#citySelect').empty().append('<option value="">Select</option>');
+                        $.each(data, function (index, item) {
+                            $('#citySelect').append($('<option></option>').val(item.value).text(item.text));
+                        });
+                    });
+                } else {
+                    $('#citySelect').empty().append('<option value="">Select</option>');
+                }
+            });
+
+            // Trigger initial population if values are available
+            var initialCountryId = '@Model.SelectedCountryId';
+            if (initialCountryId) {
+                $('#countryDropdown').val(initialCountryId).trigger('change');
+            }
+            var initialStateId = '@Model.SelectedStateId';
+            if (initialStateId) {
+                $('#stateDropdown').val(initialStateId).trigger('change');
+            }
+        });
+            </script>*@
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Function to update URL parameters
+            function updateUrlParameter(param, value) {
+                //var url = new URL(window.location.href);
+                //url.searchParams.set(param, value);
+                //window.history.pushState({}, '', url);
+                var url = new URL(window.location.href);
+                if (value !== undefined && value !== null && value !== '') {
+                    url.searchParams.set(param, value);
+                } else {
+                    url.searchParams.delete(param);
+                }
+                window.history.pushState({}, '', url);
+            }
+
+            // Event handler for country dropdown change
+            $('#countryDropdown').change(function () {
+                var selectedCountryId = $(this).val();
+
+                // Update the URL with the selected country ID
+                updateUrlParameter('country_id', selectedCountryId);
+
+                // Fetch states based on the selected country
+                $.ajax({
+                    url: '/Staff/GetState', // Endpoint to get states
+                    type: 'GET',
+                    data: { country_id: selectedCountryId },
+                    success: function (data) {
+                        $('#stateDropdown').empty().append('<option value="">Select State</option>');
+                        $.each(data, function (index, item) {
+                            $('#stateDropdown').append($('<option>').val(item.Value).text(item.Text));
+                        });
+
+                        // Clear the city dropdown
+                        $('#cityDropdown').empty().append('<option value="">Select City</option>');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching states:', status, error);
+                    }
+                });
+            });
+
+            // Optionally, initialize state dropdown if country_id is in URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCountryId = urlParams.get('country_id');
+            if (selectedCountryId) {
+                $('#countryDropdown').val(selectedCountryId).trigger('change');
+            }
+        });
+        $(document).ready(function () {
+            // Fetch states if country_id is available in the URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCountryId = urlParams.get('country_id');
+            if (selectedCountryId) {
+                $('#countryDropdown').val(selectedCountryId).trigger('change');
+            }
+        });
+        function updateUrlParameter(param, value) {
+            var url = new URL(window.location.href);
+            url.searchParams.set(param, value);
+            window.history.pushState({}, '', url);
+        }
+
+        function redirectToCountry() {
+            var selectedCountryId = $('#countryDropdown').val();
+
+            // Update the URL parameter without reloading the page
+            updateUrlParameter('country_id', selectedCountryId);
+
+            // Load states based on the selected country
+            loadStates(selectedCountryId);
+        }
+
+        function redirectToState() {
+            var selectedStateId = $('#stateDropdown').val();
+            var selectedCountryId = $('#countryDropdown').val();
+
+            // Update the URL parameter without reloading the page
+            updateUrlParameter('state_id', selectedStateId);
+            updateUrlParameter('country_id', selectedCountryId);
+
+            // Load cities based on the selected state
+            loadCities(selectedStateId);
+        }
+        function loadCities(state_id) {
+            $.ajax({
+                url: '/staff/GetCity', // Replace with your actual URL to fetch cities
+                method: 'GET',
+                data: { stateId: state_id },
+                success: function (data) {
+                    var cityDropdown = $('#cityDropdown');
+                    cityDropdown.empty(); // Clear existing options
+
+                    // Append the default "Select" option
+                    cityDropdown.append('<option value="">Select City</option>');
+
+                    // Get the selected city from the hidden field
+                    var selectedCityId = $('#hfSelectedCityId').val();
+
+                    // Loop through the cities and append them as options
+                    $.each(data, function (index, city) {
+                        // Check if the city is selected
+                        var isSelected = (city.id == selectedCityId) ? 'selected' : '';
+
+                        // Append the option with the selected city if it matches
+                        cityDropdown.append('<option value="' + city.id + '" ' + isSelected + '>' + city.name + '</option>');
+                    });
+                },
+                error: function (error) {
+                    console.error("Error loading cities: ", error);
+                }
+            });
+        }
+        function redirectToCity() {
+            var selectedCityId = $('#cityDropdown').val();
+            var selectedStateId = $('#stateDropdown').val();
+            var selectedCountryId = $('#countryDropdown').val();
+            var staffId = $('#hfstaff_id').val(); // Assuming this is a hidden input field that holds the staff ID
+
+            // Update the URL parameter without reloading the page
+            updateUrlParameter('city_id', selectedCityId);
+
+            updateUrlParameter('state_id', selectedStateId);
+            updateUrlParameter('country_id', selectedCountryId);
+            // Optionally, you could load cities here based on the selected state
+            $('#hfcity_id').val(selectedCityId);
+            $('#hfstate_id').val(selectedStateId);
+            $('#hfcountry_id').val(selectedCountryId);
+        }
+        function updateUrlParameter(param, value) {
+            var url = new URL(window.location.href);
+            url.searchParams.set(param, value);
+            window.history.pushState({}, '', url);
+        }
+
+        function loadStates(countryId) {
+            $.ajax({
+                url: "/Staff/GetState", // Replace with your actual URL to fetch states
+                method: 'GET',
+                data: { countryId: countryId },
+                success: function (data) {
+                    var stateDropdown = $('#stateDropdown');
+                    stateDropdown.empty(); // Clear existing options
+
+                    // Append the default "Select" option
+                    stateDropdown.append('<option value="">Select State</option>');
+
+                    // Get the selected state from the hidden field
+                    var selectedStateId = $('#hfSelectedStateId').val();
+
+                    // Loop through the states and append them as options
+                    $.each(data, function (index, state) {
+                        // Check if the state is selected
+                        var isSelected = (state.id == selectedStateId) ? 'selected' : '';
+
+                        // Append the option with the selected state if it matches
+                        stateDropdown.append('<option value="' + state.id + '" ' + isSelected + '>' + state.name + '</option>');
+                    });
+
+                    // Trigger the state change handler to update cities if needed
+                    redirectToState(); // This will update cities if the state is already selected
+                },
+                error: function (error) {
+                    console.error("Error loading states: ", error);
+                }
+            });
+        }
+
+        // Ensure this function is called when the country dropdown changes
+        $('#countryDropdown').change(function () {
+            redirectToCountry();
+        });
+
+        // Ensure this function is called when the state dropdown changes
+        $('#stateDropdown').change(function () {
+            redirectToState();
+            // Optionally load cities here
+        });
+        //$('#cityDropdown').change(function () {
+        //    redirectToCity();
+        //    // Optionally load cities here
+        //});
+
+
+        $('#cityDropdown').change(function () {
+            //var selectedCityId = $(this).val();
+            //updateUrlParameter('city_id', selectedCityId);
+            var selectedCityId = $(this).val();
+            var selectedStateId = $('#stateDropdown').val();
+            var selectedCountryId = $('#countryDropdown').val();
+
+            // Update the URL with the selected city ID
+            updateUrlParameter('city_id', selectedCityId);
+
+            // Optionally, you could make an AJAX call here if needed
+            // Example: loadCityDetails(selectedCityId);
+
+            // Perform any additional actions you need
+            console.log('City changed to:', selectedCityId);
+        });
+        $(function () {
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCityId = urlParams.get('city_id');
+
+            if (selectedCityId) {
+                $('#cityDropdown').val(selectedCityId);
+            }
+        });
+        function loadCityDetails(cityId) {
+            $.ajax({
+                url: '/YourEndpoint/LoadCityDetails', // Replace with your endpoint
+                type: 'GET',
+                data: { city_id: cityId },
+                success: function (data) {
+                    // Handle the response data here
+                    console.log('City details loaded:', data);
+                    // For example, update other parts of the page with the data
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading city details:', status, error);
+                }
+            });
+        }
+        // On page load, check URL parameters and initialize dropdowns
+        $(document).ready(function () {
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCountryId = urlParams.get('country_id');
+            var selectedStateId = urlParams.get('state_id');
+
+            if (selectedCountryId) {
+                $('#countryDropdown').val(selectedCountryId);
+                loadStates(selectedCountryId);
+
+                if (selectedStateId) {
+                    $('#stateDropdown').val(selectedStateId);
+                    // Optionally, load cities here
+                }
+            }
+        });
+        function updateUrlAndRefresh() {
+            // Get the selected country ID
+            var selectedCountryId = document.getElementById('countryDropdown').value;
+            var id = getIdFromUrl(); // Assuming the ID is static. Adjust if needed.
+
+            // Build the new URL
+            var newUrl = `/Configuration/Staff_Master?ID=${id}&country_id=${selectedCountryId}`;
+
+            // Update the URL without reloading the page
+            window.history.pushState({}, '', newUrl);
+
+            // Reload the page to apply the new URL parameters
+            window.location.href = newUrl;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('countryDropdown').addEventListener('change', updateUrlAndRefresh);
+        });
+        function getIdFromUrl() {
+            // Extract ID from the URL
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('ID');
+        }
+
+        function updateUrlAndRefresh() {
+            // Get the selected country ID and state ID
+            var selectedCountryId = document.getElementById('countryDropdown').value;
+            var selectedStateId = document.getElementById('stateDropdown') ? document.getElementById('stateDropdown').value : '';
+            var selectedCityId = document.getElementById('cityDropdown') ? document.getElementById('cityDropdown').value : '';
+
+            var id = getIdFromUrl();  // Assuming the ID is static. Adjust if needed.
+
+            // Build the new URL
+            var newUrl = `/Configuration/Staff_Master?ID=${id}`;
+            if (selectedCountryId) {
+                newUrl += `&country_id=${selectedCountryId}`;
+            }
+            if (selectedStateId) {
+                newUrl += `&state_id=${selectedStateId}`;
+            }
+            if (selectedCityId) {
+                newUrl += `&city_id=${selectedCityId}`;
+            }
+            // Update the URL and reload the page
+            window.history.pushState({}, '', newUrl);
+            window.location.href = newUrl;
+        }
+
+        function setupEventListeners() {
+            document.getElementById('countryDropdown').addEventListener('change', updateUrlAndRefresh);
+            var stateDropdown = document.getElementById('stateDropdown');
+            if (stateDropdown) {
+                stateDropdown.addEventListener('change', updateUrlAndRefresh);
+            }
+        }
+
+        function populateDropdowns() {
+            // Extract URL parameters
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCountryId = urlParams.get('country_id');
+            var selectedStateId = urlParams.get('state_id');
+
+            if (selectedCountryId) {
+                // Set the selected country
+                var countryDropdown = document.getElementById('countryDropdown');
+                countryDropdown.value = selectedCountryId;
+
+                // Load states based on the selected country
+                loadStates(selectedCountryId, selectedStateId);
+            }
+
+            if (selectedStateId) {
+                var stateDropdown = document.getElementById('stateDropdown');
+                if (stateDropdown) {
+                    stateDropdown.value = selectedStateId;
+                }
+            }
+        }
+
+        function loadStates(countryId, selectedStateId) {
+            // Use AJAX to fetch states for the selected country and update the state dropdown
+            $.ajax({
+                url: "/Staff/GetState", // Replace with your endpoint to fetch states
+                data: { country_id: countryId },
+                success: function (data) {
+                    var stateDropdown = $('#stateDropdown');
+                    stateDropdown.empty(); // Clear existing options
+                    stateDropdown.append('<option value="">Select State</option>');
+                    $.each(data, function (key, value) {
+                        var option = $('<option>').text(value.Text).attr('value', value.Value);
+                        if (value.Value === selectedStateId) {
+                            option.prop('selected', true);
+                        }
+                        stateDropdown.append(option);
+                    });
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            setupEventListeners();
+            populateDropdowns(); // Ensure dropdowns are populated on page load
+        });
+    </script>
+    <script>
+    $(document).ready(function () {
+            var selectedCountryId = $('#countryDropdown').val();
+            if (selectedCountryId) {
+                loadStates(selectedCountryId);
+            }
+
+            var selectedStateId = $('#stateDropdown').val();
+            if (selectedStateId) {
+                loadCities(selectedStateId);
+            }
+        });</script>
+    <script>
+        $(document).ready(function () {
+            // Function to update URL parameters
+            function updateUrlParameter(param, value) {
+                var url = new URL(window.location.href);
+                if (value !== undefined && value !== null && value !== '') {
+                    url.searchParams.set(param, value);
+                } else {
+                    url.searchParams.delete(param);
+                }
+                window.history.pushState({}, '', url);
+            }
+    </script>
+    <script>
+        $(document).ready(function () {
+            const fields = ['name', 'email', 'phone', 'authcode', 'otherid', 'address', 'postalcode', 'accessBackOffice', 'trainee', 'ProGrp', 'accessRole', 'venue'];
+
+            // Function to clear form values
+            function clearFormValues() {
+                fields.forEach(field => {
+                    $(`#${field}`).val('');
+                });
+            }
+
+            // Function to restore form values from localStorage
+            function restoreFormValues() {
+                fields.forEach(field => {
+                    const value = localStorage.getItem(field);
+                    if (value !== null) {
+                        $(`#${field}`).val(value);
+                    }
+                });
+            }
+
+            // Function to save form values to localStorage
+            function saveFormValues() {
+                fields.forEach(field => {
+                    localStorage.setItem(field, $(`#${field}`).val());
+                });
+            }
+
+            // Handle User List button click
+            $('#userListButton').click(function () {
+                // Clear form values from localStorage and the form itself
+                fields.forEach(field => {
+                    localStorage.removeItem(field);
+                });
+                clearFormValues();
+            });
+
+            // Restore form values when the page loads
+            restoreFormValues();
+
+            // Save form values to localStorage on input change
+            fields.forEach(field => {
+                $(`#${field}`).on('input', function () {
+                    saveFormValues();
+                });
+            });
+
+            // Clear form values from localStorage on form submission
+            $('#yourForm').on('submit', function () {
+                fields.forEach(field => {
+                    localStorage.removeItem(field);
+                });
+            });
+
+            // Handle New User button click
+            $('#newUserButton').click(function () {
+                // Clear localStorage for new user creation
+                fields.forEach(field => {
+                    localStorage.removeItem(field);
+                });
+
+                // Optionally, reset form fields if needed
+                clearFormValues();
+            });
+
+            // AJAX Functions for Dropdowns
+            function updateStates(countryId) {
+                $.ajax({
+                    url: '/path/to/your/state/endpoint',
+                    data: { country_id: countryId },
+                    success: function (data) {
+                        const stateDropdown = $('#stateDropdown');
+                        stateDropdown.empty().append('<option value="">Select State</option>');
+                        $.each(data.states, function (index, item) {
+                            stateDropdown.append($('<option>').val(item.Value).text(item.Text));
+                        });
+                        $('#stateDropdown').val('').change(); // Clear state and city dropdowns
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error loading states:', status, error);
+                    }
+                });
+            }
+
+            function updateCities(stateId) {
+                $.ajax({
+                    url: '/path/to/your/city/endpoint',
+                    data: { state_id: stateId },
+                    success: function (data) {
+                        const cityDropdown = $('#cityDropdown');
+                        cityDropdown.empty().append('<option value="">Select City</option>');
+                        $.each(data.cities, function (index, item) {
+                            cityDropdown.append($('<option>').val(item.Value).text(item.Text));
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error loading cities:', status, error);
+                    }
+                });
+            }
+
+            $('#countryDropdown').change(function () {
+                const countryId = $(this).val();
+                if (countryId) {
+                    updateStates(countryId);
+                } else {
+                    $('#stateDropdown').empty().append('<option value="">Select State</option>');
+                    $('#cityDropdown').empty().append('<option value="">Select City</option>');
+                }
+            });
+
+            $('#stateDropdown').change(function () {
+                const stateId = $(this).val();
+                if (stateId) {
+                    updateCities(stateId);
+                } else {
+                    $('#cityDropdown').empty().append('<option value="">Select City</option>');
+                }
+            });
+        });
+    </script>
+    <script>
+        function validateCountrySelection() {
+            var countryDropdown = document.getElementById("countryDropdown");
+            var countryErrorMessage = document.getElementById("countryErrorMessage");
+
+            if (countryDropdown.value === "") {
+                countryErrorMessage.style.display = "block"; // Show error message
+                return false; // Prevent form submission
+            } else {
+                countryErrorMessage.style.display = "none"; // Hide error message
+                return true; // Allow form submission
+            }
+        }
+
+        // Trigger validation on form submission
+        document.getElementById("yourFormId").onsubmit = function (event) {
+            if (!validateCountrySelection()) {
+                event.preventDefault(); // Prevent form submission if validation fails
+            }
+        };
+    </script>
+    <script>
+        function validateForm() {
+            // Reset the error message and hide it before validation
+            document.getElementById('countryErrorMessage').style.display = 'none';
+
+            // Get the selected value of the country dropdown
+            var countryId = document.getElementById('countryDropdown').value;
+
+            // Check if the country is not selected
+            if (countryId === "") {
+                // If not selected, show the error message
+                document.getElementById('countryErrorMessage').style.display = 'block';
+                return false; // Prevent form submission
+            }
+
+            // If country is selected, allow form submission
+            return true;
+        }
+    </script>
+    @*//document.addEventListener('DOMContentLoaded', function () {
+        //        // Load saved values
+        //        var name = localStorage.getItem('staffName');
+        //        if (name) {
+        //            document.getElementById('name').value = name;
+        //        }
+
+        //        // Event listener to save values
+        //        document.getElementById('name').addEventListener('input', function () {
+        //            localStorage.setItem('staffName', this.value);
+        //        });
+
+        //        // Repeat for other fields as necessary
+        //});
+        //    function getUrlParameter(name) {
+        //        var regex = new RegExp('[?&]' + name + '=([^&#]*)', 'i');
+        //        var match = regex.exec(window.location.search);
+        //        return match ? decodeURIComponent(match[1]) : null;
+        //    }
+
+        //    document.addEventListener('DOMContentLoaded', function () {
+        //        var name = getUrlParameter('name');
+        //        if (name) {
+        //            document.getElementById('name').value = name;
+        //        }
+        //    });
+        //    function updateDropdowns(countryId) {
+        //        $.ajax({
+        //            url: '/path/to/your/endpoint', // Adjust the endpoint as needed
+        //            data: { country_id: countryId },
+        //            success: function (data) {
+        //                var stateDropdown = $('#stateDropdown');
+        //                stateDropdown.empty().append('<option value="">Select State</option>');
+        //                $.each(data.states, function (index, item) {
+        //                    stateDropdown.append($('<option>
+            ').val(item.Value).text(item.Text));
+            //                });
+            //            },
+            //            error: function (xhr, status, error) {
+            //                console.error('Error loading states:', status, error);
+            //            }
+            //        });
+            //    }
+
+            //    $('#countryDropdown').change(function () {
+            //        var selectedCountryId = $(this).val();
+            //        updateDropdowns(selectedCountryId);
+            //    });</script>*@
+
+
+    @*<script>function updateUrlParameter(param, value) {
+            var url = new URL(window.location.href);
+            if (value) {
+                url.searchParams.set(param, value);
+            } else {
+                url.searchParams.delete(param);
+            }
+            window.history.pushState({}, '', url);
+        }</script>*@
+    @*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>*@
+    @*<script>$(document).ready(function () {
+                // Function to load states based on selected country
+                function loadStates(countryId, selectedStateId) {
+                    $.ajax({
+                        url: '/Staff/GetState', // Ensure this URL maps correctly to your backend endpoint
+                        type: 'GET',
+                        data: { country_id: countryId },
+                        success: function (data) {
+                            $('#stateDropdown').empty().append('<option value="">Select State</option>');
+                            $.each(data, function (index, item) {
+                                $('#stateDropdown').append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                            });
+
+                            // Set previously selected state
+                            if (selectedStateId) {
+                                $('#stateDropdown').val(selectedStateId).trigger('change');
+                            }
+                        }
+                    });
+                }
+
+                // Handle country dropdown change
+                $('#countryDropdown').change(function () {
+                    var countryId = $(this).val();
+                    var stateId = $('#stateDropdown').val();
+                    var cityId = $('#cityDropdown').val();
+
+                    updateUrlParams({
+                        country_id: countryId,
+                        state_id: '',
+                        city_id: ''
+                    });
+
+                    if (countryId) {
+                        loadStates(countryId, stateId);
+                    } else {
+                        $('#stateDropdown').empty().append('<option value="">Select State</option>');
+                        $('#cityDropdown').empty().append('<option value="">Select City</option>');
+                    }
+                });
+
+                // Handle state dropdown change
+                $('#stateDropdown').change(function () {
+                    var stateId = $(this).val();
+                    var countryId = $('#countryDropdown').val();
+                    var cityId = $('#cityDropdown').val();
+
+                    updateUrlParams({
+                        country_id: countryId,
+                        state_id: stateId,
+                        city_id: ''
+                    });
+
+                    if (stateId) {
+                        loadCities(stateId, cityId);
+                    } else {
+                        $('#cityDropdown').empty().append('<option value="">Select City</option>');
+                    }
+                });
+
+                // Function to update the URL with parameters
+                function updateUrlParams(params) {
+                    var url = new URL(window.location.href);
+                    Object.keys(params).forEach(function (key) {
+                        if (params[key]) {
+                            url.searchParams.set(key, params[key]);
+                        } else {
+                            url.searchParams.delete(key);
+                        }
+                    });
+                    window.history.replaceState({}, '', url);
+                }
+
+                // Initialize dropdowns based on URL parameters
+                var urlParams = new URLSearchParams(window.location.search);
+                var selectedCountryId = urlParams.get('country_id');
+                var selectedStateId = urlParams.get('state_id');
+                var selectedCityId = urlParams.get('city_id');
+
+                if (selectedCountryId) {
+                    $('#countryDropdown').val(selectedCountryId).trigger('change');
+
+                    // Load states for the selected country
+                    loadStates(selectedCountryId, selectedStateId);
+                }
+
+                if (selectedStateId) {
+                    // Load cities for the selected state
+                    if (selectedCountryId) {
+                        loadCities(selectedStateId, selectedCityId);
+                    } else {
+                        // Reload states if country is not set (e.g., if URL was modified manually)
+                        loadStates($('#countryDropdown').val(), selectedStateId);
+                    }
+                }
+
+                if (selectedCityId) {
+                    $('#cityDropdown').val(selectedCityId);
+                }
+            });
+        </script>*@
+    @*<script>
+            $(document).ready(function () {
+                $('#countryDropdown').change(function () {
+                    var countryId = $(this).val();
+                    $.ajax({
+                        url: '/Staff/GetState',
+                        type: 'GET',
+                        data: { countryId: countryId },
+                        success: function (data) {
+                            $('#stateDropdown').empty().append('<option value="">Select State</option>');
+                            $.each(data, function (index, item) {
+                                $('#stateDropdown').append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                            });
+                        }
+                    });
+                });
+
+                $('#stateDropdown').change(function () {
+                    var stateId = $(this).val();
+                    $.ajax({
+                        url: '/Staff/GetCity',
+                        type: 'GET',
+                        data: { stateId: stateId },
+                        success: function (data) {
+                            $('#cityDropdown').empty().append('<option value="">Select City</option>');
+                            $.each(data, function (index, item) {
+                                $('#cityDropdown').append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                            });
+                        }
+                    });
+                });
+            });
+        </script>*@
+    @*<script>
+            function redirectToCountry() {
+            var selectedCountryId = $('#countryDropdown').val();
+            var staffId = $('#hfstaff_id').val(); // Assuming this is a hidden input field that holds the staff ID
+            var url = "/Configuration/Staff_Master?country_id=" + selectedCountryId + "&staff_id=" + staffId;
+            window.location.href = url;
+        }
+
+        // Ensure this function is called when the country dropdown changes
+        $('#countryDropdown').change(function () {
+            redirectToCountry();
+        });
+
+            function redirectToState() {
+                var selectedStateId = $('#stateDropdown').val();
+                var selectedCountryId = $('#countryDropdown').val();
+                var url = "/Configuration/Staff_Master?country_id=" + selectedCountryId + "&state_id=" + selectedStateId;
+                window.location.href = url;
+            }
+
+            function loadStates(countryId) {
+                // Use AJAX to fetch states for the selected country and update the state dropdown
+                $.ajax({
+                    url: "/Configuration/GetStates", // Replace with your endpoint to fetch states
+                    data: { country_id: countryId },
+                    success: function (data) {
+                        $('#stateDropdown').empty(); // Clear existing options
+                        $.each(data, function (key, value) {
+                            $('#stateDropdown').append($('<option>').text(value.Text).attr('value', value.Value));
+                        });
+                    }
+                });
+            }
+
+            function loadCities(stateId) {
+                // Use AJAX to fetch cities for the selected state and update the city dropdown
+                $.ajax({
+                    url: "/Configuration/GetCities", // Replace with your endpoint to fetch cities
+                    data: { state_id: stateId },
+                    success: function (data) {
+                        $('#cityDropdown').empty(); // Clear existing options
+                        $.each(data, function (key, value) {
+                            $('#cityDropdown').append($('<option>').text(value.Text).attr('value', value.Value));
+                        });
+                    }
+                });
+            }
+        </script>*@
+    @*<script>
+            $(document).ready(function () {
+                // Initialize state and city dropdowns based on URL parameters or session
+                var urlParams = new URLSearchParams(window.location.search);
+                var selectedCountryId = urlParams.get('country_id');
+                if (selectedCountryId) {
+                    $('#countryDropdown').val(selectedCountryId);
+                    loadStates(selectedCountryId); // Load states for the selected country
+                }
+
+                var selectedStateId = urlParams.get('state_id');
+                if (selectedStateId) {
+                    $('#stateDropdown').val(selectedStateId);
+                    loadCities(selectedStateId); // Load cities for the selected state
+                }
+            });
+
+            // Function to load states when the country changes
+
+        </script>*@
+    @*<script>
+        //$(document).ready(function () {
+        //        var urlParams = new URLSearchParams(window.location.search);
+        //        var selectedStateId = urlParams.get('state_id');
+        //        if (selectedStateId) {
+        //            $('#stateDropdown').val(selectedStateId);
+        //            loadCities(selectedStateId);
+        //        }
+
+        //        var selectedCityId = urlParams.get('city_id');
+        //        if (selectedCityId) {
+        //            $('#cityDropdown').val(selectedCityId);
+        //        }
+        //    }); $(document).ready(function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var selectedCountryId = urlParams.get('country_id');
+        var selectedStateId = urlParams.get('state_id');
+
+        if (selectedCountryId) {
+            $('#countryDropdown').val(selectedCountryId);
+            loadStates(selectedCountryId);
+        }
+
+        if (selectedStateId) {
+            $('#stateDropdown').val(selectedStateId);
+            loadCities(selectedStateId);
+        }
+                });</script>*@
+    @*<script>
+        $(document).ready(function () {
+            // Function to populate the states dropdown
+            function populateStates(countryId) {
+                $.getJSON('@Url.Page("/forms/Staff_Master", "OnGetStates")', { countryId: countryId })
+                    .done(function (data) {
+                        console.log('States data:', data); // Debugging: Check the data format
+                        $('#stateDropdown').empty().append('<option value="">Select State</option>');
+
+                        $.each(data, function (index, item) {
+                            $('#stateDropdown').append($('<option></option>').val(item.value).text(item.text));
+                        });
+
+                        // Clear city dropdown
+                        $('#citySelect').empty().append('<option value="">Select</option>');
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error loading states:', textStatus, errorThrown);
+                    });
+            }
+
+            // Handle country change
+            $('#countryDropdown').change(function () {
+                var countryId = $(this).val();
+                if (countryId) {
+                    populateStates(countryId);
+                } else {
+                    $('#stateDropdown').empty().append('<option value="">Select State</option>');
+                    $('#citySelect').empty().append('<option value="">Select</option>');
+                }
+            });
+
+            // Optional: Trigger initial population if a country is already selected
+            var initialCountryId = '@Model.SelectedCountryId';
+            if (initialCountryId) {
+                $('#countryDropdown').val(initialCountryId).trigger('change');
+            }
+        });
+            </script>*@
+    <script>
+        $(document).ready(function () {
+            // Fetch states when country is selected
+            $('#countryDropdown').change(function () {
+                var selectedCountryId = $(this).val();
+                updateUrlParameter('country_id', selectedCountryId);
+                loadStates(selectedCountryId); // Load states based on country
+            });
+
+            // Fetch cities when state is selected
+            $('#stateDropdown').change(function () {
+                var selectedStateId = $(this).val();
+                updateUrlParameter('state_id', selectedStateId);
+                loadCities(selectedStateId); // Load cities based on state
+            });
+
+            // Fetch selected values for country, state, and city on page load
+            function initializeForm() {
+                var selectedCountryId = $('#countryDropdown').val();
+                if (selectedCountryId) {
+                    loadStates(selectedCountryId); // Load states if country is selected
+                }
+
+                var selectedStateId = $('#stateDropdown').val();
+                if (selectedStateId) {
+                    loadCities(selectedStateId); // Load cities if state is selected
+                }
+            }
+
+            // Initialize state and city dropdowns based on pre-selected country/state
+            initializeForm();
+
+            // Function to update URL parameter without reloading page
+            function updateUrlParameter(param, value) {
+                var url = new URL(window.location.href);
+                if (value !== undefined && value !== null && value !== '') {
+                    url.searchParams.set(param, value);
+                } else {
+                    url.searchParams.delete(param);
+                }
+                window.history.pushState({}, '', url);
+            }
+
+            // Load states for selected country
+            function loadStates(countryId) {
+                $.ajax({
+                    url: '/Staff/GetState', // Replace with actual URL to fetch states
+                    method: 'GET',
+                    data: { country_id: countryId },
+                    success: function (data) {
+                        var stateDropdown = $('#stateDropdown');
+                        stateDropdown.empty(); // Clear existing options
+                        stateDropdown.append('<option value="">Select State</option>'); // Add default "Select" option
+                        $.each(data, function (index, item) {
+                            var isSelected = (item.Value == $('#hfSelectedStateId').val()) ? 'selected' : '';
+                            stateDropdown.append('<option value="' + item.Value + '" ' + isSelected + '>' + item.Text + '</option>');
+                        });
+
+                        // Trigger state change to load cities (if needed)
+                        redirectToState();
+                    },
+                    error: function () {
+                        console.error("Error loading states");
+                    }
+                });
+            }
+
+            // Load cities for selected state
+            function loadCities(stateId) {
+                $.ajax({
+                    url: '/Staff/GetCity', // Replace with actual URL to fetch cities
+                    method: 'GET',
+                    data: { state_id: stateId },
+                    success: function (data) {
+                        var cityDropdown = $('#cityDropdown');
+                        cityDropdown.empty(); // Clear existing options
+                        cityDropdown.append('<option value="">Select City</option>'); // Add default "Select" option
+                        $.each(data, function (index, item) {
+                            var isSelected = (item.Value == $('#hfSelectedCityId').val()) ? 'selected' : '';
+                            cityDropdown.append('<option value="' + item.Value + '" ' + isSelected + '>' + item.Text + '</option>');
+                        });
+                    },
+                    error: function () {
+                        console.error("Error loading cities");
+                    }
+                });
+            }
+
+            // Pre-select values for country, state, and city if already set in the model
+            function preselectCountryStateCity() {
+                var selectedCountryId = $('#hfSelectedCountryId').val();
+                var selectedStateId = $('#hfSelectedStateId').val();
+                var selectedCityId = $('#hfSelectedCityId').val();
+
+                if (selectedCountryId) {
+                    $('#countryDropdown').val(selectedCountryId).trigger('change');
+                }
+                if (selectedStateId) {
+                    $('#stateDropdown').val(selectedStateId).trigger('change');
+                }
+                if (selectedCityId) {
+                    $('#cityDropdown').val(selectedCityId).trigger('change');
+                }
+            }
+
+            // Call the preselection function
+            preselectCountryStateCity();
+        });</script>
+    <script>
+    $(document).ready(function () {
+        // Get the country, state, and city values from ViewData (passed from the controller)
+        var selectedCountryId = '@ViewData["CountryId"]';
+        var selectedStateId = '@ViewData["StateId"]';
+        var selectedCityId = '@ViewData["CityId"]';
+
+        // Set the dropdown values based on the server-side data
+        if (selectedCountryId) {
+            $('#countryDropdown').val(selectedCountryId);
+        }
+        if (selectedStateId) {
+            $('#stateDropdown').val(selectedStateId);
+        }
+        if (selectedCityId) {
+            $('#cityDropdown').val(selectedCityId);
+        }
+
+        // Optionally, you can trigger the change event to dynamically load state/city dropdowns
+        if (selectedCountryId) {
+            $('#countryDropdown').trigger('change');
+        }
+        if (selectedStateId) {
+            $('#stateDropdown').trigger('change');
+        }
+    });
+    </script>
+    <script>
+    $(document).ready(function () {
+        // Retrieve the ViewData passed from the controller
+        var countryId = '@ViewData["CountryId"]';
+        var stateId = '@ViewData["StateId"]';
+        var cityId = '@ViewData["CityId"]';
+
+        // Function to update URL parameters dynamically
+        function updateUrlParameter(param, value) {
+            var url = new URL(window.location.href);
+            if (value) {
+                url.searchParams.set(param, value); // Add or update the parameter
+            } else {
+                url.searchParams.delete(param); // Remove the parameter if the value is empty
+            }
+            window.history.pushState({}, '', url); // Update the browser's URL without reloading the page
+        }
+
+        // Update the URL with the state_id, country_id, and city_id from ViewData
+        if (countryId) {
+            updateUrlParameter('country_id', countryId);
+        }
+        if (stateId) {
+            updateUrlParameter('state_id', stateId);
+        }
+        if (cityId) {
+            updateUrlParameter('city_id', cityId);
+        }
+
+        // Optionally, if you want to reflect any changes made via dropdowns:
+        $('#stateDropdown').change(function () {
+            var selectedStateId = $(this).val();
+            updateUrlParameter('state_id', selectedStateId);
+        });
+
+        $('#countryDropdown').change(function () {
+            var selectedCountryId = $(this).val();
+            updateUrlParameter('country_id', selectedCountryId);
+        });
+
+        $('#cityDropdown').change(function () {
+            var selectedCityId = $(this).val();
+            updateUrlParameter('city_id', selectedCityId);
+        });
+    });
+    </script>
+    <script>
+        $(document).ready(function () {
+            var urlParams = new URLSearchParams(window.location.search);
+
+            // Set dropdown values based on URL parameters
+            var selectedCountryId = urlParams.get('country_id');
+            var selectedStateId = urlParams.get('state_id');
+            var selectedCityId = urlParams.get('city_id');
+
+            // Update the dropdown selections
+            if (selectedCountryId) {
+                $('#countryDropdown').val(selectedCountryId);
+            }
+            if (selectedStateId) {
+                $('#stateDropdown').val(selectedStateId);
+            }
+            if (selectedCityId) {
+                $('#cityDropdown').val(selectedCityId);
+            }
+        });</script>
+    <script>
+        $(document).ready(function () {
+            // Function to update the URL parameters without reloading the page
+            function updateUrlParameter(param, value) {
+                var url = new URL(window.location.href);
+                if (value !== undefined && value !== null && value !== '') {
+                    url.searchParams.set(param, value);
+                } else {
+                    url.searchParams.delete(param);
+                }
+                window.history.pushState({}, '', url);
+            }
+
+            // Event handler when the country dropdown is changed
+            $('#countryDropdown').change(function () {
+                var selectedCountryId = $(this).val();
+                updateUrlParameter('country_id', selectedCountryId);
+                $('#stateDropdown').trigger('change');
+            });
+
+            // Event handler when the state dropdown is changed
+            $('#stateDropdown').change(function () {
+                var selectedStateId = $(this).val();
+                updateUrlParameter('state_id', selectedStateId);
+                $('#cityDropdown').trigger('change');
+            });
+
+            // Event handler when the city dropdown is changed
+            $('#cityDropdown').change(function () {
+                var selectedCityId = $(this).val();
+                updateUrlParameter('city_id', selectedCityId);
+            });
+        });</script>
+    <script>
+        $(document).ready(function () {
+            // Get the parameters from the URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedCountryId = urlParams.get('country_id');
+            var selectedStateId = urlParams.get('state_id');
+            var selectedCityId = urlParams.get('city_id');
+
+            // Set the dropdown values based on the URL parameters
+            if (selectedCountryId) {
+                $('#countryDropdown').val(selectedCountryId).trigger('change');
+            }
+            if (selectedStateId) {
+                $('#stateDropdown').val(selectedStateId).trigger('change');
+            }
+            if (selectedCityId) {
+                $('#cityDropdown').val(selectedCityId).trigger('change');
+            }
+        });</script>
+    <script>
+        $(document).ready(function () {
+            // Check if the state_id is passed in the URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var selectedStateId = urlParams.get('state_id');
+
+            // If we have a state_id from the URL, set it in the dropdown
+            if (selectedStateId) {
+                $('#stateDropdown').val(selectedStateId);
+            }
+
+            // Trigger the URL update when the dropdown value changes
+            $('#stateDropdown').change(function () {
+                var selectedStateId = $(this).val();
+
+                // Update the URL with the selected state_id
+                updateUrlParameter('state_id', selectedStateId);
+            });
+
+            // Function to update URL parameters
+            function updateUrlParameter(param, value) {
+                var url = new URL(window.location.href);
+                if (value) {
+                    url.searchParams.set(param, value);
+                } else {
+                    url.searchParams.delete(param);
+                }
+                window.history.pushState({}, '', url);
+            }
+        });</script>
+    <script>
+        function redirectToState() {
+            var selectedStateId = $('#stateDropdown').val();
+            var selectedCountryId = $('#countryDropdown').val();
+
+            // Update the URL parameter without reloading the page
+            updateUrlParameter('state_id', selectedStateId);
+            updateUrlParameter('country_id', selectedCountryId);
+
+            // Optionally, you can load cities based on the selected state
+            loadCities(selectedStateId);
+        }</script>
+    <script>
+    $(document).ready(function () {
+        var countryId = '@ViewData["CountryId"]';
+        var stateId = '@ViewData["StateId"]';
+        var cityId = '@ViewData["CityId"]';
+
+        // Check the values in the console (for debugging)
+        console.log("Country ID:", countryId);
+        console.log("State ID:", stateId);
+        console.log("City ID:", cityId);
+
+        // Update the URL parameters if they are present
+        function updateUrlParameter(param, value) {
+            var url = new URL(window.location.href);
+            if (value) {
+                url.searchParams.set(param, value);
+            } else {
+                url.searchParams.delete(param); // Remove the parameter if it's null/undefined
+            }
+            window.history.pushState({}, '', url); // Update URL without reloading the page
+        }
+
+        // If values exist, update URL parameters
+        if (countryId) {
+            updateUrlParameter('country_id', countryId);
+        }
+        if (stateId) {
+            updateUrlParameter('state_id', stateId);
+        }
+        if (cityId) {
+            updateUrlParameter('city_id', cityId);
+        }
+    });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Get values from URL parameters
+            var urlParams = new URLSearchParams(window.location.search);
+            var countryId = urlParams.get('country_id');
+            var stateId = urlParams.get('state_id');
+            var cityId = urlParams.get('city_id');
+
+            // Set the values for the dropdowns based on URL parameters
+            if (countryId) {
+                $('#countryDropdown').val(countryId);
+            }
+            if (stateId) {
+                $('#stateDropdown').val(stateId);
+            }
+            if (cityId) {
+                $('#cityDropdown').val(cityId);
+            }
+        });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="path/to/your/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/mvc/3.0/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // When the checkbox is clicked
+            $('#backhoffice').change(function () {
+                if ($(this).is(':checked')) {
+                    // Show the dropdown
+                    $('#accessRoleContainer').show();
+                } else {
+                    // Hide the dropdown
+                    $('#accessRoleContainer').hide();
+                }
+            });
+
+            // Optionally, you can initialize the visibility based on the checkbox state on page load
+            if ($('#backhoffice').is(':checked')) {
+                $('#accessRoleContainer').show();
+            } else {
+                $('#accessRoleContainer').hide();
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("yourFormId").addEventListener("submit", function (event) {
+            var select = document.getElementById("ProGrp");
+            if (select.value === "") {
+                event.preventDefault(); // Prevent form submission
+                document.getElementById("roleError").innerText = "Please select a role.";
+                document.getElementById("roleError").style.display = "block";
+            } else {
+                document.getElementById("roleError").style.display = "none"; // Hide error message
+            }
+        });
+    </script>
+}
+
+<form id="yourForm" method="post" onsubmit="return validateForm();">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" id="hfstaff_id" name="staff_id" asp-for="staff.staff_id" />
+    <br />
+    <div class="col-lg-12 ">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">User  Master</div>
+            <div class="panel-body pan">
+                <div class="form-body pal">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="form-group col-md-4">
+                                    <label for="txtTillCode">Till Code <span class="text-danger">*</span></label>
+                                    <input asp-for="staff.till_code" class="form-control" placeholder="Till Code" />
+                                    <span asp-validation-for="staff.till_code" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="staff.name" for="txtFName">Full Name <span class="text-danger">*</span></label>
+                                    <input id="name" asp-for="staff.name" class="form-control" placeholder="Full Name" />
+                                    <span asp-validation-for="staff.name" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="staff.email" for="txtEmail">Email </label>
+                                    <input id="email" asp-for="staff.email" class="form-control" placeholder="Email" />
+                                    <span asp-validation-for="staff.email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    <label asp-for="staff.contact_no" for="txtContact">Phone No.</label>
+                                    <input id="phone" asp-for="staff.contact_no" class="form-control" placeholder="Contact" />
+                                    <span asp-validation-for="staff.contact_no" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="txtAuthentication_Code">Authentication Code</label>
+                                    <input id="authcode" asp-for="staff.Authentication_Code" class="form-control" placeholder="Authentication Code" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="txtOtherId">Other Id</label>
+                                    <input id="otherid" asp-for="staff.other_id" class="form-control" placeholder="Other Id" />
+                                    <span asp-validation-for="staff.other_id" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-4" style="margin-top: 20px;">
+                                    <label asp-for="staff.address" for="txtAddress">Address</label>
+                                    <textarea id="address" asp-for="staff.address" class="form-control" placeholder="Address" rows="3"></textarea>
+                                </div>
+                                <div class="col-md-4" style="margin-top: 20px;">
+                                    <label for="txtNational">Postal Code</label>
+                                    <input id="postalcode" @*asp-for="PostalCode"*@ class="form-control" placeholder="Postal Code" />
+                                    <span @*asp-validation-for="PostalCode"*@ class="text-danger"></span>
+                                </div>
+                                @*<div class="col-md-4">*@
+                                @*<label for="txtSCode">User Code</label>
+                                    <input asp-for="UserCode"
+                                           class="form-control" placeholder="User Code" />*@
+
+                                <div class="col-md-4" style="margin-top: 20px;" id="accessRoleContainer" style="display: none;">
+                                    <label for="accessRole">Access BackOffice Role</label>
+                                    @if (Model.DTAccessBackOfficeRole != null && Model.DTAccessBackOfficeRole.Any())
+                                    {
+                                        <select id="accessRole" class="form-control">
+                                            <option value="">Select Role</option>
+                                            @foreach (var item in Model.DTAccessBackOfficeRole)
+                                            {
+                                                var selectedAttribute = item.Value == Model.staff?.role_id.ToString() ? "selected" : "";
+
+                                                var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                                @Html.Raw(optionHtml)
+                                                @*<option value="@item.Value">@item.Text</option>*@
+                                            }
+                                        </select>
+                                    }
+                                </div>
+                                @*</div>*@
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-2" style="margin-top: 20px;">
+                                    <label>Access POS</label>
+                                    <input @*asp-for="AccessPOS"*@ type="checkbox" class="form-check-input" checked="checked" />
+                                </div>
+                                <div class="col-md-2" style="margin-top: 20px;">
+                                    <label for="backhoffice">Access BackOffice</label>
+                                    <input @*asp-for="AccessBackOffice"*@ type="checkbox" id="backhoffice" class="form-check-input" />
+                                </div>
+                                <div class="col-md-2" style="margin-top: 20px;">
+                                    <label for="chktrainee">Trainee</label>
+                                    <input id="trainee" asp-for="staff.is_trainee" type="checkbox" class="form-check-input" />
+                                </div>
+                                <div class="col-md-2" style="margin-top: 20px;">
+                                    <label for="chkTillActive">Till Active</label>
+                                    <input id="tillactive" asp-for="staff.till_active" type="checkbox" class="form-check-input" checked="checked" />
+                                </div>
+                                <div class="col-md-2" style="margin-top: 20px;">
+                                    <label for="chkActive">Active</label>
+                                    <input id="isactive" asp-for="staff.is_active" type="checkbox" class="form-check-input" checked="checked" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="col-md-4" style="margin-top: 20px;">
+                                    <label for="ddl_SMaster">POS Access Roles <span class="text-danger">*</span></label>
+                                    <!--<select--> @*asp-for="SelectedRole" asp-items="Model.Roles"*@
+                                    <!--class="form-control">
+            <option value="">Select Role</option>
+        </select>-->
+                                    @if (Model.DTRole != null && Model.DTRole.Any())
+                                    {
+                                        <select id="ProGrp" class="form-control" asp-for="SelectedRole" required>
+                                            <option selected="true">Select</option>
+                                            @foreach (var item in Model.DTRole)
+                                            {
+                                                var selectedAttribute = item.Value == Model.staff?.m_staff_id.ToString() ? "selected" : "";
+
+                                                var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                                @Html.Raw(optionHtml)
+                                                @*<option value="@item.Value">@item.Text</option>*@
+                                            }
+                                        </select>
+                                    }
+                                    <span asp-validation-for="SelectedRole" class="text-danger"></span> <!-- Validation message -->
+                                    <span id="roleError" class="text-danger" style="display:none;"></span>
+                                </div>
+                                <div class="col-md-4" style="margin-top: 20px;">
+                                    <label asp-for="staff.managercode" for="txtMCode">Manager Code <span class="text-danger">*</span></label>
+                                    <input id="code" asp-for="staff.managercode" class="form-control" placeholder="Manager Code" />
+                                    <span asp-validation-for="staff.managercode" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="margin-left:-27px; margin-left:2px;">
+                                        <div class="dropdown-checkboxes">
+                                            <label for="dropdownMenuButton">Venue Rights</label>
+                                            <div class="dropdown-button" id="dropdownMenuButton">
+                                                Select
+                                                <i class="fas fa-caret-down dropdown-icon"></i>
+                                            </div>
+                                            @if (Model.DTVenue != null && Model.DTVenue.Any())
+                                            {
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <li>
+                                                        <input type="checkbox" id="checkAll"> <label for="checkAll">Check All</label>
+                                                    </li>
+                                                    @foreach (var item in Model.DTVenue)
+                                                    {
+                                                        var isChecked = Model.staff?.venue_id != null && Model.staff.venue_id.Contains(item.Value) ? "checked" : "";
+                                                        <li>
+                                                            <input id="venue" type="checkbox" class="printer-checkbox" value="@item.Value" @isChecked>
+                                                            <label>@item.Text</label>
+
+                                                            @*<input type="checkbox" class="printer-checkbox" value="@item.Value"> <label>@item.Text</label>*@
+                                                        </li>
+                                                    }
+                                                    @*<div class="dropdown-item">
+                                <input type="checkbox" id="select">
+                                <label>Select</label>
+                            </div>*@
+                                                </ul>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4"></div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="col-md-4" style="margin-top: 20px;">
+                                    <label for="countryDropdown">Country</label>
+                                    <!--<select--> @*asp-for="SelectedCountry" asp-items="Model.Countries"*@
+                                    <!--class="form-control">
+                                        <option value="">Select Country</option>
+                                    </select>-->
+                                    <select id="countryDropdown" class="form-control" name="countryId" onchange="redirectToCountry()">
+                                        <option value="">Select</option>
+                                        @foreach (var item in Model.DTCountry)
+                                        {
+                                            //var selectedAttribute = item.Value == Model.staff?.country_id.ToString() ? "selected" : "";
+                                            var selectedAttribute = (item.Value != null && ViewData["CountryId"] != null && item.Value.ToString() == ViewData["CountryId"].ToString()) ? "selected" : "";
+
+
+                                            var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+
+                                            @Html.Raw(optionHtml)
+                                        }
+                                        @*<option value="@item.Value">@item.Text</option>*@
+                                        @*}*@
+                                        @*@foreach (var country in Model.DTCountry)
+                                            {
+                                                <option value="@country.Value">@country.Text</option>
+
+                                            }*@
+
+                                    </select>
+                                    <span class="text-danger" id="countryErrorMessage" style="display:none;">
+                                        Country is required.
+                                    </span>
+                                </div>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="col-md-4" style="margin-top: 20px;">
+                                    @*<input type="hidden" id="hfSelectedStateId" value="@Model.staff?.state_id" />*@
+                                    <label for="stateDropdown">State</label>
+                                    <!--<select--> @*asp-for="SelectedState" asp-items="Model.States"*@
+                                    <!--class="form-control">
+                                        <option value="">Select State</option>
+                                    </select>-->
+                                    <select id="stateDropdown" class="form-control" name="stateId" onchange="redirectToState()">
+                                        <option value="">Select State</option>
+                                        @if (Model.DTState != null && Model.DTState.Any())
+                                        {
+                                            @foreach (var item in Model.DTState)
+                                            {
+                                                //var selectedAttribute = item.Value == ViewData["StateId"].ToString() ? "selected" : "";
+                                                var selectedAttribute = (item.Value != null && ViewData["StateId"] != null && item.Value.ToString() == ViewData["StateId"]?.ToString()) ? "selected" : "";
+
+                                                var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                                //var selected = item.Value == ViewData["StateId"].ToString() ? "selected" : "";
+                                                @Html.Raw(optionHtml)
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                        @*@if (Model.DTState != null)
+                                            {
+                                                @foreach (var state in Model.DTState)
+                                                {
+                                                    <option value="@state.Value">@state.Text</option>
+                                                }
+                                            }*@
+                                    </select>
+                                </div>
+                                <div class="col-md-4" style="margin-top: 20px;">
+                                    @*<input type="hidden" id="hfcity_id" name="city_id" value="@Model.SelectedCityId" />*@
+                                    @*<input type="hidden" id="hfSelectedCityId" value="@Model.staff?.city_id" />*@
+                                    <label for="cityDropdown">City</label>
+                                    <!--<select--> @*asp-for="SelectedCity" asp-items="Model.Cities"*@
+                                    <!--class="form-control">
+                                        <option value="">Select City</option>
+                                    </select>-->
+                                    <select id="cityDropdown" class="form-control" name="cityId" onchange="redirectToCity()">
+                                        <option value="">Select</option>
+                                        @if (Model.DTCity != null && Model.DTCity.Any())
+                                        {
+                                            @foreach (var item in Model.DTCity)
+                                            {
+                                                //var selectedAttribute = item.Value == Model.staff?.city_id.ToString() ? "selected" : "";
+                                                var selectedAttribute = (item.Value != null && ViewData["CityId"] != null && item.Value.ToString() == ViewData["CityId"].ToString()) ? "selected" : "";
+                                                var optionHtml = $"<option value=\"{item.Value}\" {selectedAttribute}>{item.Text}</option>";
+                                                //var selected = item.Value == ViewData["CityId"].ToString() ? "selected" : "";
+                                                @Html.Raw(optionHtml)
+                                                @*<option value="@item.Value">@item.Text</option>*@
+                                            }
+                                        }
+                                        @*@foreach (var city in Model.DTCity)
+                                            {
+                                                <option value="@city.Value">@city.Text</option>
+                                            }*@
+                                        @*@if (Model.DTCity != null)
+                                            {
+                                                @foreach (var city in Model.DTCity)
+                                                {
+                                                    <option value="@city.Value">@city.Text</option>
+                                                }}*@
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="margin-top: 20px;">
+                                <div class="col-md-6">
+                                    <label for="fileUpload">Photo</label>
+                                    <input id="photo" asp-for="staff.photo" type="file" class="form-control" />
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions text-right pal">
+                <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                <input type="submit" value="Cancel" class="btn btn-primary" formnovalidate asp-page-handler="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

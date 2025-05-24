@@ -1,0 +1,68 @@
+﻿@page
+@model Converted_POS.Pages.Control_Settings.Device_Type_MasterModel
+@{
+    ViewData["Title"] = "Device_Type_Master";
+}
+
+
+@section link {
+
+    <div class="page-header pull-left">
+        <ol class="breadcrumb page-breadcrumb pull-left">
+            <li>
+                <i class="fa fa-home"></i>&nbsp;<a asp-page="/Dashboard">Home</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active">
+                <a asp-page="/Control_Settings/Device_Type_List">Device Type List</a>&nbsp;&nbsp;
+                <i class="fa fa-angle-right"></i>&nbsp;&nbsp;
+            </li>
+            <li class="active"><a asp-page="/Control_Settings/Device_Type_Master">Device Type Master</a></li>
+        </ol>
+    </div>
+
+}
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <br />
+
+        <div class="col-lg-12 ">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">Device Type Master</div>
+                <div class="panel-body pan">
+                    <div class="form-body pal">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="DType.Device_Type"> Name <span class="text-danger">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <input class="form-control" asp-for="DType.Device_Type" />
+                                    <span asp-validation-for="DType.Device_Type" class="text-danger"></span>
+                                    <div class="clearfix"></div>
+                                    <br />
+
+                                    <label asp-for="DType.is_active">Active</label> &nbsp;
+                                    <input asp-for="DType.is_active" type="checkbox" checked="checked" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions text-right pal">
+                        <input type="submit" value="Save" class="btn btn-primary" asp-page-handler="Save" />
+                        <input type="submit" value="Reset" class="btn btn-primary" asp-page-handler="Reset" />
+                        <input type="submit" value="Cancel" class="btn btn-primary" asp-page-handler="Cancel" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
