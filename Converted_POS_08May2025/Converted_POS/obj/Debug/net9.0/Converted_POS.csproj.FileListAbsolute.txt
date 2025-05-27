@@ -3944,3 +3944,4 @@ D:\POS\POS Mono\Converted_POS_08May2025\Converted_POS\obj\Debug\net9.0\refint\Co
 D:\POS\POS Mono\Converted_POS_08May2025\Converted_POS\obj\Debug\net9.0\Converted_POS.pdb
 D:\POS\POS Mono\Converted_POS_08May2025\Converted_POS\obj\Debug\net9.0\Converted_POS.genruntimeconfig.cache
 D:\POS\POS Mono\Converted_POS_08May2025\Converted_POS\obj\Debug\net9.0\ref\Converted_POS.dll
+D:\POS\POS Mono\Converted_POS_08May2025\Converted_POS\obj\Debug\net9.0\Converted_POS.sourcelink.json

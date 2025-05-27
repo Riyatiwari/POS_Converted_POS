@@ -88,7 +88,20 @@ namespace Converted_POS
            {
                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                options.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented; // Optional: Indented JSON
+               options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
            });
+            
+            // Configure CORS for API endpoints
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
             //.AddNewtonsoftJson(options =>
             //{
             //    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
